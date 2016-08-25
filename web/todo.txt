@@ -1,0 +1,218 @@
+CREATE USER 'b2b'@'%' IDENTIFIED BY 'b2b';
+CREATE DATABASE `b2b2c` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON b2b2c.* TO 'b2b'@'%';
+
+
+所有的外键都应该建立，这样gii自动生成的时候会自动生成关联关系。
+
+
+app\models\b2b2c\SheetType
+app\models\b2b2c\SheetTypeSearch
+app\modules\admin\controllers\SheetTypeController
+@app/modules/admin/views/sheet-type
+
+1、定义权限
+http://my.oschina.net/kenblog/blog/399027
+
+2、定义Module的layout ->ok ，直接在Module.php中进行设置
+3、如何运行控制台命令 ->？ module内部的控制台命令没有运行成功，为什么，放在根目录下面可以运行成功。
+-> yii hello
+yii hello/index
+yii admin/hello/index
+
+https://github.com/almasaeed2010/AdminLTE
+https://almsaeedstudio.com/
+
+
+/* View路径的几种方式  */
+       /*  return $this->render("@app/views/site/index", [
+        		'searchModel' => $searchModel,
+        		'dataProvider' => $dataProvider,
+        ]); */
+        
+通过composer.json更新项目：
+composer update --prefer-dist
+
+php composer.phar require --prefer-dist yiisoft/yii2-smarty
+or 
+add below script in required nodes of composer.json
+"yiisoft/yii2-smarty": "~2.0.0"
+
+window下直接执行：
+php composer.phar require --prefer-dist yiisoft/yii2-jui
+php composer.phar require --prefer-dist yiisoft/yii2-smarty
+可以更新，如果是在composer.json中增加
+
+yii各种第三方插件版本查询：
+https://packagist.org/packages/yiisoft/yii2-smarty
+https://packagist.org/packages/yiisoft/yii2-jui
+
+yii各种第三方插件也可以直接在yii的官方扩展网页中查询：
+http://www.yiiframework.com/extension
+
+
+如果composer安装插件提出错误时，可以先现在fxp文件夹：
+->删除composer资源插件，再重新安装
+Linux : rm -rf ~/.composer/vendor/fxp
+
+Windows : rm -r %APPDATA%\Composer\vendor\fxp
+	wincow下删除方法如下先查询路径，然后直接删除目录，如下：
+	echo %APPDATA%
+	C:\Users\Tiger-guo\AppData\Roaming\Composer\vendor\fxp
+
+restful 到底是什么？
+
+behavor与filter实现过滤功能。->ok
+
+rbac权限控制
+rbac
+
+异常处理。->ok
+
+module定义自己的权限处理页面 ->ok
+module定义自己的登陆页面 ->ok
+module定义自己的权限过滤器 ->ok
+
+bootstrap:
+http://getbootstrap.com/2.3.2
+http://getbootstrap.com/2.3.2/examples/signin.html?
+
+注意：ErrorAction的优先级要高于Controller中actionError的优先级
+
+框架搭建：
+
+基于bootstrap的前端与后端框架：
+http://www.cnblogs.com/lhb25/p/free-bootstrap-admin-templates.html
+
+https://almsaeedstudio.com/premium
+
+bootstrap tree:
+http://runjs.cn/detail/xtte94ls
+
+yii2 awesome.css
+http://www.yiiframework.com/extension/yii2-fontawesome/
+composer require "rmrevin/yii2-fontawesome:2.10.*"
+
+http://www.yiiframework.com/extension/yii2-ionicons
+composer.phar require --prefer-dist modernkernel/yii2-ionicons "*"
+composer require modernkernel/yii2-ionicons": "*"
+
+https://cdnjs.com/
+
+todo:
+录入界面可以参考:(左边的label固定一定的宽度，右边的输入框占满右边的空间，按钮和右边的输入框左对齐。)
+https://almsaeedstudio.com/themes/AdminLTE/pages/examples/profile.html
+
+model中需要继承自BasicModel,用来以后的扩展
+BasicModel
+
+yii关联字段的处理：
+http://www.yiichina.com/tutorial/120
+
+yii Gridview 样式美化
+
+t_sys_module需要重新设计
+
+快速开发
+
+
+http://localhost:8089/admin/system/sheet-type/index
+
+
+.box h1{
+	display: none;
+}
+
+.form-horizontal .form-group{
+	    margin-right: 2px;
+    	margin-left: 2px;
+}
+
+.form-horizontal .control-label{
+	width: 100px;
+	/* width: 16.66666667%; */
+	text-align: right;
+}
+.form-group.has-error .help-block{
+	display: inline;
+	/* display: block;
+	margin-left: 115px; */
+}
+
+.form-control{
+	display: inline;
+	width: auto;
+	/* width: 83.33333333%; */
+}
+
+label{
+	font-weight: normal;
+	font-size: 14px;
+	margin-right: 15px;
+}
+
+.form-group.has-error label{
+	color: black;
+}
+
+p{
+	margin: 5px 10px;
+	text-align: right;
+}
+
+
+1\yii2 GridView 处理：
+https://segmentfault.com/a/1190000003765961
+
+yii2栅格：
+http://www.cnblogs.com/linjiqin/p/3559800.html
+http://jingyan.baidu.com/article/6f2f55a1852aa1b5b83e6c5a.html
+
+yii2的日志如何分日打印？->只能配置单个文件的大小（默认值：'maxFileSize' => 1024 * 10）
+
+yii2 客户端验证 如何只显示第一个错误
+
+Mobile Angular UI
+http://www.angularui.cn/
+http://mobileangularui.com/
+
+http://www.cocoachina.com/webapp/20141222/10718.html
+
+angularjs:
+https://angularjs.org/
+
+端口占用情况：
+netstat -lnpt
+      
+./nginx -s reload
+
+http://120.24.158.60:89/demo/20160821/start.html#p=index
+
+chmod -R 755 dir
+
+sftp
+get -r dir
+
+vedio js:
+http://videojs.com/getting-started/
+
+<section>
+<h1>使用HTML5的video标签播放视频</h1>
+<video src="http://v.youku.com/player/getRealM3U8/vid/XNzE0NzQ2MDQ4/type/video.m3u8">
+</video>
+</section>
+
+将content放在iframe中
+
+t_so_sheet表中的有些字段是可以为空的，因为这个是服务类型的订单，关联配送的信息是可以为空的。
+
+商户平台的样式问题
+
+验证时，手机版弹出对话框，并用颜色进行标记比较合适，并且只显示一个验证错误。
+
+
+
+
+
+
+
