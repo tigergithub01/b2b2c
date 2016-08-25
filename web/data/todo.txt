@@ -1,0 +1,55 @@
+CREATE USER 'b2b'@'%' IDENTIFIED BY 'b2b';
+CREATE DATABASE `b2b2c` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON b2b2c.* TO 'b2b'@'%';
+
+CREATE USER 'pos'@'%' IDENTIFIED BY 'pos';
+CREATE DATABASE `pos_baby` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON pos_baby.* TO 'pos'@'%';
+
+mysql -upos -ppos
+drop database pos_baby;
+CREATE DATABASE `pos_baby` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+use pos_baby;
+source pos.sql;
+
+
+mysql -ub2b -pb2b
+drop database b2b2c;
+CREATE DATABASE `b2b2c` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+use b2b2c;
+source b2b2c.sql;
+
+——————————————————————————————————————————————————————————————————————
+root
+HunLTMysql2016
+
+CREATE USER 'b2b'@'%' IDENTIFIED BY 'b2b_tu_2016';
+CREATE DATABASE `b2b2c_wedding` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT all ON b2b2c_wedding.* TO 'b2b'@'%';
+
+mysql -ub2b -pb2b_tu_2016
+drop database b2b2c_wedding;
+CREATE DATABASE `b2b2c_wedding` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+use b2b2c_wedding;
+source b2b2c.sql;
+
+
+GRANT ALL PRIVILEGES ON *.* TO 'b2b'@'%'WITH GRANT OPTION;
+update user set host = 'localhost' where user = 'root' and host='%';
+select host,user from user where  user = 'root';
+
+
+mysql -uroot -ptiger
+
+
+use mysql;
+UPDATE user SET password=PASSWORD('b2b_tu_2016') WHERE user='b2b';
+FLUSH PRIVILEGES;
+
+
+
+
+
+
+
+
