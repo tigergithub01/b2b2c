@@ -61,7 +61,7 @@ class ProductTypeProp extends \app\models\b2b2c\BasicModel
             'prop_name' => Yii::t('app', '属性名称'),
             'is_sale_prop' => Yii::t('app', '是否销售属性?1:是；0：否'),
             'is_required' => Yii::t('app', '是否必填项？1：是；0：否'),
-            'input_type' => Yii::t('app', '录入类型：输入，从列表中选取'),
+            'input_type' => Yii::t('app', '录入类型：输入，从列表中选取，日期选择（可暂时不做）'),
             'multi_select' => Yii::t('app', '是否可以多选？1：是，0：否'),
         ];
     }

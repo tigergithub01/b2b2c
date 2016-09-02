@@ -72,6 +72,7 @@ use Yii;
  * @property ReturnSheetDetail[] $returnSheetDetails
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheetDetail[] $soSheetDetails
+ * @property VipOrgCaseDetail[] $vipOrgCaseDetails
  * @property VipProductCollect[] $vipProductCollects
  */
 class Product extends \app\models\b2b2c\BasicModel
@@ -394,6 +395,14 @@ class Product extends \app\models\b2b2c\BasicModel
     public function getSoSheetDetails()
     {
         return $this->hasMany(SoSheetDetail::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipOrgCaseDetails()
+    {
+        return $this->hasMany(VipOrgCaseDetail::className(), ['product_id' => 'id']);
     }
 
     /**

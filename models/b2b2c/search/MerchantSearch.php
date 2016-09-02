@@ -8,9 +8,9 @@ use yii\data\ActiveDataProvider;
 use app\models\b2b2c\Vip;
 
 /**
- * VipSearch represents the model behind the search form about `app\models\b2b2c\Vip`.
+ * MerchantSearch represents the model behind the search form about `app\models\b2b2c\Vip`.
  */
-class VipSearch extends Vip
+class MerchantSearch extends Vip
 {
     /**
      * @inheritdoc
@@ -62,7 +62,8 @@ class VipSearch extends Vip
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'merchant_flag' => $this->merchant_flag,
+//             'merchant_flag' => $this->merchant_flag,
+        		'merchant_flag' => 1,
             'last_login_date' => $this->last_login_date,
             'parent_id' => $this->parent_id,
             'mobile_verify_flag' => $this->mobile_verify_flag,

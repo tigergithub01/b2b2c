@@ -21,12 +21,19 @@ use Yii;
  * @property string $cover_img_url
  * @property string $cover_thumb_url
  * @property string $cover_img_original
+ * @property string $is_hot
+ * @property string $case_flag
+ * @property string $market_price
+ * @property string $sale_price
  *
+ * @property SoSheet[] $soSheets
  * @property SysUser $auditUser
  * @property VipCaseType $type
  * @property VipOrganization $organization
+ * @property SysParameter $caseFlag
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
+ * @property VipOrgCaseDetail[] $vipOrgCaseDetails
  * @property VipOrgCasePhoto[] $vipOrgCasePhotos
  */
 class VipOrgCase extends \app\models\b2b2c\BasicModel
@@ -45,15 +52,17 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['type_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'required'],
-            [['type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id'], 'integer'],
+            [['type_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot', 'case_flag'], 'required'],
+            [['type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
+            [['market_price', 'sale_price'], 'number'],
             [['name'], 'string', 'max' => 50],
             [['cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCaseType::className(), 'targetAttribute' => ['type_id' => 'id']],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['case_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['case_flag' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
         ];
@@ -79,7 +88,19 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
             'cover_img_url' => Yii::t('app', '图片（放大后查看）(封面)'),
             'cover_thumb_url' => Yii::t('app', '缩略图(封面)'),
             'cover_img_original' => Yii::t('app', '原图(封面)'),
+            'is_hot' => Yii::t('app', '是否经典案例（经典案例显示在首页）'),
+            'case_flag' => Yii::t('app', '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）'),
+            'market_price' => Yii::t('app', '市场价'),
+            'sale_price' => Yii::t('app', '销售价'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoSheets()
+    {
+        return $this->hasMany(SoSheet::className(), ['related_case_id' => 'id']);
     }
 
     /**
@@ -109,6 +130,14 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCaseFlag()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'case_flag']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getStatus0()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'status']);
@@ -120,6 +149,14 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
     public function getAuditStatus()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipOrgCaseDetails()
+    {
+        return $this->hasMany(VipOrgCaseDetail::className(), ['case_id' => 'id']);
     }
 
     /**

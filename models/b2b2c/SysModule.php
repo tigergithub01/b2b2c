@@ -14,10 +14,12 @@ use Yii;
  * @property string $url
  * @property string $controller
  * @property string $menu_flag
+ * @property string $status
  *
+ * @property SysParameter $status0
+ * @property SysParameter $menuFlag
  * @property SysModule $parent
  * @property SysModule[] $sysModules
- * @property SysParameter $menuFlag
  * @property SysOperationLog[] $sysOperationLogs
  * @property SysRoleRights[] $sysRoleRights
  */
@@ -37,14 +39,15 @@ class SysModule extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['code', 'name', 'menu_flag'], 'required'],
-            [['parent_id', 'menu_flag'], 'integer'],
+            [['code', 'name', 'menu_flag', 'status'], 'required'],
+            [['parent_id', 'menu_flag', 'status'], 'integer'],
             [['code', 'controller'], 'string', 'max' => 30],
             [['name'], 'string', 'max' => 60],
             [['url'], 'string', 'max' => 200],
             [['code'], 'unique'],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysModule::className(), 'targetAttribute' => ['parent_id' => 'id']],
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['menu_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['menu_flag' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysModule::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
@@ -61,7 +64,24 @@ class SysModule extends \app\models\b2b2c\BasicModel
             'url' => Yii::t('app', '模块URL地址'),
             'controller' => Yii::t('app', '模块对应的控制器编号'),
             'menu_flag' => Yii::t('app', '是否菜单项'),
+            'status' => Yii::t('app', '是否有效？1：是；0：否'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus0()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMenuFlag()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'menu_flag']);
     }
 
     /**
@@ -78,14 +98,6 @@ class SysModule extends \app\models\b2b2c\BasicModel
     public function getSysModules()
     {
         return $this->hasMany(SysModule::className(), ['parent_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMenuFlag()
-    {
-        return $this->hasOne(SysParameter::className(), ['id' => 'menu_flag']);
     }
 
     /**

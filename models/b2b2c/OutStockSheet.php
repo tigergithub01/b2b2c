@@ -68,7 +68,7 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
             'order_id' => Yii::t('app', '关联订单编号'),
             'user_id' => Yii::t('app', '制单人'),
             'sheet_date' => Yii::t('app', '单据生成时间'),
-            'status' => Yii::t('app', '发货单状态（配货中、已发货）'),
+            'status' => Yii::t('app', '发货单状态（未发货、已发货）'),
             'delivery_type' => Yii::t('app', '配送方式'),
             'delivery_no' => Yii::t('app', '快递单号'),
             'organization_id' => Yii::t('app', '关联机构编号'),

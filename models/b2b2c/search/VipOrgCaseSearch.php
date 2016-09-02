@@ -18,8 +18,9 @@ class VipOrgCaseSearch extends VipOrgCase
     public function rules()
     {
         return [
-            [['id', 'type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id'], 'integer'],
+            [['id', 'type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['name', 'content', 'create_date', 'update_date', 'audit_date', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'safe'],
+            [['market_price', 'sale_price'], 'number'],
         ];
     }
 
@@ -70,6 +71,10 @@ class VipOrgCaseSearch extends VipOrgCase
             'audit_status' => $this->audit_status,
             'audit_user_id' => $this->audit_user_id,
             'audit_date' => $this->audit_date,
+            'is_hot' => $this->is_hot,
+            'case_flag' => $this->case_flag,
+            'market_price' => $this->market_price,
+            'sale_price' => $this->sale_price,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

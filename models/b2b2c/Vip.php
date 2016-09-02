@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $id
  * @property string $vip_id
+ * @property string $merchant_flag
  * @property string $vip_name
  * @property string $last_login_date
  * @property string $password
@@ -33,6 +34,7 @@ use Yii;
  * @property SysParameter $emailVerifyFlag
  * @property Vip $parent
  * @property Vip[] $vips
+ * @property SysParameter $merchantFlag
  * @property SysParameter $mobileVerifyFlag
  * @property VipRank $rank
  * @property VipAddress[] $vipAddresses
@@ -61,16 +63,17 @@ class Vip extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['vip_id', 'password', 'email_verify_flag', 'status', 'register_date', 'rank_id'], 'required'],
+            [['vip_id', 'merchant_flag', 'password', 'email_verify_flag', 'status', 'register_date'], 'required'],
+            [['merchant_flag', 'parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id'], 'integer'],
             [['last_login_date', 'register_date'], 'safe'],
-            [['parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id'], 'integer'],
             [['vip_id', 'email'], 'string', 'max' => 30],
             [['vip_name', 'password'], 'string', 'max' => 50],
             [['mobile'], 'string', 'max' => 20],
-            [['vip_id'], 'unique'],
+            [['vip_id', 'merchant_flag'], 'unique', 'targetAttribute' => ['vip_id', 'merchant_flag'], 'message' => 'The combination of 会员登陆名 and 是否商户?1:是；0：否 has already been taken.'],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['email_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['email_verify_flag' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['parent_id' => 'id']],
+            [['merchant_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['merchant_flag' => 'id']],
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
         ];
@@ -84,6 +87,7 @@ class Vip extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键编号'),
             'vip_id' => Yii::t('app', '会员登陆名'),
+            'merchant_flag' => Yii::t('app', '是否商户?1:是；0：否'),
             'vip_name' => Yii::t('app', '姓名'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
             'password' => Yii::t('app', '密码'),
@@ -192,6 +196,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     public function getVips()
     {
         return $this->hasMany(Vip::className(), ['parent_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMerchantFlag()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'merchant_flag']);
     }
 
     /**

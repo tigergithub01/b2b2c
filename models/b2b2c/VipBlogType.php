@@ -12,6 +12,8 @@ use Yii;
  * @property string $parent_id
  *
  * @property VipBlog[] $vipBlogs
+ * @property VipBlogType $parent
+ * @property VipBlogType[] $vipBlogTypes
  */
 class VipBlogType extends \app\models\b2b2c\BasicModel
 {
@@ -29,9 +31,10 @@ class VipBlogType extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['id', 'name'], 'required'],
-            [['id', 'parent_id'], 'integer'],
+            [['name'], 'required'],
+            [['parent_id'], 'integer'],
             [['name'], 'string', 'max' => 50],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipBlogType::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
@@ -42,8 +45,8 @@ class VipBlogType extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键'),
-            'name' => Yii::t('app', 'Name'),
-            'parent_id' => Yii::t('app', 'Parent ID'),
+            'name' => Yii::t('app', '名字'),
+            'parent_id' => Yii::t('app', '上级频道分类'),
         ];
     }
 
@@ -53,5 +56,21 @@ class VipBlogType extends \app\models\b2b2c\BasicModel
     public function getVipBlogs()
     {
         return $this->hasMany(VipBlog::className(), ['blog_type' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(VipBlogType::className(), ['id' => 'parent_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipBlogTypes()
+    {
+        return $this->hasMany(VipBlogType::className(), ['parent_id' => 'id']);
     }
 }

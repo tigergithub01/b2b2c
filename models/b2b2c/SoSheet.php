@@ -47,6 +47,7 @@ use Yii;
  * @property string $budget_amount
  * @property string $related_service
  * @property string $service_style
+ * @property string $related_case_id
  *
  * @property OutStockSheet[] $outStockSheets
  * @property RefundSheet[] $refundSheets
@@ -63,6 +64,7 @@ use Yii;
  * @property SysParameter $payStatus
  * @property SysRegion $province
  * @property DeliveryType $deliveryType
+ * @property VipOrgCase $relatedCase
  * @property PayType $payType
  * @property PickUpPoint $pickPoint
  * @property SheetType $sheetType
@@ -88,8 +90,8 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', 'delivery_type', 'integral', 'integral_money', 'coupon', 'discount', 'order_status', 'delivery_status', 'pay_status', 'consignee', 'country_id', 'province_id', 'city_id', 'district_id', 'mobile', 'detail_address'], 'required'],
-            [['sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type'], 'integer'],
+            [['sheet_type_id', 'code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', 'delivery_type', 'integral', 'integral_money', 'coupon', 'discount', 'order_status', 'delivery_status', 'pay_status', 'consignee', 'mobile'], 'required'],
+            [['sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id'], 'integer'],
             [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'budget_amount'], 'number'],
             [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
@@ -109,6 +111,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             [['pay_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['pay_status' => 'id']],
             [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['province_id' => 'id']],
             [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryType::className(), 'targetAttribute' => ['delivery_type' => 'id']],
+            [['related_case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrgCase::className(), 'targetAttribute' => ['related_case_id' => 'id']],
             [['pay_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PayType::className(), 'targetAttribute' => ['pay_type_id' => 'id']],
             [['pick_point_id'], 'exist', 'skipOnError' => true, 'targetClass' => PickUpPoint::className(), 'targetAttribute' => ['pick_point_id' => 'id']],
             [['sheet_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SheetType::className(), 'targetAttribute' => ['sheet_type_id' => 'id']],
@@ -122,7 +125,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'sheet_type_id' => Yii::t('app', '单据类型（普通订单，定制订单）'),
+            'sheet_type_id' => Yii::t('app', '订单类型（普通订单，定制订单）'),
             'code' => Yii::t('app', '订单编号(so-年月日-顺序号，根据单据设置进行生成)'),
             'vip_id' => Yii::t('app', '会员编号'),
             'order_amt' => Yii::t('app', '订单待支付费用'),
@@ -145,7 +148,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'return_date' => Yii::t('app', '退款日期'),
             'memo' => Yii::t('app', '备注'),
             'message' => Yii::t('app', '买家留言'),
-            'order_status' => Yii::t('app', '订单状态（普通订单：待付款，待接单，待服务，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])  定制订单：待确定，待付款，待接单，待服务，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）'),
+            'order_status' => Yii::t('app', '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）'),
             'delivery_status' => Yii::t('app', '配送状态'),
             'pay_status' => Yii::t('app', '支付状态'),
             'consignee' => Yii::t('app', '收货人'),
@@ -161,6 +164,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'budget_amount' => Yii::t('app', '婚礼预算'),
             'related_service' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
             'service_style' => Yii::t('app', '婚礼样式（多选）（浪漫，简约）'),
+            'related_case_id' => Yii::t('app', '关联案例编号'),
         ];
     }
 
@@ -282,6 +286,14 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getDeliveryType()
     {
         return $this->hasOne(DeliveryType::className(), ['id' => 'delivery_type']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRelatedCase()
+    {
+        return $this->hasOne(VipOrgCase::className(), ['id' => 'related_case_id']);
     }
 
     /**
