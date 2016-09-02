@@ -27,6 +27,11 @@ CREATE USER 'b2b'@'%' IDENTIFIED BY 'b2b_tu_2016';
 CREATE DATABASE `b2b2c_wedding` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT all ON b2b2c_wedding.* TO 'b2b'@'%';
 
+cd /home/tiger.guo/doc/db
+lcd E:\work\婚礼兔\设计文档\20160705\sql\
+put b2b2c.sql
+
+cd /home/tiger.guo/doc/db
 mysql -ub2b -pb2b_tu_2016
 drop database b2b2c_wedding;
 CREATE DATABASE `b2b2c_wedding` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
