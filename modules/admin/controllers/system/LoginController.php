@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\admin\controllers\common;
+namespace app\modules\admin\controllers\system;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\admin\models\LoginForm;
+use app\models\b2b2c\SysUser;
 use app\modules\admin\common\controllers\BaseController;
 
 /**
@@ -24,8 +24,8 @@ class LoginController extends BaseController
 	 */
 	public function actionIndex()
 	{
-		$model = new LoginForm();
-		if ($model->load(Yii::$app->request->post()) && $model->login()) {
+		$model = new SysUser();
+		if ($model->load(Yii::$app->request->post()) && $model->validate()/*  && $this->login($model) */) {
 			Yii::$app->response->redirect("/admin/default/index");
 // 			return $this->goBack();
 		}
@@ -38,10 +38,27 @@ class LoginController extends BaseController
 				'model' => $model,
 		]); */
 		
-		return $this->render('login', [
-				'model' => $model,
+		
+		return $this->render('index', [
+			'model' => $model,
 		]);
 		
+	}
+	
+	/**
+	 * 登陆
+	 * @param unknown $model
+	 */
+	private function login($model){
+		//判断用户名是否存在
+		
+		//判断密码是否正确
+		
+		//判断验证码是否正确
+		
+// 		$model->addError("password","密码不正确");
+
+		return false;
 	}
 	
 	
@@ -53,8 +70,4 @@ class LoginController extends BaseController
 	public function actionForgetPassword(){
 		return $this->render("forget-Password"); 
 	}
-	
-	
-	
-	
 }

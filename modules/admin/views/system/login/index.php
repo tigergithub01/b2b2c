@@ -8,7 +8,7 @@ use Yii\web\View;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = 'Sign In';
+$this->title = Yii::t('app', '登陆');;
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -23,7 +23,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Admin</b>LTE</a>
+        <a href="#"><?php echo Yii::$app->name;?></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -32,9 +32,9 @@ $fieldOptions2 = [
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => true]); ?>
 
         <?= $form
-            ->field($model, 'username', $fieldOptions1)
+            ->field($model, 'user_id', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+            ->textInput(['placeholder' => $model->getAttributeLabel('user_id')]) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)

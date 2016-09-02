@@ -26,7 +26,7 @@ class DefaultController extends BaseAuthController
 
     public function actionLogout()
     {
-    	Yii::$app->getResponse()->redirect("/admin/common/login/index");
+    	Yii::$app->getResponse()->redirect("/admin/system/login/index");
     	/* Yii::$app->user->logout();
     
     	return $this->goHome(); */

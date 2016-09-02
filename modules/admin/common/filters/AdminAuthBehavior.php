@@ -24,7 +24,7 @@ class AdminAuthBehavior extends Behavior{
 	 	//check session for user rights
 // 	 	Yii::$app->session;	 	
 	 	
-// 	 	Yii::$app->getResponse()->redirect("\admin\default\login");
+	 	Yii::$app->getResponse()->redirect("/admin/system/login/index");
 	 }
 	 
 	 public function afterAction($event){

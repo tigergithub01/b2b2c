@@ -24,14 +24,13 @@ use yii\widgets\ActiveForm;
 	    <?php $form = ActiveForm::begin([
 	        'action' => ['index'],
 	        'method' => 'get',
-	    	'enableClientValidation' => false,
 	        'options' => ['class' => 'form-horizontal'],
 	        'fieldConfig' => [ 
-					'template' => "{label}\n<div class=\"col-sm-9\">{input}</div>\n<div class=\"col-sm-0\">{error}</div>",
+					'template' => "{label}\n<div class=\"col-sm-6\">{input}</div>\n<div class=\"col-sm-3\">{error}</div>",
 					'labelOptions' => [ 
 							'class' => 'col-sm-3 control-label' 
 					], 
-					'options'=>['class' => 'form-group col-sm-4'], 
+					'options'=>['class' => 'form-group col-sm-6'], 
 			],
 	    ]); ?>
 	    

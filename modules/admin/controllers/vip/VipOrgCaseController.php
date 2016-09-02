@@ -5,14 +5,14 @@ namespace app\modules\admin\controllers\vip;
 use Yii;
 use app\models\b2b2c\VipOrgCase;
 use app\models\b2b2c\search\VipOrgCaseSearch;
-use yii\web\Controller;
+use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * VipOrgCaseController implements the CRUD actions for VipOrgCase model.
  */
-class VipOrgCaseController extends Controller
+class VipOrgCaseController extends BaseAuthController
 {
     /**
      * @inheritdoc
