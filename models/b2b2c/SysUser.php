@@ -30,6 +30,9 @@ use Yii;
  */
 class SysUser extends \app\models\b2b2c\BasicModel
 {
+    
+	public $rememberMe = true;
+	
     /**
      * @inheritdoc
      */
@@ -63,7 +66,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'user_id' => Yii::t('app', '用户名(登陆名）'),
+            'user_id' => Yii::t('app', '用户名'),//用户名(登陆名）
             'user_name' => Yii::t('app', '姓名'),
             'password' => Yii::t('app', '密码'),
             'is_admin' => Yii::t('app', '是否管理员'),
