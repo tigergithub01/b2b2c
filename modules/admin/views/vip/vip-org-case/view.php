@@ -40,6 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'cover_img_url:url',
             'cover_thumb_url:url',
             'cover_img_original',
+            'is_hot',
+            'case_flag',
+            'market_price',
+            'sale_price',
 		        ],
 		    ]) ?>
     	</div>

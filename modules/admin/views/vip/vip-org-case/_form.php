@@ -63,6 +63,14 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cover_img_original')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'is_hot')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'case_flag')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'sale_price')->textInput(['maxlength' => true]) ?>
+
 		</div>
 	
 	    <div class="box-footer form-group">

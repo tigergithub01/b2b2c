@@ -31,7 +31,7 @@
                 	],
                 	['label' => '商户管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
-                					['label' => '商户列表',  'url' => ['organization/vip-organization/index'],'icon' => 'fa fa-circle-o'],
+                					['label' => '商户列表',  'url' => ['vip/merchant/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '案例列表',  'url' => ['vip/vip-org-case/index'],'icon' => 'fa fa-circle-o',],
                 			],
                 	],

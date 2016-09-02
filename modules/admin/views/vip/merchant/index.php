@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\VipOrgCaseSearch */
+/* @var $searchModel app\models\b2b2c\search\MerchantSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vip Org Cases');
+$this->title = Yii::t('app', 'Vips');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vip-org-case-index">
+<div class="vip-index">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		<div class="box box-primary">
@@ -28,23 +28,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
             ],
             'id',
-            'name',
-            'type_id',
-            'organization_id',
-            'content:ntext',
-            // 'create_date',
-            // 'update_date',
+            'vip_id',
+            'merchant_flag',
+            'vip_name',
+            'last_login_date',
+            // 'password',
+            // 'parent_id',
+            // 'mobile',
+            // 'mobile_verify_flag',
+            // 'email:email',
+            // 'email_verify_flag:email',
             // 'status',
-            // 'audit_status',
-            // 'audit_user_id',
-            // 'audit_date',
-            // 'cover_img_url:url',
-            // 'cover_thumb_url:url',
-            // 'cover_img_original',
-            // 'is_hot',
-            // 'case_flag',
-            // 'market_price',
-            // 'sale_price',
+            // 'register_date',
+            // 'rank_id',
 
             
         ],

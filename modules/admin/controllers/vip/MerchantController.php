@@ -3,16 +3,16 @@
 namespace app\modules\admin\controllers\vip;
 
 use Yii;
-use app\models\b2b2c\VipOrgCase;
-use app\models\b2b2c\search\VipOrgCaseSearch;
-use yii\web\Controller;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\search\MerchantSearch;
+use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * VipOrgCaseController implements the CRUD actions for VipOrgCase model.
+ * MerchantController implements the CRUD actions for Vip model.
  */
-class VipOrgCaseController extends Controller
+class MerchantController extends BaseAuthController
 {
     /**
      * @inheritdoc
@@ -32,12 +32,12 @@ class VipOrgCaseController extends Controller
     */
 
     /**
-     * Lists all VipOrgCase models.
+     * Lists all Vip models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new VipOrgCaseSearch();
+        $searchModel = new MerchantSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +47,7 @@ class VipOrgCaseController extends Controller
     }
 
     /**
-     * Displays a single VipOrgCase model.
+     * Displays a single Vip model.
      * @param string $id
      * @return mixed
      */
@@ -59,13 +59,13 @@ class VipOrgCaseController extends Controller
     }
 
     /**
-     * Creates a new VipOrgCase model.
+     * Creates a new Vip model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new VipOrgCase();
+        $model = new Vip();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -77,7 +77,7 @@ class VipOrgCaseController extends Controller
     }
 
     /**
-     * Updates an existing VipOrgCase model.
+     * Updates an existing Vip model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -96,7 +96,7 @@ class VipOrgCaseController extends Controller
     }
 
     /**
-     * Deletes an existing VipOrgCase model.
+     * Deletes an existing Vip model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -109,15 +109,15 @@ class VipOrgCaseController extends Controller
     }
 
     /**
-     * Finds the VipOrgCase model based on its primary key value.
+     * Finds the Vip model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return VipOrgCase the loaded model
+     * @return Vip the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = VipOrgCase::findOne($id)) !== null) {
+        if (($model = Vip::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

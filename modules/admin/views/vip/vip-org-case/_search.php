@@ -24,13 +24,14 @@ use yii\widgets\ActiveForm;
 	    <?php $form = ActiveForm::begin([
 	        'action' => ['index'],
 	        'method' => 'get',
+	    	'enableClientValidation' => false,
 	        'options' => ['class' => 'form-horizontal'],
 	        'fieldConfig' => [ 
-					'template' => "{label}\n<div class=\"col-sm-6\">{input}</div>\n<div class=\"col-sm-3\">{error}</div>",
+					'template' => "{label}\n<div class=\"col-sm-9\">{input}</div>\n<div class=\"col-sm-0\">{error}</div>",
 					'labelOptions' => [ 
 							'class' => 'col-sm-3 control-label' 
 					], 
-					'options'=>['class' => 'form-group col-sm-6'], 
+					'options'=>['class' => 'form-group col-sm-4'], 
 			],
 	    ]); ?>
 	    
@@ -63,6 +64,14 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'cover_thumb_url') ?>
 
     <?php // echo $form->field($model, 'cover_img_original') ?>
+
+    <?php // echo $form->field($model, 'is_hot') ?>
+
+    <?php // echo $form->field($model, 'case_flag') ?>
+
+    <?php // echo $form->field($model, 'market_price') ?>
+
+    <?php // echo $form->field($model, 'sale_price') ?>
 
 	    
 	    </div>

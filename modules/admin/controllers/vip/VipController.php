@@ -38,6 +38,7 @@ class VipController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new VipSearch();
+//         var_dump(Yii::$app->request->queryParams);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -66,6 +67,7 @@ class VipController extends BaseAuthController
     public function actionCreate()
     {
         $model = new Vip();
+        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -103,6 +105,40 @@ class VipController extends BaseAuthController
      */
     public function actionDelete($id)
     {
+	    /* $db = Yii::$app->db;
+		$transaction = $db->beginTransaction();
+		
+		try {
+		    $db->createCommand($sql1)->execute();
+		    $db->createCommand($sql2)->execute();
+		    // ... executing other SQL statements ...
+		    
+		    $transaction->commit();
+		    
+		} catch(\Exception $e) {
+		
+		    $transaction->rollBack();
+		    
+		    throw $e;
+		} */
+    	
+    	
+    	/* $transaction = Vip::getDb()->beginTransaction();
+    	try {
+    		$db->createCommand($sql1)->execute();
+    		$db->createCommand($sql2)->execute();
+    		// ... executing other SQL statements ...
+    	
+    		$transaction->commit();
+    	
+    	} catch(\Exception $e) {
+    	
+    		$transaction->rollBack();
+    	
+    		throw $e;
+    	} */
+    	
+    	
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
