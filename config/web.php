@@ -124,7 +124,8 @@ if (YII_ENV_DEV) {
     						'class' => 'yii\gii\generators\crud\Generator',
     						'templates' => [ //设置我们自己的模板
     								//模板名 => 模板路径
-    								'myCrud' => '@app/common/generators/crud/default',
+    								'myCrud-desktop' => '@app/common/generators/crud/default',
+    								'myCrud-mobile' => '@app/common/generators/crud/default',
     						]
     				]
     	],
