@@ -214,6 +214,25 @@ t_so_sheet表中的有些字段是可以为空的，因为这个是服务类型�
 
 登陆ajax验证问题。
 
+cookie文章：http://www.yiichina.com/tutorial/444
+区分Yii2中 Yii::$app->request->cookies 和 Yii::$app->response->cookies 不仔细容易直接复制粘贴了。
+1.如果把第一个用来设置Cookie，会报错：`The cookie collection is read only`
+
+2.如果把第二个用来获取Cookie，程序正常执行未发生异常，但会获取不到Cookie，不容易察觉。。。
+
+商户的注册页面
+商户的登陆页面
+商户的权限管理
+
+后台的日志
+后台的模块配置
+
+会员的登陆api
+会员的注册api
+
+
+
+
 
 
 
