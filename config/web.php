@@ -107,6 +107,20 @@ $config = [
     'params' => $params,
 	'language' => 'zh-CN',
 	'timeZone' => 'PRC',	
+	'on beforeRequest' => function ($event) {
+// 		var_dump($_REQUEST);
+		//var_dump($_SERVER["REQUEST_URI"]);
+// 		XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14732173473185
+
+// 		Yii::trace('http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"]);
+// 		Yii::trace('beforeRequest.');
+		// 		var_dump($event);
+	},
+	'on afterRequest' => function ($event) {
+// 		$_REQUEST['XDEBUG_SESSION_START']='ECLIPSE_DBGP';
+// 		$_REQUEST['KEY']='14732173473185';
+// 		var_dump($_REQUEST);
+	},
 ];
 
 if (YII_ENV_DEV) {
