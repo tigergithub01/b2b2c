@@ -18,7 +18,7 @@ $this->title = 'My Yii Application';
 
         <p><a class="btn btn-lg btn-primary" href="<?= Url::to(['/merchant'])?>">商家中心</a></p>
         
-        <p><a class="btn btn-lg btn-primary" href="<?= Url::to(['/admin'])?>">后台管理</a></p>
+        <p><a class="btn btn-lg btn-primary" href="<?= Url::toRoute(['/admin'])?>">后台管理</a></p>
         
     </div>
 
