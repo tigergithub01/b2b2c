@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/9/2 10:48:59                            */
+/* Created on:     2016/9/9 17:56:09                            */
 /*==============================================================*/
 
 
@@ -36,11 +36,9 @@ drop table if exists t_out_stock_sheet;
 
 drop table if exists t_out_stock_sheet_detail;
 
+drop index Index_pay_type_code on t_pay_type;
+
 drop table if exists t_pay_type;
-
-drop index Index_pay_type_code on t_pay_type_tpl;
-
-drop table if exists t_pay_type_tpl;
 
 drop table if exists t_pick_up_point;
 
@@ -449,38 +447,22 @@ alter table t_out_stock_sheet_detail comment '发货明细表';
 create table t_pay_type
 (
    id                   bigint(20) not null auto_increment comment '主键',
-   tpl_id               bigint(20) not null comment '关联支付方式模板编号',
+   code                 varchar(30) not null comment '支付方式唯一编码',
    name                 varchar(60) not null comment '支付方式名称',
+   rate                 decimal(20,6) comment '费率',
    description          varchar(255) comment '描述',
+   configure            text comment '对应配置信息',
    status               bigint(20) not null comment '状态（1:有效、0:停用）',
-   organization_id      bigint(20) not null comment '关联机构编号',
-   configure            text not null comment '对应配置信息',
+   is_cod               bigint(20) not null comment '是否货到付款（1:是、0:否）',
    primary key (id)
 );
 
 alter table t_pay_type comment '支付方式';
 
 /*==============================================================*/
-/* Table: t_pay_type_tpl                                        */
-/*==============================================================*/
-create table t_pay_type_tpl
-(
-   id                   bigint(20) not null auto_increment comment '主键',
-   code                 varchar(30) not null comment '支付方式唯一编码',
-   name                 varchar(60) not null comment '支付方式名称',
-   rate                 decimal(20,6) comment '费率',
-   description          varchar(255) comment '描述',
-   status               bigint(20) not null comment '状态（1:有效、0:停用）',
-   is_cod               bigint(20) not null comment '是否货到付款（1:是、0:否）',
-   primary key (id)
-);
-
-alter table t_pay_type_tpl comment '支付方式模板';
-
-/*==============================================================*/
 /* Index: Index_pay_type_code                                   */
 /*==============================================================*/
-create unique index Index_pay_type_code on t_pay_type_tpl
+create unique index Index_pay_type_code on t_pay_type
 (
    code
 );
@@ -1926,19 +1908,10 @@ alter table t_out_stock_sheet_detail add constraint fk_out_detail_ref_prod forei
 alter table t_out_stock_sheet_detail add constraint fk_out_stock_det_ref_out foreign key (out_stock_id)
       references t_out_stock_sheet (id);
 
-alter table t_pay_type add constraint fk_pay_type_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
-alter table t_pay_type add constraint fk_pay_type_ref_tpl foreign key (tpl_id)
-      references t_pay_type_tpl (id);
+alter table t_pay_type add constraint fk_pay_type_cod_ref_param foreign key (is_cod)
+      references t_sys_parameter (id);
 
 alter table t_pay_type add constraint fk_pay_type_stat_ref_param foreign key (status)
-      references t_sys_parameter (id);
-
-alter table t_pay_type_tpl add constraint fk_pay_type_tpl_cod_ref_param foreign key (is_cod)
-      references t_sys_parameter (id);
-
-alter table t_pay_type_tpl add constraint fk_pay_type_tpl_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
 
 alter table t_pick_up_point add constraint fk_pick_up_stat_ref_param foreign key (status)
