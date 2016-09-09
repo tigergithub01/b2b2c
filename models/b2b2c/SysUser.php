@@ -31,7 +31,27 @@ use Yii;
 class SysUser extends \app\models\b2b2c\BasicModel
 {
     
-	public $rememberMe = true;
+	public $remember_me = true;
+	public $verify_code;
+	
+	const SCENARIO_LOGIN = 'login';
+	const SCENARIO_REGISTER = 'register';
+	const SCENARIO_AUTO_LOGIN = 'auto_login';
+	
+	public function scenarios()
+	{
+		$scenarios = parent::scenarios();
+		$scenarios[self::SCENARIO_LOGIN] = ['user_id', 'password','rememberMe','verify_code'];
+		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['user_id', 'password'];
+// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
+		return $scenarios;
+		
+		/* return [
+				self::SCENARIO_LOGIN => ['username', 'password'],
+				self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+		]; */
+	}
+	
 	
     /**
      * @inheritdoc
@@ -47,15 +67,16 @@ class SysUser extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['user_id', 'password', 'is_admin', 'status'], 'required'],
+            [['user_id', 'password', 'is_admin', 'status'], 'required', 'on' => [self::SCENARIO_LOGIN,parent::SCENARIO_DEFAULT]],
             [['is_admin', 'status'], 'integer'],
             [['last_login_date'], 'safe'],
             [['user_id'], 'string', 'max' => 20],
             [['user_name'], 'string', 'max' => 60],
             [['password'], 'string', 'max' => 50],
-            [['user_id'], 'unique'],
+            [['user_id'], 'unique','on' => [self::SCENARIO_DEFAULT]],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['is_admin'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_admin' => 'id']],
+        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN]],
         ];
     }
 
@@ -72,6 +93,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
             'is_admin' => Yii::t('app', '是否管理员'),
             'status' => Yii::t('app', '是否有效？1：是；0：否'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
+        	'verify_code' => Yii::t('app', '验证码'),
         ];
     }
 
@@ -169,5 +191,45 @@ class SysUser extends \app\models\b2b2c\BasicModel
     public function getVipOrgCases()
     {
         return $this->hasMany(VipOrgCase::className(), ['audit_user_id' => 'id']);
+    }
+    
+    public function login(){
+    	//判断用户名是否存在
+    	$_user = $this->find()->where(['user_id'=>$this->user_id])->one();
+    	if(empty($_user)){
+    		$this->addError("user_id",Yii::t('app', '用户名不存在'));
+    		return false;
+    	}
+    	
+    	//判断密码
+    	if(!strcmp($this->password, $_user->password)==0){
+    		$this->addError("password",Yii::t('app', '密码不正确'));
+    		return false;
+    	}
+    	
+    	//更新最后一次登录时间
+    	$_user->last_login_date = date("Y-m-d H:i:s");
+    	$_user->update(true,['last_login_date']);
+    	
+    	//判断密码是否正确    	
+		return $_user;
+    }
+    
+    /**
+     * 初始化插入一个系统管理员
+     */
+    public function insertSystemUser(){
+//     	$model = new SysUser();
+    	// 		'user_id', 'password', 'is_admin', 'status'
+    	$_usr = SysUser::find()->where('user_id=:p_user_id',['p_user_id'=>'admin'])->one();
+    	if(empty($_usr)){
+    		$this->user_id='admin';
+    		$this->password=md5("admin123");
+    		$this->is_admin =1;
+    		$this->status = 1;
+    		$this->validate();
+    		$success = $this->save();
+    		Yii::info("insertSystemUsr $success");
+    	}
     }
 }

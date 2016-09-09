@@ -2,13 +2,14 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use Yii\web\View;
+use yii\captcha\Captcha;
 
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Yii::t('app', '登陆');;
+$this->title = Yii::t('app', '登陆');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -23,7 +24,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><?php echo Yii::$app->name;?></a>
+        <a href="#"><?php echo $this->title;?></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -41,10 +42,18 @@ $fieldOptions2 = [
             ->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
             
+        <?= $form->field($model, 'verify_code')
+        			->label(false)
+        			->widget(Captcha::className(), [
+                        'template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6">{image}</div></div>',
+        				'options' => ['placeholder' => $model->getAttributeLabel('verify_code'),'class'=>'form-control',],	
+        				'captchaAction' => '/site/captcha',
+                    ]) ?>     
+            
 
         <div class="row">
             <div class="col-xs-8 icheck">
-                <?= $form->field($model, 'rememberMe')->checkbox(['label'=>'记住密码']) ?>
+                <?= $form->field($model, 'remember_me')->checkbox(['label'=>'记住密码']) ?>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">

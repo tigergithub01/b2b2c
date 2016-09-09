@@ -19,6 +19,8 @@ class BaseController extends Controller
 				'captcha' => [
 						'class' => 'yii\captcha\CaptchaAction',
 						'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+						'minLength' => 4,
+						'maxLength' => 4,
 				],
 		];
 	}
@@ -46,6 +48,7 @@ class BaseController extends Controller
 	
 	public function beforeAction($action) {
 		Yii::info("BaseController beforeAction ". Yii::$app->request->absoluteUrl );
+// 		var_dump($action);
 		return parent::beforeAction($action);
 	}
 	

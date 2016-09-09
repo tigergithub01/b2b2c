@@ -1,5 +1,9 @@
 <?php
 return [
+		//app简称
+		'app_admin_short_name' => '婚礼兔',
+		'app_admin_name' => '婚礼兔后台管理',		
+		
 		'Create'=>'新增',
 		'Update'=>'编辑',
 		'Delete'=>'删除',

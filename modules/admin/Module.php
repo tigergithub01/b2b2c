@@ -42,8 +42,8 @@ class Module extends \yii\base\Module
         	Yii::$app->errorHandler->errorAction = '/admin/common/error/error';
         	
         	//app的名字
-        	//         Yii::$app->name="婚礼兔";
-        	Yii::$app->name="My Application";
+//         	Yii::$app->name="婚礼兔后台管理";
+        	Yii::$app->name="后台管理";
         	
         	//设置显示样式
         	Yii::$app->assetManager->bundles = [
