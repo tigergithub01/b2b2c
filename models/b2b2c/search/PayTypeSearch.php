@@ -18,8 +18,9 @@ class PayTypeSearch extends PayType
     public function rules()
     {
         return [
-            [['id', 'tpl_id', 'status', 'organization_id'], 'integer'],
-            [['name', 'description', 'configure'], 'safe'],
+            [['id', 'status', 'is_cod'], 'integer'],
+            [['code', 'name', 'description', 'configure'], 'safe'],
+            [['rate'], 'number'],
         ];
     }
 
@@ -62,12 +63,13 @@ class PayTypeSearch extends PayType
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'tpl_id' => $this->tpl_id,
+            'rate' => $this->rate,
             'status' => $this->status,
-            'organization_id' => $this->organization_id,
+            'is_cod' => $this->is_cod,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'configure', $this->configure]);
 

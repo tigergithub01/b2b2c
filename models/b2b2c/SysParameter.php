@@ -22,8 +22,7 @@ use Yii;
  * @property DeliveryTypeTpl[] $deliveryTypeTpls
  * @property OutStockSheet[] $outStockSheets
  * @property PayType[] $payTypes
- * @property PayTypeTpl[] $payTypeTpls
- * @property PayTypeTpl[] $payTypeTpls0
+ * @property PayType[] $payTypes0
  * @property PickUpPoint[] $pickUpPoints
  * @property Product[] $products
  * @property Product[] $products0
@@ -191,17 +190,9 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPayTypeTpls()
+    public function getPayTypes0()
     {
-        return $this->hasMany(PayTypeTpl::className(), ['status' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPayTypeTpls0()
-    {
-        return $this->hasMany(PayTypeTpl::className(), ['is_cod' => 'id']);
+        return $this->hasMany(PayType::className(), ['is_cod' => 'id']);
     }
 
     /**
@@ -626,5 +617,6 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     public function getVipOrganizations()
     {
         return $this->hasMany(VipOrganization::className(), ['status' => 'id']);
-    }
+    }   
+    
 }

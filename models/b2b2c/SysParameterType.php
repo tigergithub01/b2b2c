@@ -15,6 +15,8 @@ use Yii;
  */
 class SysParameterType extends \app\models\b2b2c\BasicModel
 {
+    const YES_NO = 1;
+    
     /**
      * @inheritdoc
      */
