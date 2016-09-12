@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\b2b2c\search\PayTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Pay Types');
+$this->title = Yii::t('app', 'Pay_Type');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pay-type-index">
@@ -28,12 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
             ],
             'id',
-            'tpl_id',
+            'code',
             'name',
+            'rate',
             'description',
-            'status',
-            // 'organization_id',
             // 'configure:ntext',
+            // 'status',
+            // 'is_cod',
 
             
         ],

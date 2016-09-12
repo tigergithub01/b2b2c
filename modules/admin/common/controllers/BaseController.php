@@ -47,13 +47,13 @@ class BaseController extends Controller
 	
 	
 	public function beforeAction($action) {
-		Yii::info("BaseController beforeAction ". Yii::$app->request->absoluteUrl );
+// 		Yii::info("BaseController beforeAction ". Yii::$app->request->absoluteUrl );
 // 		var_dump($action);
 		return parent::beforeAction($action);
 	}
 	
 	public function afterAction($action, $result){
-		Yii::info("BaseController afterAction");
+// 		Yii::info("BaseController afterAction");
 		return parent::afterAction($action, $result);
 	}
 	

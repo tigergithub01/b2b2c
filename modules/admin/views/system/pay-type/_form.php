@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\PayType */
@@ -37,17 +38,19 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'tpl_id')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'rate')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'configure')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => '--请选择--'])?>
+
+    <?= $form->field($model, 'is_cod')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => '--请选择--']) ?>
 
 		</div>
 	

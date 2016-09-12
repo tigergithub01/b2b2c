@@ -32,12 +32,12 @@ class BaseAuthController extends BaseController
 	
 	
 	public function beforeAction($action) {
-		Yii::info("BaseAuthController beforeAction ". Yii::$app->request->absoluteUrl );
+// 		Yii::info("BaseAuthController beforeAction ". Yii::$app->request->absoluteUrl );
 		return parent::beforeAction($action);
 	}
 	
 	public function afterAction($action, $result){
-		Yii::info("BaseAuthController afterAction");
+// 		Yii::info("BaseAuthController afterAction");
 		return parent::afterAction($action, $result);
 	}
 	

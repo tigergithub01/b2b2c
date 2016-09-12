@@ -38,24 +38,26 @@ use yii\widgets\ActiveForm;
 	
 	    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'tpl_id') ?>
+    <?= $form->field($model, 'code') ?>
 
     <?= $form->field($model, 'name') ?>
 
+    <?= $form->field($model, 'rate') ?>
+
     <?= $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'organization_id') ?>
-
     <?php // echo $form->field($model, 'configure') ?>
+
+    <?php // echo $form->field($model, 'status') ?>
+
+    <?php // echo $form->field($model, 'is_cod') ?>
 
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Pay Type'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Yii::t('app', 'Create_Pay_Type'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

@@ -13,7 +13,7 @@ class AdminLogFilter extends ActionFilter{
 	public function beforeAction($action){
 		//TODO:
 // 		var_dump($action);
-		Yii::info('AdminLogFilter beforeAction ');
+// 		Yii::info('AdminLogFilter beforeAction ');
 // 		Yii::$app->getSession()->get($key)
 // 		Yii::$app->getRequest()->get($key);
 // 		Yii::$app->response->redirect("/site/index");
@@ -24,7 +24,7 @@ class AdminLogFilter extends ActionFilter{
 	
 	public function afterAction($action, $result){
 		//TODO:
-		Yii::info('AdminLogFilter afterAction ');
+// 		Yii::info('AdminLogFilter afterAction ');
 		return parent::afterAction($action, $result);
 	}
 	

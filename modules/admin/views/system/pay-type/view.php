@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\b2b2c\PayType */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pay Types'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pay_Type'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pay-type-view">
@@ -27,12 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'tpl_id',
+            'code',
             'name',
+            'rate',
             'description',
-            'status',
-            'organization_id',
             'configure:ntext',
+            'status',
+            'is_cod',
 		        ],
 		    ]) ?>
     	</div>

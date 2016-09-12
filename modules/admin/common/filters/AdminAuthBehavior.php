@@ -23,11 +23,13 @@ class AdminAuthBehavior extends Behavior{
 	 	//check cookie for auto login
 // 	 	Yii::$app->request->cookies;
 	 	$session = Yii::$app->session;
+	 	$login_user = $session->get(AdminConst::LOGIN_ADMIN_USER);
+	 	
 	 	$cookies = Yii::$app->request->cookies;
 	 	$admin_user_id = $cookies->getValue(AdminConst::COOKIE_ADMIN_USER_ID);
 // 	 	$admin_user_id = $_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID];
 // 	 	$admin_user_id = $cookies[AdminConst::COOKIE_ADMIN_USER_ID]->value;
-	 	if($admin_user_id){
+	 	if($admin_user_id && empty($login_user)){
 	 		//auto login
 	 		$model = new SysUser();
 	 		$model->setScenario(SysUser::SCENARIO_AUTO_LOGIN);
@@ -45,7 +47,7 @@ class AdminAuthBehavior extends Behavior{
 	 	
 		
 	 	//check session for user rights
-	 	$login_user = $session->get(AdminConst::LOGIN_ADMIN_USER);
+	 	
 	 	if(empty($login_user)){
 	 		Yii::$app->getResponse()->redirect("/admin/system/login/index");
 	 	}
@@ -54,7 +56,7 @@ class AdminAuthBehavior extends Behavior{
 	 
 	 public function afterAction($event){
 	 	//TODO:
-	 	Yii::info('AdminAuthBehavior afterAction ');
+// 	 	Yii::info('AdminAuthBehavior afterAction ');
 	 }
 	
 	/* public function beforeAction($action){

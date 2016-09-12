@@ -8,6 +8,8 @@ use app\models\b2b2c\search\PayTypeSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * PayTypeController implements the CRUD actions for PayType model.
@@ -66,12 +68,13 @@ class PayTypeController extends BaseAuthController
     public function actionCreate()
     {
         $model = new PayType();
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'yesNoList'=>$this->getYesNoList(),
             ]);
         }
     }
@@ -91,6 +94,7 @@ class PayTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'yesNoList'=>$this->getYesNoList(),
             ]);
         }
     }
@@ -122,5 +126,16 @@ class PayTypeController extends BaseAuthController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    protected function getYesNoList(){
+    	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
+    	//         	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy('seq_id ASC')->all();
+    	//         $yesno_list = SysParameter::findBySql("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->all();
+    	//         $yesno_list = (new \yii\db\Query())->select("id,param_val")->from("t_sys_parameter")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
+    	//         $db = Yii::$app->db;
+    	//         $yesno_list = $db->createCommand("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->queryAll();
+    	//         var_dump($yesno_list);
+    	return $yesno_list;
     }
 }
