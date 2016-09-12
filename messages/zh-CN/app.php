@@ -20,11 +20,17 @@ return [
 		'Sign In' => '登陆',
 		
 		
+		'Update {modelClass}: '=>'编辑{modelClass}：',
 		//单据类型
 		'Create Sheet Type'=>'新增单据类型',
 		'Sheet Types'=>'单据类型',
 		'Sheet Type'=>'单据类型',
-		'Update {modelClass}: '=>'编辑{modelClass}：',
+		
+		
+		//支付方式
+		'Create_Pay_Type'=>'新增支付方式',
+		'Update_Pay_Type'=>'编辑支付方式',
+		'Pay_Type'=>'支付方式',
 		
 		
 ];
