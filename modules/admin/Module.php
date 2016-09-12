@@ -22,7 +22,7 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        // custom initialization code goes here
+         //自定义资源文件
         $this->registerTranslations();
         
         if (Yii::$app instanceof \yii\console\Application) {
@@ -43,7 +43,7 @@ class Module extends \yii\base\Module
         	
         	//app的名字
 //         	Yii::$app->name="婚礼兔后台管理";
-        	Yii::$app->name="后台管理";
+        	Yii::$app->name=$this::t("app", "app_admin_name");
         	
         	//设置显示样式
         	Yii::$app->assetManager->bundles = [

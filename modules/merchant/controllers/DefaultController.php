@@ -4,6 +4,7 @@ namespace app\modules\merchant\controllers;
 
 use Yii;
 use yii\web\Controller;
+use app\modules\merchant\models\MerchantConst;
 
 /**
  * Default controller for the `merchant` module
@@ -22,10 +23,20 @@ class DefaultController extends Controller
     
     public function actionLogout()
     {
-    	Yii::$app->getResponse()->redirect("/merchant/common/login/index");
-    	/* Yii::$app->user->logout();
-    
-    	return $this->goHome(); */
+    	//clear session
+    	$session = Yii::$app->session;
+    	unset($session[MerchantConst::LOGIN_MERCHANT_USER]);    	
+    	
+    	//clear cookie
+    	$cookies = Yii::$app->request->cookies;
+    	if(isset($cookies[MerchantConst::COOKIE_MERCHANT_USER_ID])){
+	    	Yii::$app->response->cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
+	    	Yii::$app->response->cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
+// 	    	unset(Yii::$app->response->cookies[MerchantConst::COOKIE_ADMIN_USER_ID]);
+    	}
+//     	unset($_COOKIE[MerchantConst::COOKIE_ADMIN_USER_ID]);
+    	
+    	Yii::$app->getResponse()->redirect("/merchant/system/login/index");
     }
     
 }

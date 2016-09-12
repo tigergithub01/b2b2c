@@ -49,12 +49,33 @@ use Yii;
  */
 class Vip extends \app\models\b2b2c\BasicModel
 {
+	public $remember_me = true;
+	public $verify_code;
+	
+	const SCENARIO_LOGIN = 'login';
+	const SCENARIO_REGISTER = 'register';
+	const SCENARIO_AUTO_LOGIN = 'auto_login';
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip';
+    }
+    
+    public function scenarios()
+    {
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
+    	$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
+    	// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
+    	return $scenarios;
+    
+    	/* return [
+    	 self::SCENARIO_LOGIN => ['username', 'password'],
+    	 self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+    	]; */
     }
 
     /**
@@ -76,6 +97,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['merchant_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['merchant_flag' => 'id']],
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
+        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN]],
         ];
     }
 
@@ -99,6 +121,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'status' => Yii::t('app', '会员状态(1:正常、0:停用)'),
             'register_date' => Yii::t('app', '注册时间'),
             'rank_id' => Yii::t('app', '会员等级'),
+        	'verify_code' => Yii::t('app', '验证码'),
         ];
     }
 

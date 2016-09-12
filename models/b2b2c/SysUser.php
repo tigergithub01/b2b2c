@@ -41,7 +41,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_LOGIN] = ['user_id', 'password','rememberMe','verify_code'];
+		$scenarios[self::SCENARIO_LOGIN] = ['user_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['user_id', 'password'];
 // 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
 		return $scenarios;

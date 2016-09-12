@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use app\modules\admin\Module;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -35,7 +36,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <title><?= Yii::t('app','app_admin_name').'-'.Html::encode($this->title) ?></title>
+        <title><?= Module::t('app','app_admin_name').'-'.Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-blue-light sidebar-mini">

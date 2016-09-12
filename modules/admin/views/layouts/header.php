@@ -1,13 +1,13 @@
 <?php
 use yii\helpers\Html;
-
+use app\modules\admin\Module;
 /* @var $this \yii\web\View */
 /* @var $content string */
 ?>
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-mini">'.Yii::t('app', 'app_admin_short_name').'</span><span class="logo-lg">' . Yii::t('app', 'app_admin_name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a('<span class="logo-mini">'.Module::t('app', 'app_admin_short_name').'</span><span class="logo-lg">' . Module::t('app', 'app_admin_name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 
     <nav class="navbar navbar-static-top" role="navigation">
 
@@ -22,7 +22,7 @@ use yii\helpers\Html;
                       <?= Html::a(  '注销',
                                     ['/admin/default/logout'],
                                     ['data-method' => 'post','data' => [
-	                'confirm' => Yii::t('app', '是否退出?'),
+	                'confirm' => Module::t('app', '是否退出?'),
 	                'method' => 'post',
                     'class' => 'glyphicon glyphicon-user',               		
 	            ],]

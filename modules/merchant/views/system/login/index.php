@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use Yii\web\View;
 use yii\captcha\Captcha;
-use app\modules\admin\Module;
+use app\modules\merchant\Module;
 
 
 /* @var $this yii\web\View */
@@ -34,9 +34,9 @@ $fieldOptions2 = [
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => true]); ?>
 
         <?= $form
-            ->field($model, 'user_id', $fieldOptions1)
+            ->field($model, 'vip_id', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('user_id')]) ?>
+            ->textInput(['placeholder' => $model->getAttributeLabel('vip_id')]) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)

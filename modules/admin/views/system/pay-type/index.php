@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\PayTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Pay_Type');
+$this->title = Module::t('app', 'Pay_Type');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pay-type-index">

@@ -1,9 +1,9 @@
 <?php
-namespace app\modules\admin\common\controllers;
+namespace app\modules\merchant\common\controllers;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\admin\common\filters\AdminAuthBehavior;
+use app\modules\merchant\common\filters\MerchantAuthBehavior;
 
 class BaseAuthController extends BaseController
 {
@@ -25,19 +25,19 @@ class BaseAuthController extends BaseController
 	{
 		return array_merge(parent::behaviors(),[
 				'authBehavior' => [
-					'class' => AdminAuthBehavior::className(),
+					'class' => MerchantAuthBehavior::className(),
 				],
 		]);
 	}
 	
 	
 	public function beforeAction($action) {
-		Yii::info("BaseAuthController beforeAction ". Yii::$app->request->absoluteUrl );
+// 		Yii::info("BaseAuthController beforeAction ". Yii::$app->request->absoluteUrl );
 		return parent::beforeAction($action);
 	}
 	
 	public function afterAction($action, $result){
-		Yii::info("BaseAuthController afterAction");
+// 		Yii::info("BaseAuthController afterAction");
 		return parent::afterAction($action, $result);
 	}
 	
