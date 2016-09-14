@@ -22,15 +22,18 @@ use Yii;
  * @property ReturnSheet[] $returnSheets
  * @property SheetLog[] $sheetLogs
  * @property SysAppRelease[] $sysAppReleases
+ * @property SysAuditLog[] $sysAuditLogs
  * @property SysOperationLog[] $sysOperationLogs
  * @property SysRoleUser[] $sysRoleUsers
  * @property SysParameter $status0
  * @property SysParameter $isAdmin
+ * @property Vip[] $vips
+ * @property VipExtend[] $vipExtends
  * @property VipOrgCase[] $vipOrgCases
+ * @property VipOrganization[] $vipOrganizations
  */
 class SysUser extends \app\models\b2b2c\BasicModel
 {
-    
 	public $remember_me = true;
 	public $verify_code;
 	
@@ -43,16 +46,16 @@ class SysUser extends \app\models\b2b2c\BasicModel
 		$scenarios = parent::scenarios();
 		$scenarios[self::SCENARIO_LOGIN] = ['user_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['user_id', 'password'];
-// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
+		// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
 		return $scenarios;
-		
+	
 		/* return [
-				self::SCENARIO_LOGIN => ['username', 'password'],
-				self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+		 self::SCENARIO_LOGIN => ['username', 'password'],
+		 self::SCENARIO_REGISTER => ['username', 'email', 'password'],
 		]; */
 	}
 	
-	
+    
     /**
      * @inheritdoc
      */
@@ -156,6 +159,14 @@ class SysUser extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSysAuditLogs()
+    {
+        return $this->hasMany(SysAuditLog::className(), ['audit_user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSysOperationLogs()
     {
         return $this->hasMany(SysOperationLog::className(), ['user_id' => 'id']);
@@ -188,9 +199,33 @@ class SysUser extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getVips()
+    {
+        return $this->hasMany(Vip::className(), ['audit_user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipExtends()
+    {
+        return $this->hasMany(VipExtend::className(), ['audit_user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVipOrgCases()
     {
         return $this->hasMany(VipOrgCase::className(), ['audit_user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipOrganizations()
+    {
+        return $this->hasMany(VipOrganization::className(), ['audit_user_id' => 'id']);
     }
     
     public function login(){
@@ -200,26 +235,25 @@ class SysUser extends \app\models\b2b2c\BasicModel
     		$this->addError("user_id",Yii::t('app', '用户名不存在'));
     		return false;
     	}
-    	
+    	 
     	//判断密码
     	if(!strcmp($this->password, $_user->password)==0){
     		$this->addError("password",Yii::t('app', '密码不正确'));
     		return false;
     	}
-    	
+    	 
     	//更新最后一次登录时间
     	$_user->last_login_date = date("Y-m-d H:i:s");
     	$_user->update(true,['last_login_date']);
-    	
-    	//判断密码是否正确    	
-		return $_user;
+    	 
+    	return $_user;
     }
     
     /**
      * 初始化插入一个系统管理员
      */
     public function insertSystemUser(){
-//     	$model = new SysUser();
+    	//     	$model = new SysUser();
     	// 		'user_id', 'password', 'is_admin', 'status'
     	$_usr = SysUser::find()->where('user_id=:p_user_id',['p_user_id'=>'admin'])->one();
     	if(empty($_usr)){
@@ -232,4 +266,5 @@ class SysUser extends \app\models\b2b2c\BasicModel
     		Yii::info("insertSystemUsr $success");
     	}
     }
+    
 }

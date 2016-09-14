@@ -18,6 +18,7 @@ use Yii;
  * @property string $audit_status
  * @property string $audit_user_id
  * @property string $audit_date
+ * @property string $audit_memo
  * @property string $cover_img_url
  * @property string $cover_thumb_url
  * @property string $cover_img_original
@@ -58,6 +59,7 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
             [['create_date', 'update_date', 'audit_date'], 'safe'],
             [['market_price', 'sale_price'], 'number'],
             [['name'], 'string', 'max' => 50],
+            [['audit_memo'], 'string', 'max' => 200],
             [['cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCaseType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -85,6 +87,7 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
             'audit_status' => Yii::t('app', '审核状态：未审核，审核不通过，已审核'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
+            'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
             'cover_img_url' => Yii::t('app', '图片（放大后查看）(封面)'),
             'cover_thumb_url' => Yii::t('app', '缩略图(封面)'),
             'cover_img_original' => Yii::t('app', '原图(封面)'),

@@ -16,8 +16,8 @@ use Yii;
  * @property string $status
  * @property string $is_cod
  *
- * @property SysParameter $isCod
  * @property SysParameter $status0
+ * @property SysParameter $isCod
  * @property SoSheet[] $soSheets
  */
 class PayType extends \app\models\b2b2c\BasicModel
@@ -44,8 +44,8 @@ class PayType extends \app\models\b2b2c\BasicModel
             [['name'], 'string', 'max' => 60],
             [['description'], 'string', 'max' => 255],
             [['code'], 'unique'],
-            [['is_cod'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_cod' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+            [['is_cod'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_cod' => 'id']],
         ];
     }
 
@@ -69,17 +69,17 @@ class PayType extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIsCod()
+    public function getStatus0()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'is_cod']);
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus0()
+    public function getIsCod()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+        return $this->hasOne(SysParameter::className(), ['id' => 'is_cod']);
     }
 
     /**
@@ -89,5 +89,4 @@ class PayType extends \app\models\b2b2c\BasicModel
     {
         return $this->hasMany(SoSheet::className(), ['pay_type_id' => 'id']);
     }
-    
 }

@@ -38,8 +38,8 @@ class SysAppRelease extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'ver_no', 'force_upgrade', 'issue_date', 'issue_user_id', 'app_info_id'], 'required'],
-            [['ver_no', 'force_upgrade', 'issue_user_id', 'app_info_id'], 'integer'],
+            [['id', 'name', 'ver_no', 'force_upgrade', 'issue_date', 'issue_user_id', 'app_info_id'], 'required'],
+            [['id', 'ver_no', 'force_upgrade', 'issue_user_id', 'app_info_id'], 'integer'],
             [['issue_date'], 'safe'],
             [['name'], 'string', 'max' => 60],
             [['upgrade_desc'], 'string', 'max' => 600],
