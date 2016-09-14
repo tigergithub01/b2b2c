@@ -114,6 +114,8 @@ class LoginController extends BaseController
 	
 	
 	public function actionRegister(){
+		
+		
 		return $this->render("register");
 	}
 	
