@@ -55,23 +55,38 @@ use Yii;
  */
 class Vip extends \app\models\b2b2c\BasicModel
 {
+	//记住密码（登陆)
 	public $remember_me = true;
-	public $verify_code;
+	
+	//验证码
+	public $verify_code;	
+	
+	//注册同意协议
+	public $agreement = true;
+	
+	//确认密码
+	public $confirm_pwd;
+	
+	//短信验证码
+	public $sms_code;
 	
 	/* 会员 */
-	const SCENARIO_LOGIN = 'login';
 	const SCENARIO_REGISTER = 'register';
+	const SCENARIO_LOGIN = 'login';
 	const SCENARIO_AUTO_LOGIN = 'auto_login';
+	const SCENARIO_FORGOT_PWD = 'forgot_pwd';//忘记密码
+	const SCENARIO_CHANG_PWD = 'change_pwd'; //登陆后修改密码
 	
 	/* 商户平台  */
-	const SCENARIO_MERCHANT_LOGIN = 'merchant_login';
+	/* const SCENARIO_MERCHANT_LOGIN = 'merchant_login';
 	const SCENARIO_MERCHANT_REGISTER = 'merchant_register';
-	const SCENARIO_MERCHANT_AUTO_LOGIN = 'merchant_auto_login';
+	const SCENARIO_MERCHANT_AUTO_LOGIN = 'merchant_auto_login'; */
 	
 	
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','remember_me','verify_code','confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
 		// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
@@ -98,7 +113,8 @@ class Vip extends \app\models\b2b2c\BasicModel
     {
         return [
             [['vip_id', 'merchant_flag', 'password', 'email_verify_flag', 'status', 'register_date', 'audit_status'], 'required'],
-            [['merchant_flag', 'parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id', 'audit_status', 'audit_user_id'], 'integer'],
+        	[['vip_id'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}格式不正确'],
+        	[['merchant_flag', 'parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id', 'audit_status', 'audit_user_id'], 'integer'],
             [['last_login_date', 'register_date', 'audit_date'], 'safe'],
             [['vip_id', 'email'], 'string', 'max' => 30],
             [['vip_name', 'password'], 'string', 'max' => 50],
@@ -113,7 +129,11 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['merchant_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['merchant_flag' => 'id']],
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
-        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN]],
+        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER]],
+        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER]],
+        	[['sms_code'], 'required','on' => [self::SCENARIO_REGISTER]],
+        	[['password','confirm_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位'],
+        	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致'],
         ];
     }
 
@@ -124,7 +144,7 @@ class Vip extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'vip_id' => Yii::t('app', '会员登陆名'),
+            'vip_id' => Yii::t('app', '手机号码'),
             'merchant_flag' => Yii::t('app', '是否商户?1:是；0：否'),
             'vip_name' => Yii::t('app', '姓名'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
@@ -142,6 +162,8 @@ class Vip extends \app\models\b2b2c\BasicModel
             'audit_date' => Yii::t('app', '审核日期'),
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
         	'verify_code' => Yii::t('app', '验证码'),
+        	'confirm_pwd' => Yii::t('app', '确认密码'),
+        	'sms_code' => Yii::t('app', '短信验证码'),
         ];
     }
 
