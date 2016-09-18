@@ -12,4 +12,6 @@ return [
 		//登陆
 		'Sign_In' => '登陆',
 		'Sign_out' => '注销',
+		'Register' => '注册',
+		'merchant_register' => '商户注册',
 ];

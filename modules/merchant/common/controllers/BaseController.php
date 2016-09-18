@@ -63,6 +63,8 @@ class BaseController extends Controller
 	 */
 	public function actionError()
 	{
+// 		$this->layout = 'main-login';
+		
 		$exception = Yii::$app->errorHandler->exception;
 		if ($exception instanceof \yii\base\UserException) {
 			$message = $exception->getMessage();

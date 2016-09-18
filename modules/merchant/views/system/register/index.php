@@ -4,13 +4,14 @@ use yii\bootstrap\ActiveForm;
 use Yii\web\View;
 use yii\captcha\Captcha;
 use app\modules\merchant\Module;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Module::t('app', 'Sign_In');
+$this->title = Module::t('app', 'merchant_register');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -37,33 +38,46 @@ $fieldOptions2 = [
             ->field($model, 'vip_id', $fieldOptions1)
             ->label(false)
             ->textInput(['placeholder' => $model->getAttributeLabel('vip_id')]) ?>
-
+            
         <?= $form
             ->field($model, 'password', $fieldOptions2)
             ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>    
+            
+        <?= $form
+            ->field($model, 'confirm_pwd', $fieldOptions2)
+            ->label(false)
+            ->passwordInput(['placeholder' => $model->getAttributeLabel('confirm_pwd')]) ?>
             
         <?= $form->field($model, 'verify_code')
         			->label(false)
         			->widget(Captcha::className(), [
-                        'template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6">{image}</div></div>',
+                        'template' => '<div class="row"><div class="col-sm-6">{input}</div><div class="col-sm-6">{image}</div></div>',
         				'options' => ['placeholder' => $model->getAttributeLabel('verify_code'),'class'=>'form-control',],	
         				'captchaAction' => '/site/captcha',
                     ]) ?>     
-            
+         
+         <?= $form->field($model, 'sms_code',['template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6"><input type="button" url="'.Url::to(['system/sms/index']).'" value="获取验证码" class="btn btn-block btn-flat btn_sms"/></div></div>{error}',])
+        			->label(false)
+        			->textInput([
+        				'placeholder' => $model->getAttributeLabel('sms_code'),
+                    ]) ?>   
 
         <div class="row">
-            <div class="col-xs-8 icheck">
-                <?= $form->field($model, 'remember_me')->checkbox(['label'=>'记住密码']) ?>
-            </div>
             <!-- /.col -->
-            <div class="col-xs-4">
-                <?= Html::submitButton('登陆', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+            <div class="col-xs-12">
+                <?= Html::submitButton('注册', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
             <!-- /.col -->
         </div>
-
-
+		
+		 <div class="row" style="margin-top: 20px;">
+            <div class="col-xs-12 icheck">
+                <?= $form->field($model, 'remember_me')->checkbox(['label'=>'我同意遵守',
+                		'template' => "{input}{label}<a href='#'>《婚礼兔商家协议》<a>{error}",]) ?>
+            </div>
+        </div>
+		
         <?php ActiveForm::end(); ?>
         
        <!--  <a href="#">I forgot my password</a><br>
@@ -81,4 +95,7 @@ $fieldOptions2 = [
       increaseArea: '20%' // optional
     });
   });",View::POS_END);
+	
+  $this->registerJsFile("js/common/sms.js",['depends' => [\yii\web\JqueryAsset::className()]])
+	
 ?>

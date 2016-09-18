@@ -10,7 +10,7 @@ use app\modules\admin\Module;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Module::t('app', 'Sign_In');
+$this->title = Module::t('app', 'admin_sign_in');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],

@@ -19,7 +19,10 @@ class RegisterController extends BaseController
     {
     	/* 登陆 */
     	$model = new Vip();
-    	$model->setScenario(Vip::SCENARIO_LOGIN);
+    	$model->setScenario(Vip::SCENARIO_REGISTER);
+    	
+//     	var_dump(Yii::$aliases);
+// 		var_dump(Yii::$app->session);
     
     	$user_db = null;
     	if ($model->load(Yii::$app->request->post()) && $model->validate() /* && ($user_db = $model->login()) */) {
@@ -28,7 +31,7 @@ class RegisterController extends BaseController
     		if(($user_db = $model->login())){
     			//写session
     			$session = Yii::$app->session;
-    			$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+    			$session->set(MerchantConst::LOGIN_ADMIN_USER,$user_db);
     			//写权限信息 TOOD：
     				
     				
@@ -61,7 +64,7 @@ class RegisterController extends BaseController
     		}
     			
     		// 			if($valid){
-    		Yii::$app->response->redirect("/admin/default/index");
+    		Yii::$app->response->redirect("merchant/default/index");
     		// 			}
     		// 			return $this->goBack();
     	}

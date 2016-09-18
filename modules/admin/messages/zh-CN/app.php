@@ -13,6 +13,7 @@ return [
 		'Sign_In' => '登陆',
 		'Sign_out' => '注销',
 		
+		'admin_sign_in' => '后台登陆',
 		//支付方式
 		'Create_Pay_Type'=>'新增支付方式',
 		'Update_Pay_Type'=>'编辑支付方式',
