@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/9/9 17:56:09                            */
+/* Created on:     2016/9/19 18:30:02                           */
 /*==============================================================*/
 
 
@@ -112,6 +112,8 @@ drop table if exists t_sys_app_info;
 
 drop table if exists t_sys_app_release;
 
+drop table if exists t_sys_audit_log;
+
 drop table if exists t_sys_config;
 
 drop table if exists t_sys_config_detail;
@@ -183,6 +185,10 @@ drop table if exists t_vip_coupon;
 drop table if exists t_vip_coupon_log;
 
 drop table if exists t_vip_coupon_type;
+
+drop table if exists t_vip_extend;
+
+drop index idx_vip_module_code on t_vip_module;
 
 drop table if exists t_vip_module;
 
@@ -1068,7 +1074,7 @@ alter table t_sys_app_info comment '应用版本信息';
 /*==============================================================*/
 create table t_sys_app_release
 (
-   id                   bigint(20) not null auto_increment comment '主键编号',
+   id                   bigint(20) not null comment '主键编号',
    name                 varchar(60) not null comment '版本名称(1.1.1，字符串型)、',
    upgrade_desc         varchar(600) comment '版本升级描述',
    ver_no               bigint(20) not null comment '版本编号(1.0，数字型用来与app进行版本比较)',
@@ -1081,6 +1087,23 @@ create table t_sys_app_release
 );
 
 alter table t_sys_app_release comment '应用发布信息表';
+
+/*==============================================================*/
+/* Table: t_sys_audit_log                                       */
+/*==============================================================*/
+create table t_sys_audit_log
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   ref_id               bigint(20) not null comment '关联编号',
+   audit_type           bigint(20) not null comment '审批类型：会员信息审核，博客审核，案例审核，商户基础信息，商户店铺（经营信息）',
+   audit_operate        bigint(20) not null comment '审核动作：审核通过，审核不通过',
+   audit_user_id        bigint(20) not null comment '审核人',
+   audit_date           datetime not null comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
+   primary key (id)
+);
+
+alter table t_sys_audit_log comment '审批日志';
 
 /*==============================================================*/
 /* Table: t_sys_config                                          */
@@ -1135,7 +1158,9 @@ create table t_sys_module
    name                 varchar(60) not null comment '模块名称',
    parent_id            bigint(20) comment '关联上级模块主键编号',
    url                  varchar(200) comment '模块URL地址',
+   module               varchar(30) comment '模块编号',
    controller           varchar(30) comment '模块对应的控制器编号',
+   action               varchar(30) comment '对应操作',
    menu_flag            bigint(20) not null comment '是否菜单项',
    status               bigint(20) not null comment '是否有效？1：是；0：否',
    primary key (id)
@@ -1162,8 +1187,7 @@ create table t_sys_notify
    issue_date           datetime not null comment '消息发布日期',
    content              text comment '消息内容',
    primary key (id)
-)
-ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统通知消息';
+);
 
 alter table t_sys_notify comment '系统公告';
 
@@ -1212,13 +1236,17 @@ create table t_sys_operation_log
 (
    id                   bigint(20) not null auto_increment comment '主键',
    user_id              bigint(20) not null comment '关联用户编号',
-   module_id            bigint(20) not null comment '关联模块编号',
-   operation_id         bigint(20) not null,
+   module_id            bigint(20) comment '关联模块编号',
    op_date              datetime not null comment '操作日期',
    op_ip_addr           varchar(30) comment '操作IP地址',
-   op_browser_type      varchar(60) comment '浏览器类型',
+   op_browser_type      varchar(200) comment '浏览器类型',
    op_url               varchar(400) comment '操作对应完整URL',
    op_desc              text comment '操作描述',
+   op_method            varchar(20) comment '数据提交方式（POST,GET）',
+   op_referrer          varchar(400) comment '访问地址来源',
+   op_module            varchar(30) comment '模块',
+   op_controller        varchar(30) comment '控制器',
+   op_action            varchar(20) comment '操作',
    primary key (id)
 );
 
@@ -1410,6 +1438,10 @@ create table t_vip
    status               bigint(20) not null comment '会员状态(1:正常、0:停用)',
    register_date        datetime not null comment '注册时间',
    rank_id              bigint(20) comment '会员等级',
+   audit_status         bigint(20) not null comment '审核状态(商户字段)：未审核，审核不通过，已审核',
+   audit_user_id        bigint(20) comment '审核人',
+   audit_date           datetime comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
    primary key (id)
 );
 
@@ -1460,6 +1492,7 @@ create table t_vip_blog
    audit_user_id        bigint(20) comment '审核人',
    audit_status         bigint(20) not null comment '审核状态（未审核，审核通过，审核不通过）',
    audit_date           datetime comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
    status               bigint(20) not null comment '是否显示？1：是；0：否',
    primary key (id)
 );
@@ -1621,18 +1654,58 @@ create table t_vip_coupon_type
 alter table t_vip_coupon_type comment '优惠券类型';
 
 /*==============================================================*/
+/* Table: t_vip_extend                                          */
+/*==============================================================*/
+create table t_vip_extend
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   real_name            varchar(50) not null comment '真实姓名',
+   id_card_no           varchar(30) not null comment '身份证号码',
+   id_card_photo        varchar(255) comment '身份证正面照',
+   id_card_back_photo   varchar(255) comment '身份证背面照',
+   bank_account         varchar(30) not null comment '银行账户（真实姓名）',
+   bank_name            varchar(50) not null comment '开户银行',
+   bank_number          varchar(50) not null comment '银行卡号',
+   bank_addr            varchar(255) not null comment '开户支行（如，招商银行深圳分行科技园支行）',
+   audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
+   audit_user_id        bigint(20) not null comment '审核人',
+   audit_date           datetime not null comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
+   create_date          datetime not null comment '创建时间',
+   update_date          datetime not null comment '更新时间',
+   primary key (id)
+);
+
+alter table t_vip_extend comment '会员扩展信息（需要审核）';
+
+/*==============================================================*/
 /* Table: t_vip_module                                          */
 /*==============================================================*/
 create table t_vip_module
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
+   code                 varchar(30) not null comment '模块唯一编码',
    name                 varchar(60) not null comment '模块名称',
-   op_controller        varchar(30) comment '对应控制器',
-   op_action            varchar(20) comment '对应方法',
+   parent_id            bigint(20) comment '关联上级模块主键编号',
+   url                  varchar(200) comment '模块URL地址',
+   module               varchar(30) comment '对应模块',
+   controller           varchar(30) not null comment '模块对应的控制器编号',
+   action               varchar(30) not null comment '对应操作',
+   menu_flag            bigint(20) not null comment '是否菜单项',
+   status               bigint(20) not null comment '是否有效？1：是；0：否',
+   merchant_flag        bigint(20) not null comment '是否商户操作模块（1：商户；0：会员）',
    primary key (id)
 );
 
-alter table t_vip_module comment '会员操作模块';
+alter table t_vip_module comment '会员/商户操作模块';
+
+/*==============================================================*/
+/* Index: idx_vip_module_code                                   */
+/*==============================================================*/
+create unique index idx_vip_module_code on t_vip_module
+(
+   code
+);
 
 /*==============================================================*/
 /* Table: t_vip_operation_log                                   */
@@ -1641,7 +1714,7 @@ create table t_vip_operation_log
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
    vip_id               bigint(20) comment '会员编号',
-   module_id            bigint(20) comment '模块编号',
+   module_id            bigint(20) comment '关联模块编号',
    op_date              datetime not null comment '操作日期',
    op_ip_addr           varchar(30) comment '操作IP地址',
    op_browser_type      varchar(300) comment '浏览器类型',
@@ -1652,10 +1725,10 @@ create table t_vip_operation_log
    op_method            varchar(20) comment '数据提交方式（POST,GET）',
    op_app_ver           varchar(20) comment 'app版本号',
    op_app_type_id       bigint(20) comment 'app类型：1:andorid 2:ios',
-   op_module            varchar(30) comment 'Yii模块',
-   op_controller        varchar(30) comment 'Yii控制器',
-   op_action            varchar(20) comment '操作对应的action',
-   op_view              varchar(50) comment 'Yii视图',
+   op_module            varchar(30) comment '模块',
+   op_controller        varchar(30) comment '控制器',
+   op_action            varchar(20) comment '操作',
+   op_referrer          varchar(400) comment '访问地址来源',
    primary key (id)
 );
 
@@ -1677,6 +1750,7 @@ create table t_vip_org_case
    audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
    cover_img_url        varchar(255) not null comment '图片（放大后查看）(封面)',
    cover_thumb_url      varchar(255) not null comment '缩略图(封面)',
    cover_img_original   varchar(255) not null comment '原图(封面)',
@@ -1769,6 +1843,13 @@ create table t_vip_organization
    country_id           bigint(20) not null comment '关联国家编号',
    province_id          bigint(20) not null comment '关联省份编号',
    city_id              bigint(20) not null comment '关联城市编号',
+   role_type            bigint(20) comment '角色类型（策划师，主持人，摄影师，化妆师，摄像师）',
+   audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
+   audit_user_id        bigint(20) comment '审核人',
+   audit_date           datetime comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
+   create_date          datetime not null comment '创建时间',
+   update_date          datetime not null comment '更新时间',
    primary key (id)
 );
 
@@ -2208,6 +2289,15 @@ alter table t_sys_app_release add constraint fk_app_release_ref_user foreign key
 alter table t_sys_app_release add constraint fk_app_release_upgrade_ref_param foreign key (force_upgrade)
       references t_sys_parameter (id);
 
+alter table t_sys_audit_log add constraint fk_sys_audit_operate_ref_param foreign key (audit_operate)
+      references t_sys_parameter (id);
+
+alter table t_sys_audit_log add constraint fk_sys_audit_type_ref_param foreign key (audit_type)
+      references t_sys_parameter (id);
+
+alter table t_sys_audit_log add constraint fk_sys_audit_user_ref_user foreign key (audit_user_id)
+      references t_sys_user (id);
+
 alter table t_sys_config_detail add constraint fk_config_detail_ref_config foreign key (config_id)
       references t_sys_config (id);
 
@@ -2237,9 +2327,6 @@ alter table t_sys_notify_push_log add constraint fk_notify_push_ref_vip foreign 
 
 alter table t_sys_operation_log add constraint fk_log_ref_module foreign key (module_id)
       references t_sys_module (id);
-
-alter table t_sys_operation_log add constraint fk_log_ref_operation foreign key (operation_id)
-      references t_sys_operation (id);
 
 alter table t_sys_operation_log add constraint fk_op_user_ref_user foreign key (user_id)
       references t_sys_user (id);
@@ -2291,6 +2378,12 @@ alter table t_sys_warehouse_region add constraint fk_wh_region_ref_region foreig
 
 alter table t_sys_warehouse_region add constraint fk_wh_region_ref_wh foreign key (warehouse_id)
       references t_sys_warehouse (id);
+
+alter table t_vip add constraint fk_vip_audit_status_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_vip add constraint fk_vip_audit_user_ref_user foreign key (audit_user_id)
+      references t_sys_user (id);
 
 alter table t_vip add constraint fk_vip_email_verify_ref_param foreign key (email_verify_flag)
       references t_sys_parameter (id);
@@ -2403,6 +2496,21 @@ alter table t_vip_coupon_type add constraint FK_coupon_type_ref_org foreign key 
 alter table t_vip_coupon_type add constraint fk_couopn_send_type_ref_param foreign key (send_type)
       references t_sys_parameter (id);
 
+alter table t_vip_extend add constraint fk_vip_ext_audit_stat_ref_stat foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_vip_extend add constraint fk_vip_ext_audit_usr_ref_usr foreign key (audit_user_id)
+      references t_sys_user (id);
+
+alter table t_vip_module add constraint fk_vip_mod_menu_ref_param foreign key (menu_flag)
+      references t_sys_parameter (id);
+
+alter table t_vip_module add constraint fk_vip_mod_merchant_ref_param foreign key (merchant_flag)
+      references t_sys_parameter (id);
+
+alter table t_vip_module add constraint fk_vip_mod_stat_ref_param foreign key (status)
+      references t_sys_parameter (id);
+
 alter table t_vip_operation_log add constraint fk_vip_op_log_ref_vip foreign key (vip_id)
       references t_vip (id);
 
@@ -2455,6 +2563,15 @@ alter table t_vip_organization add constraint fk_org_ref_vip foreign key (vip_id
       references t_vip (id);
 
 alter table t_vip_organization add constraint fk_org_stat_ref_param foreign key (status)
+      references t_sys_parameter (id);
+
+alter table t_vip_organization add constraint fk_vip_org_audit_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_vip_organization add constraint fk_vip_org_audit_user_ref_user foreign key (audit_user_id)
+      references t_sys_user (id);
+
+alter table t_vip_organization add constraint fk_vip_org_role_ref_param foreign key (role_type)
       references t_sys_parameter (id);
 
 alter table t_vip_product_collect add constraint fk_vip_collect_ref_product foreign key (product_id)
