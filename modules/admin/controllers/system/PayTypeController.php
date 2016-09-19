@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
+use yii\base\Model;
 
 /**
  * PayTypeController implements the CRUD actions for PayType model.
@@ -67,6 +68,8 @@ class PayTypeController extends BaseAuthController
      */
     public function actionCreate()
     {
+//     	var_dump(Yii::$app->request->absoluteUrl);
+    	
         $model = new PayType();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -132,10 +135,20 @@ class PayTypeController extends BaseAuthController
     	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
     	//         	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy('seq_id ASC')->all();
     	//         $yesno_list = SysParameter::findBySql("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->all();
-    	//         $yesno_list = (new \yii\db\Query())->select("id,param_val")->from("t_sys_parameter")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
-    	//         $db = Yii::$app->db;
-    	//         $yesno_list = $db->createCommand("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->queryAll();
-    	//         var_dump($yesno_list);
+//     	        $yesno_list = (new \yii\db\Query())->select("id,param_val")->from("t_sys_parameter")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
+//     	        $db = Yii::$app->db;
+//     	        $yesno_list = $db->createCommand("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->queryAll();
+//     	        var_dump($yesno_list);
+    	
+    	/* $payType = new PayType();
+    	$payType = PayType::findOne(1);
+    	$payType = $payType->toArray();
+    	var_dump($payType); */
+    	
+    	/* $payType = new PayType();
+    	$payType->id = 4;
+    	var_dump($payType); */
+    	
     	return $yesno_list;
     }
 }

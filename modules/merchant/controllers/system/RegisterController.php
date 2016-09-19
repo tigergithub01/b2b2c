@@ -23,6 +23,9 @@ class RegisterController extends BaseController
     	
 //     	var_dump(Yii::$aliases);
 // 		var_dump(Yii::$app->session);
+// 		var_dump(time());
+// 		var_dump(strtotime(date('Y-m-d H:i:s',time())));
+// 		var_dump(date('Y-m-d 23:59:59',time()));
     
     	$user_db = null;
     	if ($model->load(Yii::$app->request->post()) && $model->validate() /* && ($user_db = $model->login()) */) {

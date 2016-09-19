@@ -27,8 +27,7 @@ class LoginController extends BaseController
 	{
 		/* 初始化插入一个系统管理员  */
 		$system_user = new SysUser();
-		$system_user->insertSystemUser();
-		
+		$system_user->insertSystemUser();		
 		
 		/* 登陆 */
 		$model = new SysUser();
@@ -43,7 +42,6 @@ class LoginController extends BaseController
 				$session = Yii::$app->session;
 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
 				//写权限信息 TOOD：
-					
 					
 				//写cookie
 				if($model->remember_me){
@@ -74,7 +72,18 @@ class LoginController extends BaseController
 			}
 			
 // 			if($valid){
+
+			//根据情况进行跳转
+			$last_access_url = Yii::$app->session->get(AdminConst::ADMIN_LAST_ACCESS_URL);
+			if($last_access_url){
+				Yii::$app->session->remove(AdminConst::ADMIN_LAST_ACCESS_URL);
+				Yii::$app->response->redirect($last_access_url);
+			}else{
 				Yii::$app->response->redirect("/admin/default/index");
+			}
+			
+			
+				
 // 			}
 // 			return $this->goBack();
 		}

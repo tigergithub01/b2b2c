@@ -4,6 +4,7 @@ use yii\bootstrap\ActiveForm;
 use Yii\web\View;
 use yii\captcha\Captcha;
 use app\modules\admin\Module;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -48,7 +49,7 @@ $fieldOptions2 = [
         			->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6">{image}</div></div>',
         				'options' => ['placeholder' => $model->getAttributeLabel('verify_code'),'class'=>'form-control',],	
-        				'captchaAction' => '/site/captcha',
+        				'captchaAction' => Url::toRoute(['/site/captcha']),
                     ]) ?>     
             
 

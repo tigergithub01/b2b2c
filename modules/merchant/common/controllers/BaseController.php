@@ -10,6 +10,8 @@ class BaseController extends Controller
 {
 	/* 公用action 
 	 注意：ErrorAction的优先级要高于actionError的优先级 */
+	
+	/* 问题：问什么必须使用/site/captcha,使用指定的captcha如Url::toRoute(['system/login/captcha'])，客户端提示验证码不正确。 */
 	public function actions()
 	{
 		return [

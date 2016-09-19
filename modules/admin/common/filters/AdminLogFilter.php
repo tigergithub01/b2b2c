@@ -3,6 +3,8 @@ namespace app\modules\admin\common\filters;
 
 use Yii;
 use yii\base\ActionFilter;
+use app\models\b2b2c\SysOperationLog;
+use app\modules\admin\models\AdminConst;
 
 class AdminLogFilter extends ActionFilter{
 	

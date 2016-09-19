@@ -39,6 +39,9 @@ class DefaultController extends BaseAuthController
 // 	    	unset(Yii::$app->response->cookies[AdminConst::COOKIE_ADMIN_USER_ID]);
     	}
 //     	unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
+		
+    	//清空最后一次访问链接
+    	$session->remove(AdminConst::ADMIN_LAST_ACCESS_URL);
     	
     	Yii::$app->getResponse()->redirect("/admin/system/login/index");
     }
