@@ -85,6 +85,22 @@ use Yii;
  */
 class SysParameter extends \app\models\b2b2c\BasicModel
 {
+	
+	/* 是 */
+	const param_yes = 1;
+	
+	/* 否 */
+	const param_no = 0;
+	
+	/* 手机号码验证 */
+    const param_verify_mobile = 1301;
+    
+    /* 邮箱验证 */
+    const param_verify_email = 1302; 	
+
+    
+    
+    
     /**
      * @inheritdoc
      */

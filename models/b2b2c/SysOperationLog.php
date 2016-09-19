@@ -16,6 +16,8 @@ use Yii;
  * @property string $op_browser_type
  * @property string $op_url
  * @property string $op_desc
+ * @property string $op_method
+ * @property string $op_referrer
  *
  * @property SysUser $user
  * @property SysModule $module
@@ -37,13 +39,14 @@ class SysOperationLog extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['user_id', 'module_id', 'operation_id', 'op_date'], 'required'],
+            [['user_id', /* 'module_id', 'operation_id', */ 'op_date'], 'required'],
             [['user_id', 'module_id', 'operation_id'], 'integer'],
             [['op_date'], 'safe'],
             [['op_desc'], 'string'],
             [['op_ip_addr'], 'string', 'max' => 30],
-            [['op_browser_type'], 'string', 'max' => 60],
-            [['op_url'], 'string', 'max' => 400],
+            [['op_browser_type'], 'string', 'max' => 400],
+            [['op_url', 'op_referrer'], 'string', 'max' => 400],
+            [['op_method'], 'string', 'max' => 20],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['module_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysModule::className(), 'targetAttribute' => ['module_id' => 'id']],
             [['operation_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysOperation::className(), 'targetAttribute' => ['operation_id' => 'id']],
@@ -59,12 +62,14 @@ class SysOperationLog extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键'),
             'user_id' => Yii::t('app', '关联用户编号'),
             'module_id' => Yii::t('app', '关联模块编号'),
-            'operation_id' => Yii::t('app', 'Operation ID'),
+            'operation_id' => Yii::t('app', '关联操作编号'),
             'op_date' => Yii::t('app', '操作日期'),
             'op_ip_addr' => Yii::t('app', '操作IP地址'),
             'op_browser_type' => Yii::t('app', '浏览器类型'),
             'op_url' => Yii::t('app', '操作对应完整URL'),
             'op_desc' => Yii::t('app', '操作描述'),
+            'op_method' => Yii::t('app', 'POST还是GET提交的数据'),
+            'op_referrer' => Yii::t('app', '访问地址来源'),
         ];
     }
 
