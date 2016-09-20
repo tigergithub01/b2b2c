@@ -6,6 +6,7 @@ use Yii;
 use app\models\b2b2c\SysUser;
 use app\modules\admin\models\AdminConst;
 use app\models\b2b2c\SysParameter;
+use app\modules\merchant\models\MerchantConst;
 
 
 

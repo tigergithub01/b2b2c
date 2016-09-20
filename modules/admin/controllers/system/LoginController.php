@@ -47,7 +47,7 @@ class LoginController extends BaseController
 				$session = Yii::$app->session;
 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
 				
-				//写权限信息 TOOD：
+				//写权限信息 TODO:
 					
 				//写cookie
 				if($model->remember_me){

@@ -7,6 +7,8 @@ use yii\web\Controller;
 use app\models\b2b2c\Vip;
 use app\modules\merchant\common\controllers\BaseController;
 use app\modules\merchant\models\MerchantConst;
+use yii\helpers\Url;
+use app\modules\merchant\service\vip\MerchantService;
 
 /**
  * login controller
@@ -25,6 +27,8 @@ class LoginController extends BaseController
 	 */
 	public function actionIndex()
 	{
+		$merchantService = new MerchantService();
+		
 		/* 初始化插入一个系统管理员  */
 		$test_Vip = new Vip();
 // 		$system_user->insertSystemUser();
@@ -34,15 +38,16 @@ class LoginController extends BaseController
 		$model = new Vip();
 		$model->setScenario(Vip::SCENARIO_LOGIN);
 		
-		$user_db = null;
+		$vip_db = null;
 		if ($model->load(Yii::$app->request->post()) && $model->validate() /* && ($user_db = $model->login()) */) {
 			/* $valid = $model->validate(); */
 			$model->password = md5($model->password);
-			if(($user_db = $model->login())){
+			if(($vip_db = $merchantService->login($model))){
 				//写session
 				$session = Yii::$app->session;
-				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
-				//写权限信息 TOOD：
+				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db);
+				
+				//写权限信息 TODO：
 					
 					
 				//写cookie
@@ -54,27 +59,35 @@ class LoginController extends BaseController
 					$cookies = Yii::$app->response->cookies;
 					// 				$cookies->set(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id);
 					$cookies->add(new \yii\web\Cookie([
-							'name' => AdminConst::COOKIE_ADMIN_USER_ID,
+							'name' => MerchantConst::COOKIE_MERCHANT_USER_ID,
 							'value' => $user_db->user_id,
 							'expire'=>time()+3600*24*7
 					]));
 					$cookies->add(new \yii\web\Cookie([
-							'name' => AdminConst::COOKIE_ADMIN_PASSWORD,
+							'name' => MerchantConst::COOKIE_MERCHANT_PASSWORD,
 							'value' => $user_db->password,
 							'expire'=>time()+3600*24*7
 					]));
+				}
+				
+				//登陆成功后根据情况进行跳转
+				$last_access_url = Yii::$app->session->get(MerchantConst::MERCHANT_LAST_ACCESS_URL);
+				if($last_access_url){
+					Yii::$app->session->remove(MerchantConst::MERCHANT_LAST_ACCESS_URL);
+					Yii::$app->response->redirect($last_access_url);
+				}else{
+					Yii::$app->response->redirect("/merchant/default/index");
 				}
 			}else{
 				/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
 				unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
 				
 				$cookies = Yii::$app->response->cookies;
-				$cookies->remove(AdminConst::COOKIE_ADMIN_USER_ID);
-				$cookies->remove(AdminConst::COOKIE_ADMIN_PASSWORD);
+				$cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
+				$cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
 			}
 			
 // 			if($valid){
-				Yii::$app->response->redirect("/admin/default/index");
 // 			}
 // 			return $this->goBack();
 		}
