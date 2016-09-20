@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/9/19 18:30:02                           */
+/* Created on:     2016/9/20 15:55:51                           */
 /*==============================================================*/
 
 
@@ -112,6 +112,10 @@ drop table if exists t_sys_app_info;
 
 drop table if exists t_sys_app_release;
 
+drop table if exists t_sys_article;
+
+drop table if exists t_sys_article_type;
+
 drop table if exists t_sys_audit_log;
 
 drop table if exists t_sys_config;
@@ -126,7 +130,7 @@ drop table if exists t_sys_module;
 
 drop table if exists t_sys_notify;
 
-drop table if exists t_sys_notify_push_log;
+drop table if exists t_sys_notify_log;
 
 drop index Index_op_code on t_sys_operation;
 
@@ -201,8 +205,6 @@ drop table if exists t_vip_org_case_detail;
 drop table if exists t_vip_org_case_photo;
 
 drop table if exists t_vip_org_gallery;
-
-drop table if exists t_vip_org_notice;
 
 drop table if exists t_vip_organization;
 
@@ -1089,6 +1091,39 @@ create table t_sys_app_release
 alter table t_sys_app_release comment '应用发布信息表';
 
 /*==============================================================*/
+/* Table: t_sys_article                                         */
+/*==============================================================*/
+create table t_sys_article
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   type_id              bigint(20) comment '文章分类（以后再建表）',
+   title                varchar(60) not null comment '标题',
+   code                 varchar(30) comment '特殊标识（比如注册协议可以增加一个特殊标识register_agreement）',
+   issue_date           datetime not null comment '发布日期',
+   content              text comment '内容',
+   issue_user_id        bigint(20) comment '发布人',
+   is_show              bigint(20) not null comment '是否显示（1：是，0：否）',
+   primary key (id)
+);
+
+alter table t_sys_article comment '文章信息';
+
+/*==============================================================*/
+/* Table: t_sys_article_type                                    */
+/*==============================================================*/
+create table t_sys_article_type
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   name                 varchar(60) not null comment '文章分类名称',
+   parent_id            bigint(20) comment '父编号',
+   is_show              bigint(20) not null comment '是否显示',
+   seq_id               int comment '序号',
+   primary key (id)
+);
+
+alter table t_sys_article_type comment '文章分类';
+
+/*==============================================================*/
 /* Table: t_sys_audit_log                                       */
 /*==============================================================*/
 create table t_sys_audit_log
@@ -1182,31 +1217,34 @@ create unique index Index_module_code on t_sys_module
 create table t_sys_notify
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
-   notify_type          bigint(20) not null comment '公告类型',
-   title                varchar(60) not null comment '消息标题',
-   issue_date           datetime not null comment '消息发布日期',
-   content              text comment '消息内容',
+   notify_type          bigint(20) comment '公告类型：店铺公告，平台公告',
+   title                varchar(60) not null comment '标题',
+   issue_date           datetime not null comment '发布日期',
+   content              text comment '内容',
+   organization_id      bigint(20) comment '发布机构(店铺发布公告时使用此字段）',
+   issue_user_id        bigint(20) comment '发布公告时使用此字段',
+   send_extend          bigint(20) not null comment '发送范围[全部（商户+会员)-待定,商户,会员]',
+   status               bigint(20) not null comment '是否有效（1：是，0：否）',
    primary key (id)
 );
 
-alter table t_sys_notify comment '系统公告';
+alter table t_sys_notify comment '系统消息';
 
 /*==============================================================*/
-/* Table: t_sys_notify_push_log                                 */
+/* Table: t_sys_notify_log                                      */
 /*==============================================================*/
-create table t_sys_notify_push_log
+create table t_sys_notify_log
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
    notify_id            bigint(20) not null comment '关联通知编号',
-   vip_id               bigint(20) not null comment '推送会员编号',
-   title                varchar(60) not null comment '推送标题',
-   content              varchar(500) comment '推送内容,手机客户端推送内容一般不会太多',
-   push_date            datetime not null comment '推送时间',
-   read_date            datetime comment '阅读时间',
+   vip_id               bigint(20) not null comment '通知会员编号',
+   create_date          datetime not null comment '消息创建时间',
+   read_date            datetime comment '消息阅读时间',
+   expiration_time      datetime comment '消息过期时间',
    primary key (id)
 );
 
-alter table t_sys_notify_push_log comment '消息发送日志';
+alter table t_sys_notify_log comment '消息发送日志';
 
 /*==============================================================*/
 /* Table: t_sys_operation                                       */
@@ -1331,7 +1369,6 @@ create table t_sys_role_rights
    id                   bigint(20) not null auto_increment comment '主键编号',
    role_id              bigint(20) not null comment '关联角色编号',
    module_id            bigint(20) not null comment '关联模块编号',
-   operation_id         bigint(20) not null comment '关联操作编号',
    primary key (id)
 );
 
@@ -1807,24 +1844,6 @@ create table t_vip_org_gallery
 alter table t_vip_org_gallery comment '店铺相册(暂时作为封面）';
 
 /*==============================================================*/
-/* Table: t_vip_org_notice                                      */
-/*==============================================================*/
-create table t_vip_org_notice
-(
-   id                   bigint(20) not null auto_increment comment '主键',
-   organization_id      bigint(20) comment '发布机构(店铺发布公告时使用此字段）',
-   content              text not null comment '发布内容',
-   issue_date           datetime not null comment '发布日期',
-   issue_user_id        bigint(20) comment '平台发布公告时使用此字段',
-   notice_flag          bigint(20) not null comment '店铺发公告，平台发公告',
-   send_extend          bigint(20) not null comment '公告发送范围[全部（商户+会员),商户,会员]',
-   status               bigint(20) not null comment '是否显示',
-   primary key (id)
-);
-
-alter table t_vip_org_notice comment '公告';
-
-/*==============================================================*/
 /* Table: t_vip_organization                                    */
 /*==============================================================*/
 create table t_vip_organization
@@ -2289,6 +2308,21 @@ alter table t_sys_app_release add constraint fk_app_release_ref_user foreign key
 alter table t_sys_app_release add constraint fk_app_release_upgrade_ref_param foreign key (force_upgrade)
       references t_sys_parameter (id);
 
+alter table t_sys_article add constraint fk_article_is_show_ref_param foreign key (is_show)
+      references t_sys_parameter (id);
+
+alter table t_sys_article add constraint fk_article_type_id_ref_art_type foreign key (type_id)
+      references t_sys_article_type (id);
+
+alter table t_sys_article add constraint fk_article_usr_id_ref_usr foreign key (issue_user_id)
+      references t_sys_user (id);
+
+alter table t_sys_article_type add constraint fk_article_is_show_ref_param foreign key (is_show)
+      references t_sys_parameter (id);
+
+alter table t_sys_article_type add constraint fk_article_parent_id_ref_article foreign key (parent_id)
+      references t_sys_article_type (id);
+
 alter table t_sys_audit_log add constraint fk_sys_audit_operate_ref_param foreign key (audit_operate)
       references t_sys_parameter (id);
 
@@ -2316,13 +2350,25 @@ alter table t_sys_module add constraint fk_module_pid_ref_mudule foreign key (pa
 alter table t_sys_module add constraint fk_sys_module_stat_ref_dict foreign key (status)
       references t_sys_parameter (id);
 
+alter table t_sys_notify add constraint fk_notify_extend_ref_param foreign key (send_extend)
+      references t_sys_parameter (id);
+
+alter table t_sys_notify add constraint fk_notify_issue_usr_ref_usr foreign key (issue_user_id)
+      references t_sys_user (id);
+
+alter table t_sys_notify add constraint fk_notify_org_ref_org foreign key (organization_id)
+      references t_vip_organization (id);
+
+alter table t_sys_notify add constraint fk_notify_stat_ref_param foreign key (status)
+      references t_sys_parameter (id);
+
 alter table t_sys_notify add constraint fk_notify_type_ref_param foreign key (notify_type)
       references t_sys_parameter (id);
 
-alter table t_sys_notify_push_log add constraint fk_notify_push_his_ref_notify foreign key (notify_id)
+alter table t_sys_notify_log add constraint fk_notify_push_his_ref_notify foreign key (notify_id)
       references t_sys_notify (id);
 
-alter table t_sys_notify_push_log add constraint fk_notify_push_ref_vip foreign key (vip_id)
+alter table t_sys_notify_log add constraint fk_notify_push_ref_vip foreign key (vip_id)
       references t_vip (id);
 
 alter table t_sys_operation_log add constraint fk_log_ref_module foreign key (module_id)
@@ -2342,9 +2388,6 @@ alter table t_sys_relative_module add constraint fk_rel_module_ref_org foreign k
 
 alter table t_sys_relative_module add constraint fk_relative_module_show_ref_param foreign key (is_show)
       references t_sys_parameter (id);
-
-alter table t_sys_role_rights add constraint fk_role_rights_ref_op foreign key (operation_id)
-      references t_sys_operation (id);
 
 alter table t_sys_role_rights add constraint fk_rolel_rights_ref_module foreign key (module_id)
       references t_sys_module (id);
@@ -2546,18 +2589,6 @@ alter table t_vip_org_case_photo add constraint fk_vip_case_photo_ref_case forei
 
 alter table t_vip_org_gallery add constraint fk_org_gallery_ref_org foreign key (organization_id)
       references t_vip_organization (id);
-
-alter table t_vip_org_notice add constraint fk_org_notice_send_ext_ref_param foreign key (send_extend)
-      references t_sys_parameter (id);
-
-alter table t_vip_org_notice add constraint fk_org_notice_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
-alter table t_vip_org_notice add constraint fk_vip_notice_flag_ref_param foreign key (notice_flag)
-      references t_sys_parameter (id);
-
-alter table t_vip_org_notice add constraint fk_vip_notice_status_ref_param foreign key (status)
-      references t_sys_parameter (id);
 
 alter table t_vip_organization add constraint fk_org_ref_vip foreign key (vip_id)
       references t_vip (id);
