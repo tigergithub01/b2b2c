@@ -71,9 +71,9 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public $sms_code;
 	
 	/* 会员 */
-	const SCENARIO_REGISTER = 'register';
-	const SCENARIO_LOGIN = 'login';
-	const SCENARIO_AUTO_LOGIN = 'auto_login';
+	const SCENARIO_REGISTER = 'register';//注册
+	const SCENARIO_LOGIN = 'login';//登陆
+	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
 	const SCENARIO_FORGOT_PWD = 'forgot_pwd';//忘记密码
 	const SCENARIO_CHANG_PWD = 'change_pwd'; //登陆后修改密码
 	
