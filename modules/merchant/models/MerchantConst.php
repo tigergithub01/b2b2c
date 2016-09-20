@@ -17,6 +17,6 @@ class MerchantConst{
 	const CAPTCHA_ACTION_KEY = '__captcha/site/captcha';
 	
 	/* 最后一次访问URL */
-	const LAST_ACCESS_URL = 'last_access_url';
+	const MERCHANT_LAST_ACCESS_URL = 'merchant_last_access_url';
 	
 }

@@ -17,40 +17,48 @@ class MerchantAuthBehavior extends Behavior{
 	
 	
 	 public function beforeAction($event){
-// 	 	var_dump("xxx");
-	 	Yii::info('MerchantAuthBehavior beforeAction' );
-	 	
 	 	//check cookie for auto login
 // 	 	Yii::$app->request->cookies;
 	 	$session = Yii::$app->session;
 	 	$login_user = $session->get(MerchantConst::LOGIN_MERCHANT_USER);
-	 	
 	 	$cookies = Yii::$app->request->cookies;
 	 	$merchant_user_id = $cookies->getValue(MerchantConst::COOKIE_MERCHANT_USER_ID);
-// 	 	$admin_user_id = $_COOKIE[MerchantConst::COOKIE_ADMIN_USER_ID];
-// 	 	$admin_user_id = $cookies[MerchantConst::COOKIE_ADMIN_USER_ID]->value;
-	 	if($merchant_user_id && empty($login_user)){
-	 		//auto login
-	 		$model = new SysUser();
-	 		$model->setScenario(SysUser::SCENARIO_AUTO_LOGIN);
-	 		$model->user_id = $admin_user_id;
-	 		$model->password = $cookies->getValue(MerchantConst::COOKIE_MERCHANT_PASSWORD);
-	 		$user_db = null;
-	 		if($model->validate() && ($user_db = $model->login())){
-// 	 			$_SESSION[MerchantConst::LOGIN_ADMIN_USER]=$user_db;
-	 			//设置用户
-	 			$session->set(MerchantConst::LOGIN_MERCHANT_USER,$user_db);
-	 			
-	 			//设置会话
+// 	 	$admin_user_id = $_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID];
+// 	 	$admin_user_id = $cookies[AdminConst::COOKIE_ADMIN_USER_ID]->value;
+	 	if(empty($login_user)){
+	 		//记录最后次访问URL
+	 		$session->set(MerchantConst::MERCHANT_LAST_ACCESS_URL,Yii::$app->request->url);
+	 		
+	 		//是否自动登陆
+	 		if($merchant_user_id){
+	 			//auto login
+	 			$model = new SysUser();
+	 			$model->setScenario(SysUser::SCENARIO_AUTO_LOGIN);
+	 			$model->user_id = $admin_user_id;
+	 			$model->password = $cookies->getValue(AdminConst::COOKIE_ADMIN_PASSWORD);
+	 			$user_db = null;
+	 			$userService = new SysUserService();
+// 	 			if($model->validate() && ($user_db = $model->login())){
+	 			if($model->validate() && ($user_db = $userService->login($model))){
+	 				// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
+	 				//设置用户
+	 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+	 				
+	 				//设置权限等信息TODO:
+	 			}else{
+	 				//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
+	 				Yii::$app->getResponse()->redirect("/merchant/system/login/index");
+	 			}	
+	 		}else{
+	 			//redirect to 
+	 			Yii::$app->getResponse()->redirect("/merchant/system/login/index");
 	 		}
 	 	}
 	 	
 		
-	 	//check session for user rights
+	 	//check session for user rights(检查用户权限）
 	 	
-	 	if(empty($login_user)){
-	 		Yii::$app->getResponse()->redirect("/merchant/system/login/index");
-	 	}
+	 	
 // 	 	Yii::$app->getResponse()->redirect("/admin/system/login/index");
 	 }
 	 
