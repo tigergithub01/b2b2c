@@ -40,7 +40,7 @@ class PayTypeController extends BaseAuthController
      */
     public function actionIndex()
     {
-        $searchModel = new PayTypeSearch();
+    	$searchModel = new PayTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
