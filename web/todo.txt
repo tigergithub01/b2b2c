@@ -226,9 +226,43 @@ cookie文章：http://www.yiichina.com/tutorial/444
 
 后台的日志
 后台的模块配置
+后台加上权限后速度有些慢，这个要查一下。
 
 会员的登陆api
 会员的注册api
+
+
+filterWhere与where的区别：
+$query->filterWhere([
+    'username' => $username,
+    'email' => $email,		
+]);
+yii\db\Query::filterWhere() 和 yii\db\Query::where() 唯一的不同就在于，前者 将忽略在条件当中的hash format的空值。所以如果 $email 为空而 $username 不为空，那么上面的代码最终将生产如下 SQL ...WHERE username=:username。
+
+提示：当一个值为 null、空数组、空字符串或者一个只包含空白字符时，那么它将被判定为空值。
+
+表t_vip_extend与表
+
+关于审核人，审核时间，审核描述这个是否需要另外加一张表，这个待考虑。
+
+有复杂的业务逻辑的时候，可以考虑用service来实现，如果只关联到本表，直接在model中实现就可以了。
+
+http://www.hunliji.com/p/wedding/Public/admin/registered/registered.html#content1
+
+todo: 404,500,出错等页面应该是没有layout
+http://localhost:8089/merchant/system/sms/index1
+
+如何限制只能访问指定的方法
+
+协议等等一些文章放在什么地方，这个可能要新建立一个表。
+
+通告可能要重新设计，需要考虑所有的用户是否看过通知消息。以及是否发送短消息通知。
+
+短消息与邮件发送的日志可能需要单独用表来进行保存；现在暂时用文件日志来进行保存。
+
+
+
+
 
 
 
