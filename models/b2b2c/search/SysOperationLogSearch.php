@@ -18,8 +18,8 @@ class SysOperationLogSearch extends SysOperationLog
     public function rules()
     {
         return [
-            [['id', 'user_id', 'module_id', 'operation_id'], 'integer'],
-            [['op_date', 'op_ip_addr', 'op_browser_type', 'op_url', 'op_desc'], 'safe'],
+            [['id', 'user_id', 'module_id'], 'integer'],
+            [['op_date', 'op_ip_addr', 'op_browser_type', 'op_url', 'op_desc', 'op_method', 'op_referrer', 'op_module', 'op_controller', 'op_action'], 'safe'],
         ];
     }
 
@@ -64,14 +64,18 @@ class SysOperationLogSearch extends SysOperationLog
             'id' => $this->id,
             'user_id' => $this->user_id,
             'module_id' => $this->module_id,
-            'operation_id' => $this->operation_id,
             'op_date' => $this->op_date,
         ]);
 
         $query->andFilterWhere(['like', 'op_ip_addr', $this->op_ip_addr])
             ->andFilterWhere(['like', 'op_browser_type', $this->op_browser_type])
             ->andFilterWhere(['like', 'op_url', $this->op_url])
-            ->andFilterWhere(['like', 'op_desc', $this->op_desc]);
+            ->andFilterWhere(['like', 'op_desc', $this->op_desc])
+            ->andFilterWhere(['like', 'op_method', $this->op_method])
+            ->andFilterWhere(['like', 'op_referrer', $this->op_referrer])
+            ->andFilterWhere(['like', 'op_module', $this->op_module])
+            ->andFilterWhere(['like', 'op_controller', $this->op_controller])
+            ->andFilterWhere(['like', 'op_action', $this->op_action]);
 
         return $dataProvider;
     }

@@ -37,13 +37,13 @@ use Yii;
  * @property ProductComment[] $productComments
  * @property RefundSheet[] $refundSheets
  * @property ReturnSheet[] $returnSheets
+ * @property SysNotify[] $sysNotifies
  * @property SysRelativeModule[] $sysRelativeModules
  * @property SysWarehouse[] $sysWarehouses
  * @property VipBlog[] $vipBlogs
  * @property VipCouponType[] $vipCouponTypes
  * @property VipOrgCase[] $vipOrgCases
  * @property VipOrgGallery[] $vipOrgGalleries
- * @property VipOrgNotice[] $vipOrgNotices
  * @property SysParameter $roleType
  * @property Vip $vip
  * @property SysParameter $status0
@@ -178,6 +178,14 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSysNotifies()
+    {
+        return $this->hasMany(SysNotify::className(), ['organization_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSysRelativeModules()
     {
         return $this->hasMany(SysRelativeModule::className(), ['organization_id' => 'id']);
@@ -221,14 +229,6 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     public function getVipOrgGalleries()
     {
         return $this->hasMany(VipOrgGallery::className(), ['organization_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVipOrgNotices()
-    {
-        return $this->hasMany(VipOrgNotice::className(), ['organization_id' => 'id']);
     }
 
     /**

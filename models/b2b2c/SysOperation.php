@@ -10,9 +10,6 @@ use Yii;
  * @property string $id
  * @property string $code
  * @property string $name
- *
- * @property SysOperationLog[] $sysOperationLogs
- * @property SysRoleRights[] $sysRoleRights
  */
 class SysOperation extends \app\models\b2b2c\BasicModel
 {
@@ -47,21 +44,5 @@ class SysOperation extends \app\models\b2b2c\BasicModel
             'code' => Yii::t('app', '操作唯一编码'),
             'name' => Yii::t('app', '操作名称'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSysOperationLogs()
-    {
-        return $this->hasMany(SysOperationLog::className(), ['operation_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSysRoleRights()
-    {
-        return $this->hasMany(SysRoleRights::className(), ['operation_id' => 'id']);
     }
 }

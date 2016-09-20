@@ -30,12 +30,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'user_id',
             'module_id',
-            'operation_id',
             'op_date',
-            // 'op_ip_addr',
+            'op_ip_addr',
             // 'op_browser_type',
             // 'op_url:url',
             // 'op_desc:ntext',
+            // 'op_method',
+            // 'op_referrer',
+            // 'op_module',
+            // 'op_controller',
+            // 'op_action',
 
             
         ],

@@ -8,6 +8,7 @@ use app\modules\admin\models\AdminConst;
 use app\models\b2b2c\SysUser;
 use app\models\b2b2c\SysOperationLog;
 use yii\helpers\Json;
+use app\modules\admin\service\system\SysUserService;
 
 class AdminAuthBehavior extends Behavior{
 	
@@ -27,43 +28,50 @@ class AdminAuthBehavior extends Behavior{
 // 	 	var_dump(Yii::$app);
 // 	 	var_dump(Yii::$app->request);
 // 	 	var_dump(Yii::$app->request->url);
-	 	
+// 		var_dump($event->action);
 	 	
 	 	//check cookie for auto login
 // 	 	Yii::$app->request->cookies;
 	 	$session = Yii::$app->session;
 	 	$login_user = $session->get(AdminConst::LOGIN_ADMIN_USER);
-	 	if(empty($login_user)){
-	 		//记录最后次访问URL
-// 	 		Yii::$app->request->absoluteUrl
-	 		$session->set(AdminConst::ADMIN_LAST_ACCESS_URL,Yii::$app->request->url);
-	 	}
-	 	
-	 	
 	 	$cookies = Yii::$app->request->cookies;
 	 	$admin_user_id = $cookies->getValue(AdminConst::COOKIE_ADMIN_USER_ID);
 // 	 	$admin_user_id = $_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID];
 // 	 	$admin_user_id = $cookies[AdminConst::COOKIE_ADMIN_USER_ID]->value;
-	 	if($admin_user_id && empty($login_user)){
-	 		//auto login
-	 		$model = new SysUser();
-	 		$model->setScenario(SysUser::SCENARIO_AUTO_LOGIN);
-	 		$model->user_id = $admin_user_id;
-	 		$model->password = $cookies->getValue(AdminConst::COOKIE_ADMIN_PASSWORD);
-	 		$user_db = null;
-	 		if($model->validate() && ($user_db = $model->login())){
-// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
-	 			//设置用户
-	 			$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+	 	if(empty($login_user)){
+	 		//记录最后次访问URL
+	 		$session->set(AdminConst::ADMIN_LAST_ACCESS_URL,Yii::$app->request->url);
+	 		
+	 		//是否自动登陆
+	 		if($admin_user_id){
+	 			//auto login
+	 			$model = new SysUser();
+	 			$model->setScenario(SysUser::SCENARIO_AUTO_LOGIN);
+	 			$model->user_id = $admin_user_id;
+	 			$model->password = $cookies->getValue(AdminConst::COOKIE_ADMIN_PASSWORD);
+	 			$user_db = null;
+	 			$userService = new SysUserService();
+// 	 			if($model->validate() && ($user_db = $model->login())){
+	 			if($model->validate() && ($user_db = $userService->login($model))){
+	 				// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
+	 				//设置用户
+	 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+	 				
+	 				//设置权限等信息TODO:
+	 			}else{
+	 				//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
+	 				Yii::$app->getResponse()->redirect("/admin/system/login/index");
+	 			}	
+	 		}else{
+	 			//redirect to 
+	 			Yii::$app->getResponse()->redirect("/admin/system/login/index");
 	 		}
 	 	}
 	 	
 		
-	 	//check session for user rights
+	 	//check session for user rights(检查用户权限）
 	 	
-	 	if(empty($login_user)){
-	 		Yii::$app->getResponse()->redirect("/admin/system/login/index");
-	 	}
+	 	
 // 	 	Yii::$app->getResponse()->redirect("/admin/system/login/index");
 	 }
 	 
@@ -88,15 +96,18 @@ class AdminAuthBehavior extends Behavior{
 // 	 	var_dump(Yii::$app->request->userAgent);
 	 	$sys_log->op_method = Yii::$app->request->method;
 	 	$sys_log->op_referrer = Yii::$app->request->referrer;
+	 	$sys_log->op_module = $action->controller->module->id;
+	 	$sys_log->op_controller = $action->controller->id;
+	 	$sys_log->op_action = $action->id;
 	 	/* var_dump(Json::encode($_REQUEST)); */
 	 	if(isset($_REQUEST)){
 	 		$parameters = Json::encode($_REQUEST);
 	 		$sys_log->op_desc = $parameters;
 	 	}
-	 	/* $sys_log->validate();
-	 	var_dump($sys_log->getErrors()); */
 	 	$sys_log->insert();
-	 	
+	 	if($sys_log->hasErrors()){
+	 		Yii::info($sys_log->getErrors());
+	 	}	 	
 	 }
 	
 	/* public function beforeAction($action){

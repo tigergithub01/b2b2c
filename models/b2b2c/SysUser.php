@@ -235,7 +235,13 @@ class SysUser extends \app\models\b2b2c\BasicModel
     		$this->addError("user_id",Yii::t('app', '用户名不存在'));
     		return false;
     	}
-    	 
+    	
+    	//判断用户是否有效
+    	if($_user->status==SysParameter::param_no){
+    		$this->addError("user_id",Yii::t('app', '用户未激活'));
+    		return false;
+    	}
+    	
     	//判断密码
     	if(!strcmp($this->password, $_user->password)==0){
     		$this->addError("password",Yii::t('app', '密码不正确'));

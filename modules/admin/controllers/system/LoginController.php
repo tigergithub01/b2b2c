@@ -7,6 +7,7 @@ use yii\web\Controller;
 use app\models\b2b2c\SysUser;
 use app\modules\admin\common\controllers\BaseController;
 use app\modules\admin\models\AdminConst;
+use app\modules\admin\service\system\SysUserService;
 
 /**
  * login controller
@@ -25,9 +26,13 @@ class LoginController extends BaseController
 	 */
 	public function actionIndex()
 	{
+		/* service */
+		$userService  = new SysUserService();
+		
 		/* 初始化插入一个系统管理员  */
-		$system_user = new SysUser();
-		$system_user->insertSystemUser();		
+		/* $system_user = new SysUser();
+		$system_user->insertSystemUser();	 */	
+		$userService->insertSystemUser();
 		
 		/* 登陆 */
 		$model = new SysUser();
@@ -37,10 +42,11 @@ class LoginController extends BaseController
 		if ($model->load(Yii::$app->request->post()) && $model->validate() /* && ($user_db = $model->login()) */) {
 			/* $valid = $model->validate(); */
 			$model->password = md5($model->password);
-			if(($user_db = $model->login())){
-				//写session
+			if(($user_db = $userService->login($model))){
+				//写用户信息
 				$session = Yii::$app->session;
 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+				
 				//写权限信息 TOOD：
 					
 				//写cookie
@@ -62,6 +68,16 @@ class LoginController extends BaseController
 							'expire'=>time()+3600*24*7
 					]));
 				}
+				
+				//登陆成功后根据情况进行跳转
+				$last_access_url = Yii::$app->session->get(AdminConst::ADMIN_LAST_ACCESS_URL);
+				if($last_access_url){
+					Yii::$app->session->remove(AdminConst::ADMIN_LAST_ACCESS_URL);
+					Yii::$app->response->redirect($last_access_url);
+				}else{
+					Yii::$app->response->redirect("/admin/default/index");
+				}
+				
 			}else{
 				/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
 				unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
@@ -73,14 +89,7 @@ class LoginController extends BaseController
 			
 // 			if($valid){
 
-			//根据情况进行跳转
-			$last_access_url = Yii::$app->session->get(AdminConst::ADMIN_LAST_ACCESS_URL);
-			if($last_access_url){
-				Yii::$app->session->remove(AdminConst::ADMIN_LAST_ACCESS_URL);
-				Yii::$app->response->redirect($last_access_url);
-			}else{
-				Yii::$app->response->redirect("/admin/default/index");
-			}
+			
 			
 			
 				

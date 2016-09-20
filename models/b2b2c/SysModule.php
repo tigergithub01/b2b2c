@@ -12,7 +12,9 @@ use Yii;
  * @property string $name
  * @property string $parent_id
  * @property string $url
+ * @property string $module
  * @property string $controller
+ * @property string $action
  * @property string $menu_flag
  * @property string $status
  *
@@ -41,7 +43,7 @@ class SysModule extends \app\models\b2b2c\BasicModel
         return [
             [['code', 'name', 'menu_flag', 'status'], 'required'],
             [['parent_id', 'menu_flag', 'status'], 'integer'],
-            [['code', 'controller'], 'string', 'max' => 30],
+            [['code', 'module', 'controller', 'action'], 'string', 'max' => 30],
             [['name'], 'string', 'max' => 60],
             [['url'], 'string', 'max' => 200],
             [['code'], 'unique'],
@@ -62,7 +64,9 @@ class SysModule extends \app\models\b2b2c\BasicModel
             'name' => Yii::t('app', '模块名称'),
             'parent_id' => Yii::t('app', '关联上级模块主键编号'),
             'url' => Yii::t('app', '模块URL地址'),
+            'module' => Yii::t('app', '模块编号'),
             'controller' => Yii::t('app', '模块对应的控制器编号'),
+            'action' => Yii::t('app', '对应操作'),
             'menu_flag' => Yii::t('app', '是否菜单项'),
             'status' => Yii::t('app', '是否有效？1：是；0：否'),
         ];

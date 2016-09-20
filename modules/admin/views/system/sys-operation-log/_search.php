@@ -42,17 +42,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'module_id') ?>
 
-    <?= $form->field($model, 'operation_id') ?>
-
     <?= $form->field($model, 'op_date') ?>
 
-    <?php // echo $form->field($model, 'op_ip_addr') ?>
+    <?= $form->field($model, 'op_ip_addr') ?>
 
     <?php // echo $form->field($model, 'op_browser_type') ?>
 
     <?php // echo $form->field($model, 'op_url') ?>
 
     <?php // echo $form->field($model, 'op_desc') ?>
+
+    <?php // echo $form->field($model, 'op_method') ?>
+
+    <?php // echo $form->field($model, 'op_referrer') ?>
+
+    <?php // echo $form->field($model, 'op_module') ?>
+
+    <?php // echo $form->field($model, 'op_controller') ?>
+
+    <?php // echo $form->field($model, 'op_action') ?>
 
 	    
 	    </div>

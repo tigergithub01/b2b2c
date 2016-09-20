@@ -41,8 +41,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'module_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'operation_id')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'op_date')->textInput() ?>
 
     <?= $form->field($model, 'op_ip_addr')->textInput(['maxlength' => true]) ?>
@@ -52,6 +50,16 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'op_url')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'op_desc')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'op_method')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'op_referrer')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'op_module')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'op_controller')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'op_action')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	
