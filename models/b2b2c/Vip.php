@@ -70,12 +70,16 @@ class Vip extends \app\models\b2b2c\BasicModel
 	//短信验证码
 	public $sms_code;
 	
+	//新密码(登陆后修改密码）
+	public $new_pwd;
+	
+	
 	/* 会员 */
 	const SCENARIO_REGISTER = 'register';//注册
 	const SCENARIO_LOGIN = 'login';//登陆
 	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
 	const SCENARIO_FORGOT_PWD = 'forgot_pwd';//忘记密码
-	const SCENARIO_CHANG_PWD = 'change_pwd'; //登陆后修改密码
+	const SCENARIO_CHANGE_PWD = 'change_pwd'; //登陆后修改密码
 	
 	/* 商户平台  */
 	/* const SCENARIO_MERCHANT_LOGIN = 'merchant_login';
@@ -90,6 +94,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
+		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'new_pwd','confirm_pwd'];
 		// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
 		return $scenarios;
 	
@@ -131,11 +136,13 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
         	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
-        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_CHANGE_PWD]],
         	[['sms_code'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
-        	[['password','confirm_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	[['password','confirm_pwd','new_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
 //         	[['agreement'],'boolean','on' => [self::SCENARIO_REGISTER]],
+			[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
+        	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
         ];
     }
 

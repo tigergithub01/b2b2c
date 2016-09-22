@@ -34,19 +34,30 @@ use Yii;
  */
 class SysUser extends \app\models\b2b2c\BasicModel
 {
+	//记住密码（登陆)
 	public $remember_me = true;
+	
+	//图形验证码
 	public $verify_code;
 	
-	const SCENARIO_LOGIN = 'login';
+	//确认密码
+	public $confirm_pwd;
+	
+	//新密码(登陆后修改密码）
+	public $new_pwd;
+		
+	const SCENARIO_LOGIN = 'login';//登陆
 	const SCENARIO_REGISTER = 'register';
-	const SCENARIO_AUTO_LOGIN = 'auto_login';
+	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
+	const SCENARIO_CHANGE_PWD = 'change_pwd'; //登陆后修改密码
 	
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
 		$scenarios[self::SCENARIO_LOGIN] = ['user_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['user_id', 'password'];
-		// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
+		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'confirm_pwd', 'new_pwd'];
+		
 		return $scenarios;
 	
 		/* return [
@@ -81,6 +92,8 @@ class SysUser extends \app\models\b2b2c\BasicModel
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['is_admin'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_admin' => 'id']],
         	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN]],
+        	[['new_pwd','confirm_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
+        	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
         ];
     }
 
@@ -98,6 +111,8 @@ class SysUser extends \app\models\b2b2c\BasicModel
             'status' => Yii::t('app', '是否有效？1：是；0：否'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
         	'verify_code' => Yii::t('app', '验证码'),
+        	'new_pwd' => Yii::t('app', '新密码'),
+        	'confirm_pwd' => Yii::t('app', '确认密码'),
         ];
     }
 
