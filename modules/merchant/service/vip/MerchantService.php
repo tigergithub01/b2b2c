@@ -149,5 +149,26 @@ class MerchantService{
 		return $vip_db;
 	}
 	
+	/**
+	 * 注销当前登录
+	 */
+	public function logout(){
+		//clear session
+    	$session = Yii::$app->session;
+    	unset($session[MerchantConst::LOGIN_MERCHANT_USER]);    	
+    	
+    	//clear cookie
+    	$cookies = Yii::$app->request->cookies;
+    	if(isset($cookies[MerchantConst::COOKIE_MERCHANT_USER_ID])){
+	    	Yii::$app->response->cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
+	    	Yii::$app->response->cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
+// 	    	unset(Yii::$app->response->cookies[MerchantConst::COOKIE_ADMIN_USER_ID]);
+    	}
+//     	unset($_COOKIE[MerchantConst::COOKIE_ADMIN_USER_ID]);
+
+    	//清空最后一次访问链接
+    	$session->remove(MerchantConst::MERCHANT_LAST_ACCESS_URL);
+	}
+	
 	
 }

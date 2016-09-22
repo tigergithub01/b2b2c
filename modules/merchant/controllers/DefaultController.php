@@ -6,6 +6,8 @@ use Yii;
 use yii\web\Controller;
 use app\modules\merchant\models\MerchantConst;
 use app\modules\merchant\common\controllers\BaseAuthController;
+use app\modules\merchant\service\vip\MerchantService;
+
 
 /**
  * Default controller for the `merchant` module
@@ -22,23 +24,13 @@ class DefaultController extends BaseAuthController
     }
     
     
+    /**
+     * 注销
+     */
     public function actionLogout()
     {
-    	//clear session
-    	$session = Yii::$app->session;
-    	unset($session[MerchantConst::LOGIN_MERCHANT_USER]);    	
-    	
-    	//clear cookie
-    	$cookies = Yii::$app->request->cookies;
-    	if(isset($cookies[MerchantConst::COOKIE_MERCHANT_USER_ID])){
-	    	Yii::$app->response->cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
-	    	Yii::$app->response->cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
-// 	    	unset(Yii::$app->response->cookies[MerchantConst::COOKIE_ADMIN_USER_ID]);
-    	}
-//     	unset($_COOKIE[MerchantConst::COOKIE_ADMIN_USER_ID]);
-
-    	//清空最后一次访问链接
-    	$session->remove(MerchantConst::MERCHANT_LAST_ACCESS_URL);
+    	$service = new MerchantService();
+    	$service->logout();
     	
     	Yii::$app->getResponse()->redirect("/merchant/system/login/index");
     }

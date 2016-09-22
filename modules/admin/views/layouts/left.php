@@ -49,7 +49,7 @@
                 					['label' => '系统日志', 'url' => ['system/sys-operation-log/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '模块信息', 'url' => ['system/sys-module/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '首页广告设置', 'url' => ['system/sys-ad-info/index'],'icon' => 'fa fa-circle-o',],
-                					['label' => '密码修改', 'url' => ['system/sys-user/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],
                 ],
