@@ -73,7 +73,7 @@ $fieldOptions2 = [
 		
 		 <div class="row" style="margin-top: 20px;">
             <div class="col-xs-12 icheck">
-                <?= $form->field($model, 'remember_me')->checkbox(['label'=>'我同意遵守',
+                <?= $form->field($model, 'agreement')->checkbox(['label'=>'我同意遵守',
                 		'template' => "{input}{label}<a href='#'>《婚礼兔商家协议》<a>{error}",]) ?>
             </div>
         </div>

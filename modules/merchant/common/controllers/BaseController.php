@@ -5,6 +5,10 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use app\modules\merchant\common\filters\MerchantLogFilter;
+use app\models\b2b2c\common\JsonObj;
+use yii\base\Exception;
+use yii\base\UserException;
+use yii\web\HttpException;
 
 class BaseController extends Controller
 {
@@ -15,9 +19,9 @@ class BaseController extends Controller
 	public function actions()
 	{
 		return [
-				'error' => [
+				/* 'error' => [
 						'class' => 'yii\web\ErrorAction',
-				],
+				], */
 				'captcha' => [
 						'class' => 'yii\captcha\CaptchaAction',
 						'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -65,16 +69,47 @@ class BaseController extends Controller
 	 */
 	public function actionError()
 	{
-// 		$this->layout = 'main-login';
+		$this->layout = 'main-blank';
+
+// 		$this->layout = false;
 		
-		$exception = Yii::$app->errorHandler->exception;
-		if ($exception instanceof \yii\base\UserException) {
+	if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
+			// action has been invoked not from error handler, but by direct route, so we display '404 Not Found'
+			$exception = new HttpException(404, Yii::t('yii', 'Page not found.'));
+		}
+		
+		if ($exception instanceof HttpException) {
+			$code = $exception->statusCode;
+		} else {
+			$code = $exception->getCode();
+		}
+		if ($exception instanceof Exception) {
+			$name = $exception->getName();
+		} else {
+			$name = Yii::t('yii', 'Error');
+		}
+		if ($code) {
+			$name .= " (#$code)";
+		}
+		
+		if ($exception instanceof UserException) {
 			$message = $exception->getMessage();
 		} else {
 			$message = Yii::t('yii', 'An internal server error occurred.');
 		}
-		if ($exception !== null) {
-			return $this->render('error', ['exception' => $exception,'message' => $message,]);
+		
+		if (Yii::$app->getRequest()->getIsAjax()) {
+			$jsonObj = new JsonObj();
+			$jsonObj->status = false;
+			$jsonObj->message = "$name: $message";
+			return Json::encode($jsonObj);
+// 			return "$name: $message";
+		} else {
+			return $this->render('error', [
+					'name' => $name,
+					'message' => $message,
+					'exception' => $exception,
+			]);
 		}
 	}
 	

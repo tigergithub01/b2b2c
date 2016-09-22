@@ -49,15 +49,15 @@ class AdminAuthBehavior extends Behavior{
 	 			$model->setScenario(SysUser::SCENARIO_AUTO_LOGIN);
 	 			$model->user_id = $admin_user_id;
 	 			$model->password = $cookies->getValue(AdminConst::COOKIE_ADMIN_PASSWORD);
-	 			$user_db = null;
 	 			$userService = new SysUserService();
 // 	 			if($model->validate() && ($user_db = $model->login())){
-	 			if($model->validate() && ($user_db = $userService->login($model))){
+	 			if($model->validate() && ($user_db = $userService->login($model,true))){
 	 				// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
 	 				//设置用户
 	 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
 	 				
 	 				//设置权限等信息TODO:
+	 				
 	 			}else{
 	 				//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
 	 				Yii::$app->getResponse()->redirect("/admin/system/login/index");

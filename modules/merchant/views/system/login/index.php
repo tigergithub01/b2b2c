@@ -10,7 +10,7 @@ use app\modules\merchant\Module;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Module::t('app', 'Sign_In');
+$this->title = Module::t('app', 'merchant_sign_in');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -48,6 +48,7 @@ $fieldOptions2 = [
         			->widget(Captcha::className(), [
                         'template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6">{image}</div></div>',
         				'options' => ['placeholder' => $model->getAttributeLabel('verify_code'),'class'=>'form-control',],	
+        				'imageOptions' =>['style' => "cursor: pointer;"],
         				'captchaAction' => '/site/captcha',
                     ]) ?>     
             
@@ -62,7 +63,15 @@ $fieldOptions2 = [
             </div>
             <!-- /.col -->
         </div>
-
+        
+        <div class="form-group">
+        	<div class="col-xs-8">
+        		没有账号？<?= Html::a('立即注册',['system/register/index']) ?>
+        	</div>
+        	<div class="col-xs-4">
+        		<?= Html::a('忘记密码',['system/login/forgot-pwd']) ?>
+        	</div>
+        </div>
 
         <?php ActiveForm::end(); ?>
         

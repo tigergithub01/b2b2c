@@ -133,13 +133,14 @@ class PayTypeController extends BaseAuthController
     
     protected function getYesNoList(){
     	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
+//     	$yesno_list = SysParameter::find()->select("id,param_val")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
     	//         	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy('seq_id ASC')->all();
     	//         $yesno_list = SysParameter::findBySql("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->all();
 //     	        $yesno_list = (new \yii\db\Query())->select("id,param_val")->from("t_sys_parameter")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
 //     	        $db = Yii::$app->db;
 //     	        $yesno_list = $db->createCommand("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->queryAll();
 //     	        var_dump($yesno_list);
-    	
+
     	/* $payType = new PayType();
     	$payType = PayType::findOne(1);
     	$payType = $payType->toArray();

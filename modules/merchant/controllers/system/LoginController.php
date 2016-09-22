@@ -33,41 +33,44 @@ class LoginController extends BaseController
 		$test_Vip = new Vip();
 // 		$system_user->insertSystemUser();
 		
-		
 		/* 登陆 */
 		$model = new Vip();
 		$model->setScenario(Vip::SCENARIO_LOGIN);
 		
 		$vip_db = null;
-		if ($model->load(Yii::$app->request->post()) && $model->validate() /* && ($user_db = $model->login()) */) {
+		if ($model->load(Yii::$app->request->post()) && ($vip_db = $merchantService->login($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
 			/* $valid = $model->validate(); */
-			$model->password = md5($model->password);
-			if(($vip_db = $merchantService->login($model))){
+// 			$model->password = md5($model->password);
+			if($vip_db){
 				//写session
 				$session = Yii::$app->session;
 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db);
 				
 				//写权限信息 TODO：
 					
-					
 				//写cookie
 				if($model->remember_me){
 					//write user name into cookie
 					// 				setcookie(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id,time()+3600*24*7);
 					// 				setcookie(AdminConst::COOKIE_ADMIN_PASSWORD,$user_db->password,time()+3600*24*7);
-				
 					$cookies = Yii::$app->response->cookies;
 					// 				$cookies->set(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id);
 					$cookies->add(new \yii\web\Cookie([
 							'name' => MerchantConst::COOKIE_MERCHANT_USER_ID,
-							'value' => $user_db->user_id,
+							'value' => $vip_db->vip_id,
 							'expire'=>time()+3600*24*7
 					]));
 					$cookies->add(new \yii\web\Cookie([
 							'name' => MerchantConst::COOKIE_MERCHANT_PASSWORD,
-							'value' => $user_db->password,
+							'value' => $vip_db->password,
 							'expire'=>time()+3600*24*7
 					]));
+				}else{
+					/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
+					 unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
+					$cookies = Yii::$app->response->cookies;
+					$cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
+					$cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
 				}
 				
 				//登陆成功后根据情况进行跳转
@@ -78,25 +81,19 @@ class LoginController extends BaseController
 				}else{
 					Yii::$app->response->redirect("/merchant/default/index");
 				}
-			}else{
-				/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
-				unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
-				
-				$cookies = Yii::$app->response->cookies;
-				$cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
-				$cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
 			}
-			
-// 			if($valid){
-// 			}
 // 			return $this->goBack();
 		}
-		/* return $this->renderPartial('login', [
+		/* return $this->renderPartial('index', [
+				'model' => $model,
+		]); */
+		
+		/* return $this->renderContent('index', [
 				'model' => $model,
 		]); */
 		
 		
-		/* return $this->renderAjax('login', [
+		/* return $this->renderAjax('index', [
 				'model' => $model,
 		]); */
 		
@@ -124,16 +121,41 @@ class LoginController extends BaseController
 		}
 	}
 	
-	
-	
-	public function actionRegister(){
+	/* 找回密码  */
+	public function actionForgotPwd(){
+		$merchantService = new MerchantService();
+		
+		/* 登陆 */
+		$model = new Vip();
+		$model->setScenario(Vip::SCENARIO_FORGOT_PWD);
+		
+		$vip_db = null;
+		if ($model->load(Yii::$app->request->post()) && ($vip_db = $merchantService->forgot_pwd($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
+			/* $valid = $model->validate(); */
+// 			$model->password = md5($model->password);
+			/* if(($vip_db = $merchantService->login($model))){ */
+			if($vip_db){
+				//找回密码成功后，跳转到登陆页面
+				Yii::$app->response->redirect(Url::toRoute(['/merchant/system/login/index']));
+			}
+			// 			return $this->goBack();
+		}
+		/* return $this->renderPartial('index', [
+		 'model' => $model,
+		]); */
+		
+		/* return $this->renderContent('index', [
+		 'model' => $model,
+		]); */
 		
 		
-		return $this->render("register");
-	}
-	
-	
-	public function actionForgetPassword(){
-		return $this->render("forget-Password"); 
+		/* return $this->renderAjax('index', [
+		 'model' => $model,
+		]); */
+		
+		
+		return $this->render('forgot-pwd', [
+				'model' => $model,
+		]);		 
 	}
 }

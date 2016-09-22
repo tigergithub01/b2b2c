@@ -7,7 +7,7 @@ use yii\web\Controller;
 use app\models\b2b2c\SysUser;
 use app\modules\admin\common\controllers\BaseController;
 use app\modules\admin\models\AdminConst;
-use app\modules\admin\service\system\SysUserService;
+use app\modules\admin\service\system\SysUserService; 
 
 /**
  * login controller
@@ -36,13 +36,13 @@ class LoginController extends BaseController
 		
 		/* 登陆 */
 		$model = new SysUser();
-		$model->setScenario(SysUser::SCENARIO_LOGIN);
+		$model->setScenario(SysUser::SCENARIO_LOGIN); 
 		
 		$user_db = null;
-		if ($model->load(Yii::$app->request->post()) && $model->validate() /* && ($user_db = $model->login()) */) {
+		if ($model->load(Yii::$app->request->post()) && ($user_db = $userService->login($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
 			/* $valid = $model->validate(); */
-			$model->password = md5($model->password);
-			if(($user_db = $userService->login($model))){
+// 			$model->password = md5($model->password);
+			if($user_db){
 				//写用户信息
 				$session = Yii::$app->session;
 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
@@ -67,6 +67,12 @@ class LoginController extends BaseController
 							'value' => $user_db->password,
 							'expire'=>time()+3600*24*7
 					]));
+				}else{
+					/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
+					 unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
+					$cookies = Yii::$app->response->cookies;
+					$cookies->remove(AdminConst::COOKIE_ADMIN_USER_ID);
+					$cookies->remove(AdminConst::COOKIE_ADMIN_PASSWORD);
 				}
 				
 				//登陆成功后根据情况进行跳转
@@ -77,23 +83,7 @@ class LoginController extends BaseController
 				}else{
 					Yii::$app->response->redirect("/admin/default/index");
 				}
-				
-			}else{
-				/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
-				unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
-				
-				$cookies = Yii::$app->response->cookies;
-				$cookies->remove(AdminConst::COOKIE_ADMIN_USER_ID);
-				$cookies->remove(AdminConst::COOKIE_ADMIN_PASSWORD);
-			}
-			
-// 			if($valid){
-
-			
-			
-			
-				
-// 			}
+			} 
 // 			return $this->goBack();
 		}
 		/* return $this->renderPartial('login', [
@@ -105,38 +95,9 @@ class LoginController extends BaseController
 				'model' => $model,
 		]); */
 		
-		
+		 
 		return $this->render('index', [
 			'model' => $model,
 		]);
-		
-	}
-	
-	/**
-	 * 初始化插入系统管理员
-	 */
-	private function insertSystemUser(){
-		$model = new SysUser();
-		$_usr = SysUser::find()->where('user_id=:p_user_id',['p_user_id'=>'admin'])->one();
-		if(empty($_usr)){
-			$model->user_id='admin';
-			$model->password=md5("admin123");
-			$model->is_admin =1;
-			$model->status = 1;
-			$model->validate();
-			$success = $model->save();
-			Yii::info("insertSystemUsr $success");
-		}
-	}
-	
-	
-	
-	public function actionRegister(){
-		return $this->render("register");
-	}
-	
-	
-	public function actionForgetPassword(){
-		return $this->render("forget-Password"); 
-	}
-}
+	} 
+ }

@@ -11,7 +11,6 @@ use app\models\b2b2c\SysParameter;
 use yii\helpers\ArrayHelper;
 use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\SysVerifyCode;
-use app\models\b2b2c\app\models\b2b2c;
 
 /**
  * 获取短信验证码
@@ -87,7 +86,7 @@ class SmsController extends BaseController {
 		//根据数据库判断验证码获取时间间隔，每天只能获取5次验证码，每隔60秒获取一次
 		$last_verify = SysVerifyCode::find()->where('expiration_time>= :expiration_time AND verify_type = :verify_type AND verify_number =:verify_number',
 				['expiration_time'=>date (MerchantConst::DATE_FORMAT, time ()),
-				'verify_type'=>SysParameter::param_verify_mobile,
+				'verify_type'=>SysParameter::verify_mobile,
 				'verify_number' => $vip_id,
 				])->orderBy('sent_time DESC')->one();
 		if($last_verify){
@@ -100,11 +99,11 @@ class SmsController extends BaseController {
 		
 		$start_time = date('Y-m-d 0:0:0',time());
 		$end_time = date('Y-m-d 23:59:59',time());
-		$count = SysVerifyCode::findBySql("SELECT COUNT(1) FROM t_sys_verify_code WHERE sent_time >= :start_time AND sent_time <= :end_time AND verify_type = :verify_type AND verify_number =:verify_number ",
-				['start_time'=>$start_time,'end_time'=>$end_time,'verify_type'=>SysParameter::param_verify_mobile,'verify_number' => $vip_id,])->scalar();
-// 		$count = SysVerifyCode::find()->select("COUNT(1)")->where('sent_time >= :start_time AND sent_time <= :end_time AND verify_type = :verify_type AND verify_number =:verify_number',
-// 				['start_time'=>$start_time,'end_time'=>$end_time,'verify_type'=>SysParameter::param_verify_mobile,'verify_number' => $vip_id,])->scalar();
-		if($count>=4){
+// 		$count = SysVerifyCode::findBySql("SELECT COUNT(1) FROM t_sys_verify_code WHERE sent_time >= :start_time AND sent_time <= :end_time AND verify_type = :verify_type AND verify_number =:verify_number ",
+// 				['start_time'=>$start_time,'end_time'=>$end_time,'verify_type'=>SysParameter::verify_mobile,'verify_number' => $vip_id,])->scalar();
+		$count = SysVerifyCode::find()->where('sent_time >= :start_time AND sent_time <= :end_time AND verify_type = :verify_type AND verify_number =:verify_number',
+				['start_time'=>$start_time,'end_time'=>$end_time,'verify_type'=>SysParameter::verify_mobile,'verify_number' => $vip_id,])->count();
+		if($count>=5){
 			$json->message = '您获取验证码次数过多，请明天再试！';
 			return Json::encode($json);
 		}
@@ -117,7 +116,7 @@ class SmsController extends BaseController {
 		
 		//将验证码信息写入数据库，
 		$sysVerifyCode = new SysVerifyCode(); 
-		$sysVerifyCode->verify_type = SysParameter::param_verify_mobile ;
+		$sysVerifyCode->verify_type = SysParameter::verify_mobile ;
 		$sysVerifyCode->sent_time = date ( MerchantConst::DATE_FORMAT, time () );
 		$sysVerifyCode->expiration_time = date ( MerchantConst::DATE_FORMAT, time() + 5*60);//验证码有效时间5分钟
 		$sysVerifyCode->verify_code = $sms_code;

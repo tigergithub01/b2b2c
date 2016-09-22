@@ -7,6 +7,9 @@ use yii\filters\AccessControl;
 use app\modules\admin\common\filters\AdminLogFilter;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
+use yii\base\Exception;
+use yii\base\UserException;
+use yii\web\HttpException;
 
 class BaseController extends Controller
 {
@@ -65,6 +68,9 @@ class BaseController extends Controller
 	 */
 	public function actionError()
 	{
+		
+		$this->layout = 'main-blank';
+		
 		if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
 			// action has been invoked not from error handler, but by direct route, so we display '404 Not Found'
 			$exception = new HttpException(404, Yii::t('yii', 'Page not found.'));

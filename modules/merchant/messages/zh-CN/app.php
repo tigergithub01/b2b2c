@@ -13,5 +13,9 @@ return [
 		'Sign_In' => '登陆',
 		'Sign_out' => '注销',
 		'Register' => '注册',
+		
+		
 		'merchant_register' => '商户注册',
+		'merchant_sign_in' => '商户登陆',
+		'forgot_pwd' => '找回密码',
 ];

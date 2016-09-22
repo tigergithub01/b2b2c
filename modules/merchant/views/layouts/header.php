@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use app\modules\merchant\Module;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -7,7 +8,7 @@ use yii\helpers\Html;
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-mini">App</span><span class="logo-lg">' . Yii::$app->name . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a('<span class="logo-mini">'.Module::t('app', 'app_merchant_short_name').'</span><span class="logo-lg">' . Module::t('app', 'app_merchant_name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 
     <nav class="navbar navbar-static-top" role="navigation">
 
@@ -22,7 +23,7 @@ use yii\helpers\Html;
                       <?= Html::a(  '注销',
                                     ['/merchant/default/logout'],
                                     ['data-method' => 'post','data' => [
-	                'confirm' => Yii::t('app', '是否退出?'),
+	                'confirm' => Module::t('app', '是否退出?'),
 	                'method' => 'post',
                     'class' => 'glyphicon glyphicon-user',               		
 	            ],]
