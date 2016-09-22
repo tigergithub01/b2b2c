@@ -86,20 +86,26 @@ use Yii;
 class SysParameter extends \app\models\b2b2c\BasicModel
 {
 	
-	/* 是 */
-	const param_yes = 1;
+	/* 是否标志位：是 */
+	const yes = 1;
 	
-	/* 否 */
-	const param_no = 0;
+	/* 是否标志位：否 */
+	const no = 0;
 	
-	/* 手机号码验证 */
-    const param_verify_mobile = 1301;
+	/* 验证类型：手机号码验证 */
+    const verify_mobile = 1301;
     
-    /* 邮箱验证 */
-    const param_verify_email = 1302; 	
-
+    /* 验证类型：邮箱验证 */
+    const verify_email = 1302; 	
     
+    /* 审核结果：待审核 */
+    const audit_need_approve = 301;
     
+    /* 审核结果：审核通过 */
+    const audit_approved = 303;
+    
+    /* 审核结果：审核不通过 */
+    const audit_rejected = 302;
     
     /**
      * @inheritdoc

@@ -70,7 +70,8 @@ class SysUser extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['user_id', 'password', 'is_admin', 'status'], 'required', 'on' => [self::SCENARIO_LOGIN,parent::SCENARIO_DEFAULT]],
+//         	[['user_id', 'password', 'is_admin', 'status'], 'required', 'on' => [self::SCENARIO_LOGIN,parent::SCENARIO_DEFAULT]],
+            [['user_id', 'password', 'is_admin', 'status'], 'required'],
             [['is_admin', 'status'], 'integer'],
             [['last_login_date'], 'safe'],
             [['user_id'], 'string', 'max' => 20],

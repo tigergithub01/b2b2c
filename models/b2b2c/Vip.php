@@ -86,8 +86,9 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','remember_me','verify_code','confirm_pwd','sms_code',];
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
+		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
 		// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
 		return $scenarios;
@@ -120,7 +121,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['vip_name', 'password'], 'string', 'max' => 50],
             [['mobile'], 'string', 'max' => 20],
             [['audit_memo'], 'string', 'max' => 200],
-            [['vip_id', 'merchant_flag'], 'unique', 'targetAttribute' => ['vip_id', 'merchant_flag'], 'message' => 'The combination of 会员登陆名 and 是否商户?1:是；0：否 has already been taken.'],
+            [['vip_id', 'merchant_flag'], 'unique', 'targetAttribute' => ['vip_id', 'merchant_flag'], 'message' => /* 'The combination of 会员登陆名 and 是否商户?1:是；0：否 has already been taken.' */'该手机号码已经注册'],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
@@ -129,11 +130,12 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['merchant_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['merchant_flag' => 'id']],
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
-        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER]],
-        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER]],
-        	[['sms_code'], 'required','on' => [self::SCENARIO_REGISTER]],
-        	[['password','confirm_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位'],
-        	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致'],
+        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	[['sms_code'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	[['password','confirm_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+//         	[['agreement'],'boolean','on' => [self::SCENARIO_REGISTER]],
         ];
     }
 
