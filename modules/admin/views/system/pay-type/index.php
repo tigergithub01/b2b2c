@@ -8,7 +8,7 @@ use app\modules\admin\Module;
 /* @var $searchModel app\models\b2b2c\search\PayTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('app', 'Pay_Type');
+$this->title = Module::t('app', 'Pay Types');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pay-type-index">
@@ -24,10 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-			[
-			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
-            ],
             'id',
             'code',
             'name',
@@ -36,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'configure:ntext',
             // 'status',
             // 'is_cod',
-
+		[
+			'class' => 'app\modules\admin\components\AppActionColumn',
+            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+        ],
             
         ],
     ]); ?>

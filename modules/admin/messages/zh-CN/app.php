@@ -14,8 +14,17 @@ return [
 		'Sign_out' => '注销',
 		
 		'admin_sign_in' => '后台登陆',
+		
 		//支付方式
-		'Create_Pay_Type'=>'新增支付方式',
-		'Update_Pay_Type'=>'编辑支付方式',
-		'Pay_Type'=>'支付方式',
+		'Pay Type'=>'支付方式',
+		'Pay Types'=>'支付方式列表',
+		'Create Pay Type'=>'新增支付方式',
+		'Update Pay Type'=>'编辑支付方式',
+		
+		//用户信息
+		'Sys User'=>'用户信息',
+		'Sys Users'=>'用户信息列表',
+		'Create Sys User'=>'新增用户信息',
+		'Update Sys User'=>'编辑用户信息',
+		
 ];

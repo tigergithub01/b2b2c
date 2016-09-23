@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\admin\Module;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\PayType */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Pay_Type'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Pay Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pay-type-view">

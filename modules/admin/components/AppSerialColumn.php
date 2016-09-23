@@ -7,7 +7,7 @@ use yii\grid\SerialColumn;
 
 class AppSerialColumn extends SerialColumn{
 	
-	public $header = '';
+	public $header = '序号';
 	
 	
 	

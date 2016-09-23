@@ -56,6 +56,7 @@ class PayTypeController extends BaseAuthController
      */
     public function actionView($id)
     {
+//     	Yii::$app->session->setFlash('postDeleted', 'You have successfully deleted your post.');
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

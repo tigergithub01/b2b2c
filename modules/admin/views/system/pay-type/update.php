@@ -7,9 +7,9 @@ use app\modules\admin\Module;
 /* @var $model app\models\b2b2c\PayType */
 
 $this->title = Module::t('app', 'Update {modelClass}: ', [
-    'modelClass' => Module::t('app','Pay_Type'),
+    'modelClass' => Module::t('app', 'Pay Type'),
 ]) . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Pay_Type'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Pay Types'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>

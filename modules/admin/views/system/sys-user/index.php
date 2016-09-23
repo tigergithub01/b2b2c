@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\SysUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Sys Users');
+$this->title = Module::t('app', 'Sys Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-user-index">
@@ -23,10 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-			[
-			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
-            ],
             'id',
             'user_id',
             'user_name',
@@ -34,7 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'is_admin',
             // 'status',
             // 'last_login_date',
-
+		[
+			'class' => 'app\modules\admin\components\AppActionColumn',
+            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+        ],
             
         ],
     ]); ?>

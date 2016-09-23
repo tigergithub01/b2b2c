@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\SysUserSearch */
@@ -36,17 +37,17 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'user_id') ?>
 
     <?= $form->field($model, 'user_name') ?>
 
-    <?= $form->field($model, 'password') ?>
+    <?php //echo $form->field($model, 'password') ?>
 
     <?= $form->field($model, 'is_admin') ?>
 
-    <?php // echo $form->field($model, 'status') ?>
+    <?php echo $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'last_login_date') ?>
 
@@ -55,7 +56,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Sys User'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Sys User'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

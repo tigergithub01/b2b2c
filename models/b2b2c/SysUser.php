@@ -108,7 +108,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
             'user_name' => Yii::t('app', '姓名'),
             'password' => Yii::t('app', '密码'),
             'is_admin' => Yii::t('app', '是否管理员'),
-            'status' => Yii::t('app', '是否有效？1：是；0：否'),
+            'status' => Yii::t('app', '是否有效'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
         	'verify_code' => Yii::t('app', '验证码'),
         	'new_pwd' => Yii::t('app', '新密码'),
