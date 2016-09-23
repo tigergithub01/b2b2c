@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\modules\admin\Module;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\SysParameter;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\SysUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,7 +14,7 @@ $this->title = Module::t('app', 'Sys Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-user-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel,'yesNoList'=>$yesNoList]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -23,17 +25,39 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'app\modules\admin\components\AppSerialColumn'],
+        		/* [
+        		'class' => 'yii\grid\CheckboxColumn',
+        		// you may configure additional properties here
+        		], */
+            //['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'user_id',
+//             'user_id',
+        	[
+        		'label'=>'用户名',
+        		'format'=>'raw',
+        		'attribute'=>'user_id',
+        		'value' => function($model){
+        			//var_dump($model);
+        			return Html::a($model->user_id, ['system/sys-user/view', 'id' => $model->id], ['title' => '查看详情']);
+        		}
+			],
             'user_name',
-            'password',
-            'is_admin',
-            // 'status',
+            //'password',
+            //'is_admin',
+            'status',
             // 'last_login_date',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}{change-pwd}</span>',
+			'buttons' => [
+					'change-pwd' => function ($url, $model, $key) {
+						return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['title' => '修改密码'] );
+					},
+					'delete' => function ($url, $model, $key) {
+						return ($model->is_admin==SysParameter::no)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, ['title' => '删除'] ):'';
+					},
+			],
+			'headerOptions' =>['width' => '120']
         ],
             
         ],

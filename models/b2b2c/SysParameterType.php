@@ -58,4 +58,12 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
     {
         return $this->hasMany(SysParameter::className(), ['type_id' => 'id']);
     }
+    
+    /**
+     * 
+     * @param unknown $id
+     */
+    public static function getSysParametersById($id){
+    	return SysParameter::find()->where(['type_id'=>$id])->orderBy("seq_id")->all();
+    }
 }

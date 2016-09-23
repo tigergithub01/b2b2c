@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysUser */
@@ -41,13 +42,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'user_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?php if ($model->isNewRecord){ ?>
+   	 	<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+   	 	<?= $form->field($model, 'confirm_pwd')->passwordInput(['maxlength' => true]) ?>
+    <?php }?>
 
-    <?= $form->field($model, 'is_admin')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'is_admin')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')])?>
+    
 
-    <?= $form->field($model, 'last_login_date')->textInput() ?>
+    <?php //echo $form->field($model, 'last_login_date')->textInput() ?>
 
 		</div>
 	

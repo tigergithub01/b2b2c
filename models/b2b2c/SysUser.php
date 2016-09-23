@@ -50,14 +50,17 @@ class SysUser extends \app\models\b2b2c\BasicModel
 	const SCENARIO_REGISTER = 'register';
 	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
 	const SCENARIO_CHANGE_PWD = 'change_pwd'; //登陆后修改密码
+	const SCENARIO_NEW_USER = 'create_user';
+	const SCENARIO_CHANGE_PWD_ADMIN = 'change_pwd_admin'; //管理员修改密码
 	
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_LOGIN] = ['user_id', 'password','remember_me','verify_code'];
+		$scenarios[self::SCENARIO_LOGIN] = ['user_id','user_name', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['user_id', 'password'];
 		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'confirm_pwd', 'new_pwd'];
-		
+		$scenarios[self::SCENARIO_NEW_USER] = ['user_id', 'password', 'is_admin', 'status', 'confirm_pwd'];
+		$scenarios[self::SCENARIO_CHANGE_PWD_ADMIN] = ['password', 'confirm_pwd'];
 		return $scenarios;
 	
 		/* return [
@@ -92,7 +95,9 @@ class SysUser extends \app\models\b2b2c\BasicModel
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['is_admin'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_admin' => 'id']],
         	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN]],
-        	[['new_pwd','confirm_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
+        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_NEW_USER,self::SCENARIO_CHANGE_PWD,self::SCENARIO_CHANGE_PWD_ADMIN]],
+        	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致','on' => [self::SCENARIO_NEW_USER,self::SCENARIO_CHANGE_PWD_ADMIN]],
+        	[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
         ];
     }
@@ -107,7 +112,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
             'user_id' => Yii::t('app', '用户名'),//用户名(登陆名）
             'user_name' => Yii::t('app', '姓名'),
             'password' => Yii::t('app', '密码'),
-            'is_admin' => Yii::t('app', '是否管理员'),
+            'is_admin' => Yii::t('app', '是否超级管理员'),
             'status' => Yii::t('app', '是否有效'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
         	'verify_code' => Yii::t('app', '验证码'),

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\admin\Module;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\SysUserSearch */
@@ -45,9 +46,9 @@ use app\modules\admin\Module;
 
     <?php //echo $form->field($model, 'password') ?>
 
-    <?= $form->field($model, 'is_admin') ?>
+    <?php // $form->field($model, 'is_admin')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')])?>
 
-    <?php echo $form->field($model, 'status') ?>
+    <?= $form->field($model, 'status')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')])?>
 
     <?php // echo $form->field($model, 'last_login_date') ?>
 

@@ -42,11 +42,11 @@ $this->params['breadcrumbs'][] = ['label' => Module::t('app', '修改密码'), '
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'placeholder'=>Yii::t('app', '旧密码')]) ?>
 
-    	<?= $form->field($model, 'new_pwd')->passwordInput(['maxlength' => true]) ?>
+    	<?= $form->field($model, 'new_pwd')->passwordInput(['maxlength' => true, 'placeholder' => $model->getAttributeLabel('new_pwd')]) ?>
 
-    	<?= $form->field($model, 'confirm_pwd')->passwordInput(['maxlength' => true]) ?>
+    	<?= $form->field($model, 'confirm_pwd')->passwordInput(['maxlength' => true, 'placeholder' => $model->getAttributeLabel('confirm_pwd')]) ?>
 
 
 		</div>

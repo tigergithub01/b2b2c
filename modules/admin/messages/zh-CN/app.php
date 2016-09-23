@@ -26,5 +26,7 @@ return [
 		'Sys Users'=>'用户信息列表',
 		'Create Sys User'=>'新增用户信息',
 		'Update Sys User'=>'编辑用户信息',
+		'Change User Pwd' => '修改用户密码',
+		
 		
 ];

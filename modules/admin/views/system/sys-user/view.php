@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\admin\Module;
+use app\models\b2b2c\SysParameter;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysUser */
@@ -30,8 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		            'id',
             'user_id',
             'user_name',
-            'password',
-            'is_admin',
+            //'password',
+            //'is_admin',
             'status',
             'last_login_date',
 		        ],
@@ -40,13 +41,14 @@ $this->params['breadcrumbs'][] = $this->title;
     
 	    <div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+	        <?= $model->is_admin==SysParameter::no?Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
 	                'method' => 'post',
 	            ],
-	        ]) ?>
+	        ]):'' ?>
+	        <?= Html::a(Module::t('app', 'Change User Pwd'), ['change-pwd', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	    </div>
     
     </div>

@@ -37,15 +37,15 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //  $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'code') ?>
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'rate') ?>
+    <?php //  $form->field($model, 'rate') ?>
 
-    <?= $form->field($model, 'description') ?>
+    <?php //  $form->field($model, 'description') ?>
 
     <?php // echo $form->field($model, 'configure') ?>
 
