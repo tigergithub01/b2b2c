@@ -1,14 +1,14 @@
 <?php
-namespace app\modules\merchant\common\controllers;
+namespace app\modules\vip\common\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
-use app\modules\merchant\common\filters\MerchantLogFilter;
 use app\models\b2b2c\common\JsonObj;
 use yii\base\Exception;
 use yii\base\UserException;
 use yii\web\HttpException;
+use app\modules\vip\common\filters\VipLogFilter;
 
 class BaseController extends Controller
 {
@@ -45,7 +45,7 @@ class BaseController extends Controller
 						],
 				], */
 				'logFilter' => [
-					'class' => MerchantLogFilter::className(),
+					'class' => VipLogFilter::className(),
 // 						'class' => "app\modules\admin\common\filters\AdminAuthFilter",
 				],
 		];
@@ -73,7 +73,7 @@ class BaseController extends Controller
 
 // 		$this->layout = false;
 		
-		if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
+	if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
 			// action has been invoked not from error handler, but by direct route, so we display '404 Not Found'
 			$exception = new HttpException(404, Yii::t('yii', 'Page not found.'));
 		}

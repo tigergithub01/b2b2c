@@ -4,14 +4,13 @@ namespace app\modules\merchant\common\filters;
 use Yii;
 use yii\base\Behavior;;
 use yii\web\Controller;
+use app\models\b2b2c\SysUser;
 use app\modules\merchant\models\MerchantConst;
 use app\models\b2b2c\Vip;
 use app\modules\merchant\service\vip\MerchantService;
 use yii\helpers\Url;
-use app\models\b2b2c\VipOperationLog;
-use yii\helpers\Json;
 
-class MerchantAuthBehavior extends Behavior{
+class VipAuthBehavior extends Behavior{
 	
 	public function events()
 	{
@@ -69,38 +68,6 @@ class MerchantAuthBehavior extends Behavior{
 	 public function afterAction($event){
 	 	//TODO:
 // 	 	Yii::info('AdminAuthBehavior afterAction ');
-
-	 	//插入日志
-	 	$action = $event->action;
-	 	$sys_log = new VipOperationLog();
-	 	$session = Yii::$app->session;
-	 	$login_user = $session->get(MerchantConst::COOKIE_MERCHANT_USER_ID);
-	 	if($login_user){
-	 		$sys_log->vip_id = $login_user->id;
-	 	}
-	 	$sys_log->op_date=date(MerchantConst::DATE_FORMAT,time());
-	 	$sys_log->op_ip_addr = Yii::$app->request->userIP;
-	 	$sys_log->op_browser_type = Yii::$app->request->userAgent;
-	 	$sys_log->op_url = Yii::$app->request->url;
-	 	/* var_dump($action->controller->module->id);
-	 	 var_dump($action->controller->id);
-	 	 var_dump($action->id); */
-	 	// 	 	var_dump(Yii::$app->request->userAgent);
-	 	$sys_log->op_method = Yii::$app->request->method;
-	 	$sys_log->op_referrer = Yii::$app->request->referrer;
-	 	$sys_log->op_module = $action->controller->module->id;
-	 	$sys_log->op_controller = $action->controller->id;
-	 	$sys_log->op_action = $action->id;
-	 	/* var_dump(Json::encode($_REQUEST)); */
-	 	if(isset($_REQUEST)){
-	 		$parameters = Json::encode($_REQUEST);
-	 		$sys_log->op_desc = $parameters;
-	 	}
-	 	$sys_log->insert();
-	 	if($sys_log->hasErrors()){
-	 		Yii::info($sys_log->getErrors());
-	 	}
-	 	
 	 }
 	
 	/* public function beforeAction($action){
