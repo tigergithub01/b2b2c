@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use app\modules\merchant\Module;
+use app\modules\vip\Module;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -8,7 +8,7 @@ use app\modules\merchant\Module;
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-mini">'.Module::t('app', 'app_merchant_short_name').'</span><span class="logo-lg">' . Module::t('app', 'app_merchant_name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a('<span class="logo-mini">'.Module::t('app', 'app_vip_short_name').'</span><span class="logo-lg">' . Module::t('app', 'app_merchant_name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 
     <nav class="navbar navbar-static-top" role="navigation">
 

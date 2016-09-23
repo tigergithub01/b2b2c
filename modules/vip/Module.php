@@ -48,7 +48,7 @@ class Module extends \yii\base\Module
         ];
          
         //homeUrl
-        Yii::$app->homeUrl="/merchant";
+        Yii::$app->homeUrl="/vip";
     }
     
     /*

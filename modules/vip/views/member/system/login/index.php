@@ -3,14 +3,14 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use Yii\web\View;
 use yii\captcha\Captcha;
-use app\modules\merchant\Module;
+use app\modules\vip\Module;
 
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Module::t('app', 'merchant_sign_in');
+$this->title = Module::t('app', 'vip_sign_in');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -66,10 +66,10 @@ $fieldOptions2 = [
         
         <div class="form-group">
         	<div class="col-xs-8">
-        		没有账号？<?= Html::a('立即注册',['system/register/index']) ?>
+        		没有账号？<?= Html::a('立即注册',['member/system/register/index']) ?>
         	</div>
         	<div class="col-xs-4">
-        		<?= Html::a('忘记密码',['system/login/forgot-pwd']) ?>
+        		<?= Html::a('忘记密码',['member/system/login/forgot-pwd']) ?>
         	</div>
         </div>
 

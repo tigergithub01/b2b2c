@@ -12,4 +12,10 @@ return [
 		//登陆
 		'Sign_In' => '登陆',
 		'Sign_out' => '注销',
+		'Register' => '注册',
+		
+		
+		'vip_register' => '会员注册',
+		'vip_sign_in' => '会员登陆',
+		'forgot_pwd' => '找回密码',
 ];

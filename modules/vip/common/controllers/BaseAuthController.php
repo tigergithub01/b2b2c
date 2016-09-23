@@ -3,7 +3,8 @@ namespace app\modules\vip\common\controllers;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\merchant\common\filters\VipAuthBehavior;
+use app\modules\vip\common\filters\VipAuthBehavior;
+
 
 /**
  * 会员中心

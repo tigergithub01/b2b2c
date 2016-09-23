@@ -1,13 +1,13 @@
 <?php
 
-namespace app\modules\merchant\controllers\member\system;
+namespace app\modules\vip\controllers\member\system;
 
 use Yii;
-use app\modules\merchant\common\controllers\BaseAuthController;
-use app\modules\merchant\models\MerchantConst;
-use app\modules\merchant\service\vip\MerchantService;
+use app\modules\vip\common\controllers\BaseAuthController;
 use yii\helpers\Url;
 use app\models\b2b2c\Vip;
+use app\modules\vip\service\vip\VipService;
+use app\modules\vip\models\VipConst;
 
 class ModifyPwdController extends BaseAuthController{
 	
@@ -18,13 +18,13 @@ class ModifyPwdController extends BaseAuthController{
 	public function actionIndex()
 	{
 		/* service */
-		$service  = new MerchantService();
+		$service  = new VipService();
 	
 		/* 登陆 */
 		$model = new Vip();
 		$model->setScenario(Vip::SCENARIO_CHANGE_PWD);
 // 		var_dump(Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id);
-		$model->id = Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+		$model->id = Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
 		
 		if ($model->load(Yii::$app->request->post()) && ($vip_db = $service->modify_pwd($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
 			if($vip_db){
@@ -32,7 +32,7 @@ class ModifyPwdController extends BaseAuthController{
 				$service->logout();
 				
 				//跳转到登陆页面
-				Yii::$app->response->redirect(Url::toRoute(['/merchant/system/login/index']));
+				Yii::$app->response->redirect(Url::toRoute(['/vip/member/system/login/index']));
 			}
 		}
 			

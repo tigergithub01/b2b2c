@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use Yii\web\View;
 use yii\captcha\Captcha;
-use app\modules\merchant\Module;
+use app\modules\vip\Module;
 use yii\helpers\Url;
 
 

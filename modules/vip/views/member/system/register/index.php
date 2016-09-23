@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use Yii\web\View;
 use yii\captcha\Captcha;
-use app\modules\merchant\Module;
+use app\modules\vip\Module;
 use yii\helpers\Url;
 
 
@@ -11,7 +11,7 @@ use yii\helpers\Url;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = Module::t('app', 'merchant_register');
+$this->title = Module::t('app', 'vip_register');
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],

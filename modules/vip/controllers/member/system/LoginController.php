@@ -123,20 +123,20 @@ class LoginController extends BaseController
 	
 	/* 找回密码  */
 	public function actionForgotPwd(){
-		$merchantService = new MerchantService();
+		$service = new VipService();
 		
 		/* 登陆 */
 		$model = new Vip();
 		$model->setScenario(Vip::SCENARIO_FORGOT_PWD);
 		
 		$vip_db = null;
-		if ($model->load(Yii::$app->request->post()) && ($vip_db = $merchantService->forgot_pwd($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
+		if ($model->load(Yii::$app->request->post()) && ($vip_db = $service->forgot_pwd($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
 			/* $valid = $model->validate(); */
 // 			$model->password = md5($model->password);
 			/* if(($vip_db = $merchantService->login($model))){ */
 			if($vip_db){
 				//找回密码成功后，跳转到登陆页面
-				Yii::$app->response->redirect(Url::toRoute(['/merchant/system/login/index']));
+				Yii::$app->response->redirect(Url::toRoute(['/vip/member/system/login/index']));
 			}
 			// 			return $this->goBack();
 		}

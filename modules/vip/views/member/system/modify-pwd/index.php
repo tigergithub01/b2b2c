@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\merchant\Module;
+use app\modules\vip\Module;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 
