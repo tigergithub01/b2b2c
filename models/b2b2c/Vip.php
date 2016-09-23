@@ -173,6 +173,7 @@ class Vip extends \app\models\b2b2c\BasicModel
         	'verify_code' => Yii::t('app', '验证码'),
         	'confirm_pwd' => Yii::t('app', '确认密码'),
         	'sms_code' => Yii::t('app', '短信验证码'),
+        	'new_pwd' => Yii::t('app', '新密码'),
         ];
     }
 

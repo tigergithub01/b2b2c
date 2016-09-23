@@ -9,7 +9,6 @@ use app\modules\merchant\models\MerchantConst;
 use app\models\b2b2c\SysVerifyCode;
 use yii\base\View;
 
-
 class MerchantService{
 	/**
 	 * 商户登陆
@@ -168,6 +167,44 @@ class MerchantService{
 
     	//清空最后一次访问链接
     	$session->remove(MerchantConst::MERCHANT_LAST_ACCESS_URL);
+	}
+	
+	
+	/**
+	 * 用户自己修改密码
+	 * @param unknown $model
+	 */
+	public function modify_pwd($model){
+		if(YII_DEBUG){
+			$model = empty($model)?(new Vip()):$model; //for test
+			$_user = isset($_user)?null:(new Vip()); //for test
+		}
+		 
+		if(!$model->validate()){
+			return false;
+		}
+		 
+		//判断用户是否存在
+		
+		$_user = Vip::findOne($model->id);
+		if(empty($_user)){
+			$model->addError("password",Yii::t('app', '用户不存在。'));
+			return false;
+		}
+		 
+		//判断原始密码是否正确
+		if(strcmp(md5($model->password), $_user->password)!=0){
+			$model->addError("password",Yii::t('app', '密码不正确。'));
+			return false;
+		}
+		 
+		$_user->password = md5($model->new_pwd);
+		if(!($_user->update(true,['password']))){
+			$model->addError("password",Yii::t('app', '密码修改不成功。'));
+			return false;
+		}
+		 
+		return $_user;
 	}
 	
 	

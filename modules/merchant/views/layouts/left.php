@@ -34,7 +34,7 @@
                 	],
                 	['label' => '系统设置', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
-                					['label' => '密码修改', 'url' => ['system/sys-user/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '关于', 'url' => ['system/sys-user/index'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],
