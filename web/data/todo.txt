@@ -52,19 +52,7 @@ UPDATE user SET password=PASSWORD('b2b_tu_2016') WHERE user='b2b';
 FLUSH PRIVILEGES;
 
 
-ALTER TABLE `b2b2c_wedding`.`t_sys_operation_log` 
-DROP FOREIGN KEY `fk_log_ref_module`,
-DROP FOREIGN KEY `fk_log_ref_operation`;
-ALTER TABLE `b2b2c_wedding`.`t_sys_operation_log` 
-CHANGE COLUMN `module_id` `module_id` BIGINT(20) NULL COMMENT '关联模块编号' ,
-CHANGE COLUMN `operation_id` `operation_id` BIGINT(20) NULL ;
-ALTER TABLE `b2b2c_wedding`.`t_sys_operation_log` 
-ADD CONSTRAINT `fk_log_ref_module`
-  FOREIGN KEY (`module_id`)
-  REFERENCES `b2b2c_wedding`.`t_sys_module` (`id`),
-ADD CONSTRAINT `fk_log_ref_operation`
-  FOREIGN KEY (`operation_id`)
-  REFERENCES `b2b2c_wedding`.`t_sys_operation` (`id`);
+
   
 
 

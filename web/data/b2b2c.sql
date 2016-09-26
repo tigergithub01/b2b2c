@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/9/20 15:55:51                           */
+/* Created on:     2016/9/26 17:49:47                           */
 /*==============================================================*/
 
 
@@ -176,6 +176,12 @@ drop table if exists t_vip_blog_photo;
 
 drop table if exists t_vip_blog_type;
 
+drop table if exists t_vip_case;
+
+drop table if exists t_vip_case_detail;
+
+drop table if exists t_vip_case_photo;
+
 drop table if exists t_vip_case_type;
 
 drop table if exists t_vip_case_type_prop;
@@ -197,12 +203,6 @@ drop index idx_vip_module_code on t_vip_module;
 drop table if exists t_vip_module;
 
 drop table if exists t_vip_operation_log;
-
-drop table if exists t_vip_org_case;
-
-drop table if exists t_vip_org_case_detail;
-
-drop table if exists t_vip_org_case_photo;
 
 drop table if exists t_vip_org_gallery;
 
@@ -509,14 +509,14 @@ alter table t_pick_up_point_region comment '自提点管辖区域';
 create table t_product
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
-   code                 varchar(30) not null comment '产品唯一编码',
+   code                 varchar(30) comment '产品唯一编码',
    name                 varchar(60) not null comment '产品名称',
    type_id              bigint(20) not null comment '产品分类',
    brand_id             bigint(20) comment '品牌',
    market_price         decimal(20,6) not null comment '市场价',
    sale_price           decimal(20,6) not null comment '销售价',
    deposit_amount       decimal(20,6) not null comment '最少定金金额',
-   description          text not null comment '产品描述',
+   description          text comment '产品描述',
    is_on_sale           bigint(20) not null comment '产品状态（1:正常销售、0:下架）',
    is_hot               bigint(20) not null comment '是否热销商品？1：是；0：否',
    audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，审核通过',
@@ -539,9 +539,9 @@ create table t_product
    product_weight       decimal(20,6) comment '商品重量',
    product_weight_unit  bigint(20) comment '商品重量单位',
    product_group_id     bigint(20) comment '产品分组编号',
-   img_url              varchar(255) not null comment '图片（放大后查看）(上传商品图片后自动加入商品相册）',
-   thumb_url            varchar(255) not null comment '缩略图',
-   img_original         varchar(255) not null comment '原图',
+   img_url              varchar(255) comment '图片（放大后查看）(上传商品图片后自动加入商品相册）',
+   thumb_url            varchar(255) comment '缩略图',
+   img_original         varchar(255) comment '原图',
    primary key (id)
 );
 
@@ -717,6 +717,7 @@ create table t_product_type
    name                 varchar(60) not null comment '分类名称',
    parent_id            bigint(20) comment '上级分类编号',
    description          varchar(600) comment '分类描述',
+   seq_id               int comment '显示顺序',
    primary key (id)
 );
 
@@ -1015,7 +1016,7 @@ alter table t_so_sheet_coupon comment '订单使用优惠券情况';
 /*==============================================================*/
 create table t_so_sheet_detail
 (
-   id                   bigint(20) not null comment '主键编号',
+   id                   bigint(20) not null auto_increment comment '主键编号',
    order_id             bigint(20) not null comment '关联订单编号',
    product_id           bigint(20) not null comment '关联产品编号',
    quantity             int not null comment '购买数量',
@@ -1063,28 +1064,29 @@ alter table t_sys_ad_info comment '广告栏(平台，商家）';
 create table t_sys_app_info
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
-   name                 varchar(60) not null comment '产品名称（ios版本，android版本）',
+   name                 varchar(60) not null comment '产品名称（1:XX-andorid版 2:XX-ios版）',
+   code                 varchar(20) comment 'app编码，便于根据code查找',
    description          varchar(400) comment '产品描述',
    release_id           bigint(20) comment '关联最新发布编号',
    primary key (id)
 );
 
-alter table t_sys_app_info comment '应用版本信息';
+alter table t_sys_app_info comment '应用信息';
 
 /*==============================================================*/
 /* Table: t_sys_app_release                                     */
 /*==============================================================*/
 create table t_sys_app_release
 (
-   id                   bigint(20) not null comment '主键编号',
+   id                   bigint(20) not null auto_increment comment '主键编号',
    name                 varchar(60) not null comment '版本名称(1.1.1，字符串型)、',
-   upgrade_desc         varchar(600) comment '版本升级描述',
    ver_no               bigint(20) not null comment '版本编号(1.0，数字型用来与app进行版本比较)',
+   upgrade_desc         varchar(600) comment '版本升级描述',
    force_upgrade        bigint(20) not null comment '是否必须升级(1:是；0:否）',
-   issue_date           datetime not null comment '发布日期',
-   issue_user_id        bigint(20) not null comment '发布人',
-   app_path             varchar(200) comment '应用下载地址',
-   app_info_id          bigint(20) not null comment 'app类型：1:andorid 2:ios',
+   issue_date           datetime comment '发布日期',
+   issue_user_id        bigint(20) comment '发布人',
+   app_path             varchar(200) not null comment '应用下载地址',
+   app_info_id          bigint(20) not null comment 'app信息：1:XX-andorid版 2:XX-ios版',
    primary key (id)
 );
 
@@ -1479,6 +1481,7 @@ create table t_vip
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
    audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
+   role_type            bigint(20) comment '婚礼人类型（策划师，主持人，摄影师，化妆师，摄像师）',
    primary key (id)
 );
 
@@ -1580,6 +1583,63 @@ create table t_vip_blog_type
 );
 
 alter table t_vip_blog_type comment '博客频道';
+
+/*==============================================================*/
+/* Table: t_vip_case                                            */
+/*==============================================================*/
+create table t_vip_case
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   name                 varchar(50) not null comment '案例名称',
+   type_id              bigint(20) not null comment '案例类型',
+   organization_id      bigint(20) not null comment '关联店铺（机构）编号',
+   content              text not null comment '发布内容',
+   create_date          datetime not null comment '发布时间',
+   update_date          datetime not null comment '更新时间',
+   status               bigint(20) not null comment '是否显示？1：是；0：否',
+   audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
+   audit_user_id        bigint(20) comment '审核人',
+   audit_date           datetime comment '审核日期',
+   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
+   cover_img_url        varchar(255) not null comment '图片（放大后查看）(封面)',
+   cover_thumb_url      varchar(255) not null comment '缩略图(封面)',
+   cover_img_original   varchar(255) not null comment '原图(封面)',
+   is_hot               bigint(20) not null comment '是否经典案例（经典案例显示在首页）',
+   case_flag            bigint(20) not null comment '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）',
+   market_price         decimal(20,6) comment '市场价',
+   sale_price           decimal(20,6) comment '销售价',
+   primary key (id)
+);
+
+alter table t_vip_case comment '店铺案例';
+
+/*==============================================================*/
+/* Table: t_vip_case_detail                                     */
+/*==============================================================*/
+create table t_vip_case_detail
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   case_id              bigint(20) not null comment '关联案例编号',
+   product_id           bigint(20) not null comment '产品编号',
+   primary key (id)
+);
+
+alter table t_vip_case_detail comment '案例明细';
+
+/*==============================================================*/
+/* Table: t_vip_case_photo                                      */
+/*==============================================================*/
+create table t_vip_case_photo
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   case_id              bigint(20) not null comment '关联案例编号',
+   img_url              varchar(255) not null comment '图片（放大后查看）',
+   thumb_url            varchar(255) not null comment '缩略图',
+   img_original         varchar(255) not null comment '原始图片',
+   primary key (id)
+);
+
+alter table t_vip_case_photo comment '店铺案例图片';
 
 /*==============================================================*/
 /* Table: t_vip_case_type                                       */
@@ -1696,17 +1756,18 @@ alter table t_vip_coupon_type comment '优惠券类型';
 create table t_vip_extend
 (
    id                   bigint(20) not null auto_increment comment '主键',
-   real_name            varchar(50) not null comment '真实姓名',
-   id_card_no           varchar(30) not null comment '身份证号码',
+   vip_id               bigint(20) not null comment '关联会员编号',
+   real_name            varchar(50) comment '真实姓名',
+   id_card_no           varchar(30) comment '身份证号码',
    id_card_photo        varchar(255) comment '身份证正面照',
    id_card_back_photo   varchar(255) comment '身份证背面照',
-   bank_account         varchar(30) not null comment '银行账户（真实姓名）',
-   bank_name            varchar(50) not null comment '开户银行',
-   bank_number          varchar(50) not null comment '银行卡号',
-   bank_addr            varchar(255) not null comment '开户支行（如，招商银行深圳分行科技园支行）',
+   bank_account         varchar(30) comment '银行账户（真实姓名）',
+   bank_name            varchar(50) comment '开户银行',
+   bank_number          varchar(50) comment '银行卡号',
+   bank_addr            varchar(255) comment '开户支行（如，招商银行深圳分行科技园支行）',
    audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
-   audit_user_id        bigint(20) not null comment '审核人',
-   audit_date           datetime not null comment '审核日期',
+   audit_user_id        bigint(20) comment '审核人',
+   audit_date           datetime comment '审核日期',
    audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
    create_date          datetime not null comment '创建时间',
    update_date          datetime not null comment '更新时间',
@@ -1772,63 +1833,6 @@ create table t_vip_operation_log
 alter table t_vip_operation_log comment '会员操作日志表';
 
 /*==============================================================*/
-/* Table: t_vip_org_case                                        */
-/*==============================================================*/
-create table t_vip_org_case
-(
-   id                   bigint(20) not null auto_increment comment '主键编号',
-   name                 varchar(50) comment '案例名称',
-   type_id              bigint(20) not null comment '案例类型',
-   organization_id      bigint(20) comment '关联店铺（机构）编号',
-   content              text not null comment '发布内容',
-   create_date          datetime not null comment '发布时间',
-   update_date          datetime not null comment '更新时间',
-   status               bigint(20) not null comment '是否显示？1：是；0：否',
-   audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
-   audit_user_id        bigint(20) comment '审核人',
-   audit_date           datetime comment '审核日期',
-   audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
-   cover_img_url        varchar(255) not null comment '图片（放大后查看）(封面)',
-   cover_thumb_url      varchar(255) not null comment '缩略图(封面)',
-   cover_img_original   varchar(255) not null comment '原图(封面)',
-   is_hot               bigint(20) not null comment '是否经典案例（经典案例显示在首页）',
-   case_flag            bigint(20) not null comment '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）',
-   market_price         decimal(20,6) comment '市场价',
-   sale_price           decimal(20,6) comment '销售价',
-   primary key (id)
-);
-
-alter table t_vip_org_case comment '店铺案例';
-
-/*==============================================================*/
-/* Table: t_vip_org_case_detail                                 */
-/*==============================================================*/
-create table t_vip_org_case_detail
-(
-   id                   bigint(20) not null auto_increment comment '主键',
-   case_id              bigint(20) not null comment '关联案例编号',
-   product_id           bigint(20) not null comment '产品编号',
-   primary key (id)
-);
-
-alter table t_vip_org_case_detail comment '案例明细';
-
-/*==============================================================*/
-/* Table: t_vip_org_case_photo                                  */
-/*==============================================================*/
-create table t_vip_org_case_photo
-(
-   id                   bigint(20) not null auto_increment comment '主键',
-   case_id              bigint(20) not null comment '关联案例编号',
-   img_url              varchar(255) not null comment '图片（放大后查看）',
-   thumb_url            varchar(255) not null comment '缩略图',
-   img_original         varchar(255) not null comment '原始图片',
-   primary key (id)
-);
-
-alter table t_vip_org_case_photo comment '店铺案例图片';
-
-/*==============================================================*/
 /* Table: t_vip_org_gallery                                     */
 /*==============================================================*/
 create table t_vip_org_gallery
@@ -1849,20 +1853,19 @@ alter table t_vip_org_gallery comment '店铺相册(暂时作为封面）';
 create table t_vip_organization
 (
    id                   bigint(20) not null auto_increment comment '主键',
-   name                 varchar(30) not null comment '门店（店铺、机构）名称',
+   name                 varchar(30) comment '门店（店铺、机构）名称',
    status               bigint(20) not null comment '状态（1：有效；0：无效）',
-   logo_img_url         varchar(255) not null comment '图片（放大后查看）（logo）',
-   logo_thumb_url       varchar(255) not null comment '缩略图（logo）',
-   logo_ilmg_original   varchar(255) not null comment '原始图片（logo）',
-   cover_img_url        varchar(255) not null comment '图片（放大后查看）(封面)',
-   cover_thumb_url      varchar(255) not null comment '缩略图(封面)',
-   cover_img_original   varchar(255) not null comment '原图(封面)',
+   logo_img_url         varchar(255) comment '图片（放大后查看）（logo）',
+   logo_thumb_url       varchar(255) comment '缩略图（logo）',
+   logo_img_original    varchar(255) comment '原始图片（logo）',
+   cover_img_url        varchar(255) comment '图片（放大后查看）(封面)',
+   cover_thumb_url      varchar(255) comment '缩略图(封面)',
+   cover_img_original   varchar(255) comment '原图(封面)',
    vip_id               bigint(20) not null comment '所属会员',
-   description          varchar(500) not null comment '店铺简介',
-   country_id           bigint(20) not null comment '关联国家编号',
-   province_id          bigint(20) not null comment '关联省份编号',
-   city_id              bigint(20) not null comment '关联城市编号',
-   role_type            bigint(20) comment '角色类型（策划师，主持人，摄影师，化妆师，摄像师）',
+   description          varchar(500) comment '店铺简介',
+   country_id           bigint(20) comment '关联国家编号',
+   province_id          bigint(20) comment '关联省份编号',
+   city_id              bigint(20) comment '关联城市编号',
    audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
@@ -2264,7 +2267,7 @@ alter table t_so_sheet add constraint fk_so_ref_delivery_type foreign key (deliv
       references t_delivery_type (id);
 
 alter table t_so_sheet add constraint fk_so_sheet_case_id_ref_org_case foreign key (related_case_id)
-      references t_vip_org_case (id);
+      references t_vip_case (id);
 
 alter table t_so_sheet add constraint fk_so_sheet_ref_pay_type foreign key (pay_type_id)
       references t_pay_type (id);
@@ -2443,6 +2446,9 @@ alter table t_vip add constraint fk_vip_mobile_verify_ref_param foreign key (mob
 alter table t_vip add constraint fk_vip_ref_vip_rank foreign key (rank_id)
       references t_vip_rank (id);
 
+alter table t_vip add constraint fk_vip_role_type_ref_param foreign key (role_type)
+      references t_sys_parameter (id);
+
 alter table t_vip add constraint fk_vip_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
 
@@ -2497,6 +2503,33 @@ alter table t_vip_blog_photo add constraint fk_org_blog_phpto_ref_blog foreign k
 alter table t_vip_blog_type add constraint fk_blog_type_parent_ref_blog_type foreign key (parent_id)
       references t_vip_blog_type (id);
 
+alter table t_vip_case add constraint fk_org_case_ref_case_type foreign key (type_id)
+      references t_vip_case_type (id);
+
+alter table t_vip_case add constraint fk_org_case_ref_org foreign key (organization_id)
+      references t_vip_organization (id);
+
+alter table t_vip_case add constraint fk_org_case_ref_param foreign key (case_flag)
+      references t_sys_parameter (id);
+
+alter table t_vip_case add constraint fk_org_case_show_ref_param foreign key (status)
+      references t_sys_parameter (id);
+
+alter table t_vip_case add constraint fk_sys_org_case_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_vip_case add constraint fk_vip_org_case_ref_user foreign key (audit_user_id)
+      references t_sys_user (id);
+
+alter table t_vip_case_detail add constraint fk_org_case_detail_ref_case foreign key (case_id)
+      references t_vip_case (id);
+
+alter table t_vip_case_detail add constraint fk_org_case_detail_ref_prod foreign key (product_id)
+      references t_product (id);
+
+alter table t_vip_case_photo add constraint fk_vip_case_photo_ref_case foreign key (case_id)
+      references t_vip_case (id);
+
 alter table t_vip_case_type_prop add constraint fk_case_type_prop_input_ref_param foreign key (input_type)
       references t_sys_parameter (id);
 
@@ -2545,6 +2578,9 @@ alter table t_vip_extend add constraint fk_vip_ext_audit_stat_ref_stat foreign k
 alter table t_vip_extend add constraint fk_vip_ext_audit_usr_ref_usr foreign key (audit_user_id)
       references t_sys_user (id);
 
+alter table t_vip_extend add constraint fk_vip_extend_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
 alter table t_vip_module add constraint fk_vip_mod_menu_ref_param foreign key (menu_flag)
       references t_sys_parameter (id);
 
@@ -2560,33 +2596,6 @@ alter table t_vip_operation_log add constraint fk_vip_op_log_ref_vip foreign key
 alter table t_vip_operation_log add constraint fk_vip_op_log_ref_vmodule foreign key (module_id)
       references t_vip_module (id);
 
-alter table t_vip_org_case add constraint fk_org_case_ref_case_type foreign key (type_id)
-      references t_vip_case_type (id);
-
-alter table t_vip_org_case add constraint fk_org_case_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
-alter table t_vip_org_case add constraint fk_org_case_ref_param foreign key (case_flag)
-      references t_sys_parameter (id);
-
-alter table t_vip_org_case add constraint fk_org_case_show_ref_param foreign key (status)
-      references t_sys_parameter (id);
-
-alter table t_vip_org_case add constraint fk_sys_org_case_ref_param foreign key (audit_status)
-      references t_sys_parameter (id);
-
-alter table t_vip_org_case add constraint fk_vip_org_case_ref_user foreign key (audit_user_id)
-      references t_sys_user (id);
-
-alter table t_vip_org_case_detail add constraint fk_org_case_detail_ref_case foreign key (case_id)
-      references t_vip_org_case (id);
-
-alter table t_vip_org_case_detail add constraint fk_org_case_detail_ref_prod foreign key (product_id)
-      references t_product (id);
-
-alter table t_vip_org_case_photo add constraint fk_vip_case_photo_ref_case foreign key (case_id)
-      references t_vip_org_case (id);
-
 alter table t_vip_org_gallery add constraint fk_org_gallery_ref_org foreign key (organization_id)
       references t_vip_organization (id);
 
@@ -2601,9 +2610,6 @@ alter table t_vip_organization add constraint fk_vip_org_audit_ref_param foreign
 
 alter table t_vip_organization add constraint fk_vip_org_audit_user_ref_user foreign key (audit_user_id)
       references t_sys_user (id);
-
-alter table t_vip_organization add constraint fk_vip_org_role_ref_param foreign key (role_type)
-      references t_sys_parameter (id);
 
 alter table t_vip_product_collect add constraint fk_vip_collect_ref_product foreign key (product_id)
       references t_product (id);
