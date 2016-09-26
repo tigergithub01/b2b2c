@@ -133,7 +133,8 @@ class MerchantService{
 				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
 				$transaction->rollBack();
 				return false;
-			}			
+			}	
+			$transaction->commit();
 		} catch (\Exception $e) {
 			$transaction->rollBack();
             throw $e;
