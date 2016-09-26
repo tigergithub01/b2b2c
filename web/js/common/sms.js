@@ -16,8 +16,8 @@ $(function() {
     	    dataType:'json', 
     	    data:{'verify_code':$("#vip-verify_code").val(),"vip_id":$("#vip-vip_id").val()},     
     	    async :true, 
-    	    error:function(){ 
-    	    	//alert('更新出错！');
+    	    error:function(err){
+    	    	alert('验证码获取失败！'+err.responseJSON.message);
     	    },     
     	    success:function(data){ 
     		    if(data.status){
@@ -27,16 +27,7 @@ $(function() {
     		    	alert(data.message);
     		    }
     	    }  
-    	}); 
-		
-		
-		
-		
-		
-		
-		
-		
-		
+    	}); 		
 	});
 
 });
