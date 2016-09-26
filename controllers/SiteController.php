@@ -53,8 +53,12 @@ class SiteController extends Controller
     public function actionIndex()
     {
 //     	var_dump(Yii::$app);
-    	Yii::$app->response->redirect(Url::toRoute(['/vip/']));
-//     	return $this->render('index');
+		
+    	if(YII_DEBUG){
+    		return $this->render('index');
+    	}else{
+    		Yii::$app->response->redirect(Url::toRoute(['/vip/']));
+    	}
     }
 
     /* public function actionLogin()
