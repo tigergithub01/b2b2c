@@ -4,7 +4,7 @@
 
 use yii\helpers\Url;
 
-$this->title = 'My Yii Application';
+$this->title = Yii::t('app', 'app_name');
 ?>
 <div class="site-index">
 
