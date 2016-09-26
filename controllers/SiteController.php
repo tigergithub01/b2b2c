@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\helpers\Url;
 
 class SiteController extends Controller
 {
@@ -51,10 +52,12 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-    	return $this->render('index');
+//     	var_dump(Yii::$app);
+    	Yii::$app->response->redirect(Url::toRoute(['/vip/']));
+//     	return $this->render('index');
     }
 
-    public function actionLogin()
+    /* public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -105,5 +108,5 @@ class SiteController extends Controller
     	if ($exception !== null) {
     		return $this->render('error', ['exception' => $exception,'message' => $message,]);
     	}
-    }
+    } */
 }
