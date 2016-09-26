@@ -20,6 +20,5 @@ class DefaultController extends BaseController
     {
 //         return $this->render('index');
     	Yii::$app->response->redirect(Url::toRoute(['/vip/member/system/login/index']));
-		
     }
 }

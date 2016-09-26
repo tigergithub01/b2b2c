@@ -72,6 +72,20 @@ $fieldOptions2 = [
         		<?= Html::a('忘记密码',['member/system/login/forgot-pwd']) ?>
         	</div>
         </div>
+        
+        <div class="form-group" style="margin-top: 35px;">
+        	<div class="col-xs-4">
+        		<?= Html::a('我是商家',['/merchant']) ?>
+        	</div>
+        	
+        	<div class="col-xs-4">
+        		<?= Html::a('APP下载','#') ?>
+        	</div>
+        	
+        	<div class="col-xs-4">
+        		<?= Html::a('管理入口',['/admin']) ?>
+        	</div>
+        </div>
 
         <?php ActiveForm::end(); ?>
         
