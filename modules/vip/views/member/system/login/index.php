@@ -79,7 +79,7 @@ $fieldOptions2 = [
         	</div>
         	
         	<div class="col-xs-4">
-        		<?= Html::a('APP下载','#') ?>
+        		<?= Html::a('APP下载',['/vip/system/sys-app-info','code'=>'wedding_android']) ?>
         	</div>
         	
         	<div class="col-xs-4">
