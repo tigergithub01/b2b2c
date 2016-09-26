@@ -27,6 +27,7 @@ use app\modules\vip\models\VipConst;
                 	['label' => '我的收藏', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
                 	['label' => '我的消息', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
                 	['label' => '我的订单', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
+                	['label' => '密码修改', 'icon' => 'fa fa-table','url' => ['member/system/modify-pwd/index'],],
                 ],
             ]
         ) ?>

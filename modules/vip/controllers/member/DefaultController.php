@@ -1,11 +1,12 @@
 <?php
 
-namespace app\modules\vip\controllers;
+namespace app\modules\vip\controllers\member;
 
 use Yii;
 use yii\web\Controller;
 use app\modules\vip\common\controllers\BaseController;
 use yii\helpers\Url;
+use app\modules\vip\service\vip\VipService;
 
 /**
  * Default controller for the `vip` module
@@ -18,8 +19,17 @@ class DefaultController extends BaseController
      */
     public function actionIndex()
     {
-//         return $this->render('index');
-    	Yii::$app->response->redirect(Url::toRoute(['/vip/member/system/login/index']));
-		
+        return $this->render('index');
+    }
+    
+    /**
+     * 注销
+     */
+    public function actionLogout()
+    {
+    	$service = new VipService();
+    	$service->logout();
+    	 
+    	Yii::$app->getResponse()->redirect("/vip/member/system/login/index");
     }
 }

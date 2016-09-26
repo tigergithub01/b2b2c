@@ -15,4 +15,7 @@ return [
 		'select_prompt' => '--请选择--',
 		
 		
+		'copyrights' => '<strong>© 2005-2016 婚礼兔</strong> 版权所有，并保留所有权利。'
+		
+		
 ];
