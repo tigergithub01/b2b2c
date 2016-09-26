@@ -283,6 +283,22 @@ Yii::$app->getSession()->setFlash('success', '保存成功');
 grid view增加一个修改密码的操作。
 grid view增加一个管理员修改密码的页面。
 
+app下载 -> ok
+商户注册时自动加入店铺注册的功能。（如果有店铺的功能时，再单独进行扩展）。 
+书写登陆，注册，找回密码，修改密码的ajax api；
+
+SELECT region_id as id,region_name as name,(case when parent_id=0 then null else parent_id end)  as parent_id,
+(
+case when region_type=0 then 22001 
+when region_type=1 then 22002
+when region_type=2 then 22003
+when region_type=3 then 22004
+when region_type=4 then 22005
+else region_type end) as region_type FROM baianshop.ecs_region;
+
+logo_img_original
+
+
 
 
 
