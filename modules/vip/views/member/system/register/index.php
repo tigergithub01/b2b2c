@@ -57,7 +57,7 @@ $fieldOptions2 = [
         				'captchaAction' => '/site/captcha',
                     ]) ?>     
          
-         <?= $form->field($model, 'sms_code',['template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6"><input type="button" url="'.Url::to(['system/sms/index']).'" value="获取验证码" class="btn btn-block btn-flat btn_sms"/></div></div>{error}',])
+         <?= $form->field($model, 'sms_code',['template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6"><input type="button" url="'.Url::to(['member/system/sms/index']).'" value="获取验证码" class="btn btn-block btn-flat btn_sms"/></div></div>{error}',])
         			->label(false)
         			->textInput([
         				'placeholder' => $model->getAttributeLabel('sms_code'),
@@ -71,12 +71,14 @@ $fieldOptions2 = [
             <!-- /.col -->
         </div>
 		
+		<!-- 
 		 <div class="row" style="margin-top: 20px;">
             <div class="col-xs-12 icheck">
                 <?= $form->field($model, 'agreement')->checkbox(['label'=>'我同意遵守',
                 		'template' => "{input}{label}<a href='#'>《婚礼兔商家协议》<a>{error}",]) ?>
             </div>
         </div>
+         -->	
 		
         <?php ActiveForm::end(); ?>
         

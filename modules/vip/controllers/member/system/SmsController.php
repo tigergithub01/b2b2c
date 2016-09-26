@@ -1,11 +1,11 @@
 <?php
 
-namespace app\modules\merchant\controllers\member\system;
+namespace app\modules\vip\controllers\member\system;
 
 use Yii;
 use yii\filters\AccessControl;
-use app\modules\merchant\common\controllers\BaseController;
-use app\modules\merchant\models\MerchantConst;
+use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\models\VipConst;
 use yii\helpers\Json;
 use app\models\b2b2c\SysParameter;
 use yii\helpers\ArrayHelper;
@@ -75,7 +75,7 @@ class SmsController extends BaseController {
 		}
 
 		//图形验证码是否正确
-		$verify_code  = $session->get(MerchantConst::CAPTCHA_ACTION_KEY);
+		$verify_code  = $session->get(VipConst::CAPTCHA_ACTION_KEY);
 // 		Yii::info('$verify_code:'.$_SESSION[MerchantConst::CAPTCHA_ACTION_KEY]);
 		
 		if(isset($req_verify_code) && strcmp($verify_code, $req_verify_code)!=0){
@@ -85,7 +85,7 @@ class SmsController extends BaseController {
 		
 		//根据数据库判断验证码获取时间间隔，每天只能获取5次验证码，每隔60秒获取一次
 		$last_verify = SysVerifyCode::find()->where('expiration_time>= :expiration_time AND verify_type = :verify_type AND verify_number =:verify_number',
-				['expiration_time'=>date (MerchantConst::DATE_FORMAT, time ()),
+				['expiration_time'=>date (VipConst::DATE_FORMAT, time ()),
 				'verify_type'=>SysParameter::verify_mobile,
 				'verify_number' => $vip_id,
 				])->orderBy('sent_time DESC')->one();
@@ -117,8 +117,8 @@ class SmsController extends BaseController {
 		//将验证码信息写入数据库，
 		$sysVerifyCode = new SysVerifyCode(); 
 		$sysVerifyCode->verify_type = SysParameter::verify_mobile ;
-		$sysVerifyCode->sent_time = date ( MerchantConst::DATE_FORMAT, time () );
-		$sysVerifyCode->expiration_time = date ( MerchantConst::DATE_FORMAT, time() + 5*60);//验证码有效时间5分钟
+		$sysVerifyCode->sent_time = date ( VipConst::DATE_FORMAT, time () );
+		$sysVerifyCode->expiration_time = date ( VipConst::DATE_FORMAT, time() + 5*60);//验证码有效时间5分钟
 		$sysVerifyCode->verify_code = $sms_code;
 		$sysVerifyCode->content = $content;
 		$sysVerifyCode->verify_number = $vip_id;

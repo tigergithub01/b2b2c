@@ -9,6 +9,7 @@ use yii\base\Exception;
 use yii\base\UserException;
 use yii\web\HttpException;
 use app\modules\vip\common\filters\VipLogFilter;
+use yii\helpers\Json;
 
 class BaseController extends Controller
 {
@@ -99,6 +100,7 @@ class BaseController extends Controller
 		}
 		
 		if (Yii::$app->getRequest()->getIsAjax()) {
+			$this->layout = false;
 			$jsonObj = new JsonObj();
 			$jsonObj->status = false;
 			$jsonObj->message = "$name: $message";

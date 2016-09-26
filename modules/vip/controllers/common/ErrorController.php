@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\common;
 
 use yii\web\Controller;
-use app\modules\merchant\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseController;
 
 class ErrorController extends BaseController
 {

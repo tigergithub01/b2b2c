@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\vip\controllers\member;
+namespace app\modules\vip\controllers;
 
 use Yii;
 use yii\web\Controller;
+use app\modules\vip\common\controllers\BaseController;
 use yii\helpers\Url;
-use app\modules\vip\common\controllers\BaseAuthController;
 
 /**
  * Default controller for the `vip` module
  */
-class DefaultController extends BaseAuthController
+class DefaultController extends BaseController
 {
     /**
      * Renders the index view for the module
@@ -18,7 +18,8 @@ class DefaultController extends BaseAuthController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+//         return $this->render('index');
+    	Yii::$app->response->redirect(Url::toRoute(['/vip/member/system/login/index']));
 		
     }
 }
