@@ -12,7 +12,7 @@ use Yii;
  * @property string $status
  * @property string $logo_img_url
  * @property string $logo_thumb_url
- * @property string $logo_ilmg_original
+ * @property string $logo_img_original
  * @property string $cover_img_url
  * @property string $cover_thumb_url
  * @property string $cover_img_original
@@ -21,7 +21,6 @@ use Yii;
  * @property string $country_id
  * @property string $province_id
  * @property string $city_id
- * @property string $role_type
  * @property string $audit_status
  * @property string $audit_user_id
  * @property string $audit_date
@@ -41,14 +40,13 @@ use Yii;
  * @property SysRelativeModule[] $sysRelativeModules
  * @property SysWarehouse[] $sysWarehouses
  * @property VipBlog[] $vipBlogs
+ * @property VipCase[] $vipCases
  * @property VipCouponType[] $vipCouponTypes
- * @property VipOrgCase[] $vipOrgCases
  * @property VipOrgGallery[] $vipOrgGalleries
- * @property SysParameter $roleType
+ * @property SysUser $auditUser
  * @property Vip $vip
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
- * @property SysUser $auditUser
  */
 class VipOrganization extends \app\models\b2b2c\BasicModel
 {
@@ -66,18 +64,17 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'status', 'logo_img_url', 'logo_thumb_url', 'logo_ilmg_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'vip_id', 'description', 'country_id', 'province_id', 'city_id', 'audit_status', 'create_date', 'update_date'], 'required'],
-            [['status', 'vip_id', 'country_id', 'province_id', 'city_id', 'role_type', 'audit_status', 'audit_user_id'], 'integer'],
+            [['status', 'vip_id', 'audit_status', 'create_date', 'update_date'], 'required'],
+            [['status', 'vip_id', 'country_id', 'province_id', 'city_id', 'audit_status', 'audit_user_id'], 'integer'],
             [['audit_date', 'create_date', 'update_date'], 'safe'],
             [['name'], 'string', 'max' => 30],
-            [['logo_img_url', 'logo_thumb_url', 'logo_ilmg_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
+            [['logo_img_url', 'logo_thumb_url', 'logo_img_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 500],
             [['audit_memo'], 'string', 'max' => 200],
-            [['role_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['role_type' => 'id']],
+            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
-            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
         ];
     }
 
@@ -92,7 +89,7 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             'status' => Yii::t('app', '状态（1：有效；0：无效）'),
             'logo_img_url' => Yii::t('app', '图片（放大后查看）（logo）'),
             'logo_thumb_url' => Yii::t('app', '缩略图（logo）'),
-            'logo_ilmg_original' => Yii::t('app', '原始图片（logo）'),
+            'logo_img_original' => Yii::t('app', '原始图片（logo）'),
             'cover_img_url' => Yii::t('app', '图片（放大后查看）(封面)'),
             'cover_thumb_url' => Yii::t('app', '缩略图(封面)'),
             'cover_img_original' => Yii::t('app', '原图(封面)'),
@@ -101,7 +98,6 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             'country_id' => Yii::t('app', '关联国家编号'),
             'province_id' => Yii::t('app', '关联省份编号'),
             'city_id' => Yii::t('app', '关联城市编号'),
-            'role_type' => Yii::t('app', '角色类型（策划师，主持人，摄影师，化妆师，摄像师）'),
             'audit_status' => Yii::t('app', '审核状态：未审核，审核不通过，已审核'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
@@ -210,17 +206,17 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipCouponTypes()
+    public function getVipCases()
     {
-        return $this->hasMany(VipCouponType::className(), ['organization_id' => 'id']);
+        return $this->hasMany(VipCase::className(), ['organization_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCases()
+    public function getVipCouponTypes()
     {
-        return $this->hasMany(VipOrgCase::className(), ['organization_id' => 'id']);
+        return $this->hasMany(VipCouponType::className(), ['organization_id' => 'id']);
     }
 
     /**
@@ -234,9 +230,9 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRoleType()
+    public function getAuditUser()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'role_type']);
+        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 
     /**
@@ -261,13 +257,5 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     public function getAuditStatus()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAuditUser()
-    {
-        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 }

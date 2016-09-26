@@ -5,6 +5,7 @@ use Yii\web\View;
 use yii\captcha\Captcha;
 use app\modules\merchant\Module;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 
 /* @var $this yii\web\View */
@@ -61,8 +62,13 @@ $fieldOptions2 = [
         			->label(false)
         			->textInput([
         				'placeholder' => $model->getAttributeLabel('sms_code'),
-                    ]) ?>   
-
+                    ]) ?> 
+        
+        <?= $form->field($model, 'role_type')
+        		  ->label(false)
+        		  ->dropDownList(ArrayHelper::map($roleTypes, "id", "param_val"), ['prompt' => '--'.$model->getAttributeLabel('role_type').'--']) ?>
+                      
+		
         <div class="row">
             <!-- /.col -->
             <div class="col-xs-12">

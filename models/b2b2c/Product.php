@@ -72,7 +72,7 @@ use Yii;
  * @property ReturnSheetDetail[] $returnSheetDetails
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheetDetail[] $soSheetDetails
- * @property VipOrgCaseDetail[] $vipOrgCaseDetails
+ * @property VipCaseDetail[] $vipCaseDetails
  * @property VipProductCollect[] $vipProductCollects
  */
 class Product extends \app\models\b2b2c\BasicModel
@@ -91,7 +91,7 @@ class Product extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['code', 'name', 'type_id', 'market_price', 'sale_price', 'deposit_amount', 'description', 'is_on_sale', 'is_hot', 'audit_status', 'can_return_flag', 'organization_id', 'is_free_shipping', 'img_url', 'thumb_url', 'img_original'], 'required'],
+            [['name', 'type_id', 'market_price', 'sale_price', 'deposit_amount', 'is_on_sale', 'is_hot', 'audit_status', 'can_return_flag', 'organization_id', 'is_free_shipping'], 'required'],
             [['type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'organization_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id'], 'integer'],
             [['market_price', 'sale_price', 'deposit_amount', 'stock_quantity', 'safety_quantity', 'cost_price', 'product_weight'], 'number'],
             [['description', 'return_desc'], 'string'],
@@ -400,9 +400,9 @@ class Product extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCaseDetails()
+    public function getVipCaseDetails()
     {
-        return $this->hasMany(VipOrgCaseDetail::className(), ['product_id' => 'id']);
+        return $this->hasMany(VipCaseDetail::className(), ['product_id' => 'id']);
     }
 
     /**

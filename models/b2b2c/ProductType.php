@@ -11,6 +11,7 @@ use Yii;
  * @property string $name
  * @property string $parent_id
  * @property string $description
+ * @property integer $seq_id
  *
  * @property ActScope[] $actScopes
  * @property Product[] $products
@@ -35,7 +36,7 @@ class ProductType extends \app\models\b2b2c\BasicModel
     {
         return [
             [['name'], 'required'],
-            [['parent_id'], 'integer'],
+            [['parent_id', 'seq_id'], 'integer'],
             [['name'], 'string', 'max' => 60],
             [['description'], 'string', 'max' => 600],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['parent_id' => 'id']],
@@ -52,6 +53,7 @@ class ProductType extends \app\models\b2b2c\BasicModel
             'name' => Yii::t('app', '分类名称'),
             'parent_id' => Yii::t('app', '上级分类编号'),
             'description' => Yii::t('app', '分类描述'),
+            'seq_id' => Yii::t('app', '显示顺序'),
         ];
     }
 

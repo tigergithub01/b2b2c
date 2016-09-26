@@ -9,8 +9,8 @@ use Yii;
  *
  * @property string $id
  * @property string $name
- * @property string $upgrade_desc
  * @property string $ver_no
+ * @property string $upgrade_desc
  * @property string $force_upgrade
  * @property string $issue_date
  * @property string $issue_user_id
@@ -38,8 +38,8 @@ class SysAppRelease extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['id', 'name', 'ver_no', 'force_upgrade', 'issue_date', 'issue_user_id', 'app_info_id'], 'required'],
-            [['id', 'ver_no', 'force_upgrade', 'issue_user_id', 'app_info_id'], 'integer'],
+            [['name', 'ver_no', 'force_upgrade', 'app_path', 'app_info_id'], 'required'],
+            [['ver_no', 'force_upgrade', 'issue_user_id', 'app_info_id'], 'integer'],
             [['issue_date'], 'safe'],
             [['name'], 'string', 'max' => 60],
             [['upgrade_desc'], 'string', 'max' => 600],
@@ -58,13 +58,13 @@ class SysAppRelease extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键编号'),
             'name' => Yii::t('app', '版本名称(1.1.1，字符串型)、'),
-            'upgrade_desc' => Yii::t('app', '版本升级描述'),
             'ver_no' => Yii::t('app', '版本编号(1.0，数字型用来与app进行版本比较)'),
+            'upgrade_desc' => Yii::t('app', '版本升级描述'),
             'force_upgrade' => Yii::t('app', '是否必须升级(1:是；0:否）'),
             'issue_date' => Yii::t('app', '发布日期'),
             'issue_user_id' => Yii::t('app', '发布人'),
             'app_path' => Yii::t('app', '应用下载地址'),
-            'app_info_id' => Yii::t('app', 'app类型：1:andorid 2:ios'),
+            'app_info_id' => Yii::t('app', 'app信息：1:XX-andorid版 2:XX-ios版'),
         ];
     }
 

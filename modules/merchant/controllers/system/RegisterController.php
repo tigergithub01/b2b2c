@@ -8,6 +8,7 @@ use app\models\b2b2c\Vip;
 use app\modules\merchant\models\MerchantConst;
 use app\modules\merchant\service\vip\MerchantService;
 use yii\helpers\Url;
+use app\models\b2b2c\SysParameterType;
 
 class RegisterController extends BaseController
 {
@@ -21,7 +22,7 @@ class RegisterController extends BaseController
     {
     	$merchantService = new MerchantService();
     	
-    	/* 登陆 */
+    	/* 注册 */
     	$model = new Vip();
     	$model->setScenario(Vip::SCENARIO_REGISTER);
     	
@@ -87,6 +88,7 @@ class RegisterController extends BaseController
     
     	return $this->render('index', [
     			'model' => $model,
+    			'roleTypes' => SysParameterType::getSysParametersById(SysParameterType::ROLE_TYPE),
     	]);
     
     }

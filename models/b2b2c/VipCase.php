@@ -5,7 +5,7 @@ namespace app\models\b2b2c;
 use Yii;
 
 /**
- * This is the model class for table "t_vip_org_case".
+ * This is the model class for table "t_vip_case".
  *
  * @property string $id
  * @property string $name
@@ -34,17 +34,17 @@ use Yii;
  * @property SysParameter $caseFlag
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
- * @property VipOrgCaseDetail[] $vipOrgCaseDetails
- * @property VipOrgCasePhoto[] $vipOrgCasePhotos
+ * @property VipCaseDetail[] $vipCaseDetails
+ * @property VipCasePhoto[] $vipCasePhotos
  */
-class VipOrgCase extends \app\models\b2b2c\BasicModel
+class VipCase extends \app\models\b2b2c\BasicModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 't_vip_org_case';
+        return 't_vip_case';
     }
 
     /**
@@ -53,7 +53,7 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['type_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot', 'case_flag'], 'required'],
+            [['name', 'type_id', 'organization_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot', 'case_flag'], 'required'],
             [['type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
@@ -157,16 +157,16 @@ class VipOrgCase extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCaseDetails()
+    public function getVipCaseDetails()
     {
-        return $this->hasMany(VipOrgCaseDetail::className(), ['case_id' => 'id']);
+        return $this->hasMany(VipCaseDetail::className(), ['case_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCasePhotos()
+    public function getVipCasePhotos()
     {
-        return $this->hasMany(VipOrgCasePhoto::className(), ['case_id' => 'id']);
+        return $this->hasMany(VipCasePhoto::className(), ['case_id' => 'id']);
     }
 }

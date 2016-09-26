@@ -49,6 +49,7 @@ class MerchantAuthBehavior extends Behavior{
 	 				
 	 				//设置权限等信息TODO:
 	 				
+	 				//TODO:店铺信息与个人信息完善并通过审核后，别人才能看见自己的店铺信息。	
 	 				
 	 				
 	 			}else{

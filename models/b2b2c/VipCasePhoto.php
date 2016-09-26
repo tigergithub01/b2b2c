@@ -5,7 +5,7 @@ namespace app\models\b2b2c;
 use Yii;
 
 /**
- * This is the model class for table "t_vip_org_case_photo".
+ * This is the model class for table "t_vip_case_photo".
  *
  * @property string $id
  * @property string $case_id
@@ -13,16 +13,16 @@ use Yii;
  * @property string $thumb_url
  * @property string $img_original
  *
- * @property VipOrgCase $case
+ * @property VipCase $case
  */
-class VipOrgCasePhoto extends \app\models\b2b2c\BasicModel
+class VipCasePhoto extends \app\models\b2b2c\BasicModel
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 't_vip_org_case_photo';
+        return 't_vip_case_photo';
     }
 
     /**
@@ -34,7 +34,7 @@ class VipOrgCasePhoto extends \app\models\b2b2c\BasicModel
             [['case_id', 'img_url', 'thumb_url', 'img_original'], 'required'],
             [['case_id'], 'integer'],
             [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
-            [['case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrgCase::className(), 'targetAttribute' => ['case_id' => 'id']],
+            [['case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['case_id' => 'id']],
         ];
     }
 
@@ -57,6 +57,6 @@ class VipOrgCasePhoto extends \app\models\b2b2c\BasicModel
      */
     public function getCase()
     {
-        return $this->hasOne(VipOrgCase::className(), ['id' => 'case_id']);
+        return $this->hasOne(VipCase::className(), ['id' => 'case_id']);
     }
 }

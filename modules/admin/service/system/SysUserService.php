@@ -100,8 +100,8 @@ class SysUserService{
     		$model=new SysUser();
     		$model->user_id='admin';
     		$model->password=md5("admin123");
-    		$model->is_admin =1;
-    		$model->status = 1;
+    		$model->is_admin =SysParameter::yes;
+    		$model->status = SysParameter::yes;
     		$model->validate();
     		$success = $model->save();
     		Yii::info("insertSystemUsr $success");

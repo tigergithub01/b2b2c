@@ -16,7 +16,11 @@ use Yii;
 class SysParameterType extends \app\models\b2b2c\BasicModel
 {
     
+	/* 是否标志位  */
 	const YES_NO = 1;
+	
+	/* 角色类型 */
+	const ROLE_TYPE = 23;
 	
     /**
      * @inheritdoc

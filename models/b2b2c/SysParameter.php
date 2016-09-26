@@ -93,19 +93,34 @@ class SysParameter extends \app\models\b2b2c\BasicModel
 	const no = 0;
 	
 	/* 验证类型：手机号码验证 */
-    const verify_mobile = 1301;
+    const verify_mobile = 13001;
     
     /* 验证类型：邮箱验证 */
-    const verify_email = 1302; 	
+    const verify_email = 13002; 	
     
     /* 审核结果：待审核 */
-    const audit_need_approve = 301;
+    const audit_need_approve = 3001;
     
     /* 审核结果：审核通过 */
-    const audit_approved = 303;
+    const audit_approved = 3003;
     
     /* 审核结果：审核不通过 */
-    const audit_rejected = 302;
+    const audit_rejected = 3002;
+    
+    /* 商户类型（婚礼）：策划师 */
+    const role_plan = 23001;
+    
+    /* 商户类型（婚礼）：主持人 */
+    const role_host = 23002;
+    
+    /* 商户类型（婚礼）：摄影师 */
+    const role_photographer = 23003;
+    
+    /* 商户类型（婚礼）：化妆师 */
+    const role_dresser = 23004;
+    
+    /* 商户类型（婚礼）：摄像师 */
+    const role_cameraman = 23005;
     
     /**
      * @inheritdoc

@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "t_vip_extend".
  *
  * @property string $id
+ * @property string $vip_id
  * @property string $real_name
  * @property string $id_card_no
  * @property string $id_card_photo
@@ -23,8 +24,9 @@ use Yii;
  * @property string $create_date
  * @property string $update_date
  *
- * @property SysUser $auditUser
+ * @property Vip $vip
  * @property SysParameter $auditStatus
+ * @property SysUser $auditUser
  */
 class VipExtend extends \app\models\b2b2c\BasicModel
 {
@@ -42,15 +44,16 @@ class VipExtend extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['real_name', 'id_card_no', 'bank_account', 'bank_name', 'bank_number', 'bank_addr', 'audit_status', 'audit_user_id', 'audit_date', 'create_date', 'update_date'], 'required'],
-            [['audit_status', 'audit_user_id'], 'integer'],
+            [['vip_id', 'audit_status', 'create_date', 'update_date'], 'required'],
+            [['vip_id', 'audit_status', 'audit_user_id'], 'integer'],
             [['audit_date', 'create_date', 'update_date'], 'safe'],
             [['real_name', 'bank_name', 'bank_number'], 'string', 'max' => 50],
             [['id_card_no', 'bank_account'], 'string', 'max' => 30],
             [['id_card_photo', 'id_card_back_photo', 'bank_addr'], 'string', 'max' => 255],
             [['audit_memo'], 'string', 'max' => 200],
-            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
+            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
         ];
     }
 
@@ -61,6 +64,7 @@ class VipExtend extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键'),
+            'vip_id' => Yii::t('app', '关联会员编号'),
             'real_name' => Yii::t('app', '真实姓名'),
             'id_card_no' => Yii::t('app', '身份证号码'),
             'id_card_photo' => Yii::t('app', '身份证正面照'),
@@ -81,9 +85,9 @@ class VipExtend extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuditUser()
+    public function getVip()
     {
-        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**
@@ -92,5 +96,13 @@ class VipExtend extends \app\models\b2b2c\BasicModel
     public function getAuditStatus()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuditUser()
+    {
+        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 }

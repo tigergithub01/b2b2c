@@ -12,7 +12,17 @@ class JsonObj{
 	//消息
 	public $message;
 	
-	
+	/**
+	 * 自定义构造函数
+	 * @param string $status
+	 * @param string $value
+	 * @param string $message
+	 */
+	public function __construct($status = true,$value = null,$message = null){
+		$this->status = $status;
+		$this->value = $value;
+		$this->message = $message;
+	}
 	
 	
 }

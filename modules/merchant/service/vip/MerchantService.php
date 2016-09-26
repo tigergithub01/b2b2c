@@ -8,6 +8,8 @@ use app\models\b2b2c\SysParameter;
 use app\modules\merchant\models\MerchantConst;
 use app\models\b2b2c\SysVerifyCode;
 use yii\base\View;
+use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\VipExtend;
 
 class MerchantService{
 	/**
@@ -76,7 +78,7 @@ class MerchantService{
 		$vip->register_date=date(MerchantConst::DATE_FORMAT,time());
 		$vip->audit_status = SysParameter::audit_need_approve;
 		$vip->mobile_verify_flag=SysParameter::yes;
-		
+		$vip->role_type = $model->role_type;
 		
 		//判断该用户是否已经注册
 		$count = Vip::find()->where(['vip_id'=>$model->vip_id,'merchant_flag'=>SysParameter::yes])->count();
@@ -98,12 +100,44 @@ class MerchantService{
 		}
 		
 		//插入用户信息，并且是未审核状态
-		if(!($vip->insert())){
-			Yii::info($model->errors);
-			$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
-			return false;
+		$transaction = Vip::getDb()->beginTransaction();
+		try {
+			if(!($vip->insert())){
+				Yii::info($model->errors);
+				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
+				$transaction->rollBack();
+				return false;
+			}
+			
+			//insert VipOrganization,插入店铺信息，（因为没有店铺的概念，但是为了保证扩展性，所有默认插入一个店铺）
+			$vipOrg =  new VipOrganization();
+			$vipOrg->status=SysParameter::yes;
+			$vipOrg->vip_id = $vip->id;
+			$vipOrg->audit_status = SysParameter::audit_need_approve;
+			$vipOrg->create_date = date(MerchantConst::DATE_FORMAT,time());
+			$vipOrg->update_date = date(MerchantConst::DATE_FORMAT,time());
+			
+			if(!($vipOrg->insert())){
+				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
+				$transaction->rollBack();
+				return false;
+			}
+			
+			//insert VipOrganization extend，插入扩展信息
+			$vipExtend = new VipExtend();
+			$vipExtend->audit_status  = SysParameter::audit_need_approve;
+			$vipExtend->vip_id = $vip->id;
+			$vipExtend->create_date = date(MerchantConst::DATE_FORMAT,time());
+			$vipExtend->update_date = date(MerchantConst::DATE_FORMAT,time());
+			if(!($vipExtend->insert())){
+				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
+				$transaction->rollBack();
+				return false;
+			}			
+		} catch (\Exception $e) {
+			$transaction->rollBack();
+            throw $e;
 		}
-		
 		return $vip;
 	}
 	
@@ -205,6 +239,28 @@ class MerchantService{
 		}
 		 
 		return $_user;
+	}
+	
+	
+	/**
+	 * 插入店铺信息，商户注册成功后默认增加一个店铺（属于特殊处理，正常情况下应该是先有店铺信息然后才有商品信息）
+	 * @param unknown $vip_id
+	 */
+	function initVipOrg($vip_id){	
+
+		//insert VipOrganization
+		$vipOrg =  new VipOrganization();
+		$vipOrg->status=SysParameter::yes;
+		$vipOrg->vip_id = $vip_id;
+		$vipOrg->audit_status = SysParameter::audit_need_approve;
+		$vipOrg->insert();
+		
+		//insert VipOrganization extend
+		$vipExtend = new VipExtend();
+		$vipExtend->audit_status  = SysParameter::audit_need_approve;
+		$vipExtend->vip_id = $vip_id;
+		$vipExtend->insert();
+		
 	}
 	
 	

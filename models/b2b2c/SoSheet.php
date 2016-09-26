@@ -64,7 +64,7 @@ use Yii;
  * @property SysParameter $payStatus
  * @property SysRegion $province
  * @property DeliveryType $deliveryType
- * @property VipOrgCase $relatedCase
+ * @property VipCase $relatedCase
  * @property PayType $payType
  * @property PickUpPoint $pickPoint
  * @property SheetType $sheetType
@@ -111,7 +111,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             [['pay_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['pay_status' => 'id']],
             [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['province_id' => 'id']],
             [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryType::className(), 'targetAttribute' => ['delivery_type' => 'id']],
-            [['related_case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrgCase::className(), 'targetAttribute' => ['related_case_id' => 'id']],
+            [['related_case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['related_case_id' => 'id']],
             [['pay_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PayType::className(), 'targetAttribute' => ['pay_type_id' => 'id']],
             [['pick_point_id'], 'exist', 'skipOnError' => true, 'targetClass' => PickUpPoint::className(), 'targetAttribute' => ['pick_point_id' => 'id']],
             [['sheet_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SheetType::className(), 'targetAttribute' => ['sheet_type_id' => 'id']],
@@ -293,7 +293,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
      */
     public function getRelatedCase()
     {
-        return $this->hasOne(VipOrgCase::className(), ['id' => 'related_case_id']);
+        return $this->hasOne(VipCase::className(), ['id' => 'related_case_id']);
     }
 
     /**

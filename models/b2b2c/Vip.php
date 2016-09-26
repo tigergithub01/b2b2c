@@ -25,6 +25,7 @@ use Yii;
  * @property string $audit_user_id
  * @property string $audit_date
  * @property string $audit_memo
+ * @property string $role_type
  *
  * @property ProductComment[] $productComments
  * @property RefundSheetApply[] $refundSheetApplies
@@ -90,12 +91,11 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code',];
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','role_type'];
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
 		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'new_pwd','confirm_pwd'];
-		// 		$scenarios[self::SCENARIO_REGISTER] = ['username', 'email', 'password'];
 		return $scenarios;
 	
 		/* return [
@@ -143,6 +143,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 //         	[['agreement'],'boolean','on' => [self::SCENARIO_REGISTER]],
 			[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
+        	[['role_type'], 'required','on' => [self::SCENARIO_REGISTER]],
         ];
     }
 
@@ -174,6 +175,8 @@ class Vip extends \app\models\b2b2c\BasicModel
         	'confirm_pwd' => Yii::t('app', '确认密码'),
         	'sms_code' => Yii::t('app', '短信验证码'),
         	'new_pwd' => Yii::t('app', '新密码'),
+        	'role_type' => Yii::t('app', '婚礼人类型'),
+//         	'role_type' => Yii::t('app', '婚礼人类型（策划师，主持人，摄影师，化妆师，摄像师）'),
         ];
     }
 
