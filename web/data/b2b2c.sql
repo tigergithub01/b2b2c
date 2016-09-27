@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/9/26 17:49:47                           */
+/* Created on:     2016/9/27 10:20:46                           */
 /*==============================================================*/
 
 
@@ -210,7 +210,11 @@ drop table if exists t_vip_organization;
 
 drop table if exists t_vip_product_collect;
 
+drop table if exists t_vip_product_type;
+
 drop table if exists t_vip_rank;
+
+drop table if exists t_vip_type;
 
 /*==============================================================*/
 /* Table: t_act_buy_discount                                    */
@@ -1481,7 +1485,7 @@ create table t_vip
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
    audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
-   role_type            bigint(20) comment '婚礼人类型（策划师，主持人，摄影师，化妆师，摄像师）',
+   vip_type_id          bigint(20) comment '会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）',
    primary key (id)
 );
 
@@ -1648,6 +1652,7 @@ create table t_vip_case_type
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
    name                 varchar(40) not null comment '案例类型名称',
+   vip_type_id          bigint(20) comment '会员类型(商家类型）',
    primary key (id)
 );
 
@@ -1892,6 +1897,20 @@ create table t_vip_product_collect
 alter table t_vip_product_collect comment '会员产品收藏';
 
 /*==============================================================*/
+/* Table: t_vip_product_type                                    */
+/*==============================================================*/
+create table t_vip_product_type
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   product_type_id      bigint(20) not null comment '关联产品分类',
+   vip_type_id          bigint(20) not null comment '关联商家类别',
+   vip_id               bigint(20) comment '关联会员编号（用于会员直接关联商品分类，待用）',
+   primary key (id)
+);
+
+alter table t_vip_product_type comment '会员（商家）经营商品范围';
+
+/*==============================================================*/
 /* Table: t_vip_rank                                            */
 /*==============================================================*/
 create table t_vip_rank
@@ -1905,6 +1924,22 @@ create table t_vip_rank
 );
 
 alter table t_vip_rank comment '会员等级';
+
+/*==============================================================*/
+/* Table: t_vip_type                                            */
+/*==============================================================*/
+create table t_vip_type
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   code                 varchar(30) comment '编号',
+   name                 varchar(60) not null comment '经营范围名称',
+   description          varchar(400) comment '描述',
+   seq_id               int comment '排序',
+   merchant_flag        bigint(20) not null comment '商家分类与会员分类？1：商家；0：会员',
+   primary key (id)
+);
+
+alter table t_vip_type comment '会员类型';
 
 alter table t_act_buy_discount add constraint fk_buy_discount_double_ref_param foreign key (is_double)
       references t_sys_parameter (id);
@@ -2440,14 +2475,14 @@ alter table t_vip add constraint fk_vip_info_pid_ref_vip foreign key (parent_id)
 alter table t_vip add constraint fk_vip_merchant_ref_param foreign key (merchant_flag)
       references t_sys_parameter (id);
 
+alter table t_vip add constraint fk_vip_merchant_type_ref_mtype foreign key (vip_type_id)
+      references t_vip_type (id);
+
 alter table t_vip add constraint fk_vip_mobile_verify_ref_param foreign key (mobile_verify_flag)
       references t_sys_parameter (id);
 
 alter table t_vip add constraint fk_vip_ref_vip_rank foreign key (rank_id)
       references t_vip_rank (id);
-
-alter table t_vip add constraint fk_vip_role_type_ref_param foreign key (role_type)
-      references t_sys_parameter (id);
 
 alter table t_vip add constraint fk_vip_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
@@ -2529,6 +2564,9 @@ alter table t_vip_case_detail add constraint fk_org_case_detail_ref_prod foreign
 
 alter table t_vip_case_photo add constraint fk_vip_case_photo_ref_case foreign key (case_id)
       references t_vip_case (id);
+
+alter table t_vip_case_type add constraint fk_vip_case_type_ref_vip_type foreign key (vip_type_id)
+      references t_vip_type (id);
 
 alter table t_vip_case_type_prop add constraint fk_case_type_prop_input_ref_param foreign key (input_type)
       references t_sys_parameter (id);
@@ -2616,4 +2654,16 @@ alter table t_vip_product_collect add constraint fk_vip_collect_ref_product fore
 
 alter table t_vip_product_collect add constraint fk_vip_collect_ref_vip foreign key (vip_id)
       references t_vip (id);
+
+alter table t_vip_product_type add constraint fk_vip_ptype_ref_merch_type foreign key (vip_type_id)
+      references t_vip_type (id);
+
+alter table t_vip_product_type add constraint fk_vip_ptype_ref_product foreign key (product_type_id)
+      references t_product_type (id);
+
+alter table t_vip_product_type add constraint fk_vip_ptype_ref_vip_type foreign key (vip_id)
+      references t_vip (id);
+
+alter table t_vip_type add constraint fk_vip_type_merc_flag_ref_param foreign key (merchant_flag)
+      references t_sys_parameter (id);
 
