@@ -99,7 +99,7 @@ class SysUserService{
     	if(empty($_usr)){
     		$model=new SysUser();
     		$model->user_id='admin';
-    		$model->password=md5("admin123");
+    		$model->password=md5("admin");
     		$model->is_admin =SysParameter::yes;
     		$model->status = SysParameter::yes;
     		$model->validate();

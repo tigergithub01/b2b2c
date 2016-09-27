@@ -28,7 +28,7 @@ use app\modules\merchant\models\MerchantConst;
                 	['label' => '案例管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '个人案例',  'url' => ['organization/vip-organization/index'],'icon' => 'fa fa-circle-o'],
-                					['label' => '组团案例',  'url' => ['vip/vip-org-case/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '团体案例',  'url' => ['vip/vip-org-case/index'],'icon' => 'fa fa-circle-o',],
                 			],
                 	],
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
@@ -40,7 +40,7 @@ use app\modules\merchant\models\MerchantConst;
                 	['label' => '系统设置', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
-                					['label' => '关于', 'url' => ['system/sys-user/index'],'icon' => 'fa fa-circle-o',],
+                					//['label' => '注销', 'url' => ['default/logout'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],
                 ],
