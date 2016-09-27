@@ -9,6 +9,8 @@ use app\modules\merchant\models\MerchantConst;
 use app\modules\merchant\service\vip\MerchantService;
 use yii\helpers\Url;
 use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\VipType;
+use app\models\b2b2c\SysParameter;
 
 class RegisterController extends BaseController
 {
@@ -88,7 +90,7 @@ class RegisterController extends BaseController
     
     	return $this->render('index', [
     			'model' => $model,
-    			'roleTypes' => SysParameterType::getSysParametersById(SysParameterType::ROLE_TYPE),
+    			'vipTypes' => VipType::find()->where(['merchant_flag'=>SysParameter::yes])->all(),
     	]);
     
     }

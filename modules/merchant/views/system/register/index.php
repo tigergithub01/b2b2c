@@ -64,9 +64,9 @@ $fieldOptions2 = [
         				'placeholder' => $model->getAttributeLabel('sms_code'),
                     ]) ?> 
         
-        <?= $form->field($model, 'role_type')
+        <?= $form->field($model, 'vip_type_id')
         		  ->label(false)
-        		  ->dropDownList(ArrayHelper::map($roleTypes, "id", "param_val"), ['prompt' => '--'.$model->getAttributeLabel('role_type').'--']) ?>
+        		  ->dropDownList(ArrayHelper::map($vipTypes, "id", "name"), ['prompt' => '--'.$model->getAttributeLabel('vip_type_id').'--']) ?>
                       
 		
         <div class="row">

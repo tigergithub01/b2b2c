@@ -78,7 +78,7 @@ class MerchantService{
 		$vip->register_date=date(MerchantConst::DATE_FORMAT,time());
 		$vip->audit_status = SysParameter::audit_need_approve;
 		$vip->mobile_verify_flag=SysParameter::yes;
-		$vip->role_type = $model->role_type;
+		$vip->vip_type_id = $model->vip_type_id;
 		
 		//判断该用户是否已经注册
 		$count = Vip::find()->where(['vip_id'=>$model->vip_id,'merchant_flag'=>SysParameter::yes])->count();

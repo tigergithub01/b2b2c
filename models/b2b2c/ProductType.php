@@ -18,6 +18,7 @@ use Yii;
  * @property ProductType $parent
  * @property ProductType[] $productTypes
  * @property ProductTypeProp[] $productTypeProps
+ * @property VipProductType[] $vipProductTypes
  */
 class ProductType extends \app\models\b2b2c\BasicModel
 {
@@ -95,5 +96,13 @@ class ProductType extends \app\models\b2b2c\BasicModel
     public function getProductTypeProps()
     {
         return $this->hasMany(ProductTypeProp::className(), ['product_type_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipProductTypes()
+    {
+        return $this->hasMany(VipProductType::className(), ['product_type_id' => 'id']);
     }
 }

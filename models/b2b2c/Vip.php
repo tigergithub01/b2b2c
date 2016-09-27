@@ -25,7 +25,7 @@ use Yii;
  * @property string $audit_user_id
  * @property string $audit_date
  * @property string $audit_memo
- * @property string $role_type
+ * @property string $vip_type_id
  *
  * @property ProductComment[] $productComments
  * @property RefundSheetApply[] $refundSheetApplies
@@ -53,6 +53,7 @@ use Yii;
  * @property VipOperationLog[] $vipOperationLogs
  * @property VipOrganization[] $vipOrganizations
  * @property VipProductCollect[] $vipProductCollects
+ * @property VipProductType[] $vipProductTypes
  */
 class Vip extends \app\models\b2b2c\BasicModel
 {
@@ -91,7 +92,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','role_type'];
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id'];
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
@@ -143,7 +144,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 //         	[['agreement'],'boolean','on' => [self::SCENARIO_REGISTER]],
 			[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
-        	[['role_type'], 'required','on' => [self::SCENARIO_REGISTER]],
+        	[['vip_type_id'], 'required','on' => [self::SCENARIO_REGISTER]],
         ];
     }
 
@@ -175,8 +176,8 @@ class Vip extends \app\models\b2b2c\BasicModel
         	'confirm_pwd' => Yii::t('app', '确认密码'),
         	'sms_code' => Yii::t('app', '短信验证码'),
         	'new_pwd' => Yii::t('app', '新密码'),
-        	'role_type' => Yii::t('app', '婚礼人类型'),
-//         	'role_type' => Yii::t('app', '婚礼人类型（策划师，主持人，摄影师，化妆师，摄像师）'),
+        	'vip_type_id' => Yii::t('app', '婚礼人类型'),
+//         	'vip_type_id' => Yii::t('app', '会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）'),
         ];
     }
 
@@ -389,78 +390,10 @@ class Vip extends \app\models\b2b2c\BasicModel
     }
     
     /**
-     * 会员登陆
+     * @return \yii\db\ActiveQuery
      */
-    public function vipLogin(){
-    	return null;
+    public function getVipProductTypes()
+    {
+    	return $this->hasMany(VipProductType::className(), ['vip_id' => 'id']);
     }
-    
-    
-    /**
-     * 会员注册
-     */
-    public function vipRegister(){
-    	 
-    }
-    
-    /**
-     * 商户登陆
-     */
-    public function merchantLogin(){
-    	//判断用户名是否存在
-    	$_user = $this->find()->where(['vip_id'=>$this->vip_id])->andWhere("merchant_flag=:merchant_flag",['merchant_flag'=>SysParameter::YES_FLAG])->one();
-    	if(empty($_user)){
-    		$this->addError("vip_id",Yii::t('app', '用户名不存在'));
-    		return false;
-    	}
-    
-    	//判断密码
-    	if(!strcmp($this->password, $_user->password)==0){
-    		$this->addError("password",Yii::t('app', '密码不正确'));
-    		return false;
-    	}
-    
-    	//更新最后一次登录时间
-    	$_user->last_login_date = date("Y-m-d H:i:s");
-    	$_user->update(true,['last_login_date']);
-    
-    	return $_user;
-    }
-    
-    /**
-     * 商户注册
-     */
-    public function merchantRegister(){
-    	//判断用户名是否被注册
-    	$_user = $this->find()->where(['vip_id'=>$this->vip_id])->andWhere("merchant_flag=:merchant_flag",['merchant_flag'=>SysParameter::YES_FLAG])->one();
-    	if($_user){
-    		$this->addError("vip_id",Yii::t('app', '用户名已经存在'));
-    		return false;
-    	}
-    	 
-    	//插入用户与店铺信息
-    	$transaction = static::getDb()->beginTransaction();
-    	try {
-    		//插入新用户
-    		$this->insert();
-    
-    		//     		$identityId = static::getDb()->getLastInsertID();
-    		//     		$identityId = $this->getPrimaryKey();
-    		$identityId = $this->id;
-    
-    		//插入店铺信息
-    		$vipOrg = new VipOrganization();
-    		$customer->id = 200;
-    		$customer->save();
-    		$transaction->commit();
-    
-    
-    
-    
-    	} catch(\Exception $e) {
-    		$transaction->rollBack();
-    		throw $e;
-    	}    	 
-    }
-    
 }
