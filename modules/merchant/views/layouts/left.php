@@ -22,25 +22,30 @@ use app\modules\merchant\models\MerchantConst;
             [
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
-                	['label' => '个人资料', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
-                	['label' => '我的动态', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
                 	['label' => '我的消息', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
+                	['label' => '我的动态', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
+                	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
+                		'items' => [
+                				['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
+                				['label' => '退款单', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
+                		],
+                	],
+                	['label' => '服务管理', 'icon' => 'fa fa-table','url' => '#',
+                		'items' => [
+                				['label' => '个人定价', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
+                				['label' => '团体服务', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
+                		],
+                	],
                 	['label' => '案例管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '个人案例',  'url' => ['organization/vip-organization/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '团体案例',  'url' => ['vip/vip-org-case/index'],'icon' => 'fa fa-circle-o',],
                 			],
                 	],
-                	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
+                	['label' => '个人中心', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
-                					['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
-                					['label' => '退款单', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
-                			],
-                	],
-                	['label' => '系统设置', 'icon' => 'fa fa-table','url' => '#',
-                			'items' => [
+                					['label' => '个人资料', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
-                					//['label' => '注销', 'url' => ['default/logout'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],
                 ],
