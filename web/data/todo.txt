@@ -43,9 +43,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'b2b'@'%'WITH GRANT OPTION;
 update user set host = 'localhost' where user = 'root' and host='%';
 select host,user from user where  user = 'root';
 
-
 mysql -uroot -ptiger
-
 
 use mysql;
 UPDATE user SET password=PASSWORD('b2b_tu_2016') WHERE user='b2b';
