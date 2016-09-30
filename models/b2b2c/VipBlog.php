@@ -27,6 +27,7 @@ use Yii;
  * @property VipOrganization $organization
  * @property VipBlogType $blogType
  * @property VipBlogCmt[] $vipBlogCmts
+ * @property VipBlogLikes[] $vipBlogLikes
  * @property VipBlogPhoto[] $vipBlogPhotos
  */
 class VipBlog extends \app\models\b2b2c\BasicModel
@@ -45,8 +46,8 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['blog_type', 'blog_flag', 'vip_id', 'organization_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
-            [['blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status'], 'required'],
+            [['id', 'blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status'], 'required'],
+            [['id', 'blog_type', 'blog_flag', 'vip_id', 'organization_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
             [['audit_memo'], 'string', 'max' => 200],
@@ -126,6 +127,14 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     public function getVipBlogCmts()
     {
         return $this->hasMany(VipBlogCmt::className(), ['blog_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipBlogLikes()
+    {
+        return $this->hasMany(VipBlogLikes::className(), ['blog_id' => 'id']);
     }
 
     /**

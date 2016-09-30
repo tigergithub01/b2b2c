@@ -20,6 +20,7 @@ use Yii;
  * @property VipBlogCmt[] $vipBlogCmts
  * @property VipBlog $blog
  * @property Vip $vip
+ * @property VipBlogLikes[] $vipBlogLikes
  */
 class VipBlogCmt extends \app\models\b2b2c\BasicModel
 {
@@ -102,5 +103,13 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
     public function getVip()
     {
         return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipBlogLikes()
+    {
+        return $this->hasMany(VipBlogLikes::className(), ['blog_cmt_id' => 'id']);
     }
 }

@@ -47,12 +47,16 @@ use Yii;
  * @property SoSheet[] $soSheets1
  * @property SoSheet[] $soSheets2
  * @property SysAppRelease[] $sysAppReleases
+ * @property SysArticle[] $sysArticles
+ * @property SysArticle[] $sysArticles0
  * @property SysAuditLog[] $sysAuditLogs
  * @property SysAuditLog[] $sysAuditLogs0
  * @property SysFeedback[] $sysFeedbacks
  * @property SysModule[] $sysModules
  * @property SysModule[] $sysModules0
  * @property SysNotify[] $sysNotifies
+ * @property SysNotify[] $sysNotifies0
+ * @property SysNotify[] $sysNotifies1
  * @property SysParameterType $type
  * @property SysRelativeModule[] $sysRelativeModules
  * @property SysUser[] $sysUsers
@@ -68,20 +72,20 @@ use Yii;
  * @property VipBlog[] $vipBlogs
  * @property VipBlog[] $vipBlogs0
  * @property VipBlogCmt[] $vipBlogCmts
+ * @property VipCase[] $vipCases
+ * @property VipCase[] $vipCases0
+ * @property VipCase[] $vipCases1
  * @property VipCaseTypeProp[] $vipCaseTypeProps
  * @property VipCaseTypeProp[] $vipCaseTypeProps0
  * @property VipCaseTypeProp[] $vipCaseTypeProps1
  * @property VipCouponType[] $vipCouponTypes
  * @property VipExtend[] $vipExtends
- * @property VipOrgCase[] $vipOrgCases
- * @property VipOrgCase[] $vipOrgCases0
- * @property VipOrgCase[] $vipOrgCases1
- * @property VipOrgNotice[] $vipOrgNotices
- * @property VipOrgNotice[] $vipOrgNotices0
- * @property VipOrgNotice[] $vipOrgNotices1
+ * @property VipModule[] $vipModules
+ * @property VipModule[] $vipModules0
+ * @property VipModule[] $vipModules1
  * @property VipOrganization[] $vipOrganizations
  * @property VipOrganization[] $vipOrganizations0
- * @property VipOrganization[] $vipOrganizations1
+ * @property VipType[] $vipTypes
  */
 class SysParameter extends \app\models\b2b2c\BasicModel
 {
@@ -433,6 +437,22 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSysArticles()
+    {
+        return $this->hasMany(SysArticle::className(), ['is_show' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSysArticles0()
+    {
+        return $this->hasMany(SysArticle::className(), ['is_sys_flag' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSysAuditLogs()
     {
         return $this->hasMany(SysAuditLog::className(), ['audit_operate' => 'id']);
@@ -476,6 +496,22 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     public function getSysNotifies()
     {
         return $this->hasMany(SysNotify::className(), ['notify_type' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSysNotifies0()
+    {
+        return $this->hasMany(SysNotify::className(), ['send_extend' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSysNotifies1()
+    {
+        return $this->hasMany(SysNotify::className(), ['status' => 'id']);
     }
 
     /**
@@ -601,6 +637,30 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getVipCases()
+    {
+        return $this->hasMany(VipCase::className(), ['case_flag' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipCases0()
+    {
+        return $this->hasMany(VipCase::className(), ['status' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipCases1()
+    {
+        return $this->hasMany(VipCase::className(), ['audit_status' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVipCaseTypeProps()
     {
         return $this->hasMany(VipCaseTypeProp::className(), ['is_required' => 'id']);
@@ -641,49 +701,25 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCases()
+    public function getVipModules()
     {
-        return $this->hasMany(VipOrgCase::className(), ['case_flag' => 'id']);
+        return $this->hasMany(VipModule::className(), ['status' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCases0()
+    public function getVipModules0()
     {
-        return $this->hasMany(VipOrgCase::className(), ['status' => 'id']);
+        return $this->hasMany(VipModule::className(), ['menu_flag' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrgCases1()
+    public function getVipModules1()
     {
-        return $this->hasMany(VipOrgCase::className(), ['audit_status' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVipOrgNotices()
-    {
-        return $this->hasMany(VipOrgNotice::className(), ['status' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVipOrgNotices0()
-    {
-        return $this->hasMany(VipOrgNotice::className(), ['send_extend' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVipOrgNotices1()
-    {
-        return $this->hasMany(VipOrgNotice::className(), ['notice_flag' => 'id']);
+        return $this->hasMany(VipModule::className(), ['merchant_flag' => 'id']);
     }
 
     /**
@@ -691,7 +727,7 @@ class SysParameter extends \app\models\b2b2c\BasicModel
      */
     public function getVipOrganizations()
     {
-        return $this->hasMany(VipOrganization::className(), ['role_type' => 'id']);
+        return $this->hasMany(VipOrganization::className(), ['status' => 'id']);
     }
 
     /**
@@ -699,14 +735,14 @@ class SysParameter extends \app\models\b2b2c\BasicModel
      */
     public function getVipOrganizations0()
     {
-        return $this->hasMany(VipOrganization::className(), ['status' => 'id']);
+        return $this->hasMany(VipOrganization::className(), ['audit_status' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipOrganizations1()
+    public function getVipTypes()
     {
-        return $this->hasMany(VipOrganization::className(), ['audit_status' => 'id']);
+        return $this->hasMany(VipType::className(), ['merchant_flag' => 'id']);
     }
 }

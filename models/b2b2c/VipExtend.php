@@ -11,8 +11,15 @@ use Yii;
  * @property string $vip_id
  * @property string $real_name
  * @property string $id_card_no
- * @property string $id_card_photo
- * @property string $id_card_back_photo
+ * @property string $id_card_img_url
+ * @property string $id_card_thumb_url
+ * @property string $id_card_img_original
+ * @property string $id_back_img_url
+ * @property string $id_back_thumb_url
+ * @property string $id_back_img_original
+ * @property string $bl_img_url
+ * @property string $bl_thumb_url
+ * @property string $bl_img_original
  * @property string $bank_account
  * @property string $bank_name
  * @property string $bank_number
@@ -49,7 +56,7 @@ class VipExtend extends \app\models\b2b2c\BasicModel
             [['audit_date', 'create_date', 'update_date'], 'safe'],
             [['real_name', 'bank_name', 'bank_number'], 'string', 'max' => 50],
             [['id_card_no', 'bank_account'], 'string', 'max' => 30],
-            [['id_card_photo', 'id_card_back_photo', 'bank_addr'], 'string', 'max' => 255],
+            [['id_card_img_url', 'id_card_thumb_url', 'id_card_img_original', 'id_back_img_url', 'id_back_thumb_url', 'id_back_img_original', 'bl_img_url', 'bl_thumb_url', 'bl_img_original', 'bank_addr'], 'string', 'max' => 255],
             [['audit_memo'], 'string', 'max' => 200],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
@@ -67,8 +74,15 @@ class VipExtend extends \app\models\b2b2c\BasicModel
             'vip_id' => Yii::t('app', '关联会员编号'),
             'real_name' => Yii::t('app', '真实姓名'),
             'id_card_no' => Yii::t('app', '身份证号码'),
-            'id_card_photo' => Yii::t('app', '身份证正面照'),
-            'id_card_back_photo' => Yii::t('app', '身份证背面照'),
+            'id_card_img_url' => Yii::t('app', '身份证正面照-图片（放大后查看）'),
+            'id_card_thumb_url' => Yii::t('app', '身份证正面照-缩略图'),
+            'id_card_img_original' => Yii::t('app', '身份证正面照-原图'),
+            'id_back_img_url' => Yii::t('app', '身份证背面照-图片（放大后查看）'),
+            'id_back_thumb_url' => Yii::t('app', '身份证背面照-缩略图'),
+            'id_back_img_original' => Yii::t('app', '身份证背面照-原图'),
+            'bl_img_url' => Yii::t('app', '公司营业执照-图片（放大后查看）'),
+            'bl_thumb_url' => Yii::t('app', '公司营业执照-缩略图'),
+            'bl_img_original' => Yii::t('app', '公司营业执照-原图'),
             'bank_account' => Yii::t('app', '银行账户（真实姓名）'),
             'bank_name' => Yii::t('app', '开户银行'),
             'bank_number' => Yii::t('app', '银行卡号'),

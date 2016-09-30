@@ -15,9 +15,11 @@ use Yii;
  * @property string $content
  * @property string $issue_user_id
  * @property string $is_show
+ * @property string $is_sys_flag
  *
  * @property SysUser $issueUser
  * @property SysParameter $isShow
+ * @property SysParameter $isSysFlag
  * @property SysArticleType $type
  */
 class SysArticle extends \app\models\b2b2c\BasicModel
@@ -36,14 +38,15 @@ class SysArticle extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['type_id', 'issue_user_id', 'is_show'], 'integer'],
-            [['title', 'issue_date', 'is_show'], 'required'],
+            [['type_id', 'issue_user_id', 'is_show', 'is_sys_flag'], 'integer'],
+            [['title', 'issue_date', 'is_show', 'is_sys_flag'], 'required'],
             [['issue_date'], 'safe'],
             [['content'], 'string'],
             [['title'], 'string', 'max' => 60],
             [['code'], 'string', 'max' => 30],
             [['issue_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['issue_user_id' => 'id']],
             [['is_show'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_show' => 'id']],
+            [['is_sys_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_sys_flag' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysArticleType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
     }
@@ -62,6 +65,7 @@ class SysArticle extends \app\models\b2b2c\BasicModel
             'content' => Yii::t('app', '内容'),
             'issue_user_id' => Yii::t('app', '发布人'),
             'is_show' => Yii::t('app', '是否显示（1：是，0：否）'),
+            'is_sys_flag' => Yii::t('app', '是否为系统内置文章（此类文章不可以删除，如商家协议等）'),
         ];
     }
 
@@ -79,6 +83,14 @@ class SysArticle extends \app\models\b2b2c\BasicModel
     public function getIsShow()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'is_show']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIsSysFlag()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'is_sys_flag']);
     }
 
     /**

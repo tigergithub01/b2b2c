@@ -15,6 +15,7 @@ use Yii;
  * @property string $end_date
  * @property string $description
  * @property string $package_price
+ * @property string $deposit_amount
  * @property integer $buy_limit_num
  * @property string $organization_id
  *
@@ -28,6 +29,7 @@ use Yii;
  * @property SysParameter $activityType
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheetDetail[] $soSheetDetails
+ * @property VipCollect[] $vipCollects
  */
 class Activity extends \app\models\b2b2c\BasicModel
 {
@@ -48,7 +50,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             [['name', 'activity_type', 'start_time', 'end_date', 'organization_id'], 'required'],
             [['activity_type', 'activity_scope', 'buy_limit_num', 'organization_id'], 'integer'],
             [['start_time', 'end_date'], 'safe'],
-            [['package_price'], 'number'],
+            [['package_price', 'deposit_amount'], 'number'],
             [['name'], 'string', 'max' => 30],
             [['description'], 'string', 'max' => 255],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
@@ -71,6 +73,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             'end_date' => Yii::t('app', '结束时间'),
             'description' => Yii::t('app', '活动描述'),
             'package_price' => Yii::t('app', '套装价'),
+            'deposit_amount' => Yii::t('app', '最少定金金额'),
             'buy_limit_num' => Yii::t('app', '限购数量'),
             'organization_id' => Yii::t('app', '关联组织编码'),
         ];
@@ -154,5 +157,13 @@ class Activity extends \app\models\b2b2c\BasicModel
     public function getSoSheetDetails()
     {
         return $this->hasMany(SoSheetDetail::className(), ['package_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipCollects()
+    {
+        return $this->hasMany(VipCollect::className(), ['package_id' => 'id']);
     }
 }

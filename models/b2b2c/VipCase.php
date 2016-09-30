@@ -36,6 +36,7 @@ use Yii;
  * @property SysParameter $auditStatus
  * @property VipCaseDetail[] $vipCaseDetails
  * @property VipCasePhoto[] $vipCasePhotos
+ * @property VipCollect[] $vipCollects
  */
 class VipCase extends \app\models\b2b2c\BasicModel
 {
@@ -168,5 +169,13 @@ class VipCase extends \app\models\b2b2c\BasicModel
     public function getVipCasePhotos()
     {
         return $this->hasMany(VipCasePhoto::className(), ['case_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipCollects()
+    {
+        return $this->hasMany(VipCollect::className(), ['case_id' => 'id']);
     }
 }

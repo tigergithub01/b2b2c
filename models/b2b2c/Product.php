@@ -73,7 +73,7 @@ use Yii;
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheetDetail[] $soSheetDetails
  * @property VipCaseDetail[] $vipCaseDetails
- * @property VipProductCollect[] $vipProductCollects
+ * @property VipCollect[] $vipCollects
  */
 class Product extends \app\models\b2b2c\BasicModel
 {
@@ -408,8 +408,8 @@ class Product extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipProductCollects()
+    public function getVipCollects()
     {
-        return $this->hasMany(VipProductCollect::className(), ['product_id' => 'id']);
+        return $this->hasMany(VipCollect::className(), ['product_id' => 'id']);
     }
 }

@@ -26,6 +26,13 @@ use Yii;
  * @property string $audit_date
  * @property string $audit_memo
  * @property string $vip_type_id
+ * @property string $sex
+ * @property string $nick_name
+ * @property string $wedding_date
+ * @property string $birthday
+ * @property string $img_url
+ * @property string $thumb_url
+ * @property string $img_original
  *
  * @property ProductComment[] $productComments
  * @property RefundSheetApply[] $refundSheetApplies
@@ -34,7 +41,7 @@ use Yii;
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheet[] $soSheets
  * @property SysFeedback[] $sysFeedbacks
- * @property SysNotifyPushLog[] $sysNotifyPushLogs
+ * @property SysNotifyLog[] $sysNotifyLogs
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
  * @property SysUser $auditUser
@@ -42,17 +49,20 @@ use Yii;
  * @property Vip $parent
  * @property Vip[] $vips
  * @property SysParameter $merchantFlag
+ * @property VipType $vipType
  * @property SysParameter $mobileVerifyFlag
  * @property VipRank $rank
  * @property VipAddress[] $vipAddresses
  * @property VipBlog[] $vipBlogs
  * @property VipBlogCmt[] $vipBlogCmts
+ * @property VipBlogLikes[] $vipBlogLikes
+ * @property VipCollect[] $vipCollects
  * @property VipConcern[] $vipConcerns
  * @property VipConcern[] $vipConcerns0
  * @property VipCoupon[] $vipCoupons
+ * @property VipExtend[] $vipExtends
  * @property VipOperationLog[] $vipOperationLogs
  * @property VipOrganization[] $vipOrganizations
- * @property VipProductCollect[] $vipProductCollects
  * @property VipProductType[] $vipProductTypes
  */
 class Vip extends \app\models\b2b2c\BasicModel
@@ -61,7 +71,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public $remember_me = true;
 	
 	//验证码
-	public $verify_code;	
+	public $verify_code;
 	
 	//注册同意协议
 	public $agreement = true;
@@ -74,7 +84,6 @@ class Vip extends \app\models\b2b2c\BasicModel
 	
 	//新密码(登陆后修改密码）
 	public $new_pwd;
-	
 	
 	/* 会员 */
 	const SCENARIO_REGISTER = 'register';//注册
@@ -120,13 +129,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     {
         return [
             [['vip_id', 'merchant_flag', 'password', 'email_verify_flag', 'status', 'register_date', 'audit_status'], 'required'],
-        	[['vip_id'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}格式不正确'],
-        	[['merchant_flag', 'parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id', 'audit_status', 'audit_user_id'], 'integer'],
-            [['last_login_date', 'register_date', 'audit_date'], 'safe'],
+            [['vip_id'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}格式不正确'],
+            [['merchant_flag', 'parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id', 'audit_status', 'audit_user_id', 'vip_type_id', 'sex'], 'integer'],
+            [['last_login_date', 'register_date', 'audit_date', 'wedding_date', 'birthday'], 'safe'],
             [['vip_id', 'email'], 'string', 'max' => 30],
-            [['vip_name', 'password'], 'string', 'max' => 50],
+            [['vip_name', 'password', 'nick_name'], 'string', 'max' => 50],
             [['mobile'], 'string', 'max' => 20],
             [['audit_memo'], 'string', 'max' => 200],
+            [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['vip_id', 'merchant_flag'], 'unique', 'targetAttribute' => ['vip_id', 'merchant_flag'], 'message' => /* 'The combination of 会员登陆名 and 是否商户?1:是；0：否 has already been taken.' */'该手机号码已经注册'],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
@@ -134,6 +144,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['email_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['email_verify_flag' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['parent_id' => 'id']],
             [['merchant_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['merchant_flag' => 'id']],
+            [['vip_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipType::className(), 'targetAttribute' => ['vip_type_id' => 'id']],
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
         	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
@@ -155,7 +166,7 @@ class Vip extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'vip_id' => Yii::t('app', '手机号码'),
+            'vip_id' => Yii::t('app', /*'会员登陆名'*/'手机号码'),
             'merchant_flag' => Yii::t('app', '是否商户?1:是；0：否'),
             'vip_name' => Yii::t('app', '姓名'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
@@ -172,12 +183,18 @@ class Vip extends \app\models\b2b2c\BasicModel
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
-        	'verify_code' => Yii::t('app', '验证码'),
-        	'confirm_pwd' => Yii::t('app', '确认密码'),
-        	'sms_code' => Yii::t('app', '短信验证码'),
-        	'new_pwd' => Yii::t('app', '新密码'),
-        	'vip_type_id' => Yii::t('app', '婚礼人类型'),
-//         	'vip_type_id' => Yii::t('app', '会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）'),
+            'vip_type_id' => Yii::t('app', /*'会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）'*/'婚礼人类型'),
+            'sex' => Yii::t('app', '性别'),
+            'nick_name' => Yii::t('app', '会员昵称'),
+            'wedding_date' => Yii::t('app', '婚期'),
+            'birthday' => Yii::t('app', '生日'),
+            'img_url' => Yii::t('app', '用户图像-图片（放大后查看）'),
+            'thumb_url' => Yii::t('app', '用户图像-缩略图'),
+            'img_original' => Yii::t('app', '用户图像-原图'),
+            'verify_code' => Yii::t('app', '验证码'),
+            'confirm_pwd' => Yii::t('app', '确认密码'),
+            'sms_code' => Yii::t('app', '短信验证码'),
+            'new_pwd' => Yii::t('app', '新密码'),
         ];
     }
 
@@ -240,9 +257,9 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSysNotifyPushLogs()
+    public function getSysNotifyLogs()
     {
-        return $this->hasMany(SysNotifyPushLog::className(), ['vip_id' => 'id']);
+        return $this->hasMany(SysNotifyLog::className(), ['vip_id' => 'id']);
     }
 
     /**
@@ -304,6 +321,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getVipType()
+    {
+        return $this->hasOne(VipType::className(), ['id' => 'vip_type_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getMobileVerifyFlag()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'mobile_verify_flag']);
@@ -344,6 +369,22 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getVipBlogLikes()
+    {
+        return $this->hasMany(VipBlogLikes::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipCollects()
+    {
+        return $this->hasMany(VipCollect::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVipConcerns()
     {
         return $this->hasMany(VipConcern::className(), ['vip_id' => 'id']);
@@ -368,6 +409,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getVipExtends()
+    {
+        return $this->hasMany(VipExtend::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVipOperationLogs()
     {
         return $this->hasMany(VipOperationLog::className(), ['vip_id' => 'id']);
@@ -384,16 +433,8 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVipProductCollects()
-    {
-        return $this->hasMany(VipProductCollect::className(), ['vip_id' => 'id']);
-    }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getVipProductTypes()
     {
-    	return $this->hasMany(VipProductType::className(), ['vip_id' => 'id']);
+        return $this->hasMany(VipProductType::className(), ['vip_id' => 'id']);
     }
 }
