@@ -44,7 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_name',
             //'password',
             //'is_admin',
-            'status',
+//             'status',
+//             'status0.param_val',
+			['attribute'=>'status0.param_val',/* 'label'=>'是否有效1', */],
+// 			['attribute' => 'param_val',  'value' => 'status0.param_val' ],
             // 'last_login_date',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',

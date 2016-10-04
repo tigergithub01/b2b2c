@@ -57,7 +57,7 @@ class SysUserController extends BaseAuthController
 		])->all(); */
        
        
-        /* $params = SysParameter::find()->f
+        /* $params = SysParameter::find()->
         ->leftJoin('t_sys_parameter_type', 'type_id = t_sys_parameter_type.id')
         ->where(['t_sys_parameter_type.id' => SysParameterType::YES_NO])
         ->all();
@@ -170,7 +170,19 @@ class SysUserController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = SysUser::findOne($id)) !== null) {
+//     	SysUser::find()->innerJoin($table)
+//     	SysUser::find()->leftJoin($table)
+//     	SysUser::find()->innerJoin($table)
+//     	$model = SysUser::find()->where(["id"=>$id])->one();
+//     	var_dump($model);
+
+    	
+//     	$model = SysUser::find()->select(["u.*","stat.param_val"])->alias("u")->innerJoinWith("status0 stat")->where([])->all();
+//     	var_dump($model);
+//     	exit;
+//     	if (($model = SysUser::find()->select(["u.*","stat.param_val"])->alias("u")->joinWith("status0 stat")->where(['u.id'=>$id])->one()) !== null) {
+    	if (($model = SysUser::find()->alias("u")->joinWith("status0 stat")->where(['u.id'=>$id])->one()) !== null) {
+//         if (($model = SysUser::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

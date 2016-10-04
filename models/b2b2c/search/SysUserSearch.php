@@ -41,7 +41,7 @@ class SysUserSearch extends SysUser
      */
     public function search($params)
     {
-        $query = SysUser::find();
+        $query = SysUser::find()->joinWith("status0 stat");
 
         // add conditions that should always apply here
 
@@ -50,6 +50,17 @@ class SysUserSearch extends SysUser
             //'pagination' => ['pagesize' => '15',],
             
         ]);
+        
+        
+        $dataProvider->setSort([
+        	'attributes' => array_merge($dataProvider->getSort()->attributes,[
+	            'status0.param_val' => [
+	                'asc'  => ['stat.param_val' => SORT_ASC],
+	                'desc' => ['stat.param_val' => SORT_DESC],
+	            	'label' => '是否有效',
+	            ],
+        ])
+    ]);
 
         $this->load($params);
 
