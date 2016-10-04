@@ -299,6 +299,19 @@ else region_type end) as region_type FROM baianshop.ecs_region;
 logo_img_original
 
 
+http://admin.hunlitu.com/vip/system/sys-app-info?code=wedding_android
+
+alter table t_sys_region drop FOREIGN KEY fk_region_parent_ref_region;
+alter table t_sys_region add FOREIGN KEY `fk_region_parent_ref_region` (`parent_id`),
+  CONSTRAINT `fk_region_parent_ref_region` FOREIGN KEY (`parent_id`) REFERENCES `t_sys_region` (`id`);
+
+20160930
+1\写入区域数据 -ok
+2\重新优化部分数据结构  -ok
+
+2016-10-04:
+1\left join优化sql
+
 
 
 
