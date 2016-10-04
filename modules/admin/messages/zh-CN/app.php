@@ -28,5 +28,11 @@ return [
 		'Update Sys User'=>'编辑用户信息',
 		'Change User Pwd' => '修改用户密码',
 		
+		//APP首页主广告图
+		'Sys Ad Info'=>'广告图',
+		'Sys Ad Infos'=>'广告图列表',
+		'Create Sys Ad Info'=>'新增广告图',
+		'Update Sys Ad Info'=>'编辑广告图',
+		
 		
 ];
