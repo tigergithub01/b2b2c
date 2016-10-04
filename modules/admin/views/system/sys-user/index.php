@@ -57,7 +57,13 @@ $this->params['breadcrumbs'][] = $this->title;
 						return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['title' => '修改密码'] );
 					},
 					'delete' => function ($url, $model, $key) {
-						return ($model->is_admin==SysParameter::no)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, ['title' => '删除'] ):'';
+						return ($model->is_admin==SysParameter::yes)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, 
+								['title' => '删除',
+								'data' => [
+					                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+					                'method' => 'post',
+					            ],	
+						] ):'';
 					},
 			],
 			'headerOptions' =>['width' => '120']

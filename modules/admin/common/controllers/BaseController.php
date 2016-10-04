@@ -88,6 +88,8 @@ class BaseController extends Controller
 		}
 		if ($code) {
 			$name .= " (#$code)";
+		}else{
+			$name = Yii::t('yii', 'Error');
 		}
 		
 		if ($exception instanceof UserException) {

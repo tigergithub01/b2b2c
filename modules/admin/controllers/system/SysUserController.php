@@ -11,6 +11,9 @@ use yii\filters\VerbFilter;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysParameter;
 use yii\helpers\Json;
+use app\modules\admin\Module;
+use yii\base\UserException;
+use yii\base\yii\base;
 
 /**
  * SysUserController implements the CRUD actions for SysUser model.
@@ -156,7 +159,14 @@ class SysUserController extends BaseAuthController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+    	$model = $this->findModel($id);
+    	if($model->is_admin==SysParameter::yes){
+    		throw new UserException(Module::t('app',"不能删除超级管理员"));
+    	}
+    	$model->delete();
+    	
+    	
+//         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
