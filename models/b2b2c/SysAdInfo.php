@@ -16,6 +16,9 @@ use Yii;
  */
 class SysAdInfo extends \app\models\b2b2c\BasicModel
 {
+	//上传文件
+	public $imageFile;
+    
     /**
      * @inheritdoc
      */
@@ -34,6 +37,7 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
             [['sequence_id'], 'integer'],
             [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['redirect_url'], 'string', 'max' => 255],
+        	[['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png',],
         ];
     }
 
@@ -49,6 +53,54 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
             'img_original' => Yii::t('app', '原图'),
             'sequence_id' => Yii::t('app', '显示顺序'),
             'redirect_url' => Yii::t('app', '点击后跳转关联URL'),
+        	'imageFile' => Yii::t('app', '广告图'),
         ];
     }
+    
+    public function upload()
+    {
+    	
+    	//yii\web\UploadedFile
+    	if(empty($this->imageFile)){
+    		return false;
+    	}
+    	
+    	$base_dir = '/uploads/ads';
+    	$path = $base_dir . '/' . date('ym',time()) . '/';
+    	$webroot = Yii::getAlias("@webroot")  ;
+    	
+    	//创建文件夹
+    	if(!is_dir($webroot . $path)){
+    		mkdir(iconv("UTF-8", "GBK", $webroot . $path),0777,true);
+    	}
+    	
+    	//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
+    	$img_original = $path . 'ads_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;
+    	$file_path = $webroot . $img_original;
+    	
+    	//上传图片
+    	$this->imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
+    	
+    	//处理图片
+    	$img_url = $path . 'ads_' . 'img_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;;
+    	$thumb_url = $path . 'ads_' . 'thumb_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;;
+    	
+    	//拷贝文件
+    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK", $webroot . $img_url));
+    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK", $webroot . $thumb_url));
+
+    	//返回处理好的图片    	    	
+    	return ['img_url'=> $img_url, 'thumb_url' => $thumb_url, 'img_original' => $img_original ];
+    	
+    	
+    	/* if ($this->validate()) {
+    		foreach ($this->imageFiles as $file) {
+    			$file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
+    		}
+    		return true;
+    	} else {
+    		return false;
+    	} */
+    }
+    
 }

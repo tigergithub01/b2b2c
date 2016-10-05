@@ -3,17 +3,16 @@
 namespace app\modules\admin\controllers\system;
 
 use Yii;
-use app\models\b2b2c\SysAdInfo;
-use app\models\b2b2c\search\SysAdInfoSearch;
+use app\models\b2b2c\SysArticle;
+use app\models\b2b2c\search\SysArticleSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
 
 /**
- * SysAdInfoController implements the CRUD actions for SysAdInfo model.
+ * SysArticleController implements the CRUD actions for SysArticle model.
  */
-class SysAdInfoController extends BaseAuthController
+class SysArticleController extends BaseAuthController
 {
     /**
      * @inheritdoc
@@ -33,12 +32,12 @@ class SysAdInfoController extends BaseAuthController
     */
 
     /**
-     * Lists all SysAdInfo models.
+     * Lists all SysArticle models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SysAdInfoSearch();
+        $searchModel = new SysArticleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +47,7 @@ class SysAdInfoController extends BaseAuthController
     }
 
     /**
-     * Displays a single SysAdInfo model.
+     * Displays a single SysArticle model.
      * @param string $id
      * @return mixed
      */
@@ -60,27 +59,16 @@ class SysAdInfoController extends BaseAuthController
     }
 
     /**
-     * Creates a new SysAdInfo model.
+     * Creates a new SysArticle model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new SysAdInfo();
-        if ($model->load(Yii::$app->request->post())) {
-        	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-        	if($files = ($model->upload())){
-        		$model->img_url = $files['img_url'];
-        		$model->img_original = $files['img_original'];
-        		$model->thumb_url = $files['thumb_url'];
-        	}
-        	if($model->save()){
-	            return $this->redirect(['view', 'id' => $model->id]);
-        	}else{
-        		return $this->render('create', [
-        				'model' => $model,
-        		]);
-        	}
+        $model = new SysArticle();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -89,7 +77,7 @@ class SysAdInfoController extends BaseAuthController
     }
 
     /**
-     * Updates an existing SysAdInfo model.
+     * Updates an existing SysArticle model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -108,42 +96,28 @@ class SysAdInfoController extends BaseAuthController
     }
 
     /**
-     * Deletes an existing SysAdInfo model.
+     * Deletes an existing SysArticle model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-        if($model->delete()){
-        	$thumb_url = iconv("UTF-8", "GBK", Yii::getAlias('@webroot') . $model->thumb_url);
-        	$img_original = iconv("UTF-8", "GBK", Yii::getAlias('@webroot') . $model->img_original);
-        	$img_url = iconv("UTF-8", "GBK", Yii::getAlias('@webroot') . $model->img_url);
-        	
-        	if(is_file($thumb_url)){
-        		unlink($thumb_url);
-        	}
-        	if(file_exists($img_original)){
-        		unlink($img_original);
-        	}
-        	if(file_exists($img_url)){
-        		unlink($img_url);
-        	}
-        }
+        $this->findModel($id)->delete();
+
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the SysAdInfo model based on its primary key value.
+     * Finds the SysArticle model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return SysAdInfo the loaded model
+     * @return SysArticle the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = SysAdInfo::findOne($id)) !== null) {
+        if (($model = SysArticle::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

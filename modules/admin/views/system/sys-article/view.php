@@ -2,16 +2,15 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SysAdInfo */
+/* @var $model app\models\b2b2c\SysArticle */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Ad Infos'), 'url' => ['index']];
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Articles'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sys-ad-info-view">
+<div class="sys-article-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -28,23 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'img_url:url',
-//             'thumb_url:url',
-		     [
-		     	'attribute' => 'thumb_url',
-		     	'label'=>$model->getAttributeLabel('thumb_url'),
-		     	'format' =>'raw',
-		     	'value'=>Html::a($model->thumb_url,Yii::$app->request->hostInfo . $model->thumb_url,['target'=>'_blank',]),
-			],
-//         	[
-//         		'attribute' => 'thumb_url',
-//         		'label'=>$model->getAttributeLabel('thumb_url'),
-//         		'format' =>'raw',
-//         		'value'=>Html::img(Yii::$app->request->hostInfo . $model->thumb_url,['width'=>'200','height'=>'200',]),
-//         	],
-            'img_original',
-            'sequence_id',
-            'redirect_url:url',
+            'type_id',
+            'title',
+            'code',
+            'issue_date',
+            'content:ntext',
+            'issue_user_id',
+            'is_show',
+            'is_sys_flag',
 		        ],
 		    ]) ?>
     	</div>

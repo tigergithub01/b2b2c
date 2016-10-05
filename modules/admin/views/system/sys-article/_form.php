@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SysAdInfo */
+/* @var $model app\models\b2b2c\SysArticle */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="sys-ad-info-form">
+<div class="sys-article-form">
 
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -37,20 +37,21 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?php // $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
 
-    <?php // $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?php // $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
-    
-    <?php echo $form->field($model, 'imageFile')->fileInput(); ?>
-    
-    <?php //$form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
-    
+    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sequence_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'issue_date')->textInput() ?>
 
-    <?= $form->field($model, 'redirect_url')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'is_show')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'is_sys_flag')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	
