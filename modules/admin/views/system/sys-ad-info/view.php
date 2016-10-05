@@ -28,7 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'img_url:url',
+//             'img_url:url',
+        		[
+        		'attribute' => 'img_url',
+        		'label'=>$model->getAttributeLabel('img_url'),
+        		'format' =>'raw',
+        		'value'=>Html::a($model->img_url,Yii::$app->request->hostInfo . $model->img_url,['target'=>'_blank',]),
+        		],
 //             'thumb_url:url',
 		     [
 		     	'attribute' => 'thumb_url',
@@ -42,7 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
 //         		'format' =>'raw',
 //         		'value'=>Html::img(Yii::$app->request->hostInfo . $model->thumb_url,['width'=>'200','height'=>'200',]),
 //         	],
-            'img_original',
+//             'img_original',
+        		[
+        		'attribute' => 'img_original',
+        		'label'=>$model->getAttributeLabel('img_original'),
+        		'format' =>'raw',
+        		'value'=>Html::a($model->img_original,Yii::$app->request->hostInfo . $model->img_original,['target'=>'_blank',]),
+        		],
             'sequence_id',
             'redirect_url:url',
 		        ],
