@@ -31,14 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
 //             'img_url:url',
         		[
         		'attribute' => 'img_url',
-        		'label'=>$model->getAttributeLabel('img_url'),
+//         		'label'=>$model->getAttributeLabel('img_url'),
         		'format' =>'raw',
         		'value'=>Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',]),
         		],
 //             'thumb_url:url',
 		     [
 		     	'attribute' => 'thumb_url',
-		     	'label'=>$model->getAttributeLabel('thumb_url'),
+// 		     	'label'=>$model->getAttributeLabel('thumb_url'),
 		     	'format' =>'raw',
 		     	'value'=>Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',]),
 			],
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //             'img_original',
         		[
         		'attribute' => 'img_original',
-        		'label'=>$model->getAttributeLabel('img_original'),
+//         		'label'=>$model->getAttributeLabel('img_original'),
         		'format' =>'raw',
         		'value'=>Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',]),
         		],

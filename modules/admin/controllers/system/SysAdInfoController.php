@@ -9,6 +9,8 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use app\common\utils\ImageUtils;
+use app\models\b2b2c\common\Constant;
 
 /**
  * SysAdInfoController implements the CRUD actions for SysAdInfo model.
@@ -67,6 +69,7 @@ class SysAdInfoController extends BaseAuthController
 //     	$image->saveImage(md5("aa123"));
     	
     	return; */
+    	
     	return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -82,15 +85,37 @@ class SysAdInfoController extends BaseAuthController
         $model = new SysAdInfo();
         if ($model->load(Yii::$app->request->post())) {
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-        	if($files = ($model->upload())){
+        	$imageUtils = new ImageUtils();
+        	if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads'))){
         		$model->img_url = $files['img_url'];
         		$model->img_original = $files['img_original'];
         		$model->thumb_url = $files['thumb_url'];
         	}
         	if($model->save()){
-	            return $this->redirect(['view', 'id' => $model->id]);
+        		//rename file name
+        		$file_info = pathinfo($model->img_original);
+//         		rename($model->img_original, $file_info)
+        		$new_img_original =  $imageUtils->renameImage($model->img_original, $model->id, 'ads');
+        		$new_thumb_url = $imageUtils->renameImage($model->thumb_url, $model->id, 'ads', Constant::thumb_flag);
+        		$new_img_url = $imageUtils->renameImage($model->img_url, $model->id, 'ads', Constant::img_flag);
+        		if($new_img_original){
+        			$model->img_original = $new_img_original;
+        		}
+        		if($new_thumb_url){
+        			$model->thumb_url = $new_thumb_url;
+        		}
+        		if($new_img_url){
+        			$model->img_url = $new_img_url;
+        		}        	
+        			
+        		if($model->update(true,['img_original','thumb_url', 'img_url'])){
+        			return $this->redirect(['view', 'id' => $model->id]);
+        		}else{
+        			return $this->render('create', [
+        					'model' => $model,
+        			]);
+        		}
         	}else{
-        		var_dump($model->errors);
         		return $this->render('create', [
         				'model' => $model,
         		]);
@@ -111,9 +136,45 @@ class SysAdInfoController extends BaseAuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+        	
+        	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+        	if(empty($model->imageFile)){
+        		//如果没有上传文件，则不处理文件信息
+        		if($model->update()){
+        			return $this->redirect(['view', 'id' => $model->id]);
+        		}else{
+        			return $this->render('update', [
+        					'model' => $model,
+        			]);
+        		}
+        	}else{
+        		$imageUtils = new ImageUtils();
+        		if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads', $model->id))){
+        			$old_img_url = $model->img_url;
+        			$old_img_original = $model->img_original;
+        			$old_thumb_url = $model->thumb_url;
+        		
+        			$model->img_url = $files['img_url'];
+        			$model->img_original = $files['img_original'];
+        			$model->thumb_url = $files['thumb_url'];
+        		
+        			if($model->update()){
+        				//remove old files;
+        				unlink($old_img_url);
+        				unlink($old_img_original);
+        				unlink($old_thumb_url);
+        				return $this->redirect(['view', 'id' => $model->id]);
+        			}else{
+        				return $this->render('update', [
+        						'model' => $model,
+        				]);
+        			}
+        		}	
+        	}
+        	
+        	
+            
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -131,9 +192,9 @@ class SysAdInfoController extends BaseAuthController
     {
         $model = $this->findModel($id);
         if($model->delete()){
-        	$thumb_url = iconv("UTF-8", "GBK", Yii::getAlias('@webroot') . $model->thumb_url);
-        	$img_original = iconv("UTF-8", "GBK", Yii::getAlias('@webroot') . $model->img_original);
-        	$img_url = iconv("UTF-8", "GBK", Yii::getAlias('@webroot') . $model->img_url);
+        	$thumb_url = iconv("UTF-8", "GBK", $model->thumb_url);
+        	$img_original = iconv("UTF-8", "GBK", $model->img_original);
+        	$img_url = iconv("UTF-8", "GBK", $model->img_url);
         	
         	if(is_file($thumb_url)){
         		unlink($thumb_url);
@@ -158,6 +219,7 @@ class SysAdInfoController extends BaseAuthController
     protected function findModel($id)
     {
         if (($model = SysAdInfo::findOne($id)) !== null) {
+//         	var_dump(pathinfo($model->img_original));
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

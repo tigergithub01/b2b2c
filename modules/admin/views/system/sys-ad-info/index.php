@@ -19,15 +19,30 @@ $this->params['breadcrumbs'][] = $this->title;
 		     	<h3 class="box-title"><?= Html::encode($this->title) ?></h3>
 		    </div>
 		    <div class="box-body table-responsive no-padding">
-<?php Pjax::begin(); ?>    <?= app\modules\admin\components\AppGridView::widget([
+<?php //Pjax::begin(); ?>    <?= app\modules\admin\components\AppGridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'img_url:url',
-            'thumb_url:url',
-            'img_original',
+//             'img_url:url',
+//             'thumb_url:url',
+//             'img_original',
+        		[
+		        		'attribute' => 'img_url',
+		        		'format' =>'raw',
+		        		'value'=>function($model){return Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',]);},
+        		],
+        		[
+        				'attribute' => 'thumb_url',
+        				'format' =>'raw',
+        				'value'=>function($model){return Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',]);},
+        		],
+        		[
+        				'attribute' => 'img_original',
+        				'format' =>'raw',
+        				'value'=>function($model){return Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',]);},
+        		],
             'sequence_id',
             // 'redirect_url:url',
 		[
@@ -37,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
         ],
     ]); ?>
-<?php Pjax::end(); ?>		</div>
+<?php //Pjax::end(); ?>		</div>
 	</div>
 </div>
 

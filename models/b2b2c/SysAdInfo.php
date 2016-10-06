@@ -38,7 +38,7 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
             [['sequence_id'], 'integer'],
             [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['redirect_url'], 'string', 'max' => 255],
-        	[['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png',],
+        	[['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         ];
     }
 
@@ -58,9 +58,8 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
         ];
     }
     
-    public function upload()
+    public function upload($image_no='')
     {
-    	
     	//yii\web\UploadedFile
     	if(empty($this->imageFile)){
     		return false;
@@ -95,8 +94,6 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
     	}
     	
     	//返回处理好的图片    
-		var_dump($thumbed_url);
-    	
     	return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
     	
     	
