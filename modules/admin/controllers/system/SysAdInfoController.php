@@ -54,7 +54,20 @@ class SysAdInfoController extends BaseAuthController
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+    	/* $imageUtils = new \app\common\utils\ImageUtils();
+//     	var_dump(getimagesize(iconv("UTF-8", "GBK",  "uploads/ads/1610/ads_详细2_161006121640_4942.png")));
+    	if($thumbed_url = ($imageUtils->make_thumb("uploads/ads/1610/3.png",200,200))){
+//     		unlink(iconv("UTF-8", "GBK",  $thumb_url));
+    	}
+    	
+//     	$image = new \app\common\utils\ImageThumb(iconv("UTF-8", "GBK",  "uploads/ads/1610/ads_详细2_161006121640_4942.png"));
+//     	$image->openImage();
+//     	$image->thumpImage(400,400);
+//     	$image->showImage();
+//     	$image->saveImage(md5("aa123"));
+    	
+    	return; */
+    	return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -77,6 +90,7 @@ class SysAdInfoController extends BaseAuthController
         	if($model->save()){
 	            return $this->redirect(['view', 'id' => $model->id]);
         	}else{
+        		var_dump($model->errors);
         		return $this->render('create', [
         				'model' => $model,
         		]);
@@ -149,4 +163,6 @@ class SysAdInfoController extends BaseAuthController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
 }

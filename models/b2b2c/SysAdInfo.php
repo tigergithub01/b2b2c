@@ -3,6 +3,7 @@
 namespace app\models\b2b2c;
 
 use Yii;
+use app\common\utils\ImageUtils;
 
 /**
  * This is the model class for table "t_sys_ad_info".
@@ -65,32 +66,38 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
     		return false;
     	}
     	
-    	$base_dir = '/uploads/ads';
+    	$base_dir = 'uploads/ads';
     	$path = $base_dir . '/' . date('ym',time()) . '/';
-    	$webroot = Yii::getAlias("@webroot")  ;
+//     	$webroot = Yii::getAlias("@webroot")  ;
     	
     	//创建文件夹
-    	if(!is_dir($webroot . $path)){
-    		mkdir(iconv("UTF-8", "GBK", $webroot . $path),0777,true);
+    	if(!is_dir($path)){
+    		mkdir(iconv("UTF-8", "GBK", $path),0777,true);
     	}
     	
     	//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
     	$img_original = $path . 'ads_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;
-    	$file_path = $webroot . $img_original;
+    	$file_path = $img_original;
     	
     	//上传图片
     	$this->imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
     	
     	//处理图片
-    	$img_url = $path . 'ads_' . 'img_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;;
-    	$thumb_url = $path . 'ads_' . 'thumb_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;;
+    	$img_url = $path . 'ads_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '_img' . '.' . $this->imageFile->extension;;
+    	$thumb_url = $path . 'ads_'. $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;;
     	
     	//拷贝文件
-    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK", $webroot . $img_url));
-    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK", $webroot . $thumb_url));
-
-    	//返回处理好的图片    	    	
-    	return ['img_url'=> $img_url, 'thumb_url' => $thumb_url, 'img_original' => $img_original ];
+    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
+    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $thumb_url));
+    	$imageUtils = new ImageUtils();
+    	if($thumbed_url = ($imageUtils->make_thumb($thumb_url,300,200))){
+    		unlink(iconv("UTF-8", "GBK",  $thumb_url));
+    	}
+    	
+    	//返回处理好的图片    
+		var_dump($thumbed_url);
+    	
+    	return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
     	
     	
     	/* if ($this->validate()) {
