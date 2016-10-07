@@ -9,7 +9,7 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-use app\common\utils\ImageUtils;
+use app\common\utils\image\ImageUtils;
 use app\models\b2b2c\common\Constant;
 use app\models\b2b2c\SysConfig;
 
