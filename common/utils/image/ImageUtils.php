@@ -1,5 +1,5 @@
 <?php
-namespace app\common\utils;
+namespace app\common\utils\image;
 
 class ImageUtils{
 	

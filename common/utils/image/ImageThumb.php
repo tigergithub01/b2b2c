@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\utils;
+namespace app\common\utils\image;
 
 /**
  图片压缩操作类
