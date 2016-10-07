@@ -19,4 +19,7 @@ class AdminConst{
 	
 	/* 最后一次访问URL */
 	const ADMIN_LAST_ACCESS_URL = 'admin_last_access_url';
+	
+	/* 系统配置  */
+	static $config = [];
 }

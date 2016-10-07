@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\common\utils\ImageUtils;
 use app\models\b2b2c\common\Constant;
+use app\models\b2b2c\SysConfig;
 
 /**
  * SysAdInfoController implements the CRUD actions for SysAdInfo model.
@@ -83,10 +84,16 @@ class SysAdInfoController extends BaseAuthController
     public function actionCreate()
     {
         $model = new SysAdInfo();
+        $model->setScenario(SysAdInfo::SCENARIO_CREATE);
+        
+        //获取默认配置文件
+        $model->width = SysConfig::getConfigVal("thumb_width");
+        $model->height = SysConfig::getConfigVal("thumb_height");;
+        
         if ($model->load(Yii::$app->request->post())) {
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         	$imageUtils = new ImageUtils();
-        	if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads'))){
+        	if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads',null, $model->width,$model->height))){
         		$model->img_url = $files['img_url'];
         		$model->img_original = $files['img_original'];
         		$model->thumb_url = $files['thumb_url'];
@@ -136,6 +143,7 @@ class SysAdInfoController extends BaseAuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->setScenario(SysAdInfo::SCENARIO_UPDATE);
         if ($model->load(Yii::$app->request->post())) {
         	
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
@@ -150,7 +158,7 @@ class SysAdInfoController extends BaseAuthController
         		}
         	}else{
         		$imageUtils = new ImageUtils();
-        		if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads', $model->id))){
+        		if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads', $model->id, $model->width,$model->height))){
         			$old_img_url = $model->img_url;
         			$old_img_original = $model->img_original;
         			$old_thumb_url = $model->thumb_url;
@@ -161,9 +169,15 @@ class SysAdInfoController extends BaseAuthController
         		
         			if($model->update()){
         				//remove old files;
-        				unlink($old_img_url);
-        				unlink($old_img_original);
-        				unlink($old_thumb_url);
+        				if(file_exists($old_img_url)){
+        					unlink($old_img_url);
+        				}
+        				if(file_exists($old_img_original)){
+        					unlink($old_img_original);
+        				}
+        				if(file_exists($old_thumb_url)){
+        					unlink($old_thumb_url);
+        				}
         				return $this->redirect(['view', 'id' => $model->id]);
         			}else{
         				return $this->render('update', [

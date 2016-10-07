@@ -3,7 +3,6 @@
 namespace app\models\b2b2c;
 
 use Yii;
-use app\common\utils\ImageUtils;
 
 /**
  * This is the model class for table "t_sys_ad_info".
@@ -14,12 +13,17 @@ use app\common\utils\ImageUtils;
  * @property string $img_original
  * @property string $sequence_id
  * @property string $redirect_url
+ * @property string $description
+ * @property integer $width
+ * @property integer $height
  */
 class SysAdInfo extends \app\models\b2b2c\BasicModel
 {
 	//上传文件
 	public $imageFile;
-    
+	const SCENARIO_CREATE = 'create';//登陆
+	const SCENARIO_UPDATE = 'update';//登陆
+	
     /**
      * @inheritdoc
      */
@@ -34,11 +38,11 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['img_url', 'thumb_url', 'img_original', 'sequence_id'], 'required'],
-            [['sequence_id'], 'integer'],
-            [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
-            [['redirect_url'], 'string', 'max' => 255],
-        	[['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+            [['img_url', 'thumb_url', 'img_original', 'sequence_id', 'width', 'height'], 'required'],
+            [['sequence_id', 'width', 'height'], 'integer'],
+            [['img_url', 'thumb_url', 'img_original', 'redirect_url', 'description'], 'string', 'max' => 255],
+        	[['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1, 'on' => [self::SCENARIO_CREATE]],
+        	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1, 'on' => [self::SCENARIO_UPDATE]],
         ];
     }
 
@@ -54,57 +58,10 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
             'img_original' => Yii::t('app', '原图'),
             'sequence_id' => Yii::t('app', '显示顺序'),
             'redirect_url' => Yii::t('app', '点击后跳转关联URL'),
+            'description' => Yii::t('app', '描述'),
+            'width' => Yii::t('app', '宽度'),
+            'height' => Yii::t('app', '高度'),
         	'imageFile' => Yii::t('app', '广告图'),
         ];
     }
-    
-    public function upload($image_no='')
-    {
-    	//yii\web\UploadedFile
-    	if(empty($this->imageFile)){
-    		return false;
-    	}
-    	
-    	$base_dir = 'uploads/ads';
-    	$path = $base_dir . '/' . date('ym',time()) . '/';
-//     	$webroot = Yii::getAlias("@webroot")  ;
-    	
-    	//创建文件夹
-    	if(!is_dir($path)){
-    		mkdir(iconv("UTF-8", "GBK", $path),0777,true);
-    	}
-    	
-    	//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
-    	$img_original = $path . 'ads_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;
-    	$file_path = $img_original;
-    	
-    	//上传图片
-    	$this->imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
-    	
-    	//处理图片
-    	$img_url = $path . 'ads_' . $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '_img' . '.' . $this->imageFile->extension;;
-    	$thumb_url = $path . 'ads_'. $this->imageFile->baseName . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $this->imageFile->extension;;
-    	
-    	//拷贝文件
-    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
-    	copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $thumb_url));
-    	$imageUtils = new ImageUtils();
-    	if($thumbed_url = ($imageUtils->make_thumb($thumb_url,300,200))){
-    		unlink(iconv("UTF-8", "GBK",  $thumb_url));
-    	}
-    	
-    	//返回处理好的图片    
-    	return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
-    	
-    	
-    	/* if ($this->validate()) {
-    		foreach ($this->imageFiles as $file) {
-    			$file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
-    		}
-    		return true;
-    	} else {
-    		return false;
-    	} */
-    }
-    
 }

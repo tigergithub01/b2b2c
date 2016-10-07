@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\admin\Module;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\SysAdInfoSearch */
 /* @var $form yii\widgets\ActiveForm */
@@ -48,6 +49,12 @@ use app\modules\admin\Module;
     <?= $form->field($model, 'sequence_id') ?>
 
     <?php // echo $form->field($model, 'redirect_url') ?>
+
+    <?php // echo $form->field($model, 'description') ?>
+
+    <?php // echo $form->field($model, 'width') ?>
+
+    <?php // echo $form->field($model, 'height') ?>
 
 	    
 	    </div>

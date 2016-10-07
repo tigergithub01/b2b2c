@@ -57,4 +57,12 @@ class SysConfig extends \app\models\b2b2c\BasicModel
     {
         return $this->hasMany(SysConfigDetail::className(), ['config_id' => 'id']);
     }
+    
+    /**
+     * 
+     * @param unknown $code
+     */
+    public static function getConfigVal($code){
+    	return $this->find()->select(['value'])->where(['code'=>$this->code])->scalar();
+    }
 }

@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-//             'img_url:url',
+            //             'img_url:url',
         		[
         		'attribute' => 'img_url',
 //         		'label'=>$model->getAttributeLabel('img_url'),
@@ -57,6 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
         		],
             'sequence_id',
             'redirect_url:url',
+            'description',
+            'width',
+            'height',
 		        ],
 		    ]) ?>
     	</div>

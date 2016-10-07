@@ -18,8 +18,8 @@ class SysAdInfoSearch extends SysAdInfo
     public function rules()
     {
         return [
-            [['id', 'sequence_id'], 'integer'],
-            [['img_url', 'thumb_url', 'img_original', 'redirect_url'], 'safe'],
+            [['id', 'sequence_id', 'width', 'height'], 'integer'],
+            [['img_url', 'thumb_url', 'img_original', 'redirect_url', 'description'], 'safe'],
         ];
     }
 
@@ -63,12 +63,15 @@ class SysAdInfoSearch extends SysAdInfo
         $query->andFilterWhere([
             'id' => $this->id,
             'sequence_id' => $this->sequence_id,
+            'width' => $this->width,
+            'height' => $this->height,
         ]);
 
         $query->andFilterWhere(['like', 'img_url', $this->img_url])
             ->andFilterWhere(['like', 'thumb_url', $this->thumb_url])
             ->andFilterWhere(['like', 'img_original', $this->img_original])
-            ->andFilterWhere(['like', 'redirect_url', $this->redirect_url]);
+            ->andFilterWhere(['like', 'redirect_url', $this->redirect_url])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }
