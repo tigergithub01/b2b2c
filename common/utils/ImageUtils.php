@@ -171,7 +171,7 @@ class ImageUtils{
 	 * @param string $uploadType (ads, etc)
 	 * @return boolean|multitype:string
 	 */
-	function uploadImage($imageFile, $uploadPath, $uploadType='item', $filename = ''){
+	function uploadImage($imageFile, $uploadPath, $uploadType='item', $filename = '',$thumb_width = 220, $thumb_height = 220){
 		//yii\web\UploadedFile
 		if(empty($imageFile)){
 			return false;
@@ -206,7 +206,7 @@ class ImageUtils{
 		copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
 		copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $thumb_url));
 		$imageUtils = new ImageUtils();
-		if($thumbed_url = ($imageUtils->make_thumb($thumb_url,300,200))){
+		if($thumbed_url = ($imageUtils->make_thumb($thumb_url, $thumb_width, $thumb_height))){
 			unlink(iconv("UTF-8", "GBK",  $thumb_url));
 		}
 		 
