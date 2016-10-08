@@ -43,7 +43,6 @@ class SysAdInfoController extends BaseAuthController
     {
         $searchModel = new SysAdInfoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -150,6 +149,7 @@ class SysAdInfoController extends BaseAuthController
         	if(empty($model->imageFile)){
         		//如果没有上传文件，则不处理文件信息
         		if($model->update()){
+        			\Yii::$app->getSession()->setFlash('success', '数据保存成功.');
         			return $this->redirect(['view', 'id' => $model->id]);
         		}else{
         			return $this->render('update', [
@@ -178,6 +178,7 @@ class SysAdInfoController extends BaseAuthController
         				if(file_exists($old_thumb_url)){
         					unlink($old_thumb_url);
         				}
+        				\Yii::$app->getSession()->setFlash('success', '数据保存成功.');
         				return $this->redirect(['view', 'id' => $model->id]);
         			}else{
         				return $this->render('update', [
