@@ -2,10 +2,15 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use ijackua\lepture\Markdowneditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysArticle */
 /* @var $form yii\widgets\ActiveForm */
+?>
+
+<?php 
+	//ijackua\lepture\MarkdowneditorAssets::register($this);
 ?>
 
 <div class="sys-article-form">
@@ -45,7 +50,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'issue_date')->textInput() ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    <?php //echo $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'content')->widget(Markdowneditor::className(), [
+                    ]) ?>
+    
 
     <?= $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
 
