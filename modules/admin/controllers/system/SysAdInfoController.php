@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use app\common\utils\image\ImageUtils;
 use app\models\b2b2c\common\Constant;
 use app\models\b2b2c\SysConfig;
+use app\common\utils\MsgUtils;
 
 /**
  * SysAdInfoController implements the CRUD actions for SysAdInfo model.
@@ -86,8 +87,8 @@ class SysAdInfoController extends BaseAuthController
         $model->setScenario(SysAdInfo::SCENARIO_CREATE);
         
         //获取默认配置文件
-        $model->width = SysConfig::getConfigVal("thumb_width");
-        $model->height = SysConfig::getConfigVal("thumb_height");;
+        $model->width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        $model->height = SysConfig::getInstance()->getConfigVal("thumb_height");
         
         if ($model->load(Yii::$app->request->post())) {
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
@@ -115,22 +116,15 @@ class SysAdInfoController extends BaseAuthController
         		}        	
         			
         		if($model->update(true,['img_original','thumb_url', 'img_url'])){
+        			MsgUtils::success();
         			return $this->redirect(['view', 'id' => $model->id]);
-        		}else{
-        			return $this->render('create', [
-        					'model' => $model,
-        			]);
         		}
-        	}else{
-        		return $this->render('create', [
-        				'model' => $model,
-        		]);
         	}
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        
+        return $this->render('create', [
+        		'model' => $model,
+        ]);
     }
 
     /**
@@ -148,13 +142,9 @@ class SysAdInfoController extends BaseAuthController
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         	if(empty($model->imageFile)){
         		//如果没有上传文件，则不处理文件信息
-        		if($model->update()){
-        			\Yii::$app->getSession()->setFlash('success', '数据保存成功.');
+        		if($model->save()){
+        			MsgUtils::success();
         			return $this->redirect(['view', 'id' => $model->id]);
-        		}else{
-        			return $this->render('update', [
-        					'model' => $model,
-        			]);
         		}
         	}else{
         		$imageUtils = new ImageUtils();
@@ -167,7 +157,7 @@ class SysAdInfoController extends BaseAuthController
         			$model->img_original = $files['img_original'];
         			$model->thumb_url = $files['thumb_url'];
         		
-        			if($model->update()){
+        			if($model->save()){
         				//remove old files;
         				if(file_exists($old_img_url)){
         					unlink($old_img_url);
@@ -178,12 +168,8 @@ class SysAdInfoController extends BaseAuthController
         				if(file_exists($old_thumb_url)){
         					unlink($old_thumb_url);
         				}
-        				\Yii::$app->getSession()->setFlash('success', '数据保存成功.');
+        				MsgUtils::success();
         				return $this->redirect(['view', 'id' => $model->id]);
-        			}else{
-        				return $this->render('update', [
-        						'model' => $model,
-        				]);
         			}
         		}	
         	}
@@ -221,6 +207,7 @@ class SysAdInfoController extends BaseAuthController
         		unlink($img_url);
         	}
         }
+        MsgUtils::success();
         return $this->redirect(['index']);
     }
 

@@ -16,6 +16,17 @@ use Yii;
  */
 class SysConfig extends \app\models\b2b2c\BasicModel
 {
+    
+	private static $_instance;
+	
+	/* 单例  */
+	public static function getInstance(){
+		if(!(self::$_instance instanceof self)){
+			self::$_instance = new self;
+		}
+		return self::$_instance;
+	}
+    
     /**
      * @inheritdoc
      */
@@ -62,7 +73,7 @@ class SysConfig extends \app\models\b2b2c\BasicModel
      * 
      * @param unknown $code
      */
-    public static function getConfigVal($code){
-    	return $this->find()->select(['value'])->where(['code'=>$this->code])->scalar();
+    public function getConfigVal($code){
+    	return $this::find()->select(['value'])->where(['code'=>$code])->scalar();
     }
 }

@@ -8,7 +8,6 @@ use yii\helpers\ArrayHelper;
 /* @var $model app\models\b2b2c\SysUser */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="sys-user-form">
 
 	<div class="box box-primary">
@@ -28,7 +27,7 @@ use yii\helpers\ArrayHelper;
 						'class' => 'form-horizontal',
 				],
 				'fieldConfig' => [ 
-						'template' => "{label}\n<div class=\"col-lg-6\">{input}</div>\n<div class=\"col-lg-4\">{error}</div>",
+						'template' => "{label}\n<div class=\"col-lg-6\">{input}</div>\n<div class=\"col-lg-4\"></div>",
 						'labelOptions' => [ 
 								'class' => 'col-lg-2 control-label' 
 						] 

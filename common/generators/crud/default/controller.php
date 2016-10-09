@@ -39,6 +39,7 @@ use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\common\utils\MsgUtils;
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -109,6 +110,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $model = new <?= $modelClass ?>();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            MsgUtils::success();
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
             return $this->render('create', [
@@ -130,6 +132,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
+        	MsgUtils::success();
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -145,7 +148,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionDelete(<?= $actionParams ?>)
     {
         $this->findModel(<?= $actionParams ?>)->delete();
-
+		MsgUtils::success();
         return $this->redirect(['index']);
     }
 

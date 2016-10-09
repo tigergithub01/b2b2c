@@ -61,7 +61,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
 		$scenarios[self::SCENARIO_LOGIN] = ['user_id','user_name', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['user_id', 'password'];
 		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'confirm_pwd', 'new_pwd'];
-		$scenarios[self::SCENARIO_NEW_USER] = ['user_id', 'password', 'is_admin', 'status', 'confirm_pwd'];
+		$scenarios[self::SCENARIO_NEW_USER] = ['user_id', 'password', 'is_admin', 'status', 'confirm_pwd', 'user_name'];
 		$scenarios[self::SCENARIO_CHANGE_PWD_ADMIN] = ['password', 'confirm_pwd'];
 		return $scenarios;
 	
@@ -92,7 +92,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
             [['user_id'], 'string', 'max' => 20],
             [['user_name'], 'string', 'max' => 60],
             [['password'], 'string', 'max' => 50],
-            [['user_id'], 'unique','on' => [self::SCENARIO_DEFAULT]],
+            [['user_id'], 'unique','on' => [self::SCENARIO_DEFAULT,self::SCENARIO_NEW_USER]],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['is_admin'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_admin' => 'id']],
             ['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN]],

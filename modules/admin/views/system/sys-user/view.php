@@ -8,7 +8,7 @@ use app\models\b2b2c\SysParameter;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysUser */
 
-$this->title = $model->id;
+$this->title = $model->user_id;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+// 		            'id',
             'user_id',
             'user_name',
             //'password',

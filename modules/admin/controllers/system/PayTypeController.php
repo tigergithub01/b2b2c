@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
 use yii\base\Model;
+use app\common\utils\MsgUtils;
 
 /**
  * PayTypeController implements the CRUD actions for PayType model.
@@ -74,6 +75,7 @@ class PayTypeController extends BaseAuthController
         $model = new PayType();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -94,6 +96,7 @@ class PayTypeController extends BaseAuthController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -112,7 +115,7 @@ class PayTypeController extends BaseAuthController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        MsgUtils::success();
         return $this->redirect(['index']);
     }
 

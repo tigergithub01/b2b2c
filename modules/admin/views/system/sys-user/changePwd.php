@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = Module::t('app', 'Change User Pwd');
 	
 		    <div class="box-body">
 		    <?php //echo $form->field($model, 'user_id')->textInput(['maxlength' => true]) ?>
-	
+		    
 	   	 	<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 	   	 	
 	   	 	<?= $form->field($model, 'confirm_pwd')->passwordInput(['maxlength' => true]) ?>

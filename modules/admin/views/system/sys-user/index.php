@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         		// you may configure additional properties here
         		], */
             //['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
+//             'id',
 //             'user_id',
         	[
         		'label'=>'用户名',
@@ -46,7 +46,14 @@ $this->params['breadcrumbs'][] = $this->title;
             //'is_admin',
 //             'status',
 //             'status0.param_val',
-			['attribute'=>'status0.param_val',/* 'label'=>'是否有效1', */],
+			['attribute'=>'status0.param_val','label'=>'是否有效',],
+// 			[
+// 			'format'=>'raw',
+// 			'attribute'=>'status',
+// 			'value' => function($model){
+// 				return $model->status0->param_val;
+// 				}
+// 			],
 // 			['attribute' => 'param_val',  'value' => 'status0.param_val' ],
             // 'last_login_date',
 		[
@@ -57,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						return Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['title' => '修改密码'] );
 					},
 					'delete' => function ($url, $model, $key) {
-						return ($model->is_admin==SysParameter::yes)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, 
+						return ($model->is_admin==SysParameter::no)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, 
 								['title' => '删除',
 								'data' => [
 					                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -66,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						] ):'';
 					},
 			],
-			'headerOptions' =>['width' => '120']
+			'headerOptions' =>['width' => '150']
         ],
             
         ],

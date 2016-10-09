@@ -14,6 +14,7 @@ use yii\helpers\Json;
 use app\modules\admin\Module;
 use yii\base\UserException;
 use yii\base\yii\base;
+use app\common\utils\MsgUtils;
 
 /**
  * SysUserController implements the CRUD actions for SysUser model.
@@ -102,32 +103,29 @@ class SysUserController extends BaseAuthController
         $model->setScenario(SysUser::SCENARIO_NEW_USER);
         //设置默认值
         $model->status = SysParameter::yes;
+        $model->is_admin = SysParameter::no;
         
         if ($model->load(Yii::$app->request->post())) {
         	//创建新用户
-        	$_user = new SysUser();    
-        	$_user->user_id = $model->user_id;
-        	$_user->password = md5($model->password);//加密
-        	$_user->is_admin = SysParameter::no;//设置为非超级管理员
-        	$_user->status  = $model->status;
+//         	$_user = new SysUser();    
+//         	$_user->user_id = $model->user_id;
+//         	$_user->password = md5($model->password);//加密
+//         	$_user->is_admin = SysParameter::no;//设置为非超级管理员
+//         	$_user->status  = $model->status;
+//         	$_user->user_name = $model->user_name;
         	
-        	if($_user->save()){
-        		return $this->redirect(['view', 'id' => $_user->id]);
-        	}else{
-        		var_dump($model->getErrors());
-        		return $this->render('create', [
-        				'model' => $model,
-        				'yesNoList'=> SysParameterType::getSysParametersById(SysParameterType::YES_NO),
-        		]);
+        	if($model->save()){
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
         	}
-        } else {
-        	Yii::info($model->getErrors());
-//         	$model->addError('user_id',Json::encode($model->errors));
-            return $this->render('create', [
-                'model' => $model,
-            	'yesNoList'=> SysParameterType::getSysParametersById(SysParameterType::YES_NO),
-            ]);
         }
+        
+//         Yii::info($model->getf);
+        //         	$model->addError('user_id',Json::encode($model->errors));
+        return $this->render('create', [
+        		'model' => $model,
+        		'yesNoList'=> SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+        ]);
     }
 
     /**
@@ -141,14 +139,15 @@ class SysUserController extends BaseAuthController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-//         	var_dump($model->getErrors());
-            return $this->render('update', [
+        }
+//         var_dump($model->getErrors());
+        return $this->render('update', [
                 'model' => $model,
             	'yesNoList'=> SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
-        }
+       
     }
 
     /**
@@ -167,7 +166,7 @@ class SysUserController extends BaseAuthController
     	
     	
 //         $this->findModel($id)->delete();
-
+    	MsgUtils::success();
         return $this->redirect(['index']);
     }
 
@@ -218,17 +217,16 @@ class SysUserController extends BaseAuthController
     			$password = md5($model->password);
     			$model->password = $password;
     			$model->confirm_pwd = $password;
-    			if($model->update(true,['password'])){
+    			if($model->save(true,['password'])){
+    				MsgUtils::success();
     				return $this->redirect(['view', 'id' => $model->id]);
     			}
     		}
-    		return $this->render('changePwd', [
-    					'model' => $model,
-    			]);
-    	} else {
-    		return $this->render('changePwd', [
-    				'model' => $model,
-    		]);
+    		
     	}
+    	
+    	return $this->render('changePwd', [
+    			'model' => $model,
+    	]);
     }
 }
