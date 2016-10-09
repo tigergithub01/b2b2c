@@ -310,10 +310,75 @@ alter table t_sys_region add FOREIGN KEY `fk_region_parent_ref_region` (`parent_
 2\重新优化部分数据结构  -ok
 
 2016-10-04:
-1\left join优化sql
+1\left join优化sql ->ok
+2\yii2 操作等待页面。
+3\yii2 人性化错误提示页面。
+4\yii2 多文件上传：
+;extension=php_fileinfo.dll
+http://www.yiiframework.com/doc-2.0/guide-input-file-upload.html
+http://www.yiifans.com/yii2/guide/input-file-upload.html
+http://blog.csdn.net/xundh/article/details/45439077'
+yii2文件上传临时文件不存在错误提示解决方案：
+http://stackoverflow.com/questions/35322316/yii2-finfo-filec-xampp-tmp-php29c-tmp-failed-to-open-stream-no-such-file-o
+composer require mdmsoft/yii2-upload-file "~1.2"
+
+5\yii2 按比例压缩图片：
+http://blog.csdn.net/gaoxuaiguoyi/article/details/49592151
+
+6\yii2 ckeditor
+http://www.yiiframework.com/extension/yii2-ckeditor-widget/
+composer.phar require "2amigos/yii2-ckeditor-widget" "*"
+composer require "2amigos/yii2-ckeditor-widget:*"
+E:\source\workplace-php\b2b2c\web\uploads\ads
 
 
+yii2 markdown:
+https://github.com/iJackUA/yii2-lepture-markdown-editor-widget
+composer require "ijackua/yii2-lepture-markdown-editor-widget"
+composer self-update
+http://www.yiichina.com/tutorial/416
+D:\server\php-5.4.38-Win32-VC9-x86
 
+2016-10-05
+yii2自定义验证规则->http://www.yiiframework.com/doc-2.0/guide-input-validation.html
+ return [
+            // an inline validator defined as the model method validateCountry()
+            ['country', 'validateCountry'],
+
+            // an inline validator defined as an anonymous function
+            ['token', function ($attribute, $params) {
+                if (!ctype_alnum($this->$attribute)) {
+                    $this->addError($attribute, 'The token must contain letters or digits.');
+                }
+            }],
+        ];
+ 
+        
+?XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14756573310682
+
+file_exists 检测不到文件 但实际存在 (中文字符编码问题，iconv("UTF-8", "GBK",str));
+
+2016-10-06:
+yii2 flash -》ok
+yii2 phpsessionid ajax
+
+1\短信模板
+2\短信sdk
+3\短信签名
+
+婚礼登录，注册，找回密码，广告图api
+婚礼案例录入
+婚礼商家信息完善。（审核放在后面）
+婚礼产品信息录入。
+阿里短信验证码调通。 ->ok
+
+
+2010-10-09：
+app生成token保证访问URL的安全性：
+
+app要请求用户列表，api是“index.do?module=user&action=list”
+app生成token = md5sum ('user'.'2012-11-28'.'#$@%!'.list) = 880fed4ca2aabd20ae9a5dd774711de2;
+实际发起请求为 “index.php?module=user&action=list&token=880fed4ca2aabd20ae9a5dd774711de2”
 
 
 
