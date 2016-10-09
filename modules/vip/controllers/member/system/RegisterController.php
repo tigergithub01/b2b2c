@@ -19,6 +19,11 @@ class RegisterController extends BaseController
      */
     public function actionIndex()
     {
+    	//test
+    	$smsUtils = new \app\common\utils\sms\SmsUtils();
+    	$sms_code = $smsUtils->random(6, 1);
+    	$smsUtils->sendSms("13724346621", $sms_code);
+    	
     	$service = new VipService();
     	
     	/* 登陆 */

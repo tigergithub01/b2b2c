@@ -11,6 +11,7 @@ use app\models\b2b2c\SysParameter;
 use yii\helpers\ArrayHelper;
 use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\SysVerifyCode;
+use app\common\utils\sms\SmsUtils;
 
 /**
  * 获取短信验证码
@@ -110,9 +111,15 @@ class SmsController extends BaseController {
 		
 		//获取远程api信息
 // 		curl_init();
-		$sms_code = '666666';	
-		$content = "您的验证码为".$sms_code.'，请注意查收。';
+		$smsUtils = new SmsUtils();
+		$sms_code = $smsUtils->random(6, 1);
+		$resp_arr = $smsUtils->sendSms($vip_id, $sms_code);
+		if(!($resp_arr['status'])){
+			$json->message = '验证码发送失败。'.$resp_arr['msg'];
+			return Json::encode($json);
+		}
 		
+		$content = "您的验证码为" . $sms_code . '，请注意查收。';
 		
 		//将验证码信息写入数据库，
 		$sysVerifyCode = new SysVerifyCode(); 
