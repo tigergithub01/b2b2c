@@ -23,6 +23,9 @@
         "almasaeed2010/adminlte": "~2.0",
         "dmstr/yii2-adminlte-asset": "2.*",
         "modernkernel/yii2-ionicons": " *",
+        "ijackua/yii2-lepture-markdown-editor-widget": "^1.0",
+        "2amigos/yii2-ckeditor-widget": "*",
+        "mdmsoft/yii2-upload-file": "~1.2"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
