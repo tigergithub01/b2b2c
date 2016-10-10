@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysArticle */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Articles'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Articles'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-article-view">
@@ -26,15 +27,22 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
-            'type_id',
+// 		            'id',
+//             'type_id',
             'title',
             'code',
             'issue_date',
             'content:ntext',
-            'issue_user_id',
-            'is_show',
-            'is_sys_flag',
+//             'issue_user_id',
+		    ['attribute'=>'issue_user_id','format' =>'raw', 'value'=>$model->issueUser->user_id],
+// 		    'issueUser.user_id',
+		    ['attribute'=>'is_show','format' =>'raw', 'value'=>$model->isShow->param_val],
+		     
+//             'is_show',
+//             'is_sys_flag',
+		     ['attribute'=>'is_sys_flag','format' =>'raw', 'value'=>$model->isSysFlag->param_val],
+// 			'isShow.param_val',
+// 		    'isSysFlag.param_val',
 		        ],
 		    ]) ?>
     	</div>

@@ -1,12 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use app\modules\admin\Module;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysArticle */
 
-$this->title = Yii::t('app', 'Create Sys Article');
+$this->title = Module::t('app', 'Create Sys Article');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Articles'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -14,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+    	'yesNoList'=>$yesNoList,
     ]) ?>
 
 </div>

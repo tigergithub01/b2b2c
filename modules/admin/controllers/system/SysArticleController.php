@@ -8,6 +8,9 @@ use app\models\b2b2c\search\SysArticleSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\b2b2c\SysParameterType;
+use app\modules\admin\models\AdminConst;
+use app\models\b2b2c\SysParameter;
 
 /**
  * SysArticleController implements the CRUD actions for SysArticle model.
@@ -66,12 +69,16 @@ class SysArticleController extends BaseAuthController
     public function actionCreate()
     {
         $model = new SysArticle();
+        $model->issue_user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+        $model->issue_date = date(AdminConst::DATE_FORMAT,time());
+        $model->is_sys_flag = SysParameter::no;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'yesNoList'=>SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
@@ -91,6 +98,7 @@ class SysArticleController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'yesNoList'=>SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
@@ -117,7 +125,13 @@ class SysArticleController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = SysArticle::findOne($id)) !== null) {
+    	$model = SysArticle::find()->alias("art")
+    	->joinWith("isShow shw")
+    	->joinWith("isSysFlag sys")
+    	->joinWith("issueUser isu")
+    	->where(['art.id'=>$id])->one();
+    	if ($model !== null) {
+//         if (($model = SysArticle::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\SysArticleSearch */
@@ -36,15 +37,15 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //  $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'type_id') ?>
+    <?php //  $form->field($model, 'type_id') ?>
 
     <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'code') ?>
+    <?php //  $form->field($model, 'code') ?>
 
-    <?= $form->field($model, 'issue_date') ?>
+    <?php // // $form->field($model, 'issue_date') ?>
 
     <?php // echo $form->field($model, 'content') ?>
 
@@ -59,7 +60,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Sys Article'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Sys Article'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

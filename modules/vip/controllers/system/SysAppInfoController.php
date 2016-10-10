@@ -6,11 +6,18 @@ use Yii;
 use app\modules\vip\common\controllers\BaseController;
 use app\models\b2b2c\SysAppInfo;
 use app\models\b2b2c\common\JsonObj;
-use app\models\b2b2c\common\CommonUtils;
 use app\models\b2b2c\SysAppRelease;
+use app\common\utils\CommonUtils;
 
+
+/* 
+ 
+ app下载
+ http://localhost:8089/vip/system/sys-app-info/index?code=wedding_android
+ */
 class SysAppInfoController extends BaseController
 {
+	
     public function actionIndex()
     {
     	$request = Yii::$app->request;

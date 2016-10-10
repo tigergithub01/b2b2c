@@ -1,5 +1,6 @@
 <?php
 
+use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -48,9 +49,9 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'configure')->textarea(['rows' => 6]) ?>
     
-    <?= $form->field($model, 'status')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => '--请选择--'])?>
+    <?= $form->field($model, 'status')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')])?>
 
-    <?= $form->field($model, 'is_cod')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => '--请选择--']) ?>
+    <?= $form->field($model, 'is_cod')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
 		</div>
 	

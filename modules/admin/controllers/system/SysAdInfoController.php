@@ -89,10 +89,12 @@ class SysAdInfoController extends BaseAuthController
         //获取默认配置文件
         $model->width = SysConfig::getInstance()->getConfigVal("thumb_width");
         $model->height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        $model->sequence_id = (SysAdInfo::find()->max('sequence_id') + 1) ;
         
         if ($model->load(Yii::$app->request->post())) {
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         	$imageUtils = new ImageUtils();
+        	
         	if($files = ($imageUtils->uploadImage($model->imageFile, 'uploads/ads', 'ads',null, $model->width,$model->height))){
         		$model->img_url = $files['img_url'];
         		$model->img_original = $files['img_original'];

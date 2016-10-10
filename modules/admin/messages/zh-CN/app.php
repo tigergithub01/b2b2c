@@ -34,5 +34,11 @@ return [
 		'Create Sys Ad Info'=>'新增广告图',
 		'Update Sys Ad Info'=>'编辑广告图',
 		
+		//文章信息
+		'Sys Article'=>'文章',
+		'Sys Articles'=>'文章列表',
+		'Create Sys Article'=>'新增文章',
+		'Update Sys Article'=>'编辑文章',
+		
 		
 ];

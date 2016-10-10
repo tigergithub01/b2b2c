@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\SysArticleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Sys Articles');
+$this->title = Module::t('app', 'Sys Articles');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-article-index">
@@ -23,10 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
-            'type_id',
+//             'id',
+//             'type_id',
             'title',
-            'code',
+//             'code',
             'issue_date',
             // 'content:ntext',
             // 'issue_user_id',

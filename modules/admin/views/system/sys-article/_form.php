@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use ijackua\lepture\Markdowneditor;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysArticle */
@@ -42,7 +43,7 @@ use ijackua\lepture\Markdowneditor;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
+	    <?php //echo $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -56,11 +57,15 @@ use ijackua\lepture\Markdowneditor;
                     ]) ?>
     
 
-    <?= $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'is_show')->textInput(['maxlength' => true]) ?>
+    <?php // $form->field($model, 'is_show')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'is_show')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')])?>
 
-    <?= $form->field($model, 'is_sys_flag')->textInput(['maxlength' => true]) ?>
+    <?php // $form->field($model, 'is_sys_flag')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'is_sys_flag')->dropDownList(ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')])?>
 
 		</div>
 	

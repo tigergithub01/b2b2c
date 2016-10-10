@@ -80,7 +80,7 @@ class PayTypeController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
-            	'yesNoList'=>$this->getYesNoList(),
+            	'yesNoList'=>SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
@@ -101,7 +101,7 @@ class PayTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
-            	'yesNoList'=>$this->getYesNoList(),
+            	'yesNoList'=>SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
