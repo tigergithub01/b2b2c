@@ -58,7 +58,7 @@ $fieldOptions2 = [
         				'captchaAction' => '/site/captcha',
                     ]) ?>     
          
-         <?= $form->field($model, 'sms_code',['template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6"><input type="button" url="'.Url::to(['system/sms/index']).'" value="获取验证码" class="btn btn-block btn-flat btn_sms"/></div></div>{error}',])
+         <?= $form->field($model, 'sms_code',['template' => '<div class="row"><div class="col-lg-6">{input}</div><div class="col-lg-6"><input type="button" url="'.Url::to(['/vip/member/system/sms/index']).'" value="获取验证码" class="btn btn-block btn-flat btn_sms"/></div></div>{error}',])
         			->label(false)
         			->textInput([
         				'placeholder' => $model->getAttributeLabel('sms_code'),

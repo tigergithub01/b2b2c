@@ -21,7 +21,7 @@ class SysAdInfoController extends BaseController
     public function actionIndex()
     {
     	$json = new JsonObj();
-    	$list = SysAdInfo::find()->all();
+    	$list = SysAdInfo::find()->orderBy(['sequence_id'=>SORT_ASC])->all();
     	/*  格式化URL输出 */
     	foreach ($list as $value) {
     		$value->img_url = UrlUtils::formatUrl($value->img_url);

@@ -1,16 +1,18 @@
 <?php
 
-namespace app\modules\vip\controllers\member\system;
+namespace app\modules\vip\controllers\api\member\system;
 
 use Yii;
 use app\models\b2b2c\Vip;
 use yii\helpers\Url;
 use app\modules\vip\common\controllers\BaseController;
 use app\modules\vip\service\vip\VipService;
+use app\modules\vip\models\VipConst;
+use app\common\utils\CommonUtils;
+use app\models\b2b2c\common\JsonObj;
 
 class RegisterController extends BaseController
 {
-	public $layout = "main-login";
 	
     /**
      * Renders the index view for the module
@@ -18,19 +20,15 @@ class RegisterController extends BaseController
      */
     public function actionIndex()
     {
+    	$json = new JsonObj();
     	$service = new VipService();
     	
     	/* 登陆 */
     	$model = new Vip();
-    	$model->setScenario(Vip::SCENARIO_REGISTER);
+    	$model->setScenario(Vip::SCENARIO_REGISTER_NO_VERIFY);
+    	$model->load(Yii::$app->request->post());
     	
-//     	var_dump(Yii::$aliases);
-// 		var_dump(Yii::$app->session);
-// 		var_dump(time());
-// 		var_dump(strtotime(date('Y-m-d H:i:s',time())));
-// 		var_dump(date('Y-m-d 23:59:59',time()));
-    
-    	if ($model->load(Yii::$app->request->post()) && ($vip_db = $service->register($model)) /* && $model->validate()  *//* && ($user_db = $model->login()) */) {
+    	if ($vip_db = $service->register($model)) {
     		/* $valid = $model->validate(); */
     			
 //     			}else{
@@ -40,9 +38,12 @@ class RegisterController extends BaseController
 // 	    			$cookies->remove(MerchantConst::COOKIE_MERCHANT_USER_ID);
 // 	    			$cookies->remove(MerchantConst::COOKIE_MERCHANT_PASSWORD);
 // 	    		}
+    		$json->value = ['PHPSESSID'=>Yii::$app->session->id,'vip'=>$vip_db];
+    		
+    		return CommonUtils::jsonObj_success($json);
 	    		
 	    		//登陆成功进行跳转
-	    		Yii::$app->response->redirect(Url::toRoute(['/vip/member/default/index']));
+// 	    		Yii::$app->response->redirect(Url::toRoute(['/vip/member/default/index']));
     			
     		// 			if($valid){
     		
@@ -58,11 +59,7 @@ class RegisterController extends BaseController
     	 'model' => $model,
     	]); */
     
-    
-    	return $this->render('index', [
-    			'model' => $model,
-    	]);
-    
+    	return CommonUtils::jsonObj_failed($json, $model);
     }
     
     

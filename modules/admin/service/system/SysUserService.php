@@ -81,7 +81,7 @@ class SysUserService{
     	}
     	
     	$_user->password = md5($model->new_pwd);
-    	if(!($_user->update(true,['password']))){
+    	if(!($_user->save(true,['password']))){
     		$model->addError("password",Yii::t('app', '密码修改不成功。'));
     		return false;
     	}

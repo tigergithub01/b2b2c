@@ -16,7 +16,7 @@ class VipService{
 	 */
 	public function login($model,$auto_login=false){
 // 				//for test
-		$model = empty($model)?(new Vip()):$model;
+// 		$model = empty($model)?(new Vip()):$model;
 		
 		if(!$model->validate()){
 			return false;
@@ -54,11 +54,44 @@ class VipService{
 		$_vip->last_login_date = date(VipConst::DATE_FORMAT,time());
 		$_vip->update(true,['last_login_date']);
 		
+		
+		//写登录后信息
+		$session = Yii::$app->session;
+		$session->set(VipConst::LOGIN_VIP_USER,$_vip);
+		
+		//写权限信息 TODO：
+			
+		//写cookie
+		if($model->remember_me){
+			//write user name into cookie
+			// 				setcookie(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id,time()+3600*24*7);
+			// 				setcookie(AdminConst::COOKIE_ADMIN_PASSWORD,$user_db->password,time()+3600*24*7);
+			$cookies = Yii::$app->response->cookies;
+			// 				$cookies->set(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id);
+			$cookies->add(new \yii\web\Cookie([
+					'name' => VipConst::COOKIE_VIP_USER_ID,
+					'value' => $_vip->vip_id,
+					'expire'=>time()+3600*24*7
+			]));
+			$cookies->add(new \yii\web\Cookie([
+					'name' => VipConst::COOKIE_VIP_PASSWORD,
+					'value' => $_vip->password,
+					'expire'=>time()+3600*24*7
+			]));
+		}else{
+			/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
+			 unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
+			$cookies = Yii::$app->response->cookies;
+			$cookies->remove(VipConst::COOKIE_VIP_USER_ID);
+			$cookies->remove(VipConst::COOKIE_VIP_PASSWORD);
+		}
+		
+		
 		return $_vip;
 	}
 	
 	/**
-	 * 商户注册
+	 * 会员注册
 	 * @param unknown $model
 	 */
 	public function register($model){
@@ -66,8 +99,12 @@ class VipService{
 		//for test
 		$model = empty($model)?(new Vip()):$model;
 		
+		if(!$model->validate()){
+			return false;
+		}
+		
 		//copy values
-		$vip = new Vip();
+		/* $vip = new Vip();
 		$vip->vip_id = $model->vip_id;
 		$vip->merchant_flag = SysParameter::no;
 		$vip->password = md5($model->password);//md5 加密
@@ -76,7 +113,15 @@ class VipService{
 		$vip->register_date=date(VipConst::DATE_FORMAT,time());
 		$vip->audit_status = SysParameter::audit_need_approve;
 		$vip->mobile_verify_flag=SysParameter::yes;
+		$vip->nick_name = $model->nick_name; */
 		
+		$model->merchant_flag= SysParameter::no;
+		$model->email_verify_flag=SysParameter::no;
+		$model->status = SysParameter::yes;
+		$model->register_date=date(VipConst::DATE_FORMAT,time());
+		$model->audit_status = SysParameter::audit_approved;
+		$model->mobile_verify_flag = SysParameter::yes;
+		$model->password = md5($model->password);
 		
 		//判断该用户是否已经注册
 		$count = Vip::find()->where(['vip_id'=>$model->vip_id,'merchant_flag'=>SysParameter::no])->count();
@@ -87,7 +132,7 @@ class VipService{
 		
 		//判断短信验证码是否正确，根据最后发送的有效的验证码进行查询
 		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$model->vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',date(VipConst::DATE_FORMAT,time())])->orderBy(['sent_time'=>SORT_DESC])->one();
-		if(!($verifyCode && $verifyCode->verify_code==$model->sms_code)){
+		if(/* !($model->sms_code=='hltwnm') ||  */!($verifyCode && $verifyCode->verify_code==$model->sms_code)){
 			$model->addError("sms_code",Yii::t('app', '短信验证码不正确。'));
 			return false;
 		}		
@@ -98,13 +143,38 @@ class VipService{
 		}
 		
 		//插入用户信息，并且是未审核状态
-		if(!($vip->insert())){
+		if(!($model->insert(false))){
 			Yii::info($model->errors);
 			$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
 			return false;
 		}
 		
-		return $vip;
+		//写会话信息
+		$session = Yii::$app->session;
+		$session->set(VipConst::LOGIN_VIP_USER,$model);
+		//写权限信息 TOOD：
+		
+		
+		//写cookie
+		//     			if($model->remember_me){
+		//write user name into cookie
+		// 				setcookie(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id,time()+3600*24*7);
+		// 				setcookie(AdminConst::COOKIE_ADMIN_PASSWORD,$user_db->password,time()+3600*24*7);
+		
+		$cookies = Yii::$app->response->cookies;
+		// 				$cookies->set(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id);
+		$cookies->add(new \yii\web\Cookie([
+				'name' => VipConst::COOKIE_VIP_USER_ID,
+				'value' => $model->vip_id,
+				'expire'=>time()+3600*24*7
+		]));
+		$cookies->add(new \yii\web\Cookie([
+				'name' => VipConst::COOKIE_VIP_PASSWORD,
+				'value' => $model->password,
+				'expire'=>time()+3600*24*7
+		]));
+		
+		return $model;
 	}
 	
 	
@@ -194,12 +264,12 @@ class VipService{
 		 
 		//判断原始密码是否正确
 		if(strcmp(md5($model->password), $_user->password)!=0){
-			$model->addError("password",Yii::t('app', '密码不正确。'));
+			$model->addError("password",Yii::t('app', '原密码不正确。'));
 			return false;
 		}
 		 
 		$_user->password = md5($model->new_pwd);
-		if(!($_user->update(true,['password']))){
+		if(!($_user->save(true,['password']))){
 			$model->addError("password",Yii::t('app', '密码修改不成功。'));
 			return false;
 		}

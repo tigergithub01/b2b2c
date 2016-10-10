@@ -68,8 +68,12 @@ class MerchantService{
 		//for test
 		$model = empty($model)?(new Vip()):$model;
 		
+		if(!$model->validate()){
+			return false;
+		}
+		
 		//copy values
-		$vip = new Vip();
+		/* $vip = new Vip();
 		$vip->vip_id = $model->vip_id;
 		$vip->merchant_flag = SysParameter::yes;
 		$vip->password = md5($model->password);//md5 加密
@@ -78,7 +82,16 @@ class MerchantService{
 		$vip->register_date=date(MerchantConst::DATE_FORMAT,time());
 		$vip->audit_status = SysParameter::audit_need_approve;
 		$vip->mobile_verify_flag=SysParameter::yes;
-		$vip->vip_type_id = $model->vip_type_id;
+		$vip->vip_type_id = $model->vip_type_id; */
+		
+		
+		$model->merchant_flag= SysParameter::yes;
+		$model->email_verify_flag=SysParameter::no;
+		$model->status = SysParameter::yes;
+		$model->register_date=date(MerchantConst::DATE_FORMAT,time());
+		$model->audit_status = SysParameter::audit_need_approve;
+		$model->mobile_verify_flag = SysParameter::yes;
+		$model->password = md5($model->password);
 		
 		//判断该用户是否已经注册
 		$count = Vip::find()->where(['vip_id'=>$model->vip_id,'merchant_flag'=>SysParameter::yes])->count();
@@ -102,7 +115,7 @@ class MerchantService{
 		//插入用户信息，并且是未审核状态
 		$transaction = Vip::getDb()->beginTransaction();
 		try {
-			if(!($vip->insert())){
+			if(!($model->insert(false))){
 				Yii::info($model->errors);
 				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
 				$transaction->rollBack();
@@ -112,7 +125,7 @@ class MerchantService{
 			//insert VipOrganization,插入店铺信息，（因为没有店铺的概念，但是为了保证扩展性，所有默认插入一个店铺）
 			$vipOrg =  new VipOrganization();
 			$vipOrg->status=SysParameter::yes;
-			$vipOrg->vip_id = $vip->id;
+			$vipOrg->vip_id = $model->id;
 			$vipOrg->audit_status = SysParameter::audit_need_approve;
 			$vipOrg->create_date = date(MerchantConst::DATE_FORMAT,time());
 			$vipOrg->update_date = date(MerchantConst::DATE_FORMAT,time());
@@ -126,7 +139,7 @@ class MerchantService{
 			//insert VipOrganization extend，插入扩展信息
 			$vipExtend = new VipExtend();
 			$vipExtend->audit_status  = SysParameter::audit_need_approve;
-			$vipExtend->vip_id = $vip->id;
+			$vipExtend->vip_id = $model->id;
 			$vipExtend->create_date = date(MerchantConst::DATE_FORMAT,time());
 			$vipExtend->update_date = date(MerchantConst::DATE_FORMAT,time());
 			if(!($vipExtend->insert())){
@@ -134,12 +147,40 @@ class MerchantService{
 				$transaction->rollBack();
 				return false;
 			}	
+			
+			
+			//写session
+			$session = Yii::$app->session;
+			$session->set(MerchantConst::LOGIN_MERCHANT_USER,$model);
+			//写权限信息 TOOD：
+			
+			
+			//写cookie
+			//     			if($model->remember_me){
+			//write user name into cookie
+			// 				setcookie(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id,time()+3600*24*7);
+			// 				setcookie(AdminConst::COOKIE_ADMIN_PASSWORD,$user_db->password,time()+3600*24*7);
+			
+			$cookies = Yii::$app->response->cookies;
+			// 				$cookies->set(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id);
+			$cookies->add(new \yii\web\Cookie([
+					'name' => MerchantConst::COOKIE_MERCHANT_USER_ID,
+					'value' => $model->vip_id,
+					'expire'=>time()+3600*24*7
+			]));
+			$cookies->add(new \yii\web\Cookie([
+					'name' => MerchantConst::COOKIE_MERCHANT_PASSWORD,
+					'value' => $model->password,
+					'expire'=>time()+3600*24*7
+			]));
+			
+			//提交事务
 			$transaction->commit();
 		} catch (\Exception $e) {
 			$transaction->rollBack();
             throw $e;
 		}
-		return $vip;
+		return $model;
 	}
 	
 	
@@ -174,7 +215,7 @@ class MerchantService{
 		$vip_db->password = md5($model->password);
 // 		$vip_db->update(true,['password']);
 		
-		if(!($vip_db->update(true,['password']))){
+		if(!($vip_db->save(true,['password']))){
 			Yii::info($model->errors);
 			$model->addError("vip_id",Yii::t('app', '修改密码不成功。'));
 			return false;
@@ -234,7 +275,7 @@ class MerchantService{
 		}
 		 
 		$_user->password = md5($model->new_pwd);
-		if(!($_user->update(true,['password']))){
+		if(!($_user->save(true,['password']))){
 			$model->addError("password",Yii::t('app', '密码修改不成功。'));
 			return false;
 		}

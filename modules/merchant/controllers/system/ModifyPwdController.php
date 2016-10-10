@@ -27,13 +27,11 @@ class ModifyPwdController extends BaseAuthController{
 		$model->id = Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
 		
 		if ($model->load(Yii::$app->request->post()) && ($vip_db = $service->modify_pwd($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
-			if($vip_db){
-				//注销当前登录
-				$service->logout();
-				
-				//跳转到登陆页面
-				Yii::$app->response->redirect(Url::toRoute(['/merchant/system/login/index']));
-			}
+			//注销当前登录
+			$service->logout();
+			
+			//跳转到登陆页面
+			Yii::$app->response->redirect(Url::toRoute(['/merchant/system/login/index']));
 		}
 			
 		return $this->render('index', [

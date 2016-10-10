@@ -28,13 +28,11 @@ class ModifyPwdController extends BaseAuthController{
 		$model->id = Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
 		
 		if ($model->load(Yii::$app->request->post()) && ($user_db = $userService->modify_pwd($model)) /* && $model->validate() */ /* && ($user_db = $model->login()) */) {
-			if($user_db){
-				//注销当前登录
-				$userService->logout();
-				
-				//跳转到登陆页面
-				Yii::$app->response->redirect(Url::toRoute(['/admin/system/login/index']));
-			}
+			//注销当前登录
+			$userService->logout();
+			
+			//跳转到登陆页面
+			Yii::$app->response->redirect(Url::toRoute(['/admin/system/login/index']));
 		}
 			
 		return $this->render('index', [

@@ -8,6 +8,8 @@ use app\models\b2b2c\SysUser;
 use app\models\b2b2c\Vip;
 use yii\helpers\Url;
 use app\modules\vip\models\VipConst;
+use app\common\utils\CommonUtils;
+use app\models\b2b2c\common\Constant;
 
 class VipAuthBehavior extends Behavior{
 	
@@ -48,14 +50,25 @@ class VipAuthBehavior extends Behavior{
 	 				//设置权限等信息TODO:
 	 				
 	 				
-	 				
 	 			}else{
 	 				//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
-	 				Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
+	 				if (Yii::$app->getRequest()->getIsAjax()) {
+	 					CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
+	 				}else{
+	 					Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
+// 	 					exit;
+	 				}
 	 			}	
 	 		}else{
 	 			//redirect to 
-	 			Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
+	 			if (Yii::$app->getRequest()->getIsAjax()) {
+	 				CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
+	 			}else{
+	 				Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
+// 	 				exit;
+	 			}
+	 			
+// 	 			
 	 		}
 	 	}
 	 	

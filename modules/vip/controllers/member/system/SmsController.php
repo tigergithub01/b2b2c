@@ -15,7 +15,7 @@ use app\common\utils\sms\SmsUtils;
 
 /**
  * 获取短信验证码
- * 
+ * http://localhost:8089/vip/member/system/sms/index?vip_id=13724346643&img_verify=0
  * @author Tiger-guo
  *        
  */
@@ -52,6 +52,8 @@ class SmsController extends BaseController {
 		$request = Yii::$app->request;
 		$req_verify_code =  $request->post('verify_code');
 		$vip_id =  $request->post('vip_id');
+		$img_verify =  $request->post('img_verify');//是否需要图形验证码
+		$img_verify = empty($img_verify)?1 : 0; //默认需要验证图形码
 		
 		/* $req_verify_code =  isset($_REQUEST['verify_code'])?$_REQUEST['verify_code']:null;
 		$vip_id =  isset($_REQUEST['vip_id'])?$_REQUEST['vip_id']:null; */
@@ -69,20 +71,23 @@ class SmsController extends BaseController {
 			return Json::encode($json);
 		}
 		
-		//图形验证码是否为空
-		if(empty($req_verify_code)){
-			$json->message = '图形验证码不能为空！';
-			return Json::encode($json);
+		/* 需要图形验证码 */
+		if($img_verify){
+			//图形验证码是否为空
+			if(empty($req_verify_code)){
+				$json->message = '图形验证码不能为空！';
+				return Json::encode($json);
+			}
+	
+			//图形验证码是否正确
+			$verify_code  = $session->get(VipConst::CAPTCHA_ACTION_KEY);
+	// 		Yii::info('$verify_code:'.$_SESSION[MerchantConst::CAPTCHA_ACTION_KEY]);
+			
+			if(isset($req_verify_code) && strcmp($verify_code, $req_verify_code)!=0){
+				$json->message = '图形验证码不正确！';
+				return Json::encode($json);
+			}		
 		}
-
-		//图形验证码是否正确
-		$verify_code  = $session->get(VipConst::CAPTCHA_ACTION_KEY);
-// 		Yii::info('$verify_code:'.$_SESSION[MerchantConst::CAPTCHA_ACTION_KEY]);
-		
-		if(isset($req_verify_code) && strcmp($verify_code, $req_verify_code)!=0){
-			$json->message = '图形验证码不正确！';
-			return Json::encode($json);
-		}		
 		
 		//根据数据库判断验证码获取时间间隔，每天只能获取5次验证码，每隔60秒获取一次
 		$last_verify = SysVerifyCode::find()->where('expiration_time>= :expiration_time AND verify_type = :verify_type AND verify_number =:verify_number',
@@ -115,7 +120,7 @@ class SmsController extends BaseController {
 		$resp_arr = $smsUtils->sendSms($vip_id, $sms_code);
 		if(!($resp_arr['status'])){
 			$json->message = '验证码发送失败。'.$resp_arr['msg'];
-			return Json::encode($json);
+// 			return Json::encode($json);
 		}
 		
 		$content = "您的验证码为" . $sms_code . '，请注意查收。';
@@ -135,6 +140,7 @@ class SmsController extends BaseController {
 		
 		//以json格式返回验证码以及提示信息
 		$json->status = true;
+		$json->value = ['verify_code'=>$sms_code];
 		$json->message = '验证码已经发送，请注意查收！';
 		return Json::encode($json);
 		

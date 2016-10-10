@@ -26,7 +26,7 @@ class RegisterController extends BaseController
     	
     	/* 注册 */
     	$model = new Vip();
-    	$model->setScenario(Vip::SCENARIO_REGISTER);
+    	$model->setScenario(Vip::SCENARIO_MERCHANT_REGISTER);
     	
 //     	var_dump(Yii::$aliases);
 // 		var_dump(Yii::$app->session);
@@ -36,31 +36,8 @@ class RegisterController extends BaseController
     
     	if ($model->load(Yii::$app->request->post()) && ($vip_db = $merchantService->register($model)) /* && $model->validate()  *//* && ($user_db = $model->login()) */) {
     		/* $valid = $model->validate(); */
-    		if($vip_db){
     			//写session
-    			$session = Yii::$app->session;
-    			$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db);
-    			//写权限信息 TOOD：
-    				
-    				
-    			//写cookie
-//     			if($model->remember_me){
-    				//write user name into cookie
-    				// 				setcookie(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id,time()+3600*24*7);
-    				// 				setcookie(AdminConst::COOKIE_ADMIN_PASSWORD,$user_db->password,time()+3600*24*7);
-    
-    				$cookies = Yii::$app->response->cookies;
-    				// 				$cookies->set(AdminConst::COOKIE_ADMIN_USER_ID,$user_db->user_id);
-    				$cookies->add(new \yii\web\Cookie([
-    						'name' => MerchantConst::COOKIE_MERCHANT_USER_ID,
-    						'value' => $vip_db->vip_id,
-    						'expire'=>time()+3600*24*7
-    				]));
-    				$cookies->add(new \yii\web\Cookie([
-    						'name' => MerchantConst::COOKIE_MERCHANT_PASSWORD,
-    						'value' => $vip_db->password,
-    						'expire'=>time()+3600*24*7
-    				]));
+    			
 //     			}else{
 // 	    			/* unset($_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID]);
 // 	    				unset($_COOKIE[AdminConst::COOKIE_ADMIN_PASSWORD]); */
@@ -71,7 +48,6 @@ class RegisterController extends BaseController
 	    		
 	    		//登陆成功进行跳转
 	    		Yii::$app->response->redirect(Url::toRoute(['/merchant/default/index']));
-    		}
     			
     		// 			if($valid){
     		

@@ -91,6 +91,10 @@ class Vip extends \app\models\b2b2c\BasicModel
 	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
 	const SCENARIO_FORGOT_PWD = 'forgot_pwd';//忘记密码
 	const SCENARIO_CHANGE_PWD = 'change_pwd'; //登陆后修改密码
+	const SCENARIO_LOGIN_NO_VERIFY = 'login_no_verify';//登陆(不需要图形验证码）
+	const SCENARIO_FORGOT_PWD_NO_VERIFY = 'forgot_pwd_no_verify';//忘记密码(不需要图形验证码）
+	const SCENARIO_REGISTER_NO_VERIFY = 'register_no_verify';//注册(不需要图形验证码）
+	const SCENARIO_MERCHANT_REGISTER = 'merchant_register';//商户注册
 	
 	/* 商户平台  */
 	/* const SCENARIO_MERCHANT_LOGIN = 'merchant_login';
@@ -101,9 +105,13 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id'];
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code','nick_name'];
+		$scenarios[self::SCENARIO_MERCHANT_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id'];
+		$scenarios[self::SCENARIO_REGISTER_NO_VERIFY] = ['vip_id', 'password','confirm_pwd','sms_code','nick_name'];
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
+		$scenarios[self::SCENARIO_LOGIN_NO_VERIFY] = ['vip_id', 'password','remember_me'];
 		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
+		$scenarios[self::SCENARIO_FORGOT_PWD_NO_VERIFY] = ['vip_id', 'password', 'confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
 		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'new_pwd','confirm_pwd'];
 		return $scenarios;
@@ -147,15 +155,15 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['vip_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipType::className(), 'targetAttribute' => ['vip_type_id' => 'id']],
             [['mobile_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['mobile_verify_flag' => 'id']],
             [['rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipRank::className(), 'targetAttribute' => ['rank_id' => 'id']],
-        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
-        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_CHANGE_PWD]],
-        	[['sms_code'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
-        	[['password','confirm_pwd','new_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_CHANGE_PWD]],
-        	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD]],
+        	['verify_code', 'captcha','on' => [self::SCENARIO_LOGIN,self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_MERCHANT_REGISTER]],
+        	[['confirm_pwd'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_CHANGE_PWD,self::SCENARIO_FORGOT_PWD_NO_VERIFY,self::SCENARIO_REGISTER_NO_VERIFY,self::SCENARIO_MERCHANT_REGISTER]],
+        	[['sms_code'], 'required','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_REGISTER_NO_VERIFY,self::SCENARIO_MERCHANT_REGISTER]],
+        	[['password','confirm_pwd','new_pwd'], 'string','min'=>6, 'max' => 16,'message'=>'{attribute}位数为6至16位','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_CHANGE_PWD,self::SCENARIO_FORGOT_PWD_NO_VERIFY,self::SCENARIO_REGISTER_NO_VERIFY,self::SCENARIO_MERCHANT_REGISTER]],
+        	[['confirm_pwd'], 'compare','compareAttribute'=>'password','message'=>'两次密码输入不一致','on' => [self::SCENARIO_REGISTER,self::SCENARIO_FORGOT_PWD,self::SCENARIO_FORGOT_PWD_NO_VERIFY,self::SCENARIO_REGISTER_NO_VERIFY,self::SCENARIO_MERCHANT_REGISTER]],
 //         	[['agreement'],'boolean','on' => [self::SCENARIO_REGISTER]],
 			[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
-        	[['vip_type_id'], 'required','on' => [self::SCENARIO_REGISTER]],
+        	[['vip_type_id'], 'required','on' => [self::SCENARIO_MERCHANT_REGISTER]],
         ];
     }
 
