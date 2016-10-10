@@ -37,6 +37,9 @@ drop database b2b2c_wedding;
 CREATE DATABASE `b2b2c_wedding` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 use b2b2c_wedding;
 source b2b2c.sql;
+source init_data.sql;
+source t_sys_region.sql;
+
 
 
 GRANT ALL PRIVILEGES ON *.* TO 'b2b'@'%'WITH GRANT OPTION;

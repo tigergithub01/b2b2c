@@ -159,6 +159,10 @@ select * from t_pay_type;
 insert into t_pay_type(code,name,status,is_cod)values('wxpay','微信支付',1,0);
 insert into t_pay_type(code,name,status,is_cod)values('alipay','支付宝',1,0);
 
+
+
+
+
 /*
 select * from t_sys_app_info;
 select * from t_sys_app_release;
@@ -166,7 +170,7 @@ select * from t_sys_app_release;
 婚礼兔andorid版
 
 update t_sys_app_release set name = 'v1.0' where
-
+delete from t_vip_case_type where id >5
 */
 /**插入app信息*/
 insert into t_sys_app_info(name,code,description,release_id) values('婚礼兔andorid版','wedding_android',null,null);
@@ -174,12 +178,18 @@ insert into t_sys_app_release(name,ver_no,upgrade_desc,force_upgrade,app_path,ap
 update t_sys_app_info set release_id =1 where code = 'wedding_android';
 
 
+/**
+select * from t_vip_type;
+*/
 /**插入会员（商户）类型*/
 insert into t_vip_type(name,seq_id,merchant_flag)values('策划师',1,1);
 insert into t_vip_type(name,seq_id,merchant_flag)values('主持人',2,1);
 insert into t_vip_type(name,seq_id,merchant_flag)values('摄影师',3,1);
 insert into t_vip_type(name,seq_id,merchant_flag)values('化妆师',4,1);
 insert into t_vip_type(name,seq_id,merchant_flag)values('摄像师',5,1);
+
+
+
 
 /**插入产品分类信息*/
 /*
@@ -191,7 +201,6 @@ insert into t_product_type(name,parent_id,description,seq_id)values('主持人',
 insert into t_product_type(name,parent_id,description,seq_id)values('摄影师',1,null,3);
 insert into t_product_type(name,parent_id,description,seq_id)values('化妆师',1,null,4);
 insert into t_product_type(name,parent_id,description,seq_id)values('摄像师',1,null,5);
-
 insert into t_product_type(name,parent_id,description,seq_id)values('结婚用品',null,null,2);
 
 /**插入案例分类信息*/
@@ -204,11 +213,14 @@ insert into t_vip_case_type(name,vip_type_id)values('摄影师',3);
 insert into t_vip_case_type(name,vip_type_id)values('化妆师',4);
 insert into t_vip_case_type(name,vip_type_id)values('摄像师',5);
 
+/***t_sys_config*/
+/**
+
+select * from t_sys_config;
 
 
+*/
 
-
-
-
-
+insert into t_sys_config(code,value,description)values('thumb_width','220','缩略图宽度');
+insert into t_sys_config(code,value,description)values('thumb_height','220','缩略图高度');
 
