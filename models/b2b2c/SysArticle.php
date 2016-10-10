@@ -60,12 +60,15 @@ class SysArticle extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'type_id' => Yii::t('app', '文章分类（以后再建表）'),
             'title' => Yii::t('app', '标题'),
-            'code' => Yii::t('app', '特殊标识（比如注册协议可以增加一个特殊标识register_agreement）'),
+//             'code' => Yii::t('app', '特殊标识（比如注册协议可以增加一个特殊标识register_agreement）'),
+        	'code' => Yii::t('app', '编码'),
             'issue_date' => Yii::t('app', '发布日期'),
             'content' => Yii::t('app', '内容'),
             'issue_user_id' => Yii::t('app', '发布人'),
-            'is_show' => Yii::t('app', '是否显示（1：是，0：否）'),
-            'is_sys_flag' => Yii::t('app', '是否为系统内置文章（此类文章不可以删除，如商家协议等）'),
+//             'is_show' => Yii::t('app', '是否显示（1：是，0：否）'),
+        	'is_show' => Yii::t('app', '是否显示'),
+//             'is_sys_flag' => Yii::t('app', '是否为系统内置文章（此类文章不可以删除，如商家协议等）'),
+        	'is_sys_flag' => Yii::t('app', '是否为系统内置文章'),
         ];
     }
 
