@@ -188,7 +188,9 @@ netstat -lnpt
 
 http://120.24.158.60:89/demo/20160821/start.html#p=index
 
-chmod -R 755 dir
+chmod -R 777 dir
+unzip xxx.zip
+
 
 sftp
 get -r dir
@@ -384,8 +386,7 @@ yii2日期选择
 https://github.com/2amigos/yii2-date-picker-widget
 composer require 2amigos/yii2-date-picker-widget:~1.0
 
-
-
+http://120.24.158.60/admin/api/api-test/index
 
 
 
