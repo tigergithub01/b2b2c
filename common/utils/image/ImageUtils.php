@@ -1,6 +1,7 @@
 <?php
 namespace app\common\utils\image;
 
+use app\common\utils\CommonUtils;
 class ImageUtils{
 	
 	/**
@@ -192,15 +193,15 @@ class ImageUtils{
 		}
 		 
 		//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
-		$img_original = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $imageFile->extension;
+		$img_original = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $imageFile->extension;
 		$file_path = $img_original;
 		 
 		//上传图片
 		$imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
 		 
 		//处理图片
-		$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '_img' . '.' . $imageFile->extension;;
-		$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). '.' . $imageFile->extension;;
+		$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $imageFile->extension;;
+		$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $imageFile->extension;;
 		 
 		//拷贝文件
 		copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
@@ -227,8 +228,8 @@ class ImageUtils{
 		if(empty($filename)){
 			$filename = $file_info['filename'];
 		}
-		$newname =  $file_info['dirname'] . '/' . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . rand(1000, 9999). ($image_type?('_' . $image_type):'') . '.' . $file_info['extension'];
-		if(rename($imageFile, $newname)){
+		$newname =  $file_info['dirname'] . '/' . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). ($image_type?('_' . $image_type):'') . '.' . $file_info['extension'];
+		if(rename(iconv("UTF-8","GBK",$imageFile), iconv("UTF-8","GBK",$newname))){
 			return $newname;
 		}else{
 			return false;
