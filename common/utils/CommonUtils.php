@@ -9,18 +9,39 @@ use app\models\b2b2c\common\JsonObj;
 
 class CommonUtils{
 	
-	public static function json_failed($message,$value=null,$attributeErrors=[]){
-		return Json::encode(new JsonObj(false, $value, $message, $attributeErrors)) ;
+	public static function jsonObj_failed($jsonObj,$model = null){
+		if($model && $model->hasErrors()){
+			$firstErrors = $model->getFirstErrors();
+			$jsonObj->attributeErrors = $firstErrors;
+			foreach ($firstErrors as $key => $value) {
+				$jsonObj->message = $value;
+				break;
+			}
+		}
+		$jsonObj->status = false;
+		return Json::encode($jsonObj) ;
+	}
+	
+	public static function jsonObj_success($jsonObj){
+		$jsonObj->status = true;
+		if($jsonObj->message==null){
+			$jsonObj->message='操作成功!';
+		}
+		return Json::encode($jsonObj) ;
+	}
+	
+	public static function json_failed($message,$value=null,$attributeErrors=[], $err_code=null){
+		return Json::encode(new JsonObj(false, $value, $message, $attributeErrors, $err_code)) ;
 	}
 
-	public static function json_success($value, $message=null){
+	public static function json_success($value, $message='操作成功!'){
 		return Json::encode(new JsonObj(true, $value, $message));
 	}
 	
-	public static function response_failed($message){
+	public static function response_failed($message, $err_code=null){
 		header("Content-type: text/html; charset=utf-8");
 		if (Yii::$app->getRequest()->getIsAjax()) {
-			echo $this::json_failed($message);
+			echo self::json_failed($message,null,null,$err_code);
 			exit;
 		}else{
 			echo $message;
