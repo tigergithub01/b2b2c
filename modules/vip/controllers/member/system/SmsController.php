@@ -120,7 +120,7 @@ class SmsController extends BaseController {
 		$resp_arr = $smsUtils->sendSms($vip_id, $sms_code);
 		if(!($resp_arr['status'])){
 			$json->message = '验证码发送失败。'.$resp_arr['msg'];
-// 			return Json::encode($json);
+			return Json::encode($json);
 		}
 		
 		$content = "您的验证码为" . $sms_code . '，请注意查收。';
