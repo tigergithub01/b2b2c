@@ -380,7 +380,9 @@ app要请求用户列表，api是“index.do?module=user&action=list”
 app生成token = md5sum ('user'.'2012-11-28'.'#$@%!'.list) = 880fed4ca2aabd20ae9a5dd774711de2;
 实际发起请求为 “index.php?module=user&action=list&token=880fed4ca2aabd20ae9a5dd774711de2”
 
-
+yii2日期选择
+https://github.com/2amigos/yii2-date-picker-widget
+composer require 2amigos/yii2-date-picker-widget:~1.0
 
 
 
