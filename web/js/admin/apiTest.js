@@ -36,6 +36,18 @@ $(function() {
 		);		
 	});
 	
+	//验证短信验证码
+	//http://localhost:8089/vip/member/system/sms/verify-sms-code
+	$("#btn_verify_sms_code").click(function() {
+		test_api($(this).attr('url'),
+			{
+			vip_id:'13724346625',//电话号码
+			sms_code : '747580', //不需要图形验证码
+			}
+		);		
+	});
+	
+	
 	//登录
 	//http://localhost:8089/vip/api/member/system/login/index
 	$("#btn_vip_login").click(function() {
@@ -93,8 +105,24 @@ $(function() {
 		);		
 	});
 	
+	/*
+	 	android客户端下载
+		http://localhost:8089/vip/api/system/sys-app-info/index?code=wedding_android
+	*/
+	$("#btn_andorid_download").click(function() {
+		window.location.href = $(this).attr('url');
+	});
 	
-	
+	/*
+	 	ANDROID 最新版本检测
+		http://localhost:8089/vip/api/system/sys-app-release/index?code=wedding_android
+	*/
+	$("#btn_andorid_app_release").click(function() {
+		test_api($(this).attr('url'),
+				{
+				}
+			);
+	});
 	
 	
 	
@@ -116,7 +144,9 @@ function test_api(req_url,params){
 	    data: params,     
 	    async: true, 
 	    error:function(err){
-	    	console.debug('获取数据失败！'+err.responseJSON.message);
+	    	if(err!=null && err.responseJSON!=null){
+	    		alert('获取数据失败！'+err.responseJSON.message);
+	    	}
 	    },   
 	    success:function(data){ 
 	    	console.debug(data);
