@@ -61,8 +61,10 @@ class PayType extends \app\models\b2b2c\BasicModel
             'rate' => Yii::t('app', '费率'),
             'description' => Yii::t('app', '描述'),
             'configure' => Yii::t('app', '对应配置信息'),
-            'status' => Yii::t('app', '状态（1:有效、0:停用）'),
-            'is_cod' => Yii::t('app', '是否货到付款（1:是、0:否）'),
+//             'status' => Yii::t('app', '状态（1:有效、0:停用）'),
+        	'status' => Yii::t('app', '是否有效'),
+//             'is_cod' => Yii::t('app', '是否货到付款（1:是、0:否）'),
+        	'is_cod' => Yii::t('app', '是否货到付款'),
         ];
     }
 

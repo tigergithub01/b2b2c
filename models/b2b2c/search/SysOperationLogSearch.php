@@ -41,14 +41,24 @@ class SysOperationLogSearch extends SysOperationLog
      */
     public function search($params)
     {
-        $query = SysOperationLog::find();
-
+//         $query = SysOperationLog::find();
+    	$query = SysOperationLog::find()->joinWith("user usr");
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sort
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'user.user_id' => [
+        						'asc'  => ['usr.user_id' => SORT_ASC],
+        						'desc' => ['usr.user_id' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);

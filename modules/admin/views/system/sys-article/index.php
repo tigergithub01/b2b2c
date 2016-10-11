@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\modules\admin\Module;
+use app\models\b2b2c\SysParameter;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\SysArticleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -36,6 +37,17 @@ $this->params['breadcrumbs'][] = $this->title;
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+			'buttons' => [
+					'delete' => function ($url, $model, $key) {
+						return ($model->is_sys_flag==SysParameter::no)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url,
+								['title' => '删除',
+										'data' => [
+												'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+												'method' => 'post',
+										],
+								] ):'';
+					},
+			],
         ],
             
         ],

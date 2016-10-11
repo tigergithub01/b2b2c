@@ -2,14 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\SysOperationLogSearch */
+/* @var $model app\models\b2b2c\search\SysRegionSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="sys-operation-log-search">
+<div class="sys-region-search">
 	
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -37,38 +36,20 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?php //echo $form->field($model, 'id') ?>
+	    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'module_id') ?>
+    <?= $form->field($model, 'parent_id') ?>
 
-    <?= $form->field($model, 'op_date') ?>
-
-    <?= $form->field($model, 'op_ip_addr') ?>
-
-    <?php // echo $form->field($model, 'op_browser_type') ?>
-
-    <?php // echo $form->field($model, 'op_url') ?>
-
-    <?php // echo $form->field($model, 'op_desc') ?>
-
-    <?php // echo $form->field($model, 'op_method') ?>
-
-    <?php // echo $form->field($model, 'op_referrer') ?>
-
-    <?php // echo $form->field($model, 'op_module') ?>
-
-    <?php // echo $form->field($model, 'op_controller') ?>
-
-    <?php // echo $form->field($model, 'op_action') ?>
+    <?= $form->field($model, 'region_type') ?>
 
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Sys Operation Log'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Yii::t('app', 'Create Sys Region'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

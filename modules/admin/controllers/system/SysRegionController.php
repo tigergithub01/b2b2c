@@ -3,19 +3,17 @@
 namespace app\modules\admin\controllers\system;
 
 use Yii;
-use app\models\b2b2c\PayType;
-use app\models\b2b2c\search\PayTypeSearch;
+use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\search\SysRegionSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\SysParameter;
 
 /**
- * PayTypeController implements the CRUD actions for PayType model.
+ * SysRegionController implements the CRUD actions for SysRegion model.
  */
-class PayTypeController extends BaseAuthController
+class SysRegionController extends BaseAuthController
 {
     /**
      * @inheritdoc
@@ -35,12 +33,12 @@ class PayTypeController extends BaseAuthController
     */
 
     /**
-     * Lists all PayType models.
+     * Lists all SysRegion models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PayTypeSearch();
+        $searchModel = new SysRegionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +48,7 @@ class PayTypeController extends BaseAuthController
     }
 
     /**
-     * Displays a single PayType model.
+     * Displays a single SysRegion model.
      * @param string $id
      * @return mixed
      */
@@ -62,13 +60,13 @@ class PayTypeController extends BaseAuthController
     }
 
     /**
-     * Creates a new PayType model.
+     * Creates a new SysRegion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new PayType();
+        $model = new SysRegion();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
@@ -76,13 +74,12 @@ class PayTypeController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
-            	'yesNoList'=>SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
 
     /**
-     * Updates an existing PayType model.
+     * Updates an existing SysRegion model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -97,13 +94,12 @@ class PayTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
-            	'yesNoList'=>SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
 
     /**
-     * Deletes an existing PayType model.
+     * Deletes an existing SysRegion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -116,40 +112,18 @@ class PayTypeController extends BaseAuthController
     }
 
     /**
-     * Finds the PayType model based on its primary key value.
+     * Finds the SysRegion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return PayType the loaded model
+     * @return SysRegion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = PayType::findOne($id)) !== null) {
+        if (($model = SysRegion::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    
-    protected function getYesNoList(){
-    	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
-    	//     	$yesno_list = SysParameter::find()->select("id,param_val")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
-    	//         	$yesno_list = SysParameter::find()->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy('seq_id ASC')->all();
-    	//         $yesno_list = SysParameter::findBySql("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->all();
-    	//     	        $yesno_list = (new \yii\db\Query())->select("id,param_val")->from("t_sys_parameter")->where("type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->orderBy("seq_id")->all();
-    	//     	        $db = Yii::$app->db;
-    	//     	        $yesno_list = $db->createCommand("select id,param_val from t_sys_parameter where type_id=:type_id",['type_id'=>SysParameterType::YES_NO])->queryAll();
-    	//     	        var_dump($yesno_list);
-    
-    	/* $payType = new PayType();
-    	 $payType = PayType::findOne(1);
-    	 $payType = $payType->toArray();
-    	var_dump($payType); */
-    	 
-    	/* $payType = new PayType();
-    	 $payType->id = 4;
-    	var_dump($payType); */
-    	 
-    	return $yesno_list;
     }
 }

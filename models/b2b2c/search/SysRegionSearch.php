@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SysUser;
+use app\models\b2b2c\SysRegion;
 
 /**
- * SysUserSearch represents the model behind the search form about `app\models\b2b2c\SysUser`.
+ * SysRegionSearch represents the model behind the search form about `app\models\b2b2c\SysRegion`.
  */
-class SysUserSearch extends SysUser
+class SysRegionSearch extends SysRegion
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SysUserSearch extends SysUser
     public function rules()
     {
         return [
-            [['id', 'is_admin', 'status'], 'integer'],
-            [['user_id', 'user_name', 'password', 'last_login_date'], 'safe'],
+            [['id', 'parent_id', 'region_type'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SysUserSearch extends SysUser
      */
     public function search($params)
     {
-        $query = SysUser::find()->joinWith("status0 stat");
+        $query = SysRegion::find()->alias('reg')->joinWith('parent p')->joinWith('regionType t');
 
         // add conditions that should always apply here
 
@@ -51,15 +51,19 @@ class SysUserSearch extends SysUser
             
         ]);
         
-        
+        //add sort
         $dataProvider->setSort([
-        	'attributes' => array_merge($dataProvider->getSort()->attributes,[
-	            'status0.param_val' => [
-	                'asc'  => ['stat.param_val' => SORT_ASC],
-	                'desc' => ['stat.param_val' => SORT_DESC],
-	            ],
-        ])
-    ]);
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'parent.name' => [
+        						'asc'  => ['p.user_id' => SORT_ASC],
+        						'desc' => ['p.user_id' => SORT_DESC],
+        				],
+        				'regionType.param_val' => [
+        						'asc'  => ['t.param_val' => SORT_ASC],
+        						'desc' => ['t.param_val' => SORT_DESC],
+        				],
+        		])
+        ]);
 
         $this->load($params);
 
@@ -71,15 +75,12 @@ class SysUserSearch extends SysUser
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'is_admin' => $this->is_admin,
-            'status' => $this->status,
-            'last_login_date' => $this->last_login_date,
+            'reg.id' => $this->id,
+            'reg.parent_id' => $this->parent_id,
+            'reg.region_type' => $this->region_type,
         ]);
 
-        $query->andFilterWhere(['like', 'user_id', $this->user_id])
-            ->andFilterWhere(['like', 'user_name', $this->user_name])
-            ->andFilterWhere(['like', 'password', $this->password]);
+        $query->andFilterWhere(['like', 'reg.name', $this->name]);
 
         return $dataProvider;
     }

@@ -40,5 +40,11 @@ return [
 		'Create Sys Article'=>'新增文章',
 		'Update Sys Article'=>'编辑文章',
 		
+		//操作日志
+		'Sys Operation Log'=>'操作日志',
+		'Sys Operation Logs'=>'用户操作日志',
+		'Create Sys Operation Log'=>'新增操作日志',
+		'Update Sys Operation Log'=>'编辑操作日志',
+		
 		
 ];

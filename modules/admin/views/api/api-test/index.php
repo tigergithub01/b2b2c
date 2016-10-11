@@ -22,16 +22,50 @@ use yii\helpers\Url;
 			<div class="form-group">
 				<?php echo Html::button('商家用户协议',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
 				<?php echo Html::button('广告图',['id'=>'btn_sys_ad_info','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-ad-info/index'])]);?>
+				<?php echo Html::button('地区信息',['id'=>'btn_sys_region','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-ad-info/index'])]);?>
 			</div>
 			
 			<div class="form-group">
-				<?php echo Html::button('短信验证码',['id'=>'btn_get_sms_code','class' => 'btn btn-primary','url'=>Url::to(['/vip/member/system/sms/index'])]);?>
+				<?php echo Html::button('发送短信验证码',['id'=>'btn_get_sms_code','class' => 'btn btn-primary','url'=>Url::to(['/vip/member/system/sms/index'])]);?>
+				<?php echo Html::button('验证短信验证码',['id'=>'btn_verify_sms_code','class' => 'btn btn-primary','url'=>Url::to(['/vip/member/system/sms/verify-sms-code'])]);?>
+			</div>
+			
+			<div class="form-group">	
 				<?php echo Html::button('会员登录',['id'=>'btn_vip_login','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/login/index'])]);?>
 				<?php echo Html::button('登录后修改密码',['id'=>'btn_vip_modify_pwd','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/modify-pwd/index'])]);?>
 				<?php echo Html::button('会员注册',['id'=>'btn_vip_register','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/register/index'])]);?>	
 				<?php echo Html::button('找回密码',['id'=>'btn_vip_forgot_pwd','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/login/forgot-pwd'])]);?>
 				<?php echo Html::button('注销登陆',['id'=>'btn_vip_login_out','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/login-out/index'])]);?>
+				<?php echo Html::button('更新会员信息',['id'=>'btn_vip_update','class' => 'btn btn-primary','url'=>Url::to(['/debug'])]);?>
+				<?php echo Html::button('获取会员信息',['id'=>'btn_vip_update','class' => 'btn btn-primary','url'=>Url::to(['/debug'])]);?>
 			</div>
+			
+			
+			<div class="form-group">
+				<?php echo Html::button('ANDROID 客户端下载',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('ANDROID 最新版本检测',['id'=>'btn_andorid_app_release','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-app-release/index','code'=>'wedding_android'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('案例列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('案例详情',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('商户列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('商户详情',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('组团服务列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('组团服务详情',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('我的关注',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('我的收藏',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+			</div>
+			
 		</div>
 			
 			

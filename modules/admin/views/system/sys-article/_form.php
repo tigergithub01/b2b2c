@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use ijackua\lepture\Markdowneditor;
 use yii\helpers\ArrayHelper;
+use kucha\ueditor\UEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysArticle */
@@ -53,8 +54,11 @@ use yii\helpers\ArrayHelper;
 
     <?php //echo $form->field($model, 'content')->textarea(['rows' => 6]) ?>
     
-    <?= $form->field($model, 'content')->widget(Markdowneditor::className(), [
-                    ]) ?>
+    <?php //echo $form->field($model, 'content')->widget(Markdowneditor::className(), []); ?>
+                    
+    <?= $form->field($model, 'content')->widget(UEditor::className(), [
+    		'clientOptions' => ['readonly'=>false,],
+                    ]) ?>                
     
 
     <?php //echo $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>

@@ -10,7 +10,7 @@ class AppActionColumn extends ActionColumn{
 	
 	public $header = '操作';
 	
-	public $headerOptions = ['width' => '90'];
+	public $headerOptions = ['width' => '100'];
 	
 	
 	

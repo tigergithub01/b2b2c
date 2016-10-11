@@ -61,6 +61,7 @@ class VipService{
 		
 		//写权限信息 TODO：
 			
+		
 		//写cookie
 		if($model->remember_me){
 			//write user name into cookie

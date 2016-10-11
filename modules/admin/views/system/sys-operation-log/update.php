@@ -1,14 +1,15 @@
 <?php
 
 use yii\helpers\Html;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysOperationLog */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Sys Operation Log',
+$this->title = Module::t('app', 'Update {modelClass}: ', [
+    'modelClass' => Module::t('app', 'Sys Operation Log'),
 ]) . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Operation Logs'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Operation Logs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>

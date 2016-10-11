@@ -3,15 +3,14 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\modules\admin\Module;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\SysOperationLogSearch */
+/* @var $searchModel app\models\b2b2c\search\SysRegionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('app', 'Sys Operation Logs');
+$this->title = Yii::t('app', 'Sys Regions');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sys-operation-log-index">
+<div class="sys-region-index">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		<div class="box box-primary">
@@ -24,23 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-//             'id',
-//             'user_id',
-//         	[
-//         		'attribute'=>'user.user_id',
-// 			],
-        	'user.user_id',
-            'module_id',
-            'op_date',
-            'op_ip_addr',
-            // 'op_browser_type',
-            // 'op_url:url',
-            // 'op_desc:ntext',
-            // 'op_method',
-            // 'op_referrer',
-            // 'op_module',
-            // 'op_controller',
-            // 'op_action',
+            'id',
+            'name',
+			['attribute' => 'parent.name', 'label' =>'上级区域名称'],
+//             'parent_id',
+//             'region_type',
+        	['attribute' => 'regionType.param_val', 'label' =>'区域类别'],
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

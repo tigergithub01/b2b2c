@@ -59,6 +59,7 @@
                 					['label' => '广告图设置', 'url' => ['system/sys-ad-info/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '文章管理', 'url' => ['system/sys-article/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '地区信息', 'url' => ['system/sys-region/index'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],
                 ],

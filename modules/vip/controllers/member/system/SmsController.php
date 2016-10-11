@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
 use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\SysVerifyCode;
 use app\common\utils\sms\SmsUtils;
+use app\common\utils\CommonUtils;
 
 /**
  * 获取短信验证码
@@ -53,7 +54,7 @@ class SmsController extends BaseController {
 		$req_verify_code =  $request->post('verify_code');
 		$vip_id =  $request->post('vip_id');
 		$img_verify =  $request->post('img_verify');//是否需要图形验证码
-		$img_verify = empty($img_verify)?1 : 0; //默认需要验证图形码
+		$img_verify = (($img_verify==0)?false : true); //默认需要验证图形码
 		
 		/* $req_verify_code =  isset($_REQUEST['verify_code'])?$_REQUEST['verify_code']:null;
 		$vip_id =  isset($_REQUEST['vip_id'])?$_REQUEST['vip_id']:null; */
@@ -150,6 +151,41 @@ class SmsController extends BaseController {
 // 		return Json::encode(ArrayHelper::map($list,"id", "param_val"));
 // 		return $this->render('index');
 // 		return "index";
+	}
+	
+	/* 
+	 * 
+	 短信验证码验证
+	 http://localhost:8089/vip/member/system/sms/verify-sms-code?vip_id=13724346643&sms_code=111111
+	 *  */
+	public function actionVerifySmsCode(){
+		//获取参数
+		$vip_id = isset($_REQUEST['vip_id'])?$_REQUEST['vip_id']:null;
+		$sms_code = isset($_REQUEST['sms_code'])?$_REQUEST['sms_code']:null;
+		
+		//定义返回值
+		$jsonObj = new JsonObj();
+		
+		//手机号码是否为空
+		if(empty($vip_id)){
+			$jsonObj->message = '手机号码不能为空！';
+			return CommonUtils::jsonObj_failed($jsonObj);
+		}
+		
+		//短信验证码是否为空
+		if(empty($sms_code)){
+			$jsonObj->message = '短信验证码不能为空！';
+			return CommonUtils::jsonObj_failed($jsonObj);
+		}
+		
+		//判断短信验证码是否正确，根据最后发送的有效的验证码进行查询
+		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',date(VipConst::DATE_FORMAT,time())])->orderBy(['sent_time'=>SORT_DESC])->one();
+		if(/* !($model->sms_code=='hltwnm') ||  */!($verifyCode && $verifyCode->verify_code==$sms_code)){
+			$jsonObj->message = '短信验证码不正确！';
+			return CommonUtils::jsonObj_failed($jsonObj);
+		}
+		
+		return CommonUtils::jsonObj_success($jsonObj);
 	}
 	
 	

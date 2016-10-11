@@ -2,17 +2,15 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\admin\Module;
-use app\models\b2b2c\SysParameter;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SysArticle */
+/* @var $model app\models\b2b2c\SysRegion */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Articles'), 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Regions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sys-article-view">
+<div class="sys-region-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -28,30 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-// 		            'id',
-//             'type_id',
-            'title',
-            'code',
-            'issue_date',
-//             'content:ntext',
-		    'content:html',
-//             'issue_user_id',
-		    ['attribute'=>'issue_user_id','format' =>'raw', 'value'=>$model->issueUser->user_id],
-// 		    'issueUser.user_id',
-		    ['attribute'=>'is_show','format' =>'raw', 'value'=>$model->isShow->param_val],
-		     
-//             'is_show',
-//             'is_sys_flag',
-		     ['attribute'=>'is_sys_flag','format' =>'raw', 'value'=>$model->isSysFlag->param_val],
-// 			'isShow.param_val',
-// 		    'isSysFlag.param_val',
+		            'id',
+            'name',
+            'parent_id',
+            'region_type',
 		        ],
 		    ]) ?>
     	</div>
     
 	    <div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	    	<?php if($model->is_sys_flag===SysParameter::no) {?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
@@ -59,7 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	                'method' => 'post',
 	            ],
 	        ]) ?>
-	        <?php }?>
 	    </div>
     
     </div>
