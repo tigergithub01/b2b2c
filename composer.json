@@ -25,7 +25,8 @@
         "modernkernel/yii2-ionicons": " *",
         "ijackua/yii2-lepture-markdown-editor-widget": "^1.0",
         "2amigos/yii2-ckeditor-widget": "*",
-        "mdmsoft/yii2-upload-file": "~1.2"
+        "mdmsoft/yii2-upload-file": "~1.2",
+        "kucha/ueditor": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

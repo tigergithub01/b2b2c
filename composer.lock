@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03c32278c3431e35437907df181a841c",
-    "content-hash": "a89a3653a020d36179c7d904b880d633",
+    "hash": "594c5c3fb332964dbda05f13f9ee69ef",
+    "content-hash": "b064029ca0f8b0bc74fb4cfa65f7e821",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -654,6 +654,86 @@
                 "yii"
             ],
             "time": "2014-03-29 19:06:57"
+        },
+        {
+            "name": "kucha/ueditor",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BigKuCha/yii2-ueditor-widget.git",
+                "reference": "b41439ee0c69efc800a53087c20d8bfcea0f9507"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BigKuCha/yii2-ueditor-widget/zipball/b41439ee0c69efc800a53087c20d8bfcea0f9507",
+                "reference": "b41439ee0c69efc800a53087c20d8bfcea0f9507",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kucha\\ueditor\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "null"
+            ],
+            "authors": [
+                {
+                    "name": "BigKuCha",
+                    "email": "nevermore1989@vip.qq.com"
+                }
+            ],
+            "description": "desc",
+            "time": "2015-02-06 02:01:30"
+        },
+        {
+            "name": "mdmsoft/yii2-upload-file",
+            "version": "1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mdmsoft/yii2-upload-file.git",
+                "reference": "c44f0d9694e02a7b62a270f142ae1cc1f2638435"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mdmsoft/yii2-upload-file/zipball/c44f0d9694e02a7b62a270f142ae1cc1f2638435",
+                "reference": "c44f0d9694e02a7b62a270f142ae1cc1f2638435",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "mdm\\upload\\Bootstrap",
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "mdm\\upload\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Misbahul Munir",
+                    "email": "misbahuldmunir@gmail.com"
+                }
+            ],
+            "description": "Yii2 upload file tools",
+            "keywords": [
+                "file",
+                "upload",
+                "yii"
+            ],
+            "time": "2015-10-26 10:58:52"
         },
         {
             "name": "modernkernel/yii2-ionicons",
