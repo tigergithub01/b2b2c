@@ -333,6 +333,8 @@ composer.phar require "2amigos/yii2-ckeditor-widget" "*"
 composer require "2amigos/yii2-ckeditor-widget:*"
 E:\source\workplace-php\b2b2c\web\uploads\ads
 
+7\yii2 ueditor(百度富文本框编辑器)
+https://github.com/BigKuCha/yii2-ueditor-widget
 
 yii2 markdown:
 https://github.com/iJackUA/yii2-lepture-markdown-editor-widget
@@ -387,6 +389,21 @@ https://github.com/2amigos/yii2-date-picker-widget
 composer require 2amigos/yii2-date-picker-widget:~1.0
 
 http://120.24.158.60/admin/api/api-test/index
+http://admin.hunlitu.com/admin/api/api-test/index
+
+富文本框输入html内容
+
+返回结果
+{
+"err_code":null,//错误代码，需要登录时返回-1001
+"status":false, //请求状态：请求正常返回true, 请求出错返回false
+"value":null, //返回值：请求正常时返回值
+"message":"短信验证码不正确。", //返回消息
+"attributeErrors":{"sms_code":"短信验证码不正确。"} //请求验证错误消息
+}
+
+2016-10-11：
+datacolumn显示格式： (e.g. `"raw"`, `"text"`, `"html"`, `['date', 'php:Y-m-d']`). 
 
 
 
