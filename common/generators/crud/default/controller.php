@@ -130,9 +130,9 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
         $model = $this->findModel(<?= $actionParams ?>);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', <?= $urlParams ?>]);
         } else {
-        	MsgUtils::success();
             return $this->render('update', [
                 'model' => $model,
             ]);
