@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysRegion */
@@ -41,7 +42,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'region_type')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'region_type')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'region_type')->dropDownList(ArrayHelper::map($regionTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
 		</div>
 	

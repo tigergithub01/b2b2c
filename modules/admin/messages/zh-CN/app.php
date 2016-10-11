@@ -42,9 +42,16 @@ return [
 		
 		//操作日志
 		'Sys Operation Log'=>'操作日志',
-		'Sys Operation Logs'=>'用户操作日志',
+		'Sys Operation Logs'=>'操作日志列表',
 		'Create Sys Operation Log'=>'新增操作日志',
 		'Update Sys Operation Log'=>'编辑操作日志',
+		
+		//区域信息
+		'Sys Region'=>'区域信息',
+		'Sys Regions'=>'区域信息列表',
+		'Create Sys Region'=>'新增区域信息',
+		'Update Sys Region'=>'编辑区域信息',
+		
 		
 		
 ];

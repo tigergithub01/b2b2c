@@ -20,9 +20,15 @@ use yii\helpers\Url;
 
 		<div class="box-body">
 			<div class="form-group">
-				<?php echo Html::button('商家用户协议',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
+				<?php echo Html::textarea("test",null,['rows'=>10,'id'=>'txt_api_return','style'=>'width:100%;','placeholder'=>'执行结果'])?>
+			
+			</div>
+		
+			<div class="form-group">
+				
 				<?php echo Html::button('广告图',['id'=>'btn_sys_ad_info','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-ad-info/index'])]);?>
-				<?php echo Html::button('地区信息',['id'=>'btn_sys_region','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-ad-info/index'])]);?>
+				<?php echo Html::button('地区信息',['id'=>'btn_sys_region','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-region/index'])]);?>
+				<?php echo Html::button('地区信息（根据商家获取）',['id'=>'btn_sys_region_merchant','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-region/merchant-regions'])]);?>
 			</div>
 			
 			<div class="form-group">
@@ -62,8 +68,17 @@ use yii\helpers\Url;
 			</div>
 			
 			<div class="form-group">
+				<?php echo Html::button('我的消息',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
 				<?php echo Html::button('我的关注',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
 				<?php echo Html::button('我的收藏',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('商家用户协议',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('我的订单列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('订单详情',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('服务咨询',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('订单提交',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
 			</div>
 			
 		</div>

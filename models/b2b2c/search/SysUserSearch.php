@@ -41,7 +41,7 @@ class SysUserSearch extends SysUser
      */
     public function search($params)
     {
-        $query = SysUser::find()->joinWith("status0 stat");
+        $query = SysUser::find()->alias('u')->joinWith("status0 stat");
 
         // add conditions that should always apply here
 
@@ -71,15 +71,15 @@ class SysUserSearch extends SysUser
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'is_admin' => $this->is_admin,
-            'status' => $this->status,
-            'last_login_date' => $this->last_login_date,
+            'u.id' => $this->id,
+            'u.is_admin' => $this->is_admin,
+            'u.status' => $this->status,
+            'u.last_login_date' => $this->last_login_date,
         ]);
 
-        $query->andFilterWhere(['like', 'user_id', $this->user_id])
-            ->andFilterWhere(['like', 'user_name', $this->user_name])
-            ->andFilterWhere(['like', 'password', $this->password]);
+        $query->andFilterWhere(['like', 'u.user_id', $this->user_id])
+            ->andFilterWhere(['like', 'u.user_name', $this->user_name])
+            ->andFilterWhere(['like', 'u.password', $this->password]);
 
         return $dataProvider;
     }

@@ -33,8 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'rate',
             'description',
             'configure:ntext',
-            'status',
-            'is_cod',
+//             'status',
+			['attribute'=>'status0.param_val','label'=>$model->getAttributeLabel('status'),],
+//             'is_cod',
+		    ['attribute'=>'isCod.param_val','label'=>$model->getAttributeLabel('is_cod'),],
 		        ],
 		    ]) ?>
     	</div>

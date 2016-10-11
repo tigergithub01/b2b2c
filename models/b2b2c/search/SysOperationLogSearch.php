@@ -42,7 +42,7 @@ class SysOperationLogSearch extends SysOperationLog
     public function search($params)
     {
 //         $query = SysOperationLog::find();
-    	$query = SysOperationLog::find()->joinWith("user usr");
+    	$query = SysOperationLog::find()->alias('op')->joinWith("user usr");
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -71,21 +71,21 @@ class SysOperationLogSearch extends SysOperationLog
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'module_id' => $this->module_id,
-            'op_date' => $this->op_date,
+            'op.id' => $this->id,
+            'op.user_id' => $this->user_id,
+            'op.module_id' => $this->module_id,
+            'op.op_date' => $this->op_date,
         ]);
 
-        $query->andFilterWhere(['like', 'op_ip_addr', $this->op_ip_addr])
-            ->andFilterWhere(['like', 'op_browser_type', $this->op_browser_type])
-            ->andFilterWhere(['like', 'op_url', $this->op_url])
-            ->andFilterWhere(['like', 'op_desc', $this->op_desc])
-            ->andFilterWhere(['like', 'op_method', $this->op_method])
-            ->andFilterWhere(['like', 'op_referrer', $this->op_referrer])
-            ->andFilterWhere(['like', 'op_module', $this->op_module])
-            ->andFilterWhere(['like', 'op_controller', $this->op_controller])
-            ->andFilterWhere(['like', 'op_action', $this->op_action]);
+        $query->andFilterWhere(['like', 'op.op_ip_addr', $this->op_ip_addr])
+            ->andFilterWhere(['like', 'op.op_browser_type', $this->op_browser_type])
+            ->andFilterWhere(['like', 'op.op_url', $this->op_url])
+            ->andFilterWhere(['like', 'op.op_desc', $this->op_desc])
+            ->andFilterWhere(['like', 'op.op_method', $this->op_method])
+            ->andFilterWhere(['like', 'op.op_referrer', $this->op_referrer])
+            ->andFilterWhere(['like', 'op.op_module', $this->op_module])
+            ->andFilterWhere(['like', 'op.op_controller', $this->op_controller])
+            ->andFilterWhere(['like', 'op.op_action', $this->op_action]);
 
         return $dataProvider;
     }

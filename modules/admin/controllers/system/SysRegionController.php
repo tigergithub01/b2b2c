@@ -9,6 +9,7 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * SysRegionController implements the CRUD actions for SysRegion model.
@@ -44,6 +45,7 @@ class SysRegionController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        	'regionTypeList' => SysParameterType::getSysParametersById(SysParameterType::REGION_TYPE),
         ]);
     }
 
@@ -74,6 +76,7 @@ class SysRegionController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'regionTypeList' => SysParameterType::getSysParametersById(SysParameterType::REGION_TYPE),
             ]);
         }
     }
@@ -94,6 +97,7 @@ class SysRegionController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'regionTypeList' => SysParameterType::getSysParametersById(SysParameterType::REGION_TYPE),
             ]);
         }
     }
@@ -120,7 +124,9 @@ class SysRegionController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = SysRegion::findOne($id)) !== null) {
+    	$model = SysRegion::find()->alias('reg')->joinWith('parent p')->joinWith('regionType t')->where(['reg.id'=>$id])->one();
+//         if (($model = SysRegion::findOne($id)) !== null) {
+    	if ($model !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

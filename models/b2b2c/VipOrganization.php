@@ -43,10 +43,13 @@ use Yii;
  * @property VipCase[] $vipCases
  * @property VipCouponType[] $vipCouponTypes
  * @property VipOrgGallery[] $vipOrgGalleries
- * @property SysUser $auditUser
+ * @property SysRegion $province
+ * @property SysRegion $city
+ * @property SysRegion $country
  * @property Vip $vip
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
+ * @property SysUser $auditUser
  */
 class VipOrganization extends \app\models\b2b2c\BasicModel
 {
@@ -71,10 +74,13 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             [['logo_img_url', 'logo_thumb_url', 'logo_img_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 500],
             [['audit_memo'], 'string', 'max' => 200],
-            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+            [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['province_id' => 'id']],
+            [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['city_id' => 'id']],
+            [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['country_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
+            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
         ];
     }
 
@@ -230,9 +236,25 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuditUser()
+    public function getProvince()
     {
-        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
+        return $this->hasOne(SysRegion::className(), ['id' => 'province_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCity()
+    {
+        return $this->hasOne(SysRegion::className(), ['id' => 'city_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry()
+    {
+        return $this->hasOne(SysRegion::className(), ['id' => 'country_id']);
     }
 
     /**
@@ -257,5 +279,13 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     public function getAuditStatus()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuditUser()
+    {
+        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 }

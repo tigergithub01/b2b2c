@@ -119,8 +119,9 @@ class SysOperationLogController extends BaseAuthController
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
-    {
-        if (($model = SysOperationLog::findOne($id)) !== null) {
+    {	
+    	if (($model = SysOperationLog::find()->alias('op')->joinWith("user usr")->where(['op.id'=>$id])->one()) !== null) {
+//     	if (($model = SysOperationLog::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

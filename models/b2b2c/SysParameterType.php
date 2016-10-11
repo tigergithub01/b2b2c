@@ -22,6 +22,9 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 角色类型 */
 	const ROLE_TYPE = 23;
 	
+	/* 省市区类别  */
+	const REGION_TYPE = 22;
+	
     /**
      * @inheritdoc
      */

@@ -28,7 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'user_id',
+//             'user_id',
+			'user.user_id',
             'module_id',
             'op_date',
             'op_ip_addr',

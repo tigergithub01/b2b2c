@@ -124,7 +124,8 @@ class PayTypeController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = PayType::findOne($id)) !== null) {
+    	if (($model = PayType::find()->alias('p')->joinWith("status0 stat")->joinWith("isCod cod")->where(['p.id'=>$id])->one()) !== null) {
+//         if (($model = PayType::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

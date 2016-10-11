@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysRegion */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Regions'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Regions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-region-view">
@@ -28,8 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            'id',
             'name',
-            'parent_id',
-            'region_type',
+//             'parent_id',
+			['attribute' => 'parent_id' ,'value' => $model->parent->name],
+//             'region_type',
+		    ['attribute' => 'region_type' ,'value' => $model->regionType->param_val],
 		        ],
 		    ]) ?>
     	</div>
