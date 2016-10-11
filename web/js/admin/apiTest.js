@@ -1,5 +1,15 @@
 /**
  * api 测试
+ * 
+ * 
+返回结果说明：
+{
+"err_code":null,//错误代码，需要登录时返回-1001
+"status":false, //请求状态：请求正常返回true, 请求出错返回false
+"value":null, //返回值：请求正常时返回值
+"message":"短信验证码不正确。", //返回消息
+"attributeErrors":{"sms_code":"短信验证码不正确。"} //请求验证错误消息
+}
  */
 
 $(function() {
