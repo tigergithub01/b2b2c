@@ -19,6 +19,37 @@ $(function() {
 		test_api($(this).attr('url'),null);		
 	});
 	
+	//
+	/**
+	 	区域信息：
+	 	http://localhost:8089/vip/api/system/sys-region/index
+	 	
+	 	insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22001,22,'国家',null,1);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22002,22,'省份（直辖市）',null,2);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22003,22,'市',null,3);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22004,22,'区',null,4);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22005,22,'县（街道)',null,5);
+	 */
+	$("#btn_sys_region").click(function() {
+		test_api($(this).attr('url'),
+			{
+			region_type:'22003',//电话号码，
+			parent_id : 48543, //不需要图形验证码
+			}
+		);		
+	});
+	
+	/**
+	 * 地区信息（根据商家获取）：
+	 * http://localhost:8089/vip/api/system/sys-region/merchant-regions
+	 */
+	$("#btn_sys_region_merchant").click(function() {
+		test_api($(this).attr('url'),
+			{
+			}
+		);		
+	});
+	
 	//广告图
 	//http://localhost:8089/vip/api/system/sys-ad-info/index
 	$("#btn_sys_ad_info").click(function() {
@@ -137,6 +168,7 @@ $(function() {
  * @param params
  */
 function test_api(req_url,params){
+	$("#txt_api_return").val('');
 	$.ajax({     
 	    url: req_url,     
 	    type:'post',  
@@ -146,10 +178,12 @@ function test_api(req_url,params){
 	    error:function(err){
 	    	if(err!=null && err.responseJSON!=null){
 	    		alert('获取数据失败！'+err.responseJSON.message);
+	    		$("#txt_api_return").val(err.responseJSON.message);
 	    	}
 	    },   
 	    success:function(data){ 
 	    	console.debug(data);
+	    	$("#txt_api_return").val(JSON.stringify(data));
 		    if(data.status){
 		    	alert('成功！'+data.message);		    	
 		    }else{
