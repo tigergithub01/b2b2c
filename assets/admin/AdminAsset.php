@@ -16,7 +16,8 @@ class AdminAsset extends AssetBundle
 	];
 	public $js = [
 		"js/admin/demo.js",
-			
+		"js/common/jquery.blockUI.js",
+		"js/common/common.js",
 	];
 	public $depends = [
 			'dmstr\web\AdminLteAsset',
