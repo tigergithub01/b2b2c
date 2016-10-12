@@ -64,6 +64,30 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'rank_id') ?>
 
+    <?php // echo $form->field($model, 'audit_status') ?>
+
+    <?php // echo $form->field($model, 'audit_user_id') ?>
+
+    <?php // echo $form->field($model, 'audit_date') ?>
+
+    <?php // echo $form->field($model, 'audit_memo') ?>
+
+    <?php // echo $form->field($model, 'vip_type_id') ?>
+
+    <?php // echo $form->field($model, 'sex') ?>
+
+    <?php // echo $form->field($model, 'nick_name') ?>
+
+    <?php // echo $form->field($model, 'wedding_date') ?>
+
+    <?php // echo $form->field($model, 'birthday') ?>
+
+    <?php // echo $form->field($model, 'img_url') ?>
+
+    <?php // echo $form->field($model, 'thumb_url') ?>
+
+    <?php // echo $form->field($model, 'img_original') ?>
+
 	    
 	    </div>
 	    

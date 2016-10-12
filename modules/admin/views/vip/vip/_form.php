@@ -63,6 +63,30 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rank_id')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'audit_date')->textInput() ?>
+
+    <?= $form->field($model, 'audit_memo')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'nick_name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'wedding_date')->textInput() ?>
+
+    <?= $form->field($model, 'birthday')->textInput() ?>
+
+    <?= $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
+
 		</div>
 	
 	    <div class="box-footer form-group">

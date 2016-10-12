@@ -23,10 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-			[
-			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
-            ],
             'id',
             'sheet_type_id',
             'code',
@@ -67,7 +63,11 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'budget_amount',
             // 'related_service',
             // 'service_style',
-
+            // 'related_case_id',
+		[
+			'class' => 'app\modules\admin\components\AppActionColumn',
+            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+        ],
             
         ],
     ]); ?>

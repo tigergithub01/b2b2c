@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'budget_amount',
             'related_service',
             'service_style',
+            'related_case_id',
 		        ],
 		    ]) ?>
     	</div>

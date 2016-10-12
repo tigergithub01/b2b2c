@@ -23,10 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-			[
-			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
-            ],
             'id',
             'vip_id',
             'merchant_flag',
@@ -41,7 +37,22 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'status',
             // 'register_date',
             // 'rank_id',
-
+            // 'audit_status',
+            // 'audit_user_id',
+            // 'audit_date',
+            // 'audit_memo',
+            // 'vip_type_id',
+            // 'sex',
+            // 'nick_name',
+            // 'wedding_date',
+            // 'birthday',
+            // 'img_url:url',
+            // 'thumb_url:url',
+            // 'img_original',
+		[
+			'class' => 'app\modules\admin\components\AppActionColumn',
+            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+        ],
             
         ],
     ]); ?>

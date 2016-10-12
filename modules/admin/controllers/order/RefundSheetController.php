@@ -8,6 +8,7 @@ use app\models\b2b2c\search\RefundSheetSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\common\utils\MsgUtils;
 
 /**
  * RefundSheetController implements the CRUD actions for RefundSheet model.
@@ -68,6 +69,7 @@ class RefundSheetController extends BaseAuthController
         $model = new RefundSheet();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -87,6 +89,7 @@ class RefundSheetController extends BaseAuthController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -104,7 +107,7 @@ class RefundSheetController extends BaseAuthController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+		MsgUtils::success();
         return $this->redirect(['index']);
     }
 

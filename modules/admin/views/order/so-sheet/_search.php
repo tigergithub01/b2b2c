@@ -116,6 +116,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'service_style') ?>
 
+    <?php // echo $form->field($model, 'related_case_id') ?>
+
 	    
 	    </div>
 	    

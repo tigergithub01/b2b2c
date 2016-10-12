@@ -115,6 +115,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'service_style')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'related_case_id')->textInput(['maxlength' => true]) ?>
+
 		</div>
 	
 	    <div class="box-footer form-group">

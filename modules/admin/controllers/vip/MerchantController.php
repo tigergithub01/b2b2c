@@ -8,6 +8,7 @@ use app\models\b2b2c\search\MerchantSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\common\utils\MsgUtils;
 
 /**
  * MerchantController implements the CRUD actions for Vip model.
@@ -68,6 +69,7 @@ class MerchantController extends BaseAuthController
         $model = new Vip();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -87,6 +89,7 @@ class MerchantController extends BaseAuthController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -104,7 +107,7 @@ class MerchantController extends BaseAuthController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+		MsgUtils::success();
         return $this->redirect(['index']);
     }
 

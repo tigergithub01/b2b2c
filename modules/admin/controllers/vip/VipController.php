@@ -8,6 +8,7 @@ use app\models\b2b2c\search\VipSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\common\utils\MsgUtils;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -38,7 +39,6 @@ class VipController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new VipSearch();
-//         var_dump(Yii::$app->request->queryParams);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -67,9 +67,9 @@ class VipController extends BaseAuthController
     public function actionCreate()
     {
         $model = new Vip();
-        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -89,6 +89,7 @@ class VipController extends BaseAuthController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -105,42 +106,8 @@ class VipController extends BaseAuthController
      */
     public function actionDelete($id)
     {
-	    /* $db = Yii::$app->db;
-		$transaction = $db->beginTransaction();
-		
-		try {
-		    $db->createCommand($sql1)->execute();
-		    $db->createCommand($sql2)->execute();
-		    // ... executing other SQL statements ...
-		    
-		    $transaction->commit();
-		    
-		} catch(\Exception $e) {
-		
-		    $transaction->rollBack();
-		    
-		    throw $e;
-		} */
-    	
-    	
-    	/* $transaction = Vip::getDb()->beginTransaction();
-    	try {
-    		$db->createCommand($sql1)->execute();
-    		$db->createCommand($sql2)->execute();
-    		// ... executing other SQL statements ...
-    	
-    		$transaction->commit();
-    	
-    	} catch(\Exception $e) {
-    	
-    		$transaction->rollBack();
-    	
-    		throw $e;
-    	} */
-    	
-    	
         $this->findModel($id)->delete();
-
+		MsgUtils::success();
         return $this->redirect(['index']);
     }
 

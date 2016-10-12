@@ -19,7 +19,7 @@ class VipBlogSearch extends VipBlog
     {
         return [
             [['id', 'blog_type', 'blog_flag', 'vip_id', 'organization_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
-            [['content', 'create_date', 'update_date', 'audit_date'], 'safe'],
+            [['content', 'create_date', 'update_date', 'audit_date', 'audit_memo'], 'safe'],
         ];
     }
 
@@ -74,7 +74,8 @@ class VipBlogSearch extends VipBlog
             'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'content', $this->content]);
+        $query->andFilterWhere(['like', 'content', $this->content])
+            ->andFilterWhere(['like', 'audit_memo', $this->audit_memo]);
 
         return $dataProvider;
     }
