@@ -69,6 +69,9 @@ class SysArticle extends \app\models\b2b2c\BasicModel
         	'is_show' => Yii::t('app', '是否显示'),
 //             'is_sys_flag' => Yii::t('app', '是否为系统内置文章（此类文章不可以删除，如商家协议等）'),
         	'is_sys_flag' => Yii::t('app', '是否为系统内置文章'),
+        	'issueUser.user_id' => Yii::t('app', '发布人'),
+        	'isSysFlag.param_val'  => Yii::t('app', '是否为系统内置文章'),
+        	
         ];
     }
 

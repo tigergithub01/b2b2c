@@ -61,6 +61,9 @@ class SysRegion extends \app\models\b2b2c\BasicModel
             'name' => Yii::t('app', '区域名称'),
             'parent_id' => Yii::t('app', '上级区域编号'),
             'region_type' => Yii::t('app', '国家省市区类别'),
+        	'parent.name' => Yii::t('app', '上级区域'),
+        	'regionType.param_val' => Yii::t('app', '国家省市区类别'),
+        	'parent_name' => Yii::t('app', '上级区域'),
         ];
     }
 

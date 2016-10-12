@@ -12,6 +12,10 @@ use app\models\b2b2c\SysRegion;
  */
 class SysRegionSearch extends SysRegion
 {
+    
+	/* 上级区域名称（查询用） */
+	public $parent_name;
+	
     /**
      * @inheritdoc
      */
@@ -29,7 +33,10 @@ class SysRegionSearch extends SysRegion
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+    	$scenarios = parent::scenarios();
+    	$scenarios[Model::SCENARIO_DEFAULT][]  = 'parent_name';
+    	return $scenarios;
+//     	 return Model::scenarios();
     }
 
     /**
@@ -64,8 +71,13 @@ class SysRegionSearch extends SysRegion
         				],
         		])
         ]);
-
+//         var_dump($params);
+        
         $this->load($params);
+        
+//         var_dump($this);
+        
+        
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -80,8 +92,8 @@ class SysRegionSearch extends SysRegion
             'reg.region_type' => $this->region_type,
         ]);
 
-        $query->andFilterWhere(['like', 'reg.name', $this->name]);
-
+        $query->andFilterWhere(['like', 'reg.name', $this->name])->andFilterWhere(['like', 'p.name', $this->parent_name]);
+//         $query->andFilterWhere(['like', 'reg.name', $this->name]);
         return $dataProvider;
     }
 }

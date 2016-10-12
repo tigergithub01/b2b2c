@@ -72,6 +72,7 @@ class SysOperationLog extends \app\models\b2b2c\BasicModel
             'op_module' => Yii::t('app', '模块'),
             'op_controller' => Yii::t('app', '控制器'),
             'op_action' => Yii::t('app', '操作'),
+        	'user.user_id' => Yii::t('app', '关联用户'),
         ];
     }
 
