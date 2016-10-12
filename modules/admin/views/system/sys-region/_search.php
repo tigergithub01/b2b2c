@@ -42,7 +42,9 @@ use app\modules\admin\Module;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'parent_id') ?>
+    <?php //echo $form->field($model, 'parent_id') ?>
+    
+    <?php echo $form->field($model, 'parent_name') ?>
 
     <?php //echo $form->field($model, 'region_type') ?>
     

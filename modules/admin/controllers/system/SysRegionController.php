@@ -40,7 +40,9 @@ class SysRegionController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new SysRegionSearch();
+        
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//         var_dump($searchModel);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

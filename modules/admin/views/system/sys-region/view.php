@@ -30,9 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		            'id',
             'name',
 //             'parent_id',
-			['attribute' => 'parent_id' ,'value' => $model->parent->name],
+// 			['attribute' => 'parent_id' ,'value' => $model->parent->name],
+			'parent.name',
 //             'region_type',
-		    ['attribute' => 'region_type' ,'value' => $model->regionType->param_val],
+// 		    ['attribute' => 'region_type' ,'value' => $model->regionType->param_val],
+		    'regionType.param_val',
+		        		
 		        ],
 		    ]) ?>
     	</div>

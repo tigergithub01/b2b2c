@@ -36,15 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
 //             'content:ntext',
 		    'content:html',
 //             'issue_user_id',
-		    ['attribute'=>'issue_user_id','format' =>'raw', 'value'=>$model->issueUser->user_id],
-// 		    'issueUser.user_id',
+// 		    ['attribute'=>'issue_user_id','format' =>'raw', 'value'=>$model->issueUser->user_id],
+		    'issueUser.user_id',
 		    ['attribute'=>'is_show','format' =>'raw', 'value'=>$model->isShow->param_val],
 		     
 //             'is_show',
 //             'is_sys_flag',
-		     ['attribute'=>'is_sys_flag','format' =>'raw', 'value'=>$model->isSysFlag->param_val],
+// 		     ['attribute'=>'is_sys_flag','format' =>'raw', 'value'=>$model->isSysFlag->param_val],
 // 			'isShow.param_val',
-// 		    'isSysFlag.param_val',
+		    'isSysFlag.param_val',
 		        ],
 		    ]) ?>
     	</div>
