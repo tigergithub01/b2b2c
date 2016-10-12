@@ -405,7 +405,13 @@ http://admin.hunlitu.com/admin/api/api-test/index
 2016-10-11：
 datacolumn显示格式： (e.g. `"raw"`, `"text"`, `"html"`, `['date', 'php:Y-m-d']`). 
 
+2016-10-12:
+jquery block ui:
+http://jquery.malsup.com/block/#download
 
+http://jquery.malsup.com/block/#options
+
+yii2 date picker:
 
 
 
