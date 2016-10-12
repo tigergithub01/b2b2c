@@ -2,14 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\ProductTypeSearch */
+/* @var $model app\models\b2b2c\search\ActivitySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="product-type-search">
+<div class="activity-search">
 	
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -37,24 +36,34 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?php //echo $form->field($model, 'id') ?>
+	    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'name') ?>
 
-    <?php //echo $form->field($model, 'parent_id') ?>
-    
-    <?= $form->field($model, 'parent_id')->dropDownList(\yii\helpers\ArrayHelper::map($pTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')])?>
+    <?= $form->field($model, 'activity_type') ?>
 
-    <?= $form->field($model, 'description') ?>
+    <?= $form->field($model, 'activity_scope') ?>
 
-    <?php //echo $form->field($model, 'seq_id') ?>
+    <?= $form->field($model, 'start_time') ?>
+
+    <?php // echo $form->field($model, 'end_date') ?>
+
+    <?php // echo $form->field($model, 'description') ?>
+
+    <?php // echo $form->field($model, 'package_price') ?>
+
+    <?php // echo $form->field($model, 'deposit_amount') ?>
+
+    <?php // echo $form->field($model, 'buy_limit_num') ?>
+
+    <?php // echo $form->field($model, 'organization_id') ?>
 
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Module::t('app', 'Create Product Type'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Yii::t('app', 'Create Activity'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

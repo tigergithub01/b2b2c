@@ -3,16 +3,15 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\modules\admin\Module;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\ProductTypeSearch */
+/* @var $searchModel app\models\b2b2c\search\SysNotifySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('app', 'Product Types');
+$this->title = Yii::t('app', 'Sys Notifies');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-type-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel , 'pTypeList' => $pTypeList]); ?>
+<div class="sys-notify-index">
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,11 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'name',
-//             'parent_id',
-        	'parent.name',
-            'description',
-            'seq_id',
+            'notify_type',
+            'title',
+            'issue_date',
+            'content:ntext',
+            // 'organization_id',
+            // 'issue_user_id',
+            // 'send_extend',
+            // 'status',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

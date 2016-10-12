@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\ProductType */
+/* @var $model app\models\b2b2c\Activity */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="product-type-form">
+<div class="activity-form">
 
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -39,13 +39,23 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'parent_id')->dropDownList(\yii\helpers\ArrayHelper::map($pTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')])?>
+    <?= $form->field($model, 'activity_type')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'activity_scope')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'start_time')->textInput() ?>
+
+    <?= $form->field($model, 'end_date')->textInput() ?>
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'seq_id')->textInput() ?>
+    <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'deposit_amount')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'buy_limit_num')->textInput() ?>
+
+    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

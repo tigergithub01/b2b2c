@@ -41,7 +41,7 @@ class ProductTypeSearch extends ProductType
      */
     public function search($params)
     {
-        $query = ProductType::find();
+        $query = ProductType::find()->alias('p')->joinWith("parent pp");
 
         // add conditions that should always apply here
 
@@ -49,6 +49,16 @@ class ProductTypeSearch extends ProductType
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'parent.name' => [
+        						'asc'  => ['pp.name' => SORT_ASC],
+        						'desc' => ['pp.name' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -61,13 +71,13 @@ class ProductTypeSearch extends ProductType
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'seq_id' => $this->seq_id,
+            'p.id' => $this->id,
+            'p.parent_id' => $this->parent_id,
+            'p.seq_id' => $this->seq_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'p.name', $this->name])
+            ->andFilterWhere(['like', 'p.description', $this->description]);
 
         return $dataProvider;
     }

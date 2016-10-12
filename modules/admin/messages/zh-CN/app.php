@@ -53,5 +53,12 @@ return [
 		'Update Sys Region'=>'编辑区域信息',
 		
 		
+		//区域信息
+		'Product Type'=>'产品分类',
+		'Product Types'=>'产品分类列表',
+		'Create Product Type'=>'新增产品分类',
+		'Update Product Type'=>'编辑产品分类',
+		
+		
 		
 ];

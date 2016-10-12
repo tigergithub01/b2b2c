@@ -55,6 +55,7 @@ class ProductType extends \app\models\b2b2c\BasicModel
             'parent_id' => Yii::t('app', '上级分类编号'),
             'description' => Yii::t('app', '分类描述'),
             'seq_id' => Yii::t('app', '显示顺序'),
+        	'parent.name'  => Yii::t('app', '上级分类'),
         ];
     }
 

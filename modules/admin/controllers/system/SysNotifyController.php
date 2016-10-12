@@ -1,19 +1,19 @@
 <?php
 
-namespace app\modules\admin\controllers\basic;
+namespace app\modules\admin\controllers\system;
 
 use Yii;
-use app\models\b2b2c\ProductType;
-use app\models\b2b2c\search\ProductTypeSearch;
+use app\models\b2b2c\SysNotify;
+use app\models\b2b2c\search\SysNotifySearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
 
 /**
- * ProductTypeController implements the CRUD actions for ProductType model.
+ * SysNotifyController implements the CRUD actions for SysNotify model.
  */
-class ProductTypeController extends BaseAuthController
+class SysNotifyController extends BaseAuthController
 {
     /**
      * @inheritdoc
@@ -33,23 +33,22 @@ class ProductTypeController extends BaseAuthController
     */
 
     /**
-     * Lists all ProductType models.
+     * Lists all SysNotify models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProductTypeSearch();
+        $searchModel = new SysNotifySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        	'pTypeList' => $this->findPTypeList() ,
         ]);
     }
 
     /**
-     * Displays a single ProductType model.
+     * Displays a single SysNotify model.
      * @param string $id
      * @return mixed
      */
@@ -61,28 +60,26 @@ class ProductTypeController extends BaseAuthController
     }
 
     /**
-     * Creates a new ProductType model.
+     * Creates a new SysNotify model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ProductType();
+        $model = new SysNotify();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-        	
             return $this->render('create', [
                 'model' => $model,
-            	'pTypeList' => $this->findPTypeList() ,
             ]);
         }
     }
 
     /**
-     * Updates an existing ProductType model.
+     * Updates an existing SysNotify model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -97,13 +94,12 @@ class ProductTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
-            	'pTypeList' => $this->findPTypeList() ,
             ]);
         }
     }
 
     /**
-     * Deletes an existing ProductType model.
+     * Deletes an existing SysNotify model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -116,23 +112,18 @@ class ProductTypeController extends BaseAuthController
     }
 
     /**
-     * Finds the ProductType model based on its primary key value.
+     * Finds the SysNotify model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return ProductType the loaded model
+     * @return SysNotify the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-    	if (($model = ProductType::find()->alias('p')->joinWith("parent pp")->where(['p.id'=>$id])->one()) !== null) {
-//         if (($model = ProductType::findOne($id)) !== null) {
+        if (($model = SysNotify::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    
-    protected  function findPTypeList(){
-    	return ProductType::find()->all();
     }
 }

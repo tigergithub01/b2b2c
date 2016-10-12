@@ -2,16 +2,15 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\ProductType */
+/* @var $model app\models\b2b2c\Activity */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Product Types'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Activities'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-type-view">
+<div class="activity-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -29,11 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            'id',
             'name',
-//             'parent_id',
-			'parent.name',
-// 		     ['attribute' => 'parent.name', 'label' => $model->getAttributeLabel("parent_id"),],
+            'activity_type',
+            'activity_scope',
+            'start_time',
+            'end_date',
             'description',
-            'seq_id',
+            'package_price',
+            'deposit_amount',
+            'buy_limit_num',
+            'organization_id',
 		        ],
 		    ]) ?>
     	</div>

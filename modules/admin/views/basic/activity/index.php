@@ -3,16 +3,15 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\modules\admin\Module;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\ProductTypeSearch */
+/* @var $searchModel app\models\b2b2c\search\ActivitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('app', 'Product Types');
+$this->title = Yii::t('app', 'Activities');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-type-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel , 'pTypeList' => $pTypeList]); ?>
+<div class="activity-index">
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -26,10 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'name',
-//             'parent_id',
-        	'parent.name',
-            'description',
-            'seq_id',
+            'activity_type',
+            'activity_scope',
+            'start_time',
+            // 'end_date',
+            // 'description',
+            // 'package_price',
+            // 'deposit_amount',
+            // 'buy_limit_num',
+            // 'organization_id',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

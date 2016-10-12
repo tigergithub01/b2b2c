@@ -3,17 +3,17 @@
 namespace app\modules\admin\controllers\basic;
 
 use Yii;
-use app\models\b2b2c\ProductType;
-use app\models\b2b2c\search\ProductTypeSearch;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\search\ActivitySearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
 
 /**
- * ProductTypeController implements the CRUD actions for ProductType model.
+ * ActivityController implements the CRUD actions for Activity model.
  */
-class ProductTypeController extends BaseAuthController
+class ActivityController extends BaseAuthController
 {
     /**
      * @inheritdoc
@@ -33,23 +33,22 @@ class ProductTypeController extends BaseAuthController
     */
 
     /**
-     * Lists all ProductType models.
+     * Lists all Activity models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProductTypeSearch();
+        $searchModel = new ActivitySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        	'pTypeList' => $this->findPTypeList() ,
         ]);
     }
 
     /**
-     * Displays a single ProductType model.
+     * Displays a single Activity model.
      * @param string $id
      * @return mixed
      */
@@ -61,28 +60,26 @@ class ProductTypeController extends BaseAuthController
     }
 
     /**
-     * Creates a new ProductType model.
+     * Creates a new Activity model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ProductType();
+        $model = new Activity();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-        	
             return $this->render('create', [
                 'model' => $model,
-            	'pTypeList' => $this->findPTypeList() ,
             ]);
         }
     }
 
     /**
-     * Updates an existing ProductType model.
+     * Updates an existing Activity model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -97,13 +94,12 @@ class ProductTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
-            	'pTypeList' => $this->findPTypeList() ,
             ]);
         }
     }
 
     /**
-     * Deletes an existing ProductType model.
+     * Deletes an existing Activity model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -116,23 +112,18 @@ class ProductTypeController extends BaseAuthController
     }
 
     /**
-     * Finds the ProductType model based on its primary key value.
+     * Finds the Activity model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return ProductType the loaded model
+     * @return Activity the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-    	if (($model = ProductType::find()->alias('p')->joinWith("parent pp")->where(['p.id'=>$id])->one()) !== null) {
-//         if (($model = ProductType::findOne($id)) !== null) {
+        if (($model = Activity::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    
-    protected  function findPTypeList(){
-    	return ProductType::find()->all();
     }
 }

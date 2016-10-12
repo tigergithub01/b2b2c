@@ -119,6 +119,7 @@ class SysUser extends \app\models\b2b2c\BasicModel
             'verify_code' => Yii::t('app', '验证码'),
             'new_pwd' => Yii::t('app', '新密码'),
             'confirm_pwd' => Yii::t('app', '确认密码'),
+        	'status0.param_val' => Yii::t('app', '是否有效'),
         ];
     }
 

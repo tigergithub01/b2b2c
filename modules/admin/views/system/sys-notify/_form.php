@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\ProductType */
+/* @var $model app\models\b2b2c\SysNotify */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="product-type-form">
+<div class="sys-notify-form">
 
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -37,15 +37,21 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'notify_type')->textInput(['maxlength' => true]) ?>
 
-    <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'parent_id')->dropDownList(\yii\helpers\ArrayHelper::map($pTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')])?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'issue_date')->textInput() ?>
 
-    <?= $form->field($model, 'seq_id')->textInput() ?>
+    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'send_extend')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

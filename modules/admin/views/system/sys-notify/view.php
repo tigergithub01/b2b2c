@@ -2,16 +2,15 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\ProductType */
+/* @var $model app\models\b2b2c\SysNotify */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Product Types'), 'url' => ['index']];
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Notifies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-type-view">
+<div class="sys-notify-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -28,12 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'name',
-//             'parent_id',
-			'parent.name',
-// 		     ['attribute' => 'parent.name', 'label' => $model->getAttributeLabel("parent_id"),],
-            'description',
-            'seq_id',
+            'notify_type',
+            'title',
+            'issue_date',
+            'content:ntext',
+            'organization_id',
+            'issue_user_id',
+            'send_extend',
+            'status',
 		        ],
 		    ]) ?>
     	</div>

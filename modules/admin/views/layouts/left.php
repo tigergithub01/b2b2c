@@ -21,7 +21,7 @@
                 			'items' => [
                 					['label' => '产品分类',  'url' => ['basic/product-type/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '个人服务',  'url' => ['basic/product/index'],'icon' => 'fa fa-circle-o'],
-                					['label' => '团体服务',  'url' => ['vip/vip-blog/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '团体服务',  'url' => ['basic/activity/index'],'icon' => 'fa fa-circle-o',],
                                  ],
 					],
                 	['label' => '会员管理', 'icon' => 'fa fa-table','url' => '#',
@@ -67,6 +67,7 @@
                 					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '文章管理', 'url' => ['system/sys-article/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '地区信息', 'url' => ['system/sys-region/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '消息列表', 'url' => ['system/sys-notify/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => 'API测试', 'url' => ['api/api-test/index'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],

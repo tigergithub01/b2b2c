@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SysUser;
+use app\models\b2b2c\SysNotify;
 
 /**
- * SysUserSearch represents the model behind the search form about `app\models\b2b2c\SysUser`.
+ * SysNotifySearch represents the model behind the search form about `app\models\b2b2c\SysNotify`.
  */
-class SysUserSearch extends SysUser
+class SysNotifySearch extends SysNotify
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SysUserSearch extends SysUser
     public function rules()
     {
         return [
-            [['id', 'is_admin', 'status'], 'integer'],
-            [['user_id', 'user_name', 'password', 'last_login_date'], 'safe'],
+            [['id', 'notify_type', 'organization_id', 'issue_user_id', 'send_extend', 'status'], 'integer'],
+            [['title', 'issue_date', 'content'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SysUserSearch extends SysUser
      */
     public function search($params)
     {
-        $query = SysUser::find()->alias('u')->joinWith("status0 stat");
+        $query = SysNotify::find();
 
         // add conditions that should always apply here
 
@@ -50,16 +50,6 @@ class SysUserSearch extends SysUser
             //'pagination' => ['pagesize' => '15',],
             
         ]);
-        
-        //add sorts
-        $dataProvider->setSort([
-        	'attributes' => array_merge($dataProvider->getSort()->attributes,[
-	            'status0.param_val' => [
-	                'asc'  => ['stat.param_val' => SORT_ASC],
-	                'desc' => ['stat.param_val' => SORT_DESC],
-	            ],
-        	])
-    	]);
 
         $this->load($params);
 
@@ -71,15 +61,17 @@ class SysUserSearch extends SysUser
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'u.id' => $this->id,
-            'u.is_admin' => $this->is_admin,
-            'u.status' => $this->status,
-            'u.last_login_date' => $this->last_login_date,
+            'id' => $this->id,
+            'notify_type' => $this->notify_type,
+            'issue_date' => $this->issue_date,
+            'organization_id' => $this->organization_id,
+            'issue_user_id' => $this->issue_user_id,
+            'send_extend' => $this->send_extend,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'u.user_id', $this->user_id])
-            ->andFilterWhere(['like', 'u.user_name', $this->user_name])
-            ->andFilterWhere(['like', 'u.password', $this->password]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }
