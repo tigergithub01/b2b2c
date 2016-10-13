@@ -411,9 +411,19 @@ http://jquery.malsup.com/block/#download
 
 http://jquery.malsup.com/block/#options
 
-yii2 date picker:
+yii2 date time picker:
+
+php composer.phar require "2amigos/yii2-date-time-picker-widget" "*"
 
 
+2016-10-13:
+yii2日期选择控件：
+https://github.com/2amigos/yii2-date-picker-widget
+https://github.com/2amigos/yii2-date-time-picker-widget
+php composer.phar require "2amigos/yii2-date-time-picker-widget" "*"
+composer require 2amigos/yii2-date-time-picker-widget:~1.0
+
+composer yii2 移除包
 
 
 
