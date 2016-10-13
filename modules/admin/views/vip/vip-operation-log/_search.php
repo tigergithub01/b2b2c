@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\VipOperationLogSearch */
@@ -36,13 +38,26 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'vip_id') ?>
+    
+    <?php //echo $form->field($model, 'vip_name') ?>
 
-    <?= $form->field($model, 'module_id') ?>
+    <?php //echo $form->field($model, 'module_id') ?>
+    
+    <?= $form->field($model, 'module_name') ?>
 
     <?= $form->field($model, 'op_date') ?>
+    
+    <?= $form->field($model, 'from_date')->widget(dosamigos\datepicker\DateRangePicker::className(), [
+    		'attributeTo' => 'end_date',
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_PICKER_FORMAT,
+    			]
+          ]) ?>
 
     <?= $form->field($model, 'op_ip_addr') ?>
 
@@ -75,7 +90,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip Operation Log'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Vip Operation Log'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

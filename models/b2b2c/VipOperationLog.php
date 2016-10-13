@@ -30,12 +30,39 @@ use Yii;
  */
 class VipOperationLog extends \app\models\b2b2c\BasicModel
 {
+	/* 产品名称（查询用） */
+	public $module_name;
+	
+	/* 会员名（查询用） */
+	public $vip_name;
+	
+	/* 起始日期 （查询用） */
+	public $from_date;
+	
+	/* 结束日期 （查询用） */
+	public $end_date;
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip_operation_log';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'module_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'from_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -83,6 +110,12 @@ class VipOperationLog extends \app\models\b2b2c\BasicModel
             'op_controller' => Yii::t('app', '控制器'),
             'op_action' => Yii::t('app', '操作'),
             'op_referrer' => Yii::t('app', '访问地址来源'),
+        	'module.name' => Yii::t('app', '模块名称'),
+        	'vip.vip_id' => Yii::t('app', '操作会员'),
+        	'module_name' => Yii::t('app', '模块名称'),
+        	'vip_name' => Yii::t('app', '会员'),
+        	'from_date' => Yii::t('app', '开始日期'),
+        	'end_date' => Yii::t('app', '结束日期'),
         ];
     }
 

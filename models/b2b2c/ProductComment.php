@@ -33,7 +33,7 @@ class ProductComment extends \app\models\b2b2c\BasicModel
 	/* 产品名称（查询用） */
 	public $product_name;
 	
-	/* 会员名 */
+	/* 会员名（查询用） */
 	public $vip_name;
     
     /**

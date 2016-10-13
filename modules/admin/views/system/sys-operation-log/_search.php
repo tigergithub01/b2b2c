@@ -68,7 +68,7 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Sys Operation Log'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Sys Operation Log'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>
