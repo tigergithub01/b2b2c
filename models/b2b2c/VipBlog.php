@@ -32,6 +32,12 @@ use Yii;
  */
 class VipBlog extends \app\models\b2b2c\BasicModel
 {
+	/* 商户博客 */
+    const BLOG_FLAG_MERC = 16002;
+    
+    /* 会员博客 */
+    const BLOG_FLAG_VIP = 16001;
+    
     /**
      * @inheritdoc
      */

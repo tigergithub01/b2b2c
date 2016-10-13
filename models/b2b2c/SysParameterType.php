@@ -37,6 +37,8 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 会员性别  */
 	const VIP_SEX = 23;
 	
+	/* 评价等级  */
+	const CMT_RANK = 12;
 	
 	
     /**

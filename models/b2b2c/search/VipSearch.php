@@ -52,6 +52,7 @@ class VipSearch extends Vip
         ->joinWith('vipType vType')
         ->joinWith('mobileVerifyFlag mobileVerify')    
         ->joinWith('rank rank')    
+        ->joinWith('sex0 sex')
         ->where(['vip.merchant_flag' => SysParameter::no]);
 
         // add conditions that should always apply here

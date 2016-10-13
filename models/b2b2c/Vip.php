@@ -42,6 +42,7 @@ use Yii;
  * @property SoSheet[] $soSheets
  * @property SysFeedback[] $sysFeedbacks
  * @property SysNotifyLog[] $sysNotifyLogs
+ * @property SysParameter $sex0
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
  * @property SysUser $auditUser
@@ -146,7 +147,8 @@ class Vip extends \app\models\b2b2c\BasicModel
             [['audit_memo'], 'string', 'max' => 200],
             [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['vip_id', 'merchant_flag'], 'unique', 'targetAttribute' => ['vip_id', 'merchant_flag'], 'message' => /* 'The combination of 会员登陆名 and 是否商户?1:是；0：否 has already been taken.' */'该手机号码已经注册'],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+        	[['sex'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['sex' => 'id']],
+        	[['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['email_verify_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['email_verify_flag' => 'id']],
@@ -185,7 +187,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'mobile_verify_flag' => Yii::t('app', '手机号码是否已经验证'),
             'email' => Yii::t('app', '安全邮箱'),
             'email_verify_flag' => Yii::t('app', '安全邮箱是否已验证(1:是；0：否)'),
-            'status' => Yii::t('app', '是否有效(1:正常、0:停用)'),
+            'status' => Yii::t('app', '状态是否有效(1:正常、0:停用)'),
             'register_date' => Yii::t('app', '注册时间'),
             'rank_id' => Yii::t('app', '会员等级'),
             'audit_status' => Yii::t('app', '审核状态(商户字段)：未审核，审核不通过，已审核'),
@@ -204,6 +206,14 @@ class Vip extends \app\models\b2b2c\BasicModel
             'confirm_pwd' => Yii::t('app', '确认密码'),
             'sms_code' => Yii::t('app', '短信验证码'),
             'new_pwd' => Yii::t('app', '新密码'),
+        	'merchantFlag.param_val' => Yii::t('app', '是否商户'),
+        	'mobileVerifyFlag.param_val' => Yii::t('app', '手机号码是否已经验证'),
+        	'emailVerifyFlag.param_val' => Yii::t('app', '安全邮箱是否已验证'),
+        	'status0.param_val' => Yii::t('app', '状态是否有效'),
+        	'auditStatus.param_val' => Yii::t('app', '审核状态'),
+        	'auditUser.user_id' => Yii::t('app', '审核人'),
+        	'vipType.name' => Yii::t('app', /*'会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）'*/'婚礼人类型'),
+        	'sex0.param_val' => Yii::t('app', '性别'),
         ];
     }
 
@@ -269,6 +279,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     public function getSysNotifyLogs()
     {
         return $this->hasMany(SysNotifyLog::className(), ['vip_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSex0()
+    {
+    	return $this->hasOne(SysParameter::className(), ['id' => 'sex']);
     }
 
     /**

@@ -42,6 +42,9 @@ class SysRegion extends \app\models\b2b2c\BasicModel
         return 't_sys_region';
     }
     
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
     	// bypass scenarios() implementation in the parent class

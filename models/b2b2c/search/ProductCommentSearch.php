@@ -29,7 +29,7 @@ class ProductCommentSearch extends ProductComment
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -41,7 +41,12 @@ class ProductCommentSearch extends ProductComment
      */
     public function search($params)
     {
-        $query = ProductComment::find();
+        $query = ProductComment::find()->alias('pcmt')
+    	->joinWith('status0 stat')
+    	->joinWith('cmtRank cmtRank')
+    	->joinWith('parent parent')
+    	->joinWith('vip vip')
+    	->joinWith('product prod');
 
         // add conditions that should always apply here
 
@@ -61,18 +66,20 @@ class ProductCommentSearch extends ProductComment
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'product_id' => $this->product_id,
-            'organization_id' => $this->organization_id,
-            'vip_id' => $this->vip_id,
-            'cmt_rank_id' => $this->cmt_rank_id,
-            'comment_date' => $this->comment_date,
-            'status' => $this->status,
-            'parent_id' => $this->parent_id,
+            'pcmt.id' => $this->id,
+            'pcmt.product_id' => $this->product_id,
+            'pcmt.organization_id' => $this->organization_id,
+            'pcmt.vip_id' => $this->vip_id,
+            'pcmt.cmt_rank_id' => $this->cmt_rank_id,
+            'pcmt.comment_date' => $this->comment_date,
+            'pcmt.status' => $this->status,
+            'pcmt.parent_id' => $this->parent_id,
         ]);
 
-        $query->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'ip_addr', $this->ip_addr]);
+        $query->andFilterWhere(['like', 'pcmt.content', $this->content])
+            ->andFilterWhere(['like', 'pcmt.ip_addr', $this->ip_addr])
+        	->andFilterWhere(['like', 'prod.name', $this->product_name])
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_name]);
 
         return $dataProvider;
     }
