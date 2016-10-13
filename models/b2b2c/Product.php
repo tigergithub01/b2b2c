@@ -77,6 +77,12 @@ use Yii;
  */
 class Product extends \app\models\b2b2c\BasicModel
 {
+	/* 产品状态：正常销售 */
+	const is_on_sale_yes = 2001;
+	
+	/* 产品状态：下架 */
+	const is_on_sale_no = 2002;
+    
     /**
      * @inheritdoc
      */
@@ -154,6 +160,15 @@ class Product extends \app\models\b2b2c\BasicModel
             'img_url' => Yii::t('app', '图片（放大后查看）(上传商品图片后自动加入商品相册）'),
             'thumb_url' => Yii::t('app', '缩略图'),
             'img_original' => Yii::t('app', '原图'),
+        	'brand.name' => Yii::t('app', '品牌'),
+        	'type.name' => Yii::t('app', '产品分类'),
+        	'organization.name' => Yii::t('app', '产品所属店铺（机构）'),
+        	'isOnSale.param_val' => Yii::t('app', '产品状态'),
+        	'isHot.param_val' => Yii::t('app', '是否热销商品'),
+        	'auditStatus.param_val' => Yii::t('app', '审核状态'),
+        	'canReturnFlag.param_val' => Yii::t('app', '是否能退货'),
+        	'isFreeShipping.param_val' => Yii::t('app', '是否免运费'),
+        		
         ];
     }
 

@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SysNotify;
+use app\models\b2b2c\ReturnSheetDetail;
 
 /**
- * SysNotifySearch represents the model behind the search form about `app\models\b2b2c\SysNotify`.
+ * ReturnSheetDetailSearch represents the model behind the search form about `app\models\b2b2c\ReturnSheetDetail`.
  */
-class SysNotifySearch extends SysNotify
+class ReturnSheetDetailSearch extends ReturnSheetDetail
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class SysNotifySearch extends SysNotify
     public function rules()
     {
         return [
-            [['id', 'notify_type', 'organization_id', 'issue_user_id', 'send_extend', 'status', 'is_sent'], 'integer'],
-            [['title', 'issue_date', 'content', 'sent_time'], 'safe'],
+            [['id', 'return_id', 'product_id', 'out_quantity', 'return_quantity'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class SysNotifySearch extends SysNotify
      */
     public function search($params)
     {
-        $query = SysNotify::find();
+        $query = ReturnSheetDetail::find();
 
         // add conditions that should always apply here
 
@@ -62,18 +61,11 @@ class SysNotifySearch extends SysNotify
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'notify_type' => $this->notify_type,
-            'issue_date' => $this->issue_date,
-            'organization_id' => $this->organization_id,
-            'issue_user_id' => $this->issue_user_id,
-            'send_extend' => $this->send_extend,
-            'status' => $this->status,
-            'is_sent' => $this->is_sent,
-            'sent_time' => $this->sent_time,
+            'return_id' => $this->return_id,
+            'product_id' => $this->product_id,
+            'out_quantity' => $this->out_quantity,
+            'return_quantity' => $this->return_quantity,
         ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }

@@ -11,6 +11,12 @@ class Constant{
 	/* 错误编码 */
 	const err_code_no_login = -1001;//请登陆
 	
+	/* bootstrap日期控件格式 */
+	const DATE_TIME_PICKER_FORMAT='yyyy-mm-dd HH:ii:ss';
+	
+	/* bootstrap日期控件格式 */
+	const DATE_PICKER_FORMAT='yyyy-mm-dd';
+	
 	
 	
 }

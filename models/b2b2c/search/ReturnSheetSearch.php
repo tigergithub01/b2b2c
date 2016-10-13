@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SysNotify;
+use app\models\b2b2c\ReturnSheet;
 
 /**
- * SysNotifySearch represents the model behind the search form about `app\models\b2b2c\SysNotify`.
+ * ReturnSheetSearch represents the model behind the search form about `app\models\b2b2c\ReturnSheet`.
  */
-class SysNotifySearch extends SysNotify
+class ReturnSheetSearch extends ReturnSheet
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class SysNotifySearch extends SysNotify
     public function rules()
     {
         return [
-            [['id', 'notify_type', 'organization_id', 'issue_user_id', 'send_extend', 'status', 'is_sent'], 'integer'],
-            [['title', 'issue_date', 'content', 'sent_time'], 'safe'],
+            [['id', 'sheet_type_id', 'return_apply_id', 'order_id', 'out_id', 'user_id', 'status', 'organization_id'], 'integer'],
+            [['code', 'sheet_date', 'memo'], 'safe'],
+            [['return_amt'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class SysNotifySearch extends SysNotify
      */
     public function search($params)
     {
-        $query = SysNotify::find();
+        $query = ReturnSheet::find();
 
         // add conditions that should always apply here
 
@@ -62,18 +63,19 @@ class SysNotifySearch extends SysNotify
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'notify_type' => $this->notify_type,
-            'issue_date' => $this->issue_date,
-            'organization_id' => $this->organization_id,
-            'issue_user_id' => $this->issue_user_id,
-            'send_extend' => $this->send_extend,
+            'sheet_type_id' => $this->sheet_type_id,
+            'return_apply_id' => $this->return_apply_id,
+            'order_id' => $this->order_id,
+            'out_id' => $this->out_id,
+            'user_id' => $this->user_id,
+            'sheet_date' => $this->sheet_date,
+            'return_amt' => $this->return_amt,
             'status' => $this->status,
-            'is_sent' => $this->is_sent,
-            'sent_time' => $this->sent_time,
+            'organization_id' => $this->organization_id,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+        $query->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'memo', $this->memo]);
 
         return $dataProvider;
     }

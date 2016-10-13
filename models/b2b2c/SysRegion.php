@@ -29,12 +29,26 @@ use Yii;
  */
 class SysRegion extends \app\models\b2b2c\BasicModel
 {
+	/* 上级区域名称（查询用） */
+	public $parent_name;
+	
+	
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_sys_region';
+    }
+    
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'parent_name';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**

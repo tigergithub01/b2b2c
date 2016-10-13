@@ -18,8 +18,8 @@ class VipOrganizationSearch extends VipOrganization
     public function rules()
     {
         return [
-            [['id', 'status', 'vip_id', 'country_id', 'province_id', 'city_id'], 'integer'],
-            [['name', 'logo_img_url', 'logo_thumb_url', 'logo_ilmg_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'description'], 'safe'],
+            [['id', 'status', 'vip_id', 'country_id', 'province_id', 'city_id', 'audit_status', 'audit_user_id'], 'integer'],
+            [['name', 'logo_img_url', 'logo_thumb_url', 'logo_img_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'description', 'audit_date', 'audit_memo', 'create_date', 'update_date'], 'safe'],
         ];
     }
 
@@ -67,16 +67,22 @@ class VipOrganizationSearch extends VipOrganization
             'country_id' => $this->country_id,
             'province_id' => $this->province_id,
             'city_id' => $this->city_id,
+            'audit_status' => $this->audit_status,
+            'audit_user_id' => $this->audit_user_id,
+            'audit_date' => $this->audit_date,
+            'create_date' => $this->create_date,
+            'update_date' => $this->update_date,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'logo_img_url', $this->logo_img_url])
             ->andFilterWhere(['like', 'logo_thumb_url', $this->logo_thumb_url])
-            ->andFilterWhere(['like', 'logo_ilmg_original', $this->logo_ilmg_original])
+            ->andFilterWhere(['like', 'logo_img_original', $this->logo_img_original])
             ->andFilterWhere(['like', 'cover_img_url', $this->cover_img_url])
             ->andFilterWhere(['like', 'cover_thumb_url', $this->cover_thumb_url])
             ->andFilterWhere(['like', 'cover_img_original', $this->cover_img_original])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'audit_memo', $this->audit_memo]);
 
         return $dataProvider;
     }

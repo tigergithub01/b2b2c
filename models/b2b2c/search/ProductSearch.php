@@ -42,7 +42,15 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find();
+        $query = Product::find()->alias('p')
+    	->joinWith('type tp')
+    	->joinWith('brand bd')
+    	->joinWith('organization org')
+    	->joinWith('isOnSale onSale')
+    	->joinWith('isHot hot')
+    	->joinWith('auditStatus audit')
+    	->joinWith('canReturnFlag rt')
+        ->joinWith('isFreeShipping free');
 
         // add conditions that should always apply here
 
@@ -51,6 +59,26 @@ class ProductSearch extends Product
             //'pagination' => ['pagesize' => '15',],
             
         ]);
+        
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'brand.name' => [
+        						'asc'  => ['bd.name' => SORT_ASC],
+        						'desc' => ['bd.name' => SORT_DESC],
+        				],
+        				'type.name' => [
+        						'asc'  => ['tp.name' => SORT_ASC],
+        						'desc' => ['tp.name' => SORT_DESC],
+        				],
+        				'organization.name' => [
+        						'asc'  => ['org.name' => SORT_ASC],
+        						'desc' => ['org.name' => SORT_DESC],
+        				],
+        		])
+        ]);
+        
 
         $this->load($params);
 
@@ -62,42 +90,42 @@ class ProductSearch extends Product
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'type_id' => $this->type_id,
-            'brand_id' => $this->brand_id,
-            'market_price' => $this->market_price,
-            'sale_price' => $this->sale_price,
-            'deposit_amount' => $this->deposit_amount,
-            'is_on_sale' => $this->is_on_sale,
-            'is_hot' => $this->is_hot,
-            'audit_status' => $this->audit_status,
-            'audit_user_id' => $this->audit_user_id,
-            'audit_date' => $this->audit_date,
-            'stock_quantity' => $this->stock_quantity,
-            'safety_quantity' => $this->safety_quantity,
-            'can_return_flag' => $this->can_return_flag,
-            'return_days' => $this->return_days,
-            'cost_price' => $this->cost_price,
-            'organization_id' => $this->organization_id,
-            'is_free_shipping' => $this->is_free_shipping,
-            'give_integral' => $this->give_integral,
-            'rank_integral' => $this->rank_integral,
-            'integral' => $this->integral,
-            'relative_module' => $this->relative_module,
-            'bonus' => $this->bonus,
-            'product_weight' => $this->product_weight,
-            'product_weight_unit' => $this->product_weight_unit,
-            'product_group_id' => $this->product_group_id,
+            'p.id' => $this->id,
+            'p.type_id' => $this->type_id,
+            'p.brand_id' => $this->brand_id,
+            'p.market_price' => $this->market_price,
+            'p.sale_price' => $this->sale_price,
+            'p.deposit_amount' => $this->deposit_amount,
+            'p.is_on_sale' => $this->is_on_sale,
+            'p.is_hot' => $this->is_hot,
+            'p.audit_status' => $this->audit_status,
+            'p.audit_user_id' => $this->audit_user_id,
+            'p.audit_date' => $this->audit_date,
+            'p.stock_quantity' => $this->stock_quantity,
+            'p.safety_quantity' => $this->safety_quantity,
+            'p.can_return_flag' => $this->can_return_flag,
+            'p.return_days' => $this->return_days,
+            'p.cost_price' => $this->cost_price,
+            'p.organization_id' => $this->organization_id,
+            'p.is_free_shipping' => $this->is_free_shipping,
+            'p.give_integral' => $this->give_integral,
+            'p.rank_integral' => $this->rank_integral,
+            'p.integral' => $this->integral,
+            'p.relative_module' => $this->relative_module,
+            'p.bonus' => $this->bonus,
+            'p.product_weight' => $this->product_weight,
+            'p.product_weight_unit' => $this->product_weight_unit,
+            'p.product_group_id' => $this->product_group_id,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'return_desc', $this->return_desc])
-            ->andFilterWhere(['like', 'keywords', $this->keywords])
-            ->andFilterWhere(['like', 'img_url', $this->img_url])
-            ->andFilterWhere(['like', 'thumb_url', $this->thumb_url])
-            ->andFilterWhere(['like', 'img_original', $this->img_original]);
+        $query->andFilterWhere(['like', 'p.code', $this->code])
+            ->andFilterWhere(['like', 'p.name', $this->name])
+            ->andFilterWhere(['like', 'p.description', $this->description])
+            ->andFilterWhere(['like', 'p.return_desc', $this->return_desc])
+            ->andFilterWhere(['like', 'p.keywords', $this->keywords])
+            ->andFilterWhere(['like', 'p.img_url', $this->img_url])
+            ->andFilterWhere(['like', 'p.thumb_url', $this->thumb_url])
+            ->andFilterWhere(['like', 'p.img_original', $this->img_original]);
 
         return $dataProvider;
     }

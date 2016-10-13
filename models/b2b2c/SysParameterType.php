@@ -25,6 +25,20 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 省市区类别  */
 	const REGION_TYPE = 22;
 	
+	/* 产品状态  */
+	const PRODUCT_STATUS = 2; 
+	
+	/* 审核状态  */
+	const AUDIT_STATUS = 3;
+	
+	/* 会员状态  */
+	const VIP_STATUS = 15;
+	
+	/* 会员性别  */
+	const VIP_SEX = 23;
+	
+	
+	
     /**
      * @inheritdoc
      */

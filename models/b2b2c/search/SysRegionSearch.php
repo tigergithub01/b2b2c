@@ -12,10 +12,6 @@ use app\models\b2b2c\SysRegion;
  */
 class SysRegionSearch extends SysRegion
 {
-    
-	/* 上级区域名称（查询用） */
-	public $parent_name;
-	
     /**
      * @inheritdoc
      */
@@ -33,10 +29,7 @@ class SysRegionSearch extends SysRegion
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-    	$scenarios = parent::scenarios();
-    	$scenarios[Model::SCENARIO_DEFAULT][]  = 'parent_name';
-    	return $scenarios;
-//     	 return Model::scenarios();
+    	 return parent::scenarios();
     }
 
     /**

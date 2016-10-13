@@ -52,10 +52,11 @@ class VipType extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键'),
             'code' => Yii::t('app', '编号'),
-            'name' => Yii::t('app', '经营范围名称'),
+            'name' => Yii::t('app', '名称'),
             'description' => Yii::t('app', '描述'),
             'seq_id' => Yii::t('app', '排序'),
-            'merchant_flag' => Yii::t('app', '商家分类与会员分类？1：商家；0：会员'),
+            'merchant_flag' => Yii::t('app', '是否商家类型？1：商家；0：会员'),
+        	'merchantFlag.param_val' =>  Yii::t('app', '是否商家类型'),
         ];
     }
 

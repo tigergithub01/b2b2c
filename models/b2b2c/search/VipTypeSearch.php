@@ -41,7 +41,8 @@ class VipTypeSearch extends VipType
      */
     public function search($params)
     {
-        $query = VipType::find();
+        $query = VipType::find()->alias('vt')
+    	->joinWith('merchantFlag merc');
 
         // add conditions that should always apply here
 
@@ -61,14 +62,14 @@ class VipTypeSearch extends VipType
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'seq_id' => $this->seq_id,
-            'merchant_flag' => $this->merchant_flag,
+            'vt.id' => $this->id,
+            'vt.seq_id' => $this->seq_id,
+            'vt.merchant_flag' => $this->merchant_flag,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'vt.code', $this->code])
+            ->andFilterWhere(['like', 'vt.name', $this->name])
+            ->andFilterWhere(['like', 'vt.description', $this->description]);
 
         return $dataProvider;
     }
