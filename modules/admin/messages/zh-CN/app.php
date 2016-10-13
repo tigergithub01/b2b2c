@@ -53,12 +53,22 @@ return [
 		'Update Sys Region'=>'编辑区域信息',
 		
 		
-		//区域信息
+		//产品分类信息
 		'Product Type'=>'产品分类',
 		'Product Types'=>'产品分类列表',
 		'Create Product Type'=>'新增产品分类',
 		'Update Product Type'=>'编辑产品分类',
 		
+		//产品信息
+		'Product'=>'产品信息',
+		'Products'=>'产品列表',
+		'Create Product'=>'新增产品',
+		'Update Product'=>'编辑产品',
 		
+		//会员类型
+		'Vip Type'=>'会员类型',
+		'Vip Types'=>'会员类型列表',
+		'Create Vip Type'=>'新增会员类型',
+		'Update Vip Type'=>'编辑会员类型',
 		
 ];

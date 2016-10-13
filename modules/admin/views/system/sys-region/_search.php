@@ -48,7 +48,7 @@ use app\modules\admin\Module;
 
     <?php //echo $form->field($model, 'region_type') ?>
     
-    <?= $form->field($model, 'region_type')->dropDownList(ArrayHelper::map($regionTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'region_type')->dropDownList(\yii\helpers\ArrayHelper::map($regionTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
     
 
 	    

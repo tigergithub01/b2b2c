@@ -128,6 +128,7 @@ class MerchantService{
 			$vipOrg =  new VipOrganization();
 			$vipOrg->status=SysParameter::yes;
 			$vipOrg->vip_id = $model->id;
+			$vipOrg->name = $model->vip_id;
 			$vipOrg->audit_status = SysParameter::audit_need_approve;
 			$vipOrg->create_date = date(MerchantConst::DATE_FORMAT,time());
 			$vipOrg->update_date = date(MerchantConst::DATE_FORMAT,time());
@@ -169,7 +170,7 @@ class MerchantService{
 			$product->market_price = 0;
 			$product->sale_price = 0;
 			$product->deposit_amount = 0;
-			$product->is_on_sale = SysParameter::yes;
+			$product->is_on_sale = Product::is_on_sale_yes;
 			$product->is_hot = SysParameter::no;
 			$product->audit_status = SysParameter::audit_need_approve;
 			$product->can_return_flag = SysParameter::no;

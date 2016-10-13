@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Vip */
@@ -39,47 +40,108 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'merchant_flag')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'merchant_flag')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'merchant_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'vip_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'last_login_date')->textInput() ?>
+    <?= $form->field($model, 'last_login_date')->textInput(['readonly'=>true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?php if($model->isNewRecord){?>
+    	<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?php }?>
 
-    <?= $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mobile_verify_flag')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'mobile_verify_flag')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'mobile_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'email_verify_flag')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'email_verify_flag')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'email_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'register_date')->textInput() ?>
+    <?php //echo $form->field($model, 'register_date')->textInput() ?>
+    
+    <?= $form->field($model, 'register_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => 'zh-CN',
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
-    <?= $form->field($model, 'rank_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'rank_id')->textInput(['maxlength' => true]) ?>
+    
+    <?php //echo $form->field($model, 'rank_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipRankList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'audit_user_id')->dropDownList(\yii\helpers\ArrayHelper::map($userList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_date')->textInput() ?>
+    <?php //echo $form->field($model, 'audit_date')->textInput() ?>
+    
+    <?= $form->field($model, 'audit_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => 'zh-CN',
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
     <?= $form->field($model, 'audit_memo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'nick_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'wedding_date')->textInput() ?>
+    <?php //echo $form->field($model, 'wedding_date')->textInput() ?>
+    
+    <?= $form->field($model, 'wedding_date')->widget(dosamigos\datepicker\DatePicker::className(), [
+//     		'options' => ['readonly'=>true],
+    		'language' => 'zh-CN',
+//     		'template' => '{input}{addon}',
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				//'format' => 'yyyy-mm-dd HH:ii:ss',
+    				'format' => Constant::DATE_PICKER_FORMAT,
+//     				'todayBtn' => true,
+    			]
+          ]) ?>
 
-    <?= $form->field($model, 'birthday')->textInput() ?>
+    <?php //echo $form->field($model, 'birthday')->textInput() ?>
+    
+    <?php /* $form->field($model, 'birthday')->widget(\yii\jui\DatePicker::className(), [
+    		'dateFormat' => 'yyyy-MM-dd',
+    		'options' => ['readonly'=>true]
+                    ]) */?>
+    
+    <?= $form->field($model, 'birthday')->widget(\dosamigos\datepicker\DatePicker::className(), [
+    		'language' => 'zh-CN',
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_PICKER_FORMAT,
+    			]
+          ]) ?>
 
     <?= $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
 

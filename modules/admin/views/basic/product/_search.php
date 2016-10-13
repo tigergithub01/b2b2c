@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\ProductSearch */
@@ -36,15 +37,19 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'code') ?>
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'type_id') ?>
+    <?php //echo $form->field($model, 'type_id') ?>
+    
+    <?= $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map($ptypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'brand_id') ?>
+    <?php //echo  $form->field($model, 'brand_id') ?>
+    
+    <?= $form->field($model, 'brand_id')->dropDownList(\yii\helpers\ArrayHelper::map($pbrandList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'market_price') ?>
 
@@ -77,6 +82,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'cost_price') ?>
 
     <?php // echo $form->field($model, 'organization_id') ?>
+    
+    <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map($orgList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'keywords') ?>
 
@@ -109,7 +116,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

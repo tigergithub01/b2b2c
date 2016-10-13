@@ -36,15 +36,15 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'vip_id') ?>
 
-    <?= $form->field($model, 'merchant_flag') ?>
+    <?php //echo $form->field($model, 'merchant_flag') ?>
 
     <?= $form->field($model, 'vip_name') ?>
 
-    <?= $form->field($model, 'last_login_date') ?>
+    <?php //echo $form->field($model, 'last_login_date') ?>
 
     <?php // echo $form->field($model, 'password') ?>
 

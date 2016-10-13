@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Product */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Products'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-view">
@@ -29,26 +30,34 @@ $this->params['breadcrumbs'][] = $this->title;
 		            'id',
             'code',
             'name',
-            'type_id',
-            'brand_id',
+            // 'type_id',
+            // 'brand_id',
+            'type.name',
+            'brand.name',
             'market_price',
             'sale_price',
             'deposit_amount',
             'description:ntext',
-            'is_on_sale',
-            'is_hot',
-            'audit_status',
+//             'is_on_sale',
+//             'is_hot',
+//             'audit_status',
+			'isOnSale.param_val',
+		    'isHot.param_val',
+		    'auditStatus.param_val',
             'audit_user_id',
             'audit_date',
             'stock_quantity',
             'safety_quantity',
-            'can_return_flag',
+            // 'can_return_flag',
+            'canReturnFlag.param_val',
             'return_days',
             'return_desc:ntext',
             'cost_price',
-            'organization_id',
+            // 'organization_id',
+            'organization.name',
             'keywords',
-            'is_free_shipping',
+            // is_free_shipping',
+		    'isFreeShipping.param_val',
             'give_integral',
             'rank_integral',
             'integral',

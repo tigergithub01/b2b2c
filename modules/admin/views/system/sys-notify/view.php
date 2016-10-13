@@ -35,6 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'issue_user_id',
             'send_extend',
             'status',
+            'is_sent',
+            'sent_time',
 		        ],
 		    ]) ?>
     	</div>

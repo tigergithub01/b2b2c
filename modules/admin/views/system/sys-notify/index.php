@@ -32,6 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'issue_user_id',
             // 'send_extend',
             // 'status',
+            // 'is_sent',
+            // 'sent_time',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

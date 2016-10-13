@@ -13,7 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="vip-create">
 
     <?= $this->render('_form', [
-        'model' => $model,
+        	'model' => $model,
+    		'yesNoList' => $yesNoList,
+    		'vipRankList' => $vipRankList,
+    		'auditStatusList' => $auditStatusList,
+    		'vipTypeList' => $vipTypeList,
+    		'sexList' => $sexList,
+    		'userList' => $userList,
     ]) ?>
 
 </div>

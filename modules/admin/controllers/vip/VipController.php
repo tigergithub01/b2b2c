@@ -9,6 +9,11 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\VipRank;
+use app\models\b2b2c\VipType;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysUser;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -68,14 +73,25 @@ class VipController extends BaseAuthController
     {
         $model = new Vip();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            MsgUtils::success();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
+        	//加密
+        	$model->password = md5($model->password);
+        	if($model->save()){
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        	}
+           
         }
+        
+       return $this->render('create', [
+                'model' => $model,
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            	'vipRankList' => $this->findVipRankList(),
+            	'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+            	'vipTypeList' => $this->findVipTypeList(),
+            	'sexList' => SysParameterType::getSysParametersById(SysParameterType::VIP_SEX),
+            	'userList' => $this->findSysUserList(),	
+            ]);
     }
 
     /**
@@ -93,7 +109,13 @@ class VipController extends BaseAuthController
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                	'model' => $model,
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'vipRankList' => $this->findVipRankList(),
+            		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+            		'vipTypeList' => $this->findVipTypeList(),
+            		'sexList' => SysParameterType::getSysParametersById(SysParameterType::VIP_SEX),
+            		'userList' => $this->findSysUserList(),
             ]);
         }
     }
@@ -120,10 +142,44 @@ class VipController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = Vip::findOne($id)) !== null) {
+    	$model = Vip::find()->alias('vip')
+    	->joinWith('status0 stat')
+    	->joinWith('auditStatus auditStat')
+    	->joinWith('auditUser auditStatUsr')
+    	->joinWith('emailVerifyFlag emailVerify')
+    	->joinWith('parent parent')
+    	->joinWith('merchantFlag mercFlag')
+    	->joinWith('vipType vType')
+    	->joinWith('mobileVerifyFlag mobileVerify')
+    	->joinWith('rank rank')->where(['vip.id'=>$id])->one();
+    	if($model){
+//     	if (($model = Vip::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * 
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipRankList(){
+    	return VipRank::find()->all();
+    }
+    
+   /**
+    * 
+    */
+    protected  function findVipTypeList(){
+    	return VipType::find()->where(['merchant_flag'=>SysParameter::no])->all();
+    }
+    
+    /**
+     * 
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findSysUserList(){
+    	return SysUser::find()->all();
     }
 }

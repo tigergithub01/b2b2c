@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'vip_id',
-            'merchant_flag',
+            // 'merchant_flag',
             'vip_name',
             'last_login_date',
             // 'password',

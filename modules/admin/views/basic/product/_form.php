@@ -41,9 +41,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map($ptypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'brand_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'brand_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'brand_id')->dropDownList(\yii\helpers\ArrayHelper::map($pbrandList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
 
@@ -53,11 +56,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'is_on_sale')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'is_on_sale')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'is_on_sale')->dropDownList(\yii\helpers\ArrayHelper::map($pStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'is_hot')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'is_hot')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'is_hot')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
 
@@ -67,7 +76,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'safety_quantity')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'can_return_flag')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'can_return_flag')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'can_return_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'return_days')->textInput(['maxlength' => true]) ?>
 
@@ -75,11 +86,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cost_price')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map($orgList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'keywords')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'is_free_shipping')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'is_free_shipping')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'is_free_shipping')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'give_integral')->textInput() ?>
 

@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
 	    <div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	    	<?php if($model->is_sys_flag===SysParameter::no) {?>
+	    	<?php if($model->is_sys_flag==SysParameter::no) {?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [

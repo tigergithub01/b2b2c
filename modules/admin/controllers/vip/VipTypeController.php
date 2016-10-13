@@ -9,6 +9,7 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * VipTypeController implements the CRUD actions for VipType model.
@@ -74,6 +75,7 @@ class VipTypeController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
@@ -94,6 +96,7 @@ class VipTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
@@ -120,7 +123,11 @@ class VipTypeController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipType::findOne($id)) !== null) {
+    	$model = VipType::find()->alias('vt')
+    	->joinWith('merchantFlag merc')
+    	->where(['vt.id' => $id])->one();
+    	if($model !==null){
+//         if (($model = VipType::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Products');
+$this->title = Module::t('app', 'Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 'ptypeList' => $ptypeList ,'pbrandList' => $pbrandList, 'orgList' => $orgList]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -26,8 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'code',
             'name',
-            'type_id',
-            'brand_id',
+        	'type.name',
+        	'brand.name',
+        	'organization.name',
+            // 'type_id',
+            // 'brand_id',
             // 'market_price',
             // 'sale_price',
             // 'deposit_amount',

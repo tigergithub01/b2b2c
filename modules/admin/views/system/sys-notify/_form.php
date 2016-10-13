@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysNotify */
@@ -41,7 +42,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'issue_date')->textInput() ?>
+   <?php //echo $form->field($model, 'issue_date')->textInput() ?>
+    
+    <?= $form->field($model, 'issue_date')->widget(DatePicker::className(), [
+    		'dateFormat' => 'yyyy-MM-dd',
+    		'options' => ['readonly'=>true]
+                    ]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
@@ -52,6 +58,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'send_extend')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'is_sent')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'sent_time')->textInput() ?>
 
 		</div>
 	

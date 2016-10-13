@@ -54,6 +54,10 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'status') ?>
 
+    <?php // echo $form->field($model, 'is_sent') ?>
+
+    <?php // echo $form->field($model, 'sent_time') ?>
+
 	    
 	    </div>
 	    

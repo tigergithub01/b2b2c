@@ -9,6 +9,10 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\ProductType;
+use app\models\b2b2c\ProductBrand;
+use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -44,6 +48,9 @@ class ProductController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        	'ptypeList' => $this->findPtypeList(),
+        	'pbrandList' => $this->findPbrandList(),
+        	'orgList' => $this->findOrgList(),
         ]);
     }
 
@@ -74,6 +81,12 @@ class ProductController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'ptypeList' => $this->findPtypeList(),
+            	'pbrandList' => $this->findPbrandList(),
+            	'orgList' => $this->findOrgList(),
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            	'pStatusList' => SysParameterType::getSysParametersById(SysParameterType::PRODUCT_STATUS),
+            	'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
             ]);
         }
     }
@@ -94,6 +107,12 @@ class ProductController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'ptypeList' => $this->findPtypeList(),
+            		'pbrandList' => $this->findPbrandList(),
+            		'orgList' => $this->findOrgList(),
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'pStatusList' => SysParameterType::getSysParametersById(SysParameterType::PRODUCT_STATUS),
+            		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
             ]);
         }
     }
@@ -120,10 +139,48 @@ class ProductController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+    	$model = Product::find()->alias('p')
+    	->joinWith('type tp')
+    	->joinWith('brand bd')
+    	->joinWith('organization org')
+    	->joinWith('isOnSale onSale')
+    	->joinWith('isHot hot')
+    	->joinWith('auditStatus audit')
+    	->joinWith('canReturnFlag rt')
+    	->joinWith('isFreeShipping free')
+    	->where(['p.id' => $id])->one();
+    	if($model !==null){
+//     	if (($model = Product::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    /**
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findPtypeList(){
+    	return ProductType::find()->all();
+    }
+    
+    
+    /**
+     * 
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findPbrandList(){
+    	return ProductBrand::find()->all();
+    }
+    
+    /**
+     * 
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findOrgList(){
+    	return VipOrganization::find()->all();
+    }
+    
+    
 }
