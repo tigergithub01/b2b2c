@@ -1,3 +1,9 @@
+<?php
+
+use app\models\b2b2c\VipBlog;
+
+?>
+
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -37,7 +43,6 @@
                 	['label' => '商户管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '商户列表',  'url' => ['vip/merchant/index'],'icon' => 'fa fa-circle-o'],
-                					['label' => '商户动态',  'url' => ['vip/merchant-comment/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '商户日志',  'url' => ['vip/merchant-operation-log/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '案例分类',  'url' => ['vip/vip-case-type/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '案例列表',  'url' => ['vip/vip-case/index'],'icon' => 'fa fa-circle-o',],

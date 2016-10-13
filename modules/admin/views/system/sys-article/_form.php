@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use ijackua\lepture\Markdowneditor;
 use yii\helpers\ArrayHelper;
 use kucha\ueditor\UEditor;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysArticle */
@@ -50,7 +51,16 @@ use kucha\ueditor\UEditor;
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'issue_date')->textInput() ?>
+    <?php //echo $form->field($model, 'issue_date')->textInput(); ?>
+    
+    <?= $form->field($model, 'issue_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
     <?php //echo $form->field($model, 'content')->textarea(['rows' => 6]) ?>
     

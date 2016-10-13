@@ -73,7 +73,7 @@ use app\models\b2b2c\common\Constant;
     <?php //echo $form->field($model, 'register_date')->textInput() ?>
     
     <?= $form->field($model, 'register_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
-    		'language' => 'zh-CN',
+    		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
@@ -96,7 +96,7 @@ use app\models\b2b2c\common\Constant;
     <?php //echo $form->field($model, 'audit_date')->textInput() ?>
     
     <?= $form->field($model, 'audit_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
-    		'language' => 'zh-CN',
+    		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
@@ -110,7 +110,9 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'sex')->dropDownList(\yii\helpers\ArrayHelper::map($sexList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'nick_name')->textInput(['maxlength' => true]) ?>
 
@@ -118,7 +120,7 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'wedding_date')->widget(dosamigos\datepicker\DatePicker::className(), [
 //     		'options' => ['readonly'=>true],
-    		'language' => 'zh-CN',
+    		'language' => Yii::$app->language,
 //     		'template' => '{input}{addon}',
     		'clientOptions' => [
     				'autoclose' => true,
@@ -136,7 +138,7 @@ use app\models\b2b2c\common\Constant;
                     ]) */?>
     
     <?= $form->field($model, 'birthday')->widget(\dosamigos\datepicker\DatePicker::className(), [
-    		'language' => 'zh-CN',
+    		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_PICKER_FORMAT,

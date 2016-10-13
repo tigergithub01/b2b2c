@@ -8,6 +8,11 @@ use app\models\b2b2c\search\ProductCommentSearch;
 use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\SysParameterType;
+use app\common\utils\MsgUtils;
 
 /**
  * ProductCommentController implements the CRUD actions for ProductComment model.
@@ -43,6 +48,7 @@ class ProductCommentController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        	'cmtRankList' =>  SysParameterType::getSysParametersById(SysParameterType::CMT_RANK),
         ]);
     }
 
@@ -68,10 +74,15 @@ class ProductCommentController extends BaseAuthController
         $model = new ProductComment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            	'vipList' => $this->findVipList(),
+            	'productList' => $this->findProdctList(),
+            	'cmtRankList' =>  SysParameterType::getSysParametersById(SysParameterType::CMT_RANK),
             ]);
         }
     }
@@ -87,10 +98,15 @@ class ProductCommentController extends BaseAuthController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'vipList' => $this->findVipList(),
+            		'productList' => $this->findProdctList(),
+            		'cmtRankList' =>  SysParameterType::getSysParametersById(SysParameterType::CMT_RANK),
             ]);
         }
     }
@@ -117,10 +133,33 @@ class ProductCommentController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = ProductComment::findOne($id)) !== null) {
+        
+    	$model = ProductComment::find()->alias('pcmt')
+    	->joinWith('status0 stat')
+    	->joinWith('cmtRank cmtRank')
+    	->joinWith('parent parent')
+    	->joinWith('vip vip')
+    	->joinWith('product prod')
+    	->where(['pcmt.id'=>$id])->one();
+    	if($model){
+//     	if (($model = ProductComment::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /***
+      @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList(){
+    	return Vip::find()->where(['merchant_flag'=>SysParameter::no])->all();
+    }
+    
+    /***
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findProdctList(){
+    	return Product::find()->all();
     }
 }

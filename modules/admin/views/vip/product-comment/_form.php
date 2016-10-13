@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\ProductComment */
@@ -37,23 +38,41 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'product_id')->textInput(['maxlength' => true]) ?>
+	    <?php //echo $form->field($model, 'product_id')->textInput(['maxlength' => true]) ?>
+	    
+	<?= $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'cmt_rank_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'cmt_rank_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'cmt_rank_id')->dropDownList(\yii\helpers\ArrayHelper::map($cmtRankList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'content')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'comment_date')->textInput() ?>
+    <?php //echo $form->field($model, 'comment_date')->textInput() ?>
+    
+    
+    <?= $form->field($model, 'comment_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
     <?= $form->field($model, 'ip_addr')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php // $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

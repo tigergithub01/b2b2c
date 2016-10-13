@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\ProductCommentSearch */
@@ -36,15 +37,21 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'product_id') ?>
+    <?php //echo $form->field($model, 'product_id') ?>
+    
+    <?= $form->field($model, 'product_name') ?>
 
-    <?= $form->field($model, 'organization_id') ?>
+    <?php //echo $form->field($model, 'organization_id') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
-
-    <?= $form->field($model, 'cmt_rank_id') ?>
+    <?php //echo  $form->field($model, 'vip_id') ?>
+    
+    <?= $form->field($model, 'vip_name') ?>
+	
+    <?php //echo $form->field($model, 'cmt_rank_id') ?>
+    
+    <?= $form->field($model, 'cmt_rank_id')->dropDownList(\yii\helpers\ArrayHelper::map($cmtRankList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'content') ?>
 
@@ -61,7 +68,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Product Comment'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Product Comment'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

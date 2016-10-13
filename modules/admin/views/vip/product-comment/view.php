@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\ProductComment */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Product Comments'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Product Comments'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-comment-view">
@@ -27,15 +28,19 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'product_id',
-            'organization_id',
-            'vip_id',
-            'cmt_rank_id',
+            // 'product_id',
+            'product.name',
+            //'organization_id',
+            // 'vip_id',
+            'vip.vip_id',
+            //'cmt_rank_id',
+            'cmtRank.param_val',
             'content',
             'comment_date',
             'ip_addr',
-            'status',
-            'parent_id',
+            // 'status',
+            'status0.param_val',
+            //'parent_id',
 		        ],
 		    ]) ?>
     	</div>

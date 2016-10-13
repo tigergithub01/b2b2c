@@ -71,4 +71,20 @@ return [
 		'Create Vip Type'=>'新增会员类型',
 		'Update Vip Type'=>'编辑会员类型',
 		
+		//会员信息
+		'Vip'=>'会员',
+		'Vips'=>'会员列表',
+		'Create Vip'=>'新增会员',
+		'Update Vip'=>'编辑会员',
+		
+		//会员操作日志
+		'Vip Operation Log'=>'会员操作日志',
+		'Vip Operation Logs'=>'会员操作日志列表',
+		'Create Vip Operation Log'=>'新增会员操作日志',
+		'Update Vip Operation Log'=>'编辑会员操作日志',
+		
+		
+		
+		
+		
 ];

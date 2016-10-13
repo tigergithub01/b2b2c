@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\ProductCommentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Product Comments');
+$this->title = Module::t('app', 'Product Comments');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-comment-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 'cmtRankList' => $cmtRankList,]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -23,21 +24,24 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-			[
-			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
-            ],
+			
             'id',
-            'product_id',
-            'organization_id',
-            'vip_id',
-            'cmt_rank_id',
+            // 'product_id',
+        	'product.name',
+            //'organization_id',
+            // 'vip_id',
+        	'vip.vip_id',
+            // 'cmt_rank_id',
+        	'cmtRank.param_val',
             // 'content',
             // 'comment_date',
             // 'ip_addr',
             // 'status',
             // 'parent_id',
-
+        	[
+        		'class' => 'app\modules\admin\components\AppActionColumn',
+        		'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+        	],
             
         ],
     ]); ?>

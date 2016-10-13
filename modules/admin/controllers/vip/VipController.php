@@ -151,7 +151,9 @@ class VipController extends BaseAuthController
     	->joinWith('merchantFlag mercFlag')
     	->joinWith('vipType vType')
     	->joinWith('mobileVerifyFlag mobileVerify')
-    	->joinWith('rank rank')->where(['vip.id'=>$id])->one();
+    	->joinWith('rank rank')
+    	->joinWith('sex0 sex')
+    	->where(['vip.id'=>$id])->one();
     	if($model){
 //     	if (($model = Vip::findOne($id)) !== null) {
             return $model;

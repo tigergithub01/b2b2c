@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Vip */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Vips'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Vips'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-view">
@@ -28,25 +29,34 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            'id',
             'vip_id',
-            'merchant_flag',
+            // 'merchant_flag',
+            'merchantFlag.param_val',
             'vip_name',
             'last_login_date',
             'password',
             'parent_id',
             'mobile',
-            'mobile_verify_flag',
+            // 'mobile_verify_flag',
+            'mobileVerifyFlag.param_val',
             'email:email',
-            'email_verify_flag:email',
-            'status',
+            //'email_verify_flag:email',
+            'emailVerifyFlag.param_val',
+            //'status',
+            'status0.param_val',
             'register_date',
-            'rank_id',
-            'audit_status',
-            'audit_user_id',
+            //'rank_id',
+            'rank.name',
+            // 'audit_status',
+            'auditStatus.param_val',
+            //'audit_user_id',
+            'auditUser.user_id',
             'audit_date',
             'audit_memo',
-            'vip_type_id',
-            'sex',
-            'nick_name',
+            // 'vip_type_id',
+            'vipType.name',
+            //'sex',
+            'sex0.param_val',
+//             'nick_name',
             'wedding_date',
             'birthday',
             'img_url:url',
