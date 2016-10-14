@@ -28,6 +28,7 @@ use Yii;
  * @property string $sale_price
  *
  * @property SoSheet[] $soSheets
+ * @property SysParameter $isHot
  * @property SysUser $auditUser
  * @property VipCaseType $type
  * @property SysParameter $caseFlag
@@ -40,12 +41,25 @@ use Yii;
  */
 class VipCase extends \app\models\b2b2c\BasicModel
 {
+    
+	/* 商户编号（查询用） */
+	public $vip_no;
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip_case';
+    }
+    
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -54,7 +68,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot', 'case_flag'], 'required'],
+            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot'], 'required'],
             [['type_id', 'vip_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
@@ -62,6 +76,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
             [['name'], 'string', 'max' => 50],
             [['audit_memo'], 'string', 'max' => 200],
             [['cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
+        	[['is_hot'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_hot' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCaseType::className(), 'targetAttribute' => ['type_id' => 'id']],
             [['case_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['case_flag' => 'id']],
@@ -85,26 +100,41 @@ class VipCase extends \app\models\b2b2c\BasicModel
             'create_date' => Yii::t('app', '发布时间'),
             'update_date' => Yii::t('app', '更新时间'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
-            'audit_status' => Yii::t('app', '审核状态：未审核，审核不通过，已审核'),
+            'audit_status' => Yii::t('app', /* '审核状态：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
             'cover_img_url' => Yii::t('app', '图片（放大后查看）(封面)'),
             'cover_thumb_url' => Yii::t('app', '缩略图(封面)'),
             'cover_img_original' => Yii::t('app', '原图(封面)'),
-            'is_hot' => Yii::t('app', '是否经典案例（经典案例显示在首页）'),
-            'case_flag' => Yii::t('app', '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）'),
+            'is_hot' => Yii::t('app', /* '是否经典案例（经典案例显示在首页）' */'是否经典案例'),
+            'case_flag' => Yii::t('app', '案例类别(个人案例，团体案例)'/* '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）' */),
             'market_price' => Yii::t('app', '市场价'),
             'sale_price' => Yii::t('app', '销售价'),
+        	'auditUser.user_id' => Yii::t('app', '审核人'),
+        	'auditStatus.param_val' => Yii::t('app', '审核状态'),
+        	'type.name' => Yii::t('app', '案例类型'),
+        	'caseFlag.param_val' => Yii::t('app', '案例类别'),
+        	'status0.param_val' => Yii::t('app', '是否显示'),
+        	'isHot.param_val' => Yii::t('app', '是否经典案例'),
+        	'vip.vip_id' => Yii::t('app', '商户编号'),
+        	'vip_no' => Yii::t('app', '商户编号'),
         ];
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getSoSheets()
     {
         return $this->hasMany(SoSheet::className(), ['related_case_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIsHot()
+    {
+    	return $this->hasOne(SysParameter::className(), ['id' => 'is_hot']);
     }
 
     /**

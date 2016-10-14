@@ -40,6 +40,10 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 评价等级  */
 	const CMT_RANK = 12;
 	
+	/* 案例类别  */
+	const CASE_FLAG = 19;
+	
+	
 	
     /**
      * @inheritdoc

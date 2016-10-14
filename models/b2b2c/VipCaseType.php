@@ -47,6 +47,7 @@ class VipCaseType extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'name' => Yii::t('app', '案例类型名称'),
             'vip_type_id' => Yii::t('app', '会员类型(商家类型）'),
+        	'vipType.name' => Yii::t('app', '会员类型(商家类型）'),
         ];
     }
 

@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipCaseTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vip Case Types');
+$this->title = Module::t('app', 'Vip Case Types');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-case-type-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 'vipTypeList' => $vipTypeList]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,7 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'name',
-            'vip_type_id',
+            // 'vip_type_id',
+            'vipType.name',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

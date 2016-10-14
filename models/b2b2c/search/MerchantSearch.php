@@ -9,7 +9,7 @@ use app\models\b2b2c\Vip;
 use app\models\b2b2c\SysParameter;
 
 /**
- * MerchantSearch represents the model behind the search form about `app\models\b2b2c\Vip`.
+ * VipSearch represents the model behind the search form about `app\models\b2b2c\Vip`.
  */
 class MerchantSearch extends Vip
 {
@@ -42,7 +42,18 @@ class MerchantSearch extends Vip
      */
     public function search($params)
     {
-        $query = Vip::find()->where(['merchant_flag' => SysParameter::yes]);
+        $query = Vip::find()->alias('vip')
+        ->joinWith('status0 stat')
+        ->joinWith('auditStatus auditStat')
+        ->joinWith('auditUser auditStatUsr')
+        ->joinWith('emailVerifyFlag emailVerify')
+        ->joinWith('parent parent')
+        ->joinWith('merchantFlag mercFlag')
+        ->joinWith('vipType vType')
+        ->joinWith('mobileVerifyFlag mobileVerify')    
+        ->joinWith('rank rank')    
+        ->joinWith('sex0 sex')
+        ->where(['vip.merchant_flag' => SysParameter::yes]);
 
         // add conditions that should always apply here
 
@@ -50,6 +61,20 @@ class MerchantSearch extends Vip
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vipType.name' => [
+        						'asc'  => ['vipType.name' => SORT_ASC],
+        						'desc' => ['vipType.name' => SORT_DESC],
+        				],
+        				'auditStatus.param_val' => [
+        						'asc'  => ['auditStat.param_val' => SORT_ASC],
+        						'desc' => ['auditStat.param_val' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -62,34 +87,34 @@ class MerchantSearch extends Vip
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'merchant_flag' => $this->merchant_flag,
-            'last_login_date' => $this->last_login_date,
-            'parent_id' => $this->parent_id,
-            'mobile_verify_flag' => $this->mobile_verify_flag,
-            'email_verify_flag' => $this->email_verify_flag,
-            'status' => $this->status,
-            'register_date' => $this->register_date,
-            'rank_id' => $this->rank_id,
-            'audit_status' => $this->audit_status,
-            'audit_user_id' => $this->audit_user_id,
-            'audit_date' => $this->audit_date,
-            'vip_type_id' => $this->vip_type_id,
-            'sex' => $this->sex,
-            'wedding_date' => $this->wedding_date,
-            'birthday' => $this->birthday,
+            'vip.id' => $this->id,
+            'vip.merchant_flag' => $this->merchant_flag,
+            'vip.last_login_date' => $this->last_login_date,
+            'vip.parent_id' => $this->parent_id,
+            'vip.mobile_verify_flag' => $this->mobile_verify_flag,
+            'vip.email_verify_flag' => $this->email_verify_flag,
+            'vip.status' => $this->status,
+            'vip.register_date' => $this->register_date,
+            'vip.vip.rank_id' => $this->rank_id,
+            'vip.audit_status' => $this->audit_status,
+            'vip.audit_user_id' => $this->audit_user_id,
+            'vip.audit_date' => $this->audit_date,
+            'vip.vip_type_id' => $this->vip_type_id,
+            'vip.sex' => $this->sex,
+            'vip.wedding_date' => $this->wedding_date,
+            'vip.birthday' => $this->birthday,
         ]);
 
-        $query->andFilterWhere(['like', 'vip_id', $this->vip_id])
-            ->andFilterWhere(['like', 'vip_name', $this->vip_name])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'audit_memo', $this->audit_memo])
-            ->andFilterWhere(['like', 'nick_name', $this->nick_name])
-            ->andFilterWhere(['like', 'img_url', $this->img_url])
-            ->andFilterWhere(['like', 'thumb_url', $this->thumb_url])
-            ->andFilterWhere(['like', 'img_original', $this->img_original]);
+        $query->andFilterWhere(['like', 'vip.vip_id', $this->vip_id])
+            ->andFilterWhere(['like', 'vip.vip_name', $this->vip_name])
+            ->andFilterWhere(['like', 'vip.password', $this->password])
+            ->andFilterWhere(['like', 'vip.mobile', $this->mobile])
+            ->andFilterWhere(['like', 'vip.email', $this->email])
+            ->andFilterWhere(['like', 'vip.audit_memo', $this->audit_memo])
+            ->andFilterWhere(['like', 'vip.nick_name', $this->nick_name])
+            ->andFilterWhere(['like', 'vip.img_url', $this->img_url])
+            ->andFilterWhere(['like', 'vip.thumb_url', $this->thumb_url])
+            ->andFilterWhere(['like', 'vip.img_original', $this->img_original]);
 
         return $dataProvider;
     }

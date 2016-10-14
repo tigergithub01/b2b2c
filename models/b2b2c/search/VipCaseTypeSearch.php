@@ -41,7 +41,8 @@ class VipCaseTypeSearch extends VipCaseType
      */
     public function search($params)
     {
-        $query = VipCaseType::find();
+        $query = VipCaseType::find()->alias('caseType')
+    	->joinWith('vipType vipType');
 
         // add conditions that should always apply here
 
@@ -49,6 +50,16 @@ class VipCaseTypeSearch extends VipCaseType
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vipType.name' => [
+        						'asc'  => ['vipType.name' => SORT_ASC],
+        						'desc' => ['vipType.name' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -61,11 +72,11 @@ class VipCaseTypeSearch extends VipCaseType
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'vip_type_id' => $this->vip_type_id,
+            'caseType.id' => $this->id,
+            'caseType.vip_type_id' => $this->vip_type_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'caseType.name', $this->name]);
 
         return $dataProvider;
     }

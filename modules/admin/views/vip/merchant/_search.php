@@ -2,9 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\MerchantSearch */
+/* @var $model app\models\b2b2c\search\VipSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -36,15 +37,15 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'vip_id') ?>
 
-    <?= $form->field($model, 'merchant_flag') ?>
+    <?php //echo $form->field($model, 'merchant_flag') ?>
 
     <?= $form->field($model, 'vip_name') ?>
 
-    <?= $form->field($model, 'last_login_date') ?>
+    <?php //echo $form->field($model, 'last_login_date') ?>
 
     <?php // echo $form->field($model, 'password') ?>
 
@@ -65,6 +66,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'rank_id') ?>
 
     <?php // echo $form->field($model, 'audit_status') ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'audit_user_id') ?>
 
@@ -73,6 +76,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'audit_memo') ?>
 
     <?php // echo $form->field($model, 'vip_type_id') ?>
+    
+    <?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'sex') ?>
 
@@ -93,7 +98,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Merchant'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\VipCaseSearch */
@@ -36,15 +37,19 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'type_id') ?>
+    <?php //echo $form->field($model, 'type_id') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
+    <?= $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipCaseTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    
+    <?php //echo $form->field($model, 'vip_id') ?>
+    
+    <?= $form->field($model, 'vip_no') ?>
 
-    <?= $form->field($model, 'content') ?>
+    <?php //echo $form->field($model, 'content') ?>
 
     <?php // echo $form->field($model, 'create_date') ?>
 
@@ -53,6 +58,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'audit_status') ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'audit_user_id') ?>
 
@@ -67,8 +74,12 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'cover_img_original') ?>
 
     <?php // echo $form->field($model, 'is_hot') ?>
+    
+    <?= $form->field($model, 'is_hot')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'case_flag') ?>
+    
+    <?php //echo $form->field($model, 'case_flag')->dropDownList(\yii\helpers\ArrayHelper::map($caseFlagList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'market_price') ?>
 
@@ -79,7 +90,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip Case'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Vip Case'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

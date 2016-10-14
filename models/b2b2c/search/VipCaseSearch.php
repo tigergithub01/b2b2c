@@ -42,7 +42,14 @@ class VipCaseSearch extends VipCase
      */
     public function search($params)
     {
-        $query = VipCase::find();
+        $query = VipCase::find()->alias('case')
+    	->joinWith('auditUser auditUser')
+        ->joinWith('auditStatus auditStatus')
+        ->joinWith('type type')
+        ->joinWith('caseFlag caseFlag')
+        ->joinWith('status0 stat')
+        ->joinWith('isHot isHot')
+        ->joinWith('vip vip');
 
         // add conditions that should always apply here
 
@@ -50,6 +57,32 @@ class VipCaseSearch extends VipCase
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'type.name' => [
+        						'asc'  => ['type.name' => SORT_ASC],
+        						'desc' => ['type.name' => SORT_DESC],
+        				],
+        				'caseFlag.param_val' => [
+        						'asc'  => ['caseFlag.param_val' => SORT_ASC],
+        						'desc' => ['caseFlag.param_val' => SORT_DESC],
+        				],
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'auditStatus.param_val' => [
+        						'asc'  => ['auditStatus.param_val' => SORT_ASC],
+        						'desc' => ['auditStatus.param_val' => SORT_DESC],
+        				],
+        				'isHot.param_val' => [
+        						'asc'  => ['isHot.param_val' => SORT_ASC],
+        						'desc' => ['isHot.param_val' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -62,27 +95,27 @@ class VipCaseSearch extends VipCase
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'type_id' => $this->type_id,
-            'vip_id' => $this->vip_id,
-            'create_date' => $this->create_date,
-            'update_date' => $this->update_date,
-            'status' => $this->status,
-            'audit_status' => $this->audit_status,
-            'audit_user_id' => $this->audit_user_id,
-            'audit_date' => $this->audit_date,
-            'is_hot' => $this->is_hot,
-            'case_flag' => $this->case_flag,
-            'market_price' => $this->market_price,
-            'sale_price' => $this->sale_price,
+            'case.id' => $this->id,
+            'case.type_id' => $this->type_id,
+            'case.vip_id' => $this->vip_id,
+            'case.create_date' => $this->create_date,
+            'case.update_date' => $this->update_date,
+            'case.status' => $this->status,
+            'case.audit_status' => $this->audit_status,
+            'case.audit_user_id' => $this->audit_user_id,
+            'case.audit_date' => $this->audit_date,
+            'case.is_hot' => $this->is_hot,
+            'case.case_flag' => $this->case_flag,
+            'case.market_price' => $this->market_price,
+            'case.sale_price' => $this->sale_price,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'audit_memo', $this->audit_memo])
-            ->andFilterWhere(['like', 'cover_img_url', $this->cover_img_url])
-            ->andFilterWhere(['like', 'cover_thumb_url', $this->cover_thumb_url])
-            ->andFilterWhere(['like', 'cover_img_original', $this->cover_img_original]);
+        $query->andFilterWhere(['like', 'case.name', $this->name])
+            ->andFilterWhere(['like', 'case.content', $this->content])
+            ->andFilterWhere(['like', 'case.audit_memo', $this->audit_memo])
+            ->andFilterWhere(['like', 'case.cover_img_url', $this->cover_img_url])
+            ->andFilterWhere(['like', 'case.cover_thumb_url', $this->cover_thumb_url])
+            ->andFilterWhere(['like', 'case.cover_img_original', $this->cover_img_original]);
 
         return $dataProvider;
     }

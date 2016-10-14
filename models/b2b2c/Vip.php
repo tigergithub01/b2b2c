@@ -202,7 +202,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'status' => Yii::t('app', '状态是否有效(1:正常、0:停用)'),
             'register_date' => Yii::t('app', '注册时间'),
             'rank_id' => Yii::t('app', '会员等级（关联和会员类型应该不需要会员等级）'),
-            'audit_status' => Yii::t('app', '审核状态(商户字段)：未审核，审核不通过，已审核'),
+            'audit_status' => Yii::t('app', /* '审核状态(商户字段)：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),

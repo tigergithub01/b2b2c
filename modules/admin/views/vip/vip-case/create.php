@@ -1,12 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use app\modules\admin\Module;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipCase */
 
-$this->title = Yii::t('app', 'Create Vip Case');
+$this->title = Module::t('app', 'Create Vip Case');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Vip Cases'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -14,6 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+    		'vipCaseTypeList' => $vipCaseTypeList,
+    		'yesNoList' => $yesNoList,
+    		'auditStatList' => $auditStatList,
+    		'caseFlagList' => $caseFlagList,
+    		'vipList' => $vipList,
+    		'sysUserList' => $sysUserList,
     ]) ?>
 
 </div>

@@ -40,9 +40,9 @@ use app\models\b2b2c\common\Constant;
 	
 	    <?php //echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
+    <?php //echo $form->field($model, 'vip_id') ?>
     
-    <?php //echo $form->field($model, 'vip_name') ?>
+    <?php echo $form->field($model, 'vip_no') ?>
 
     <?php //echo $form->field($model, 'module_id') ?>
     

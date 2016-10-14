@@ -3,15 +3,24 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\MerchantSearch */
+/* @var $searchModel app\models\b2b2c\search\VipSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vips');
+$this->title = Module::t('app', 'Merchants');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', [
+    		'model' => $searchModel,
+    		'yesNoList' => $yesNoList,
+    		'vipRankList' => $vipRankList,
+    		'auditStatusList' => $auditStatusList,
+    		'vipTypeList' => $vipTypeList,
+    		'sexList' => $sexList,
+    ]); 
+    ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'vip_id',
-            'merchant_flag',
+            // 'merchant_flag',
             'vip_name',
             'last_login_date',
             // 'password',
@@ -38,10 +47,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'register_date',
             // 'rank_id',
             // 'audit_status',
+            'auditStatus.param_val',
             // 'audit_user_id',
             // 'audit_date',
             // 'audit_memo',
             // 'vip_type_id',
+            'vipType.name',
             // 'sex',
             // 'nick_name',
             // 'wedding_date',

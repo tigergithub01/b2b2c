@@ -49,7 +49,7 @@ class VipSearch extends Vip
         ->joinWith('emailVerifyFlag emailVerify')
         ->joinWith('parent parent')
         ->joinWith('merchantFlag mercFlag')
-        ->joinWith('vipType vType')
+        ->joinWith('vipType vipType')
         ->joinWith('mobileVerifyFlag mobileVerify')    
         ->joinWith('rank rank')    
         ->joinWith('sex0 sex')
@@ -61,6 +61,20 @@ class VipSearch extends Vip
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vipType.name' => [
+        						'asc'  => ['vipType.name' => SORT_ASC],
+        						'desc' => ['vipType.name' => SORT_DESC],
+        				],
+        				'auditStatus.param_val' => [
+        						'asc'  => ['auditStat.param_val' => SORT_ASC],
+        						'desc' => ['auditStat.param_val' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);

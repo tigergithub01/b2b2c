@@ -39,8 +39,9 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
+    	<?php //echo $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
 
+    	<?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 		</div>
 	
 	    <div class="box-footer form-group">

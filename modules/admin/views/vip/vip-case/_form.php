@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipCase */
@@ -39,25 +40,63 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipCaseTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'create_date')->textInput() ?>
+    <?php //echo $form->field($model, 'create_date')->textInput() ?>
+    
+    <?= $form->field($model, 'create_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
-    <?= $form->field($model, 'update_date')->textInput() ?>
+    <?php //echo $form->field($model, 'update_date')->textInput() ?>
+    
+    <?= $form->field($model, 'update_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'audit_user_id')->dropDownList(\yii\helpers\ArrayHelper::map($sysUserList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'audit_date')->textInput() ?>
+    <?php //echo $form->field($model, 'audit_date')->textInput() ?>
+    
+    <?= $form->field($model, 'audit_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
-    <?= $form->field($model, 'audit_memo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'audit_memo')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'cover_img_url')->textInput(['maxlength' => true]) ?>
 
@@ -65,9 +104,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cover_img_original')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'is_hot')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'case_flag')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'is_hot')->textInput(['maxlength' => true]) ?>
+	
+	<?= $form->field($model, 'is_hot')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	
+    <?php //echo $form->field($model, 'case_flag')->textInput(['maxlength' => true]) ?>
+    
+    <?php //echo $form->field($model, 'case_flag')->dropDownList(\yii\helpers\ArrayHelper::map($caseFlagList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
 

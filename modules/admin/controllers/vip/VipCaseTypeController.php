@@ -9,6 +9,7 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\VipType;
 
 /**
  * VipCaseTypeController implements the CRUD actions for VipCaseType model.
@@ -44,6 +45,7 @@ class VipCaseTypeController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        	'vipTypeList' => $this->findVipTypeList(),
         ]);
     }
 
@@ -74,6 +76,7 @@ class VipCaseTypeController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'vipTypeList' => $this->findVipTypeList(),
             ]);
         }
     }
@@ -94,6 +97,7 @@ class VipCaseTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'vipTypeList' => $this->findVipTypeList(),
             ]);
         }
     }
@@ -120,10 +124,23 @@ class VipCaseTypeController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipCaseType::findOne($id)) !== null) {
+    	$model = VipCaseType::find()->alias('caseType')
+    	->joinWith('vipType vipType')
+    	->where(['caseType.id' => $id])->one();
+    	if($model !==null){
+        // if (($model = VipCaseType::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipTypeList(){
+    	return VipType::find()->all();
     }
 }

@@ -3,15 +3,24 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipCaseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vip Cases');
+$this->title = Module::t('app', 'Vip Cases');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-case-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel,
+    		'vipCaseTypeList' => $vipCaseTypeList,
+    		'yesNoList' => $yesNoList,
+    		'auditStatList' => $auditStatList,
+    		'caseFlagList' => $caseFlagList,
+    		'vipList' => $vipList,
+    		'sysUserList' => $sysUserList,
+    		
+    ]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,13 +34,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'name',
-            'type_id',
-            'vip_id',
+            //'type_id',
+            'type.name',
+            //'vip_id',
+            'vip.vip_id',
             'content:ntext',
             // 'create_date',
             // 'update_date',
             // 'status',
             // 'audit_status',
+            'auditStatus.param_val',
             // 'audit_user_id',
             // 'audit_date',
             // 'audit_memo',
@@ -39,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'cover_thumb_url:url',
             // 'cover_img_original',
             // 'is_hot',
+            'isHot.param_val',
             // 'case_flag',
             // 'market_price',
             // 'sale_price',

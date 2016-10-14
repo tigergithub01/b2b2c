@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipCase */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Vip Cases'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Vip Cases'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-case-view">
@@ -28,21 +29,28 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            'id',
             'name',
-            'type_id',
-            'vip_id',
+            // 'type_id',
+            'type.name',
+            // 'vip_id',
+            'vip.vip_id',
             'content:ntext',
             'create_date',
             'update_date',
-            'status',
-            'audit_status',
-            'audit_user_id',
+            // 'status',
+            'status0.param_val',
+            // 'audit_status',
+            'auditStatus.param_val',
+            // 'audit_user_id',
+            'auditUser.user_id',
             'audit_date',
             'audit_memo',
             'cover_img_url:url',
             'cover_thumb_url:url',
             'cover_img_original',
-            'is_hot',
-            'case_flag',
+            // 'is_hot',
+            'isHot.param_val',
+            //'case_flag',
+            //'caseFlag.param_val',
             'market_price',
             'sale_price',
 		        ],

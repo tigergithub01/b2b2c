@@ -144,27 +144,29 @@ return [
 		'Create So Sheet'=>'新增订单',
 		'Update So Sheet'=>'编辑订单',
 		
-		//退货单信息
-		'Merchant'=>'商户',
-		'Merchants'=>'商户列表',
-		'Create Merchant'=>'新增商户',
-		'Update Merchant'=>'编辑商户',
+		//退款申请单
+		'Refund Sheet Apply'=>'退款申请单',
+		'Refund Sheet Applies'=>'退款申请单列表',
+		'Create Refund Sheet Apply'=>'新增退款申请单',
+		'Update Refund Sheet Apply'=>'编辑退款申请单',
 		
-		//退款单信息
-		'Merchant'=>'商户',
-		'Merchants'=>'商户列表',
-		'Create Merchant'=>'新增商户',
-		'Update Merchant'=>'编辑商户',
+		//退款单
+		'Refund Sheet'=>'退款单退款单',
+		'Refund Sheets'=>'退款单列表',
+		'Create Refund Sheet'=>'新增退款单',
+		'Update Refund Sheet'=>'编辑退款单',
 		
+		//退货申请单
+		'Return Apply'=>'退货申请单',
+		'Return Applies'=>'退货申请单列表',
+		'Create Return Apply'=>'新增退货申请单',
+		'Update Return Apply'=>'编辑退货申请单',
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		//退货单
+		'Return Sheet'=>'退货单',
+		'Return Sheets'=>'退货单列表',
+		'Create Return Sheet'=>'新增退货单',
+		'Update Return Sheet'=>'编辑退货单',
 		
 		
 		
