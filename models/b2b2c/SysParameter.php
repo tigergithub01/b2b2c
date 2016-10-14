@@ -57,7 +57,9 @@ use Yii;
  * @property SysNotify[] $sysNotifies
  * @property SysNotify[] $sysNotifies0
  * @property SysNotify[] $sysNotifies1
+ * @property SysNotify[] $sysNotifies2
  * @property SysParameterType $type
+ * @property SysRegion[] $sysRegions
  * @property SysRelativeModule[] $sysRelativeModules
  * @property SysUser[] $sysUsers
  * @property SysUser[] $sysUsers0
@@ -68,6 +70,7 @@ use Yii;
  * @property Vip[] $vips1
  * @property Vip[] $vips2
  * @property Vip[] $vips3
+ * @property Vip[] $vips4
  * @property VipAddress[] $vipAddresses
  * @property VipBlog[] $vipBlogs
  * @property VipBlog[] $vipBlogs0
@@ -495,7 +498,7 @@ class SysParameter extends \app\models\b2b2c\BasicModel
      */
     public function getSysNotifies()
     {
-        return $this->hasMany(SysNotify::className(), ['notify_type' => 'id']);
+        return $this->hasMany(SysNotify::className(), ['is_sent' => 'id']);
     }
 
     /**
@@ -517,9 +520,25 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSysNotifies2()
+    {
+        return $this->hasMany(SysNotify::className(), ['notify_type' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getType()
     {
         return $this->hasOne(SysParameterType::className(), ['id' => 'type_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSysRegions()
+    {
+        return $this->hasMany(SysRegion::className(), ['region_type' => 'id']);
     }
 
     /**
@@ -600,6 +619,14 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     public function getVips3()
     {
         return $this->hasMany(Vip::className(), ['mobile_verify_flag' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVips4()
+    {
+        return $this->hasMany(Vip::className(), ['sex' => 'id']);
     }
 
     /**

@@ -46,7 +46,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'content') ?>
 
-    <?php // echo $form->field($model, 'organization_id') ?>
+    <?php // echo $form->field($model, 'vip_id') ?>
 
     <?php // echo $form->field($model, 'issue_user_id') ?>
 

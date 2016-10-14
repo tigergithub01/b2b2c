@@ -9,7 +9,6 @@ use Yii;
  *
  * @property string $id
  * @property string $product_id
- * @property string $organization_id
  * @property string $vip_id
  * @property string $cmt_rank_id
  * @property string $content
@@ -22,7 +21,6 @@ use Yii;
  * @property SysParameter $cmtRank
  * @property ProductComment $parent
  * @property ProductComment[] $productComments
- * @property VipOrganization $organization
  * @property Vip $vip
  * @property Product $product
  * @property ProductCommentPhoto[] $productCommentPhotos
@@ -30,31 +28,12 @@ use Yii;
  */
 class ProductComment extends \app\models\b2b2c\BasicModel
 {
-	/* 产品名称（查询用） */
-	public $product_name;
-	
-	/* 会员名（查询用） */
-	public $vip_name;
-    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_product_comment';
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-    	// bypass scenarios() implementation in the parent class
-    	$scenarios = parent::scenarios();
-    	$scenarios[self::SCENARIO_DEFAULT][]  = 'product_name';
-    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
-    	return $scenarios;
-    	// 		return parent::scenarios();
     }
 
     /**
@@ -63,7 +42,7 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['product_id', 'organization_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id'], 'integer'],
+            [['product_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id'], 'integer'],
             [['vip_id', 'content', 'comment_date', 'ip_addr', 'status'], 'required'],
             [['comment_date'], 'safe'],
             [['content'], 'string', 'max' => 300],
@@ -71,7 +50,6 @@ class ProductComment extends \app\models\b2b2c\BasicModel
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['cmt_rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['cmt_rank_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductComment::className(), 'targetAttribute' => ['parent_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
@@ -85,21 +63,13 @@ class ProductComment extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键编号'),
             'product_id' => Yii::t('app', '关联产品编号（评价商品时写此字段)'),
-            'organization_id' => Yii::t('app', '关联店铺（机构）编号（评价店铺时写此字段）'),
             'vip_id' => Yii::t('app', '会员编号'),
-            //'cmt_rank_id' => Yii::t('app', '评价等级（好评、中评、差评）(也可以是星级1：差；2，3：中，4，5：好）'),
-        	'cmt_rank_id' => Yii::t('app', '评价等级'),
+            'cmt_rank_id' => Yii::t('app', '评价等级（好评、中评、差评）(也可以是星级1：差；2，3：中，4，5：好）'),
             'content' => Yii::t('app', '评价内容'),
             'comment_date' => Yii::t('app', '评价时间'),
             'ip_addr' => Yii::t('app', '评价IP地址'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
             'parent_id' => Yii::t('app', '上级评价'),
-        	'status0.param_val' => '是否显示',
-        	'cmtRank.param_val' => '评价等级',
-        	'vip.vip_id' => '会员',
-        	'product.name' => '关联产品',
-        	'product_name'  => '产品名称',
-        	'vip_name'  => '会员名',
         ];
     }
 
@@ -133,14 +103,6 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     public function getProductComments()
     {
         return $this->hasMany(ProductComment::className(), ['parent_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrganization()
-    {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
     }
 
     /**

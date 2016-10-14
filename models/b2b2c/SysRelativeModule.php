@@ -12,11 +12,11 @@ use Yii;
  * @property string $is_show
  * @property string $footer_content
  * @property string $header_content
- * @property string $organization_id
+ * @property string $vip_id
  *
  * @property Product[] $products
  * @property SysParameter $isShow
- * @property VipOrganization $organization
+ * @property Vip $vip
  */
 class SysRelativeModule extends \app\models\b2b2c\BasicModel
 {
@@ -34,12 +34,12 @@ class SysRelativeModule extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'is_show', 'organization_id'], 'required'],
-            [['is_show', 'organization_id'], 'integer'],
+            [['name', 'is_show', 'vip_id'], 'required'],
+            [['is_show', 'vip_id'], 'integer'],
             [['footer_content', 'header_content'], 'string'],
             [['name'], 'string', 'max' => 255],
             [['is_show'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_show' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         ];
     }
 
@@ -54,7 +54,7 @@ class SysRelativeModule extends \app\models\b2b2c\BasicModel
             'is_show' => Yii::t('app', '是否显示'),
             'footer_content' => Yii::t('app', '底部内容'),
             'header_content' => Yii::t('app', '底部内容'),
-            'organization_id' => Yii::t('app', '关联机构编号'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
         ];
     }
 
@@ -77,8 +77,8 @@ class SysRelativeModule extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getVip()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 }

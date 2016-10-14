@@ -35,8 +35,7 @@ class VipOrgGallery extends \app\models\b2b2c\BasicModel
         return [
             [['organization_id', 'img_url', 'thumb_url', 'img_original', 'sequence_id'], 'required'],
             [['organization_id', 'sequence_id'], 'integer'],
-            [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
-            [['redirect_url'], 'string', 'max' => 255],
+            [['img_url', 'thumb_url', 'img_original', 'redirect_url'], 'string', 'max' => 255],
             [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
         ];
     }

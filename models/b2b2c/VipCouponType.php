@@ -17,11 +17,11 @@ use Yii;
  * @property string $send_end_date
  * @property string $use_start_date
  * @property string $use_end_date
- * @property string $organization_id
+ * @property string $vip_id
  *
  * @property VipCoupon[] $vipCoupons
+ * @property Vip $vip
  * @property SysParameter $sendType
- * @property VipOrganization $organization
  */
 class VipCouponType extends \app\models\b2b2c\BasicModel
 {
@@ -39,13 +39,13 @@ class VipCouponType extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'organization_id'], 'required'],
+            [['name', 'vip_id'], 'required'],
             [['type_money', 'min_amount', 'max_amount'], 'number'],
-            [['send_type', 'organization_id'], 'integer'],
+            [['send_type', 'vip_id'], 'integer'],
             [['send_start_date', 'send_end_date', 'use_start_date', 'use_end_date'], 'safe'],
             [['name'], 'string', 'max' => 50],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['send_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['send_type' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
         ];
     }
 
@@ -65,7 +65,7 @@ class VipCouponType extends \app\models\b2b2c\BasicModel
             'send_end_date' => Yii::t('app', '发放结束日期'),
             'use_start_date' => Yii::t('app', '使用起始日期（只有当前时间介于起始日期和截止日期之间时，此类型的红包才可以使用）'),
             'use_end_date' => Yii::t('app', '使用结束日期'),
-            'organization_id' => Yii::t('app', '关联机构编号'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
         ];
     }
 
@@ -80,16 +80,16 @@ class VipCouponType extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSendType()
+    public function getVip()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'send_type']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getSendType()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(SysParameter::className(), ['id' => 'send_type']);
     }
 }

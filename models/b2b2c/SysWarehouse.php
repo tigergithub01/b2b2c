@@ -9,10 +9,10 @@ use Yii;
  *
  * @property string $id
  * @property string $name
- * @property string $organization_id
+ * @property string $vip_id
  *
  * @property ProductStock[] $productStocks
- * @property VipOrganization $organization
+ * @property Vip $vip
  * @property SysWarehouseRegion[] $sysWarehouseRegions
  */
 class SysWarehouse extends \app\models\b2b2c\BasicModel
@@ -31,10 +31,10 @@ class SysWarehouse extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'organization_id'], 'required'],
-            [['organization_id'], 'integer'],
+            [['name', 'vip_id'], 'required'],
+            [['vip_id'], 'integer'],
             [['name'], 'string', 'max' => 30],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         ];
     }
 
@@ -46,7 +46,7 @@ class SysWarehouse extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键'),
             'name' => Yii::t('app', '仓库名称'),
-            'organization_id' => Yii::t('app', '所属机构'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
         ];
     }
 
@@ -61,9 +61,9 @@ class SysWarehouse extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getVip()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**

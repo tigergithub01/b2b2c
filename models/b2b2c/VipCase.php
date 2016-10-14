@@ -10,7 +10,7 @@ use Yii;
  * @property string $id
  * @property string $name
  * @property string $type_id
- * @property string $organization_id
+ * @property string $vip_id
  * @property string $content
  * @property string $create_date
  * @property string $update_date
@@ -30,10 +30,10 @@ use Yii;
  * @property SoSheet[] $soSheets
  * @property SysUser $auditUser
  * @property VipCaseType $type
- * @property VipOrganization $organization
  * @property SysParameter $caseFlag
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
+ * @property Vip $vip
  * @property VipCaseDetail[] $vipCaseDetails
  * @property VipCasePhoto[] $vipCasePhotos
  * @property VipCollect[] $vipCollects
@@ -54,8 +54,8 @@ class VipCase extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'type_id', 'organization_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot', 'case_flag'], 'required'],
-            [['type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
+            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot', 'case_flag'], 'required'],
+            [['type_id', 'vip_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
             [['market_price', 'sale_price'], 'number'],
@@ -64,10 +64,10 @@ class VipCase extends \app\models\b2b2c\BasicModel
             [['cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCaseType::className(), 'targetAttribute' => ['type_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['case_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['case_flag' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         ];
     }
 
@@ -80,7 +80,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'name' => Yii::t('app', '案例名称'),
             'type_id' => Yii::t('app', '案例类型'),
-            'organization_id' => Yii::t('app', '关联店铺（机构）编号'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
             'content' => Yii::t('app', '发布内容'),
             'create_date' => Yii::t('app', '发布时间'),
             'update_date' => Yii::t('app', '更新时间'),
@@ -126,14 +126,6 @@ class VipCase extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
-    {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getCaseFlag()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'case_flag']);
@@ -153,6 +145,14 @@ class VipCase extends \app\models\b2b2c\BasicModel
     public function getAuditStatus()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVip()
+    {
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**

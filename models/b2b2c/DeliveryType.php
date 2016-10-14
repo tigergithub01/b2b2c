@@ -9,13 +9,13 @@ use Yii;
  *
  * @property string $id
  * @property string $tpl_id
- * @property string $organization_id
+ * @property string $vip_id
  * @property string $description
  * @property string $status
  *
- * @property SysParameter $status0
+ * @property Vip $vip
  * @property DeliveryTypeTpl $tpl
- * @property VipOrganization $organization
+ * @property SysParameter $status0
  * @property DeliveryTypeArea[] $deliveryTypeAreas
  * @property OutStockSheet[] $outStockSheets
  * @property SoSheet[] $soSheets
@@ -36,12 +36,12 @@ class DeliveryType extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['tpl_id', 'organization_id', 'status'], 'required'],
-            [['tpl_id', 'organization_id', 'status'], 'integer'],
+            [['tpl_id', 'vip_id', 'status'], 'required'],
+            [['tpl_id', 'vip_id', 'status'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['tpl_id'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryTypeTpl::className(), 'targetAttribute' => ['tpl_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
         ];
     }
 
@@ -53,7 +53,7 @@ class DeliveryType extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键编号'),
             'tpl_id' => Yii::t('app', '配送方式名称'),
-            'organization_id' => Yii::t('app', '机构编号'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
             'description' => Yii::t('app', '描述'),
             'status' => Yii::t('app', '是否启用？(1:是；0:否)'),
         ];
@@ -62,9 +62,9 @@ class DeliveryType extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus0()
+    public function getVip()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**
@@ -78,9 +78,9 @@ class DeliveryType extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getStatus0()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**

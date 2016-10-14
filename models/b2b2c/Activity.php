@@ -17,14 +17,17 @@ use Yii;
  * @property string $package_price
  * @property string $deposit_amount
  * @property integer $buy_limit_num
- * @property string $organization_id
+ * @property string $vip_id
+ * @property string $img_url
+ * @property string $thumb_url
+ * @property string $img_original
  *
  * @property ActBuyDiscount[] $actBuyDiscounts
  * @property ActBuyGivingDetail[] $actBuyGivingDetails
  * @property ActPackageProduct[] $actPackageProducts
  * @property ActScope[] $actScopes
  * @property ActSpecialPrice[] $actSpecialPrices
- * @property VipOrganization $organization
+ * @property Vip $vip
  * @property SysParameter $activityScope
  * @property SysParameter $activityType
  * @property ShoppingCart[] $shoppingCarts
@@ -47,13 +50,13 @@ class Activity extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'activity_type', 'start_time', 'end_date', 'organization_id'], 'required'],
-            [['activity_type', 'activity_scope', 'buy_limit_num', 'organization_id'], 'integer'],
+            [['name', 'activity_type', 'start_time', 'end_date', 'vip_id'], 'required'],
+            [['activity_type', 'activity_scope', 'buy_limit_num', 'vip_id'], 'integer'],
             [['start_time', 'end_date'], 'safe'],
             [['package_price', 'deposit_amount'], 'number'],
             [['name'], 'string', 'max' => 30],
-            [['description'], 'string', 'max' => 255],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['description', 'img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['activity_scope'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_scope' => 'id']],
             [['activity_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_type' => 'id']],
         ];
@@ -75,7 +78,10 @@ class Activity extends \app\models\b2b2c\BasicModel
             'package_price' => Yii::t('app', '套装价'),
             'deposit_amount' => Yii::t('app', '最少定金金额'),
             'buy_limit_num' => Yii::t('app', '限购数量'),
-            'organization_id' => Yii::t('app', '关联组织编码'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
+            'img_url' => Yii::t('app', '图片（放大后查看）(上传商品图片后自动加入商品相册）'),
+            'thumb_url' => Yii::t('app', '缩略图'),
+            'img_original' => Yii::t('app', '原图'),
         ];
     }
 
@@ -122,9 +128,9 @@ class Activity extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getVip()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**

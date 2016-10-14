@@ -12,7 +12,7 @@ use Yii;
  * @property string $title
  * @property string $issue_date
  * @property string $content
- * @property string $organization_id
+ * @property string $vip_id
  * @property string $issue_user_id
  * @property string $send_extend
  * @property string $status
@@ -22,9 +22,9 @@ use Yii;
  * @property SysParameter $isSent
  * @property SysParameter $sendExtend
  * @property SysUser $issueUser
- * @property VipOrganization $organization
  * @property SysParameter $status0
  * @property SysParameter $notifyType
+ * @property Vip $vip
  * @property SysNotifyLog[] $sysNotifyLogs
  */
 class SysNotify extends \app\models\b2b2c\BasicModel
@@ -43,7 +43,7 @@ class SysNotify extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['notify_type', 'organization_id', 'issue_user_id', 'send_extend', 'status', 'is_sent'], 'integer'],
+            [['notify_type', 'vip_id', 'issue_user_id', 'send_extend', 'status', 'is_sent'], 'integer'],
             [['title', 'issue_date', 'send_extend', 'status', 'is_sent'], 'required'],
             [['issue_date', 'sent_time'], 'safe'],
             [['content'], 'string'],
@@ -51,9 +51,9 @@ class SysNotify extends \app\models\b2b2c\BasicModel
             [['is_sent'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_sent' => 'id']],
             [['send_extend'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['send_extend' => 'id']],
             [['issue_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['issue_user_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['notify_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['notify_type' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         ];
     }
 
@@ -68,7 +68,7 @@ class SysNotify extends \app\models\b2b2c\BasicModel
             'title' => Yii::t('app', '标题'),
             'issue_date' => Yii::t('app', '发布日期'),
             'content' => Yii::t('app', '内容'),
-            'organization_id' => Yii::t('app', '发布机构(店铺发布公告时使用此字段）'),
+            'vip_id' => Yii::t('app', '关联商户编号(联商户布公告时使用此字段)'),
             'issue_user_id' => Yii::t('app', '发布人（发布公告时使用此字段）'),
             'send_extend' => Yii::t('app', '发送范围[全部（商户+会员)-待定,商户,会员]'),
             'status' => Yii::t('app', '是否有效（1：是，0：否）'),
@@ -104,14 +104,6 @@ class SysNotify extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
-    {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getStatus0()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'status']);
@@ -123,6 +115,14 @@ class SysNotify extends \app\models\b2b2c\BasicModel
     public function getNotifyType()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'notify_type']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVip()
+    {
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**

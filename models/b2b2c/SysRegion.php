@@ -18,14 +18,17 @@ use Yii;
  * @property SoSheet[] $soSheets0
  * @property SoSheet[] $soSheets1
  * @property SoSheet[] $soSheets2
+ * @property SysParameter $regionType
  * @property SysRegion $parent
  * @property SysRegion[] $sysRegions
- * @property SysParameter $regionType
  * @property SysWarehouseRegion[] $sysWarehouseRegions
  * @property VipAddress[] $vipAddresses
  * @property VipAddress[] $vipAddresses0
  * @property VipAddress[] $vipAddresses1
  * @property VipAddress[] $vipAddresses2
+ * @property VipOrganization[] $vipOrganizations
+ * @property VipOrganization[] $vipOrganizations0
+ * @property VipOrganization[] $vipOrganizations1
  */
 class SysRegion extends \app\models\b2b2c\BasicModel
 {
@@ -63,8 +66,8 @@ class SysRegion extends \app\models\b2b2c\BasicModel
             [['name', 'region_type'], 'required'],
             [['parent_id', 'region_type'], 'integer'],
             [['name'], 'string', 'max' => 60],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['parent_id' => 'id']],
             [['region_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['region_type' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
@@ -76,7 +79,7 @@ class SysRegion extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键编号'),
             'name' => Yii::t('app', '区域名称'),
-            'parent_id' => Yii::t('app', '上级区域编号'),
+            'parent_id' => Yii::t('app', '上级区域'),
             'region_type' => Yii::t('app', '国家省市区类别'),
         	'parent.name' => Yii::t('app', '上级区域'),
         	'regionType.param_val' => Yii::t('app', '国家省市区类别'),
@@ -135,6 +138,14 @@ class SysRegion extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getRegionType()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'region_type']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getParent()
     {
         return $this->hasOne(SysRegion::className(), ['id' => 'parent_id']);
@@ -151,14 +162,6 @@ class SysRegion extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRegionType()
-    {
-        return $this->hasOne(SysParameter::className(), ['id' => 'region_type']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getSysWarehouseRegions()
     {
         return $this->hasMany(SysWarehouseRegion::className(), ['region_id' => 'id']);
@@ -169,7 +172,7 @@ class SysRegion extends \app\models\b2b2c\BasicModel
      */
     public function getVipAddresses()
     {
-        return $this->hasMany(VipAddress::className(), ['city_id' => 'id']);
+        return $this->hasMany(VipAddress::className(), ['province_id' => 'id']);
     }
 
     /**
@@ -177,7 +180,7 @@ class SysRegion extends \app\models\b2b2c\BasicModel
      */
     public function getVipAddresses0()
     {
-        return $this->hasMany(VipAddress::className(), ['county_id' => 'id']);
+        return $this->hasMany(VipAddress::className(), ['city_id' => 'id']);
     }
 
     /**
@@ -185,7 +188,7 @@ class SysRegion extends \app\models\b2b2c\BasicModel
      */
     public function getVipAddresses1()
     {
-        return $this->hasMany(VipAddress::className(), ['district_id' => 'id']);
+        return $this->hasMany(VipAddress::className(), ['county_id' => 'id']);
     }
 
     /**
@@ -193,6 +196,30 @@ class SysRegion extends \app\models\b2b2c\BasicModel
      */
     public function getVipAddresses2()
     {
-        return $this->hasMany(VipAddress::className(), ['province_id' => 'id']);
+        return $this->hasMany(VipAddress::className(), ['district_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipOrganizations()
+    {
+        return $this->hasMany(VipOrganization::className(), ['city_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipOrganizations0()
+    {
+        return $this->hasMany(VipOrganization::className(), ['country_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipOrganizations1()
+    {
+        return $this->hasMany(VipOrganization::className(), ['province_id' => 'id']);
     }
 }

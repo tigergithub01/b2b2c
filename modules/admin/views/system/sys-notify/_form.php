@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysNotify */
@@ -42,16 +41,11 @@ use yii\jui\DatePicker;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-   <?php //echo $form->field($model, 'issue_date')->textInput() ?>
-    
-    <?= $form->field($model, 'issue_date')->widget(DatePicker::className(), [
-    		'dateFormat' => 'yyyy-MM-dd',
-    		'options' => ['readonly'=>true]
-                    ]) ?>
+    <?= $form->field($model, 'issue_date')->textInput() ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
 

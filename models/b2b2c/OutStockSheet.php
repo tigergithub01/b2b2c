@@ -12,17 +12,17 @@ use Yii;
  * @property string $code
  * @property string $order_id
  * @property string $user_id
+ * @property string $vip_id
  * @property string $sheet_date
  * @property string $status
  * @property string $delivery_type
  * @property string $delivery_no
- * @property string $organization_id
  *
  * @property SysUser $user
  * @property DeliveryType $deliveryType
  * @property SoSheet $order
+ * @property Vip $vip
  * @property SysParameter $status0
- * @property VipOrganization $organization
  * @property OutStockSheetDetail[] $outStockSheetDetails
  * @property ReturnSheet[] $returnSheets
  */
@@ -42,8 +42,8 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'order_id', 'user_id', 'sheet_date', 'status', 'delivery_type', 'delivery_no', 'organization_id'], 'required'],
-            [['sheet_type_id', 'order_id', 'user_id', 'status', 'delivery_type', 'organization_id'], 'integer'],
+            [['sheet_type_id', 'code', 'order_id', 'user_id', 'vip_id', 'sheet_date', 'status', 'delivery_type', 'delivery_no'], 'required'],
+            [['sheet_type_id', 'order_id', 'user_id', 'vip_id', 'status', 'delivery_type'], 'integer'],
             [['sheet_date'], 'safe'],
             [['code'], 'string', 'max' => 30],
             [['delivery_no'], 'string', 'max' => 60],
@@ -51,8 +51,8 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryType::className(), 'targetAttribute' => ['delivery_type' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
         ];
     }
 
@@ -67,11 +67,11 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
             'code' => Yii::t('app', '发货单编号（根据规则自动生成）'),
             'order_id' => Yii::t('app', '关联订单编号'),
             'user_id' => Yii::t('app', '制单人'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
             'sheet_date' => Yii::t('app', '单据生成时间'),
             'status' => Yii::t('app', '发货单状态（未发货、已发货）'),
             'delivery_type' => Yii::t('app', '配送方式'),
             'delivery_no' => Yii::t('app', '快递单号'),
-            'organization_id' => Yii::t('app', '关联机构编号'),
         ];
     }
 
@@ -102,17 +102,17 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus0()
+    public function getVip()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getStatus0()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**

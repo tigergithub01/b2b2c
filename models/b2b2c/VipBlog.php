@@ -11,7 +11,6 @@ use Yii;
  * @property string $blog_type
  * @property string $blog_flag
  * @property string $vip_id
- * @property string $organization_id
  * @property string $content
  * @property string $create_date
  * @property string $update_date
@@ -24,7 +23,6 @@ use Yii;
  * @property Vip $vip
  * @property SysParameter $status0
  * @property SysParameter $blogFlag
- * @property VipOrganization $organization
  * @property VipBlogType $blogType
  * @property VipBlogCmt[] $vipBlogCmts
  * @property VipBlogLikes[] $vipBlogLikes
@@ -32,12 +30,6 @@ use Yii;
  */
 class VipBlog extends \app\models\b2b2c\BasicModel
 {
-	/* 商户博客 */
-    const BLOG_FLAG_MERC = 16002;
-    
-    /* 会员博客 */
-    const BLOG_FLAG_VIP = 16001;
-    
     /**
      * @inheritdoc
      */
@@ -52,15 +44,14 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['id', 'blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status'], 'required'],
-            [['id', 'blog_type', 'blog_flag', 'vip_id', 'organization_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
+            [['blog_type', 'blog_flag', 'vip_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
+            [['blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status'], 'required'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
             [['audit_memo'], 'string', 'max' => 200],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['blog_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['blog_flag' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['blog_type'], 'exist', 'skipOnError' => true, 'targetClass' => VipBlogType::className(), 'targetAttribute' => ['blog_type' => 'id']],
         ];
     }
@@ -74,8 +65,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'blog_type' => Yii::t('app', '博客频道'),
             'blog_flag' => Yii::t('app', '博客分类：会员博客，商户博客'),
-            'vip_id' => Yii::t('app', '关联用户编号(普通博客填写此字段)'),
-            'organization_id' => Yii::t('app', '店铺动态（店铺博客填写此字段）'),
+            'vip_id' => Yii::t('app', '关联会员编号'),
             'content' => Yii::t('app', '发布内容'),
             'create_date' => Yii::t('app', '发布时间'),
             'update_date' => Yii::t('app', '更新时间'),
@@ -109,14 +99,6 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     public function getBlogFlag()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'blog_flag']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrganization()
-    {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
     }
 
     /**

@@ -18,14 +18,14 @@ use Yii;
  * @property string $return_amt
  * @property string $memo
  * @property string $status
- * @property string $organization_id
+ * @property string $vip_id
  *
  * @property RefundSheet[] $refundSheets
  * @property SoSheet $order
- * @property VipOrganization $organization
  * @property ReturnApply $returnApply
  * @property OutStockSheet $out
  * @property SysUser $user
+ * @property Vip $vip
  * @property SysParameter $status0
  * @property ReturnSheetDetail[] $returnSheetDetails
  */
@@ -45,17 +45,17 @@ class ReturnSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['id', 'sheet_type_id', 'code', 'order_id', 'out_id', 'user_id', 'sheet_date', 'status', 'organization_id'], 'required'],
-            [['id', 'sheet_type_id', 'return_apply_id', 'order_id', 'out_id', 'user_id', 'status', 'organization_id'], 'integer'],
+            [['sheet_type_id', 'code', 'order_id', 'out_id', 'user_id', 'sheet_date', 'status', 'vip_id'], 'required'],
+            [['sheet_type_id', 'return_apply_id', 'order_id', 'out_id', 'user_id', 'status', 'vip_id'], 'integer'],
             [['sheet_date'], 'safe'],
             [['return_amt'], 'number'],
             [['code'], 'string', 'max' => 30],
             [['memo'], 'string', 'max' => 400],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
             [['return_apply_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReturnApply::className(), 'targetAttribute' => ['return_apply_id' => 'id']],
             [['out_id'], 'exist', 'skipOnError' => true, 'targetClass' => OutStockSheet::className(), 'targetAttribute' => ['out_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
         ];
     }
@@ -77,7 +77,7 @@ class ReturnSheet extends \app\models\b2b2c\BasicModel
             'return_amt' => Yii::t('app', '本次退货金额'),
             'memo' => Yii::t('app', '备注'),
             'status' => Yii::t('app', '退货单状态（待退货、已完成）'),
-            'organization_id' => Yii::t('app', '关联机构编号'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
         ];
     }
 
@@ -95,14 +95,6 @@ class ReturnSheet extends \app\models\b2b2c\BasicModel
     public function getOrder()
     {
         return $this->hasOne(SoSheet::className(), ['id' => 'order_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrganization()
-    {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
     }
 
     /**
@@ -127,6 +119,14 @@ class ReturnSheet extends \app\models\b2b2c\BasicModel
     public function getUser()
     {
         return $this->hasOne(SysUser::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVip()
+    {
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**

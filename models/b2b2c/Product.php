@@ -27,7 +27,7 @@ use Yii;
  * @property string $return_days
  * @property string $return_desc
  * @property string $cost_price
- * @property string $organization_id
+ * @property string $vip_id
  * @property string $keywords
  * @property string $is_free_shipping
  * @property integer $give_integral
@@ -50,14 +50,14 @@ use Yii;
  * @property ActScope[] $actScopes
  * @property ActSpecialPrice[] $actSpecialPrices
  * @property OutStockSheetDetail[] $outStockSheetDetails
- * @property SysRelativeModule $relativeModule
+ * @property Vip $vip
  * @property SysParameter $auditStatus
  * @property SysUser $auditUser
  * @property SysParameter $canReturnFlag
  * @property SysParameter $isFreeShipping
  * @property SysParameter $isOnSale
  * @property ProductBrand $brand
- * @property VipOrganization $organization
+ * @property SysRelativeModule $relativeModule
  * @property SysParameter $isHot
  * @property ProductGroup $productGroup
  * @property ProductType $type
@@ -97,8 +97,8 @@ class Product extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'type_id', 'market_price', 'sale_price', 'deposit_amount', 'is_on_sale', 'is_hot', 'audit_status', 'can_return_flag', 'organization_id', 'is_free_shipping'], 'required'],
-            [['type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'organization_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id'], 'integer'],
+            [['name', 'type_id', 'market_price', 'sale_price', 'deposit_amount', 'is_on_sale', 'is_hot', 'audit_status', 'can_return_flag', 'vip_id', 'is_free_shipping'], 'required'],
+            [['type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'vip_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id'], 'integer'],
             [['market_price', 'sale_price', 'deposit_amount', 'stock_quantity', 'safety_quantity', 'cost_price', 'product_weight'], 'number'],
             [['description', 'return_desc'], 'string'],
             [['audit_date'], 'safe'],
@@ -106,14 +106,14 @@ class Product extends \app\models\b2b2c\BasicModel
             [['name'], 'string', 'max' => 60],
             [['keywords'], 'string', 'max' => 100],
             [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
-            [['relative_module'], 'exist', 'skipOnError' => true, 'targetClass' => SysRelativeModule::className(), 'targetAttribute' => ['relative_module' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['can_return_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['can_return_flag' => 'id']],
             [['is_free_shipping'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_free_shipping' => 'id']],
             [['is_on_sale'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_on_sale' => 'id']],
             [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductBrand::className(), 'targetAttribute' => ['brand_id' => 'id']],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['relative_module'], 'exist', 'skipOnError' => true, 'targetClass' => SysRelativeModule::className(), 'targetAttribute' => ['relative_module' => 'id']],
             [['is_hot'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_hot' => 'id']],
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -146,7 +146,7 @@ class Product extends \app\models\b2b2c\BasicModel
             'return_days' => Yii::t('app', '可退货天数(可以退货时才设置此字段)'),
             'return_desc' => Yii::t('app', '退货规则描述'),
             'cost_price' => Yii::t('app', '成本价'),
-            'organization_id' => Yii::t('app', '产品所属店铺（机构）'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
             'keywords' => Yii::t('app', '商品关键字，供检索用'),
             'is_free_shipping' => Yii::t('app', '是否免运费商品'),
             'give_integral' => Yii::t('app', '赠送消费积分数'),
@@ -162,7 +162,7 @@ class Product extends \app\models\b2b2c\BasicModel
             'img_original' => Yii::t('app', '原图'),
         	'brand.name' => Yii::t('app', '品牌'),
         	'type.name' => Yii::t('app', '产品分类'),
-        	'organization.name' => Yii::t('app', '产品所属店铺（机构）'),
+        	'vip.vip_id' => Yii::t('app', '关联商户编号'),
         	'isOnSale.param_val' => Yii::t('app', '产品状态'),
         	'isHot.param_val' => Yii::t('app', '是否热销商品'),
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
@@ -239,9 +239,9 @@ class Product extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRelativeModule()
+    public function getVip()
     {
-        return $this->hasOne(SysRelativeModule::className(), ['id' => 'relative_module']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**
@@ -295,9 +295,9 @@ class Product extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getRelativeModule()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(SysRelativeModule::className(), ['id' => 'relative_module']);
     }
 
     /**

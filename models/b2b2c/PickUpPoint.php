@@ -8,12 +8,12 @@ use Yii;
  * This is the model class for table "t_pick_up_point".
  *
  * @property string $id
- * @property string $organization_id
+ * @property string $vip_id
  * @property string $name
  * @property string $address
  * @property string $status
  *
- * @property VipOrganization $organization
+ * @property Vip $vip
  * @property SysParameter $status0
  * @property PickUpPointRegion[] $pickUpPointRegions
  * @property SoSheet[] $soSheets
@@ -34,11 +34,11 @@ class PickUpPoint extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['organization_id', 'name', 'address', 'status'], 'required'],
-            [['organization_id', 'status'], 'integer'],
+            [['vip_id', 'name', 'address', 'status'], 'required'],
+            [['vip_id', 'status'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['address'], 'string', 'max' => 100],
-            [['organization_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipOrganization::className(), 'targetAttribute' => ['organization_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
         ];
     }
@@ -50,7 +50,7 @@ class PickUpPoint extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键'),
-            'organization_id' => Yii::t('app', '关联机构编号'),
+            'vip_id' => Yii::t('app', '关联商户编号'),
             'name' => Yii::t('app', '自提点名称'),
             'address' => Yii::t('app', '自提点地址'),
             'status' => Yii::t('app', '是否启用：1、是；0、否；'),
@@ -60,9 +60,9 @@ class PickUpPoint extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrganization()
+    public function getVip()
     {
-        return $this->hasOne(VipOrganization::className(), ['id' => 'organization_id']);
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 
     /**

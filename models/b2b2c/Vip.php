@@ -34,15 +34,24 @@ use Yii;
  * @property string $thumb_url
  * @property string $img_original
  *
+ * @property Activity[] $activities
+ * @property DeliveryType[] $deliveryTypes
+ * @property OutStockSheet[] $outStockSheets
+ * @property PickUpPoint[] $pickUpPoints
+ * @property Product[] $products
  * @property ProductComment[] $productComments
+ * @property RefundSheet[] $refundSheets
  * @property RefundSheetApply[] $refundSheetApplies
  * @property ReturnApply[] $returnApplies
+ * @property ReturnSheet[] $returnSheets
  * @property SheetLog[] $sheetLogs
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheet[] $soSheets
  * @property SysFeedback[] $sysFeedbacks
+ * @property SysNotify[] $sysNotifies
  * @property SysNotifyLog[] $sysNotifyLogs
- * @property SysParameter $sex0
+ * @property SysRelativeModule[] $sysRelativeModules
+ * @property SysWarehouse[] $sysWarehouses
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
  * @property SysUser $auditUser
@@ -53,14 +62,17 @@ use Yii;
  * @property VipType $vipType
  * @property SysParameter $mobileVerifyFlag
  * @property VipRank $rank
+ * @property SysParameter $sex0
  * @property VipAddress[] $vipAddresses
  * @property VipBlog[] $vipBlogs
  * @property VipBlogCmt[] $vipBlogCmts
  * @property VipBlogLikes[] $vipBlogLikes
+ * @property VipCase[] $vipCases
  * @property VipCollect[] $vipCollects
  * @property VipConcern[] $vipConcerns
  * @property VipConcern[] $vipConcerns0
  * @property VipCoupon[] $vipCoupons
+ * @property VipCouponType[] $vipCouponTypes
  * @property VipExtend[] $vipExtends
  * @property VipOperationLog[] $vipOperationLogs
  * @property VipOrganization[] $vipOrganizations
@@ -68,61 +80,6 @@ use Yii;
  */
 class Vip extends \app\models\b2b2c\BasicModel
 {
-	//记住密码（登陆)
-	public $remember_me = true;
-	
-	//验证码
-	public $verify_code;
-	
-	//注册同意协议
-	public $agreement = true;
-	
-	//确认密码
-	public $confirm_pwd;
-	
-	//短信验证码
-	public $sms_code;
-	
-	//新密码(登陆后修改密码）
-	public $new_pwd;
-	
-	/* 会员 */
-	const SCENARIO_REGISTER = 'register';//注册
-	const SCENARIO_LOGIN = 'login';//登陆
-	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
-	const SCENARIO_FORGOT_PWD = 'forgot_pwd';//忘记密码
-	const SCENARIO_CHANGE_PWD = 'change_pwd'; //登陆后修改密码
-	const SCENARIO_LOGIN_NO_VERIFY = 'login_no_verify';//登陆(不需要图形验证码）
-	const SCENARIO_FORGOT_PWD_NO_VERIFY = 'forgot_pwd_no_verify';//忘记密码(不需要图形验证码）
-	const SCENARIO_REGISTER_NO_VERIFY = 'register_no_verify';//注册(不需要图形验证码）
-	const SCENARIO_MERCHANT_REGISTER = 'merchant_register';//商户注册
-	
-	/* 商户平台  */
-	/* const SCENARIO_MERCHANT_LOGIN = 'merchant_login';
-	const SCENARIO_MERCHANT_REGISTER = 'merchant_register';
-	const SCENARIO_MERCHANT_AUTO_LOGIN = 'merchant_auto_login'; */
-	
-	
-	public function scenarios()
-	{
-		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code','nick_name'];
-		$scenarios[self::SCENARIO_MERCHANT_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id'];
-		$scenarios[self::SCENARIO_REGISTER_NO_VERIFY] = ['vip_id', 'password','confirm_pwd','sms_code','nick_name'];
-		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
-		$scenarios[self::SCENARIO_LOGIN_NO_VERIFY] = ['vip_id', 'password','remember_me'];
-		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
-		$scenarios[self::SCENARIO_FORGOT_PWD_NO_VERIFY] = ['vip_id', 'password', 'confirm_pwd','sms_code',];
-		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
-		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'new_pwd','confirm_pwd'];
-		return $scenarios;
-	
-		/* return [
-		 self::SCENARIO_LOGIN => ['username', 'password'],
-		 self::SCENARIO_REGISTER => ['username', 'email', 'password'],
-		]; */
-	}
-	
     /**
      * @inheritdoc
      */
@@ -189,7 +146,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'email_verify_flag' => Yii::t('app', '安全邮箱是否已验证(1:是；0：否)'),
             'status' => Yii::t('app', '状态是否有效(1:正常、0:停用)'),
             'register_date' => Yii::t('app', '注册时间'),
-            'rank_id' => Yii::t('app', '会员等级'),
+            'rank_id' => Yii::t('app', '会员等级（关联和会员类型应该不需要会员等级）'),
             'audit_status' => Yii::t('app', '审核状态(商户字段)：未审核，审核不通过，已审核'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
@@ -220,9 +177,57 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getActivities()
+    {
+        return $this->hasMany(Activity::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDeliveryTypes()
+    {
+        return $this->hasMany(DeliveryType::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOutStockSheets()
+    {
+        return $this->hasMany(OutStockSheet::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPickUpPoints()
+    {
+        return $this->hasMany(PickUpPoint::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProducts()
+    {
+        return $this->hasMany(Product::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getProductComments()
     {
         return $this->hasMany(ProductComment::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRefundSheets()
+    {
+        return $this->hasMany(RefundSheet::className(), ['vip_id' => 'id']);
     }
 
     /**
@@ -239,6 +244,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     public function getReturnApplies()
     {
         return $this->hasMany(ReturnApply::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReturnSheets()
+    {
+        return $this->hasMany(ReturnSheet::className(), ['vip_id' => 'id']);
     }
 
     /**
@@ -276,17 +289,33 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSysNotifies()
+    {
+        return $this->hasMany(SysNotify::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSysNotifyLogs()
     {
         return $this->hasMany(SysNotifyLog::className(), ['vip_id' => 'id']);
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSex0()
+    public function getSysRelativeModules()
     {
-    	return $this->hasOne(SysParameter::className(), ['id' => 'sex']);
+        return $this->hasMany(SysRelativeModule::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSysWarehouses()
+    {
+        return $this->hasMany(SysWarehouse::className(), ['vip_id' => 'id']);
     }
 
     /**
@@ -372,6 +401,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSex0()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'sex']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVipAddresses()
     {
         return $this->hasMany(VipAddress::className(), ['vip_id' => 'id']);
@@ -404,6 +441,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getVipCases()
+    {
+        return $this->hasMany(VipCase::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVipCollects()
     {
         return $this->hasMany(VipCollect::className(), ['vip_id' => 'id']);
@@ -431,6 +476,14 @@ class Vip extends \app\models\b2b2c\BasicModel
     public function getVipCoupons()
     {
         return $this->hasMany(VipCoupon::className(), ['vip_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVipCouponTypes()
+    {
+        return $this->hasMany(VipCouponType::className(), ['vip_id' => 'id']);
     }
 
     /**

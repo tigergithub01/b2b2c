@@ -18,7 +18,7 @@ class SysNotifySearch extends SysNotify
     public function rules()
     {
         return [
-            [['id', 'notify_type', 'organization_id', 'issue_user_id', 'send_extend', 'status', 'is_sent'], 'integer'],
+            [['id', 'notify_type', 'vip_id', 'issue_user_id', 'send_extend', 'status', 'is_sent'], 'integer'],
             [['title', 'issue_date', 'content', 'sent_time'], 'safe'],
         ];
     }
@@ -64,7 +64,7 @@ class SysNotifySearch extends SysNotify
             'id' => $this->id,
             'notify_type' => $this->notify_type,
             'issue_date' => $this->issue_date,
-            'organization_id' => $this->organization_id,
+            'vip_id' => $this->vip_id,
             'issue_user_id' => $this->issue_user_id,
             'send_extend' => $this->send_extend,
             'status' => $this->status,
