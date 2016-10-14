@@ -59,6 +59,10 @@ class VipCollect extends \app\models\b2b2c\BasicModel
             'case_id' => Yii::t('app', '关联案例'),
             'blog_id' => Yii::t('app', '关联话题'),
             'collect_date' => Yii::t('app', '收藏时间'),
+        	'vip.vip_id' => Yii::t('app', '会员'),
+        	'product.name' => Yii::t('app', '关联产品'),
+        	'package.name' => Yii::t('app', '关联套餐'),
+        	'case.name' => Yii::t('app', '关联案例'),
         ];
     }
 

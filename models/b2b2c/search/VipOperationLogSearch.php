@@ -99,6 +99,19 @@ class VipOperationLogSearch extends VipOperationLog
             ->andFilterWhere(['like', 'log.op_referrer', $this->op_referrer])
         	->andFilterWhere(['like', 'mod.name', $this->module_name])
         	->andFilterWhere(['like', 'vip.vip_id', $this->vip_name]);
+        
+        if($this->start_date){
+        	$query->andFilterWhere(['>=', 'log.op_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);
+        }
+        
+        if($this->end_date){
+        	$query->andFilterWhere(['<=', 'log.op_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+        }
+        
+//         var_dump(date('Y-m-d 00:00:00',strtotime()));
+//         var_dump(date('Y-m-d 23:59:59',time()));
+//         date('Y-m-d H:i:s',strtotime($this->from_date))
+//         mktime()
 
         return $dataProvider;
     }

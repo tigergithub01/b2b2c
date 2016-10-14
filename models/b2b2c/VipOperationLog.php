@@ -37,7 +37,7 @@ class VipOperationLog extends \app\models\b2b2c\BasicModel
 	public $vip_name;
 	
 	/* 起始日期 （查询用） */
-	public $from_date;
+	public $start_date;
 	
 	/* 结束日期 （查询用） */
 	public $end_date;
@@ -59,7 +59,7 @@ class VipOperationLog extends \app\models\b2b2c\BasicModel
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'module_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
-    	$scenarios[self::SCENARIO_DEFAULT][]  = 'from_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
     	return $scenarios;
     	// 		return parent::scenarios();
@@ -114,7 +114,7 @@ class VipOperationLog extends \app\models\b2b2c\BasicModel
         	'vip.vip_id' => Yii::t('app', '操作会员'),
         	'module_name' => Yii::t('app', '模块名称'),
         	'vip_name' => Yii::t('app', '会员'),
-        	'from_date' => Yii::t('app', '开始日期'),
+        	'start_date' => Yii::t('app', '开始日期'),
         	'end_date' => Yii::t('app', '结束日期'),
         ];
     }
