@@ -18,7 +18,7 @@ class VipBlogSearch extends VipBlog
     public function rules()
     {
         return [
-            [['id', 'blog_type', 'blog_flag', 'vip_id', 'organization_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
+            [['id', 'blog_type', 'blog_flag', 'vip_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
             [['content', 'create_date', 'update_date', 'audit_date', 'audit_memo'], 'safe'],
         ];
     }
@@ -65,7 +65,6 @@ class VipBlogSearch extends VipBlog
             'blog_type' => $this->blog_type,
             'blog_flag' => $this->blog_flag,
             'vip_id' => $this->vip_id,
-            'organization_id' => $this->organization_id,
             'create_date' => $this->create_date,
             'update_date' => $this->update_date,
             'audit_user_id' => $this->audit_user_id,

@@ -18,7 +18,7 @@ class ProductCommentSearch extends ProductComment
     public function rules()
     {
         return [
-            [['id', 'product_id', 'organization_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id'], 'integer'],
+            [['id', 'product_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id'], 'integer'],
             [['content', 'comment_date', 'ip_addr'], 'safe'],
         ];
     }
@@ -56,6 +56,24 @@ class ProductCommentSearch extends ProductComment
             
         ]);
         
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'product.name' => [
+        						'asc'  => ['prod.name' => SORT_ASC],
+        						'desc' => ['prod.name' => SORT_DESC],
+        				],
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'cmtRank.param_val' => [
+        						'asc'  => ['cmtRank.param_val' => SORT_ASC],
+        						'desc' => ['cmtRank.param_val' => SORT_DESC],
+        				],
+        		])
+        ]);
+        
         
 
         $this->load($params);
@@ -70,7 +88,6 @@ class ProductCommentSearch extends ProductComment
         $query->andFilterWhere([
             'pcmt.id' => $this->id,
             'pcmt.product_id' => $this->product_id,
-            'pcmt.organization_id' => $this->organization_id,
             'pcmt.vip_id' => $this->vip_id,
             'pcmt.cmt_rank_id' => $this->cmt_rank_id,
             'pcmt.comment_date' => $this->comment_date,
@@ -81,7 +98,7 @@ class ProductCommentSearch extends ProductComment
         $query->andFilterWhere(['like', 'pcmt.content', $this->content])
             ->andFilterWhere(['like', 'pcmt.ip_addr', $this->ip_addr])
         	->andFilterWhere(['like', 'prod.name', $this->product_name])
-        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_name]);
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
 
         return $dataProvider;
     }

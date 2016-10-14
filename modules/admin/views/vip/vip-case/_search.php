@@ -42,7 +42,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'type_id') ?>
 
-    <?= $form->field($model, 'organization_id') ?>
+    <?= $form->field($model, 'vip_id') ?>
 
     <?= $form->field($model, 'content') ?>
 

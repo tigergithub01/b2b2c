@@ -86,9 +86,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cost_price')->textInput(['maxlength' => true]) ?>
 
-    <?php //echo $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map($orgList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'keywords')->textInput(['maxlength' => true]) ?>
 

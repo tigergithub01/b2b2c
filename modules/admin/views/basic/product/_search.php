@@ -81,9 +81,9 @@ use app\modules\admin\Module;
 
     <?php // echo $form->field($model, 'cost_price') ?>
 
-    <?php // echo $form->field($model, 'organization_id') ?>
+    <?php // echo $form->field($model, 'vip_id') ?>
     
-    <?= $form->field($model, 'organization_id')->dropDownList(\yii\helpers\ArrayHelper::map($orgList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'keywords') ?>
 

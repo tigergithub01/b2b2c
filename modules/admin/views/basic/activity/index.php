@@ -33,7 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'package_price',
             // 'deposit_amount',
             // 'buy_limit_num',
-            // 'organization_id',
+            // 'vip_id',
+            // 'img_url:url',
+            // 'thumb_url:url',
+            // 'img_original',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

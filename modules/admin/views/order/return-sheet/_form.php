@@ -37,9 +37,7 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'return_apply_id')->textInput(['maxlength' => true]) ?>
 
@@ -59,7 +57,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

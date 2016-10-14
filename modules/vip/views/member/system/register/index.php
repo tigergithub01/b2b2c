@@ -36,7 +36,7 @@ $fieldOptions2 = [
 		
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => true]); ?>
 		
-		<?php echo $form->errorSummary($model);?>
+		<?php //echo $form->errorSummary($model);?>
 			
         <?= $form
             ->field($model, 'vip_id', $fieldOptions1)

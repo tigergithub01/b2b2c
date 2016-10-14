@@ -37,15 +37,11 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'blog_type')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'blog_type')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'blog_flag')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 

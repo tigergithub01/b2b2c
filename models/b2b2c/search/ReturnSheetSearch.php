@@ -18,7 +18,7 @@ class ReturnSheetSearch extends ReturnSheet
     public function rules()
     {
         return [
-            [['id', 'sheet_type_id', 'return_apply_id', 'order_id', 'out_id', 'user_id', 'status', 'organization_id'], 'integer'],
+            [['id', 'sheet_type_id', 'return_apply_id', 'order_id', 'out_id', 'user_id', 'status', 'vip_id'], 'integer'],
             [['code', 'sheet_date', 'memo'], 'safe'],
             [['return_amt'], 'number'],
         ];
@@ -71,7 +71,7 @@ class ReturnSheetSearch extends ReturnSheet
             'sheet_date' => $this->sheet_date,
             'return_amt' => $this->return_amt,
             'status' => $this->status,
-            'organization_id' => $this->organization_id,
+            'vip_id' => $this->vip_id,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])

@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		            'id',
             // 'product_id',
             'product.name',
-            //'organization_id',
             // 'vip_id',
             'vip.vip_id',
             //'cmt_rank_id',

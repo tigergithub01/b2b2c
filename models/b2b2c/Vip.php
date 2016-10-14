@@ -80,6 +80,61 @@ use Yii;
  */
 class Vip extends \app\models\b2b2c\BasicModel
 {
+	//记住密码（登陆)
+	public $remember_me = true;
+	
+	//验证码
+	public $verify_code;
+	
+	//注册同意协议
+	public $agreement = true;
+	
+	//确认密码
+	public $confirm_pwd;
+	
+	//短信验证码
+	public $sms_code;
+	
+	//新密码(登陆后修改密码）
+	public $new_pwd;
+	
+	/* 会员 */
+	const SCENARIO_REGISTER = 'register';//注册
+	const SCENARIO_LOGIN = 'login';//登陆
+	const SCENARIO_AUTO_LOGIN = 'auto_login';//自动登陆
+	const SCENARIO_FORGOT_PWD = 'forgot_pwd';//忘记密码
+	const SCENARIO_CHANGE_PWD = 'change_pwd'; //登陆后修改密码
+	const SCENARIO_LOGIN_NO_VERIFY = 'login_no_verify';//登陆(不需要图形验证码）
+	const SCENARIO_FORGOT_PWD_NO_VERIFY = 'forgot_pwd_no_verify';//忘记密码(不需要图形验证码）
+	const SCENARIO_REGISTER_NO_VERIFY = 'register_no_verify';//注册(不需要图形验证码）
+	const SCENARIO_MERCHANT_REGISTER = 'merchant_register';//商户注册
+	
+	/* 商户平台  */
+	/* const SCENARIO_MERCHANT_LOGIN = 'merchant_login';
+	const SCENARIO_MERCHANT_REGISTER = 'merchant_register';
+	const SCENARIO_MERCHANT_AUTO_LOGIN = 'merchant_auto_login'; */
+	
+	
+	public function scenarios()
+	{
+		$scenarios = parent::scenarios();
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code','nick_name'];
+		$scenarios[self::SCENARIO_MERCHANT_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id'];
+		$scenarios[self::SCENARIO_REGISTER_NO_VERIFY] = ['vip_id', 'password','confirm_pwd','sms_code','nick_name'];
+		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
+		$scenarios[self::SCENARIO_LOGIN_NO_VERIFY] = ['vip_id', 'password','remember_me'];
+		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
+		$scenarios[self::SCENARIO_FORGOT_PWD_NO_VERIFY] = ['vip_id', 'password', 'confirm_pwd','sms_code',];
+		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
+		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'new_pwd','confirm_pwd'];
+		return $scenarios;
+	
+		/* return [
+		 self::SCENARIO_LOGIN => ['username', 'password'],
+		 self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+		]; */
+	}
+	
     /**
      * @inheritdoc
      */

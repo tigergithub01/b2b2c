@@ -41,7 +41,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 

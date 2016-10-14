@@ -57,7 +57,8 @@ class RegisterController extends BaseController
     	/* return $this->renderAjax('login', [
     	 'model' => $model,
     	]); */
-    
+    	//还原密码，因为验证不通过时，password已经被md5加密
+    	$model->password = $model->confirm_pwd;
     
     	return $this->render('index', [
     			'model' => $model,

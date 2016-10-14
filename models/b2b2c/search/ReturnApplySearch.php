@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\RefundSheet;
+use app\models\b2b2c\ReturnApply;
 
 /**
- * RefundSheetSearch represents the model behind the search form about `app\models\b2b2c\RefundSheet`.
+ * ReturnApplySearch represents the model behind the search form about `app\models\b2b2c\ReturnApply`.
  */
-class RefundSheetSearch extends RefundSheet
+class ReturnApplySearch extends ReturnApply
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class RefundSheetSearch extends RefundSheet
     public function rules()
     {
         return [
-            [['id', 'sheet_type_id', 'refund_apply_id', 'order_id', 'return_id', 'user_id', 'status', 'vip_id'], 'integer'],
-            [['code', 'sheet_date', 'memo'], 'safe'],
-            [['need_return_amt', 'return_amt'], 'number'],
+            [['id', 'sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
+            [['apply_date', 'reason'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class RefundSheetSearch extends RefundSheet
      */
     public function search($params)
     {
-        $query = RefundSheet::find();
+        $query = ReturnApply::find();
 
         // add conditions that should always apply here
 
@@ -64,19 +63,13 @@ class RefundSheetSearch extends RefundSheet
         $query->andFilterWhere([
             'id' => $this->id,
             'sheet_type_id' => $this->sheet_type_id,
-            'refund_apply_id' => $this->refund_apply_id,
-            'order_id' => $this->order_id,
-            'return_id' => $this->return_id,
-            'user_id' => $this->user_id,
-            'sheet_date' => $this->sheet_date,
-            'need_return_amt' => $this->need_return_amt,
-            'return_amt' => $this->return_amt,
-            'status' => $this->status,
+            'apply_date' => $this->apply_date,
             'vip_id' => $this->vip_id,
+            'order_id' => $this->order_id,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'memo', $this->memo]);
+        $query->andFilterWhere(['like', 'reason', $this->reason]);
 
         return $dataProvider;
     }

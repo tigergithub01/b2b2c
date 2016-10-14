@@ -43,11 +43,9 @@ use app\modules\admin\Module;
     
     <?= $form->field($model, 'product_name') ?>
 
-    <?php //echo $form->field($model, 'organization_id') ?>
-
     <?php //echo  $form->field($model, 'vip_id') ?>
     
-    <?= $form->field($model, 'vip_name') ?>
+    <?= $form->field($model, 'vip_no') ?>
 	
     <?php //echo $form->field($model, 'cmt_rank_id') ?>
     

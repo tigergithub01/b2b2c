@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'return_amt',
             // 'memo',
             // 'status',
-            // 'organization_id',
+            // 'vip_id',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

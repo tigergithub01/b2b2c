@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\VipBlogSearch */
+/* @var $model app\models\b2b2c\search\ProductBrandSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="vip-blog-search">
+<div class="product-brand-search">
 	
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -36,36 +37,20 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'blog_type') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'blog_flag') ?>
+    <?= $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
-
-    <?= $form->field($model, 'content') ?>
-
-    <?php // echo $form->field($model, 'create_date') ?>
-
-    <?php // echo $form->field($model, 'update_date') ?>
-
-    <?php // echo $form->field($model, 'audit_user_id') ?>
-
-    <?php // echo $form->field($model, 'audit_status') ?>
-
-    <?php // echo $form->field($model, 'audit_date') ?>
-
-    <?php // echo $form->field($model, 'audit_memo') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
+    <?= $form->field($model, 'brand_logo') ?>
 
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip Blog'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Product Brand'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'blog_type',
             'blog_flag',
             'vip_id',
-            'organization_id',
             'content:ntext',
             'create_date',
             'update_date',

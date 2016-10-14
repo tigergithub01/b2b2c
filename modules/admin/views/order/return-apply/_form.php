@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\Activity */
+/* @var $model app\models\b2b2c\ReturnApply */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="activity-form">
+<div class="return-apply-form">
 
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -37,31 +37,17 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'activity_type')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'activity_scope')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'start_time')->textInput() ?>
-
-    <?= $form->field($model, 'end_date')->textInput() ?>
-
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'deposit_amount')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'buy_limit_num')->textInput() ?>
+    <?= $form->field($model, 'apply_date')->textInput() ?>
 
     <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'reason')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

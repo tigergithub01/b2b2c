@@ -36,7 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'package_price',
             'deposit_amount',
             'buy_limit_num',
-            'organization_id',
+            'vip_id',
+            'img_url:url',
+            'thumb_url:url',
+            'img_original',
 		        ],
 		    ]) ?>
     	</div>

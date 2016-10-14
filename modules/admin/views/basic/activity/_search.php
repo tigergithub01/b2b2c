@@ -56,7 +56,13 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'buy_limit_num') ?>
 
-    <?php // echo $form->field($model, 'organization_id') ?>
+    <?php // echo $form->field($model, 'vip_id') ?>
+
+    <?php // echo $form->field($model, 'img_url') ?>
+
+    <?php // echo $form->field($model, 'thumb_url') ?>
+
+    <?php // echo $form->field($model, 'img_original') ?>
 
 	    
 	    </div>

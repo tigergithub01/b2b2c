@@ -18,7 +18,7 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'organization_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id'], 'integer'],
+            [['id', 'type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'vip_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id'], 'integer'],
             [['code', 'name', 'description', 'audit_date', 'return_desc', 'keywords', 'img_url', 'thumb_url', 'img_original'], 'safe'],
             [['market_price', 'sale_price', 'deposit_amount', 'stock_quantity', 'safety_quantity', 'cost_price', 'product_weight'], 'number'],
         ];
@@ -45,7 +45,7 @@ class ProductSearch extends Product
         $query = Product::find()->alias('p')
     	->joinWith('type tp')
     	->joinWith('brand bd')
-    	->joinWith('organization org')
+    	->joinWith('vip vip')
     	->joinWith('isOnSale onSale')
     	->joinWith('isHot hot')
     	->joinWith('auditStatus audit')
@@ -72,9 +72,9 @@ class ProductSearch extends Product
         						'asc'  => ['tp.name' => SORT_ASC],
         						'desc' => ['tp.name' => SORT_DESC],
         				],
-        				'organization.name' => [
-        						'asc'  => ['org.name' => SORT_ASC],
-        						'desc' => ['org.name' => SORT_DESC],
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
         		])
         ]);
@@ -106,7 +106,7 @@ class ProductSearch extends Product
             'p.can_return_flag' => $this->can_return_flag,
             'p.return_days' => $this->return_days,
             'p.cost_price' => $this->cost_price,
-            'p.organization_id' => $this->organization_id,
+            'p.vip_id' => $this->vip_id,
             'p.is_free_shipping' => $this->is_free_shipping,
             'p.give_integral' => $this->give_integral,
             'p.rank_integral' => $this->rank_integral,

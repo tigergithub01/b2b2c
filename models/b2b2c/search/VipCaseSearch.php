@@ -18,7 +18,7 @@ class VipCaseSearch extends VipCase
     public function rules()
     {
         return [
-            [['id', 'type_id', 'organization_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
+            [['id', 'type_id', 'vip_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['name', 'content', 'create_date', 'update_date', 'audit_date', 'audit_memo', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'safe'],
             [['market_price', 'sale_price'], 'number'],
         ];
@@ -64,7 +64,7 @@ class VipCaseSearch extends VipCase
         $query->andFilterWhere([
             'id' => $this->id,
             'type_id' => $this->type_id,
-            'organization_id' => $this->organization_id,
+            'vip_id' => $this->vip_id,
             'create_date' => $this->create_date,
             'update_date' => $this->update_date,
             'status' => $this->status,

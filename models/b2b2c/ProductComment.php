@@ -28,12 +28,31 @@ use Yii;
  */
 class ProductComment extends \app\models\b2b2c\BasicModel
 {
+	/* 产品名称（查询用） */
+	public $product_name;
+	
+	/* 会员名（查询用） */
+	public $vip_no;
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_product_comment';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'product_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -64,12 +83,18 @@ class ProductComment extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'product_id' => Yii::t('app', '关联产品编号（评价商品时写此字段)'),
             'vip_id' => Yii::t('app', '会员编号'),
-            'cmt_rank_id' => Yii::t('app', '评价等级（好评、中评、差评）(也可以是星级1：差；2，3：中，4，5：好）'),
+            'cmt_rank_id' => Yii::t('app', '评价等级'/* '评价等级（好评、中评、差评）(也可以是星级1：差；2，3：中，4，5：好）' */),
             'content' => Yii::t('app', '评价内容'),
             'comment_date' => Yii::t('app', '评价时间'),
             'ip_addr' => Yii::t('app', '评价IP地址'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
             'parent_id' => Yii::t('app', '上级评价'),
+        	'status0.param_val' => '是否显示',
+        	'cmtRank.param_val' => '评价等级',
+        	'vip.vip_id' => '会员',
+        	'product.name' => '关联产品',
+        	'product_name'  => '产品名称',
+        	'vip_no'  => '会员编号',
         ];
     }
 

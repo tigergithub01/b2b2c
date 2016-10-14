@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\VipCase */
+/* @var $model app\models\b2b2c\ReturnApply */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Vip Cases'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Return Applies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vip-case-view">
+<div class="return-apply-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -27,24 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'name',
-            'type_id',
+            'sheet_type_id',
+            'apply_date',
             'vip_id',
-            'content:ntext',
-            'create_date',
-            'update_date',
+            'order_id',
+            'reason',
             'status',
-            'audit_status',
-            'audit_user_id',
-            'audit_date',
-            'audit_memo',
-            'cover_img_url:url',
-            'cover_thumb_url:url',
-            'cover_img_original',
-            'is_hot',
-            'case_flag',
-            'market_price',
-            'sale_price',
 		        ],
 		    ]) ?>
     	</div>

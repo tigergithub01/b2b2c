@@ -18,8 +18,8 @@ class ActivitySearch extends Activity
     public function rules()
     {
         return [
-            [['id', 'activity_type', 'activity_scope', 'buy_limit_num', 'organization_id'], 'integer'],
-            [['name', 'start_time', 'end_date', 'description'], 'safe'],
+            [['id', 'activity_type', 'activity_scope', 'buy_limit_num', 'vip_id'], 'integer'],
+            [['name', 'start_time', 'end_date', 'description', 'img_url', 'thumb_url', 'img_original'], 'safe'],
             [['package_price', 'deposit_amount'], 'number'],
         ];
     }
@@ -70,11 +70,14 @@ class ActivitySearch extends Activity
             'package_price' => $this->package_price,
             'deposit_amount' => $this->deposit_amount,
             'buy_limit_num' => $this->buy_limit_num,
-            'organization_id' => $this->organization_id,
+            'vip_id' => $this->vip_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'img_url', $this->img_url])
+            ->andFilterWhere(['like', 'thumb_url', $this->thumb_url])
+            ->andFilterWhere(['like', 'img_original', $this->img_original]);
 
         return $dataProvider;
     }

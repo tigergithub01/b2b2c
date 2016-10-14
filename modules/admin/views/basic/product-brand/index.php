@@ -3,14 +3,15 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\ReturnSheetSearch */
+/* @var $searchModel app\models\b2b2c\search\ProductBrandSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Return Sheets');
+$this->title = Module::t('app', 'Product Brands');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="return-sheet-index">
+<div class="product-brand-index">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		<div class="box box-primary">
@@ -24,17 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'sheet_type_id',
-            'return_apply_id',
-            'code',
-            'order_id',
-            // 'out_id',
-            // 'user_id',
-            // 'sheet_date',
-            // 'return_amt',
-            // 'memo',
-            // 'status',
-            // 'vip_id',
+            'name',
+            'description',
+            'brand_logo',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

@@ -94,6 +94,7 @@ class MerchantService{
 		$model->audit_status = SysParameter::audit_need_approve;
 		$model->mobile_verify_flag = SysParameter::yes;
 		$model->password = md5($model->password);
+		$model->last_login_date = date(MerchantConst::DATE_FORMAT,time());//注册成功后自动登录
 		
 		//判断该用户是否已经注册
 		$count = Vip::find()->where(['vip_id'=>$model->vip_id,'merchant_flag'=>SysParameter::yes])->count();
@@ -140,7 +141,7 @@ class MerchantService{
 				return false;
 			}
 			
-			//insert VipOrganization extend，插入扩展信息
+			//insert VipOrganization extend，插入扩展信息(用来存放商户省份证等你信息）
 			$vipExtend = new VipExtend();
 			$vipExtend->audit_status  = SysParameter::audit_need_approve;
 			$vipExtend->vip_id = $model->id;
@@ -174,7 +175,7 @@ class MerchantService{
 			$product->is_hot = SysParameter::no;
 			$product->audit_status = SysParameter::audit_need_approve;
 			$product->can_return_flag = SysParameter::no;
-			$product->organization_id = $vipOrg->id;
+			$product->vip_id = $model->id;
 			$product->is_free_shipping = SysParameter::no;
 			if(!($product->insert())){
 				Yii::error($product->errors);

@@ -12,7 +12,7 @@ $this->title = Module::t('app', 'Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel, 'ptypeList' => $ptypeList ,'pbrandList' => $pbrandList, 'orgList' => $orgList]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 'ptypeList' => $ptypeList ,'pbrandList' => $pbrandList, 'vipList' => $vipList]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
         	'type.name',
         	'brand.name',
-        	'organization.name',
+        	'vip.vip_id',
             // 'type_id',
             // 'brand_id',
             // 'market_price',

@@ -42,8 +42,6 @@ use app\models\b2b2c\common\Constant;
 	    
 	<?= $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?php //echo $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
-
     <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>

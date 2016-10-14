@@ -26,6 +26,7 @@ use app\models\b2b2c\VipBlog;
                 	['label' => '基础资料', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '产品分类',  'url' => ['basic/product-type/index'],'icon' => 'fa fa-circle-o'],
+                					['label' => '产品品牌',  'url' => ['basic/product-brand/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '个人服务',  'url' => ['basic/product/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '团体服务',  'url' => ['basic/activity/index'],'icon' => 'fa fa-circle-o',],
                                  ],
@@ -43,7 +44,6 @@ use app\models\b2b2c\VipBlog;
                 	['label' => '商户管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '商户列表',  'url' => ['vip/merchant/index'],'icon' => 'fa fa-circle-o'],
-                					['label' => '商户日志',  'url' => ['vip/merchant-operation-log/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '案例分类',  'url' => ['vip/vip-case-type/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '案例列表',  'url' => ['vip/vip-case/index'],'icon' => 'fa fa-circle-o',],
                 			],
@@ -58,7 +58,10 @@ use app\models\b2b2c\VipBlog;
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '退款申请单', 'url' => ['order/refund-sheet-apply/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '退款单', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '退货申请单', 'url' => ['order/return-apply/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '退货单', 'url' => ['order/return-sheet/index'],'icon' => 'fa fa-circle-o',],
                 			],
                 	],
                 	['label' => '系统设置', 'icon' => 'fa fa-table','url' => '#',

@@ -11,8 +11,9 @@ use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
 use app\models\b2b2c\ProductType;
 use app\models\b2b2c\ProductBrand;
-use app\models\b2b2c\VipOrganization;
 use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysParameter;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -50,7 +51,7 @@ class ProductController extends BaseAuthController
             'dataProvider' => $dataProvider,
         	'ptypeList' => $this->findPtypeList(),
         	'pbrandList' => $this->findPbrandList(),
-        	'orgList' => $this->findOrgList(),
+        	'vipList' => $this->findVipList(),
         ]);
     }
 
@@ -83,7 +84,7 @@ class ProductController extends BaseAuthController
                 'model' => $model,
             	'ptypeList' => $this->findPtypeList(),
             	'pbrandList' => $this->findPbrandList(),
-            	'orgList' => $this->findOrgList(),
+            	'vipList' => $this->findVipList(),
             	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             	'pStatusList' => SysParameterType::getSysParametersById(SysParameterType::PRODUCT_STATUS),
             	'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
@@ -109,7 +110,7 @@ class ProductController extends BaseAuthController
                 'model' => $model,
             		'ptypeList' => $this->findPtypeList(),
             		'pbrandList' => $this->findPbrandList(),
-            		'orgList' => $this->findOrgList(),
+            		'vipList' => $this->findVipList(),
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'pStatusList' => SysParameterType::getSysParametersById(SysParameterType::PRODUCT_STATUS),
             		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
@@ -142,7 +143,7 @@ class ProductController extends BaseAuthController
     	$model = Product::find()->alias('p')
     	->joinWith('type tp')
     	->joinWith('brand bd')
-    	->joinWith('organization org')
+    	->joinWith('vip vip')
     	->joinWith('isOnSale onSale')
     	->joinWith('isHot hot')
     	->joinWith('auditStatus audit')
@@ -178,8 +179,8 @@ class ProductController extends BaseAuthController
      * 
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
-    protected  function findOrgList(){
-    	return VipOrganization::find()->all();
+    protected  function findVipList(){
+    	return Vip::find()->where(['merchant_flag'=>SysParameter::yes])->all();
     }
     
     

@@ -59,7 +59,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'organization_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

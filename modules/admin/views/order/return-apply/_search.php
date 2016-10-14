@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\VipBlogSearch */
+/* @var $model app\models\b2b2c\search\ReturnApplySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="vip-blog-search">
+<div class="return-apply-search">
 	
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -38,25 +38,15 @@ use yii\widgets\ActiveForm;
 	
 	    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'blog_type') ?>
+    <?= $form->field($model, 'sheet_type_id') ?>
 
-    <?= $form->field($model, 'blog_flag') ?>
+    <?= $form->field($model, 'apply_date') ?>
 
     <?= $form->field($model, 'vip_id') ?>
 
-    <?= $form->field($model, 'content') ?>
+    <?= $form->field($model, 'order_id') ?>
 
-    <?php // echo $form->field($model, 'create_date') ?>
-
-    <?php // echo $form->field($model, 'update_date') ?>
-
-    <?php // echo $form->field($model, 'audit_user_id') ?>
-
-    <?php // echo $form->field($model, 'audit_status') ?>
-
-    <?php // echo $form->field($model, 'audit_date') ?>
-
-    <?php // echo $form->field($model, 'audit_memo') ?>
+    <?php // echo $form->field($model, 'reason') ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
@@ -65,7 +55,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip Blog'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Yii::t('app', 'Create Return Apply'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>
