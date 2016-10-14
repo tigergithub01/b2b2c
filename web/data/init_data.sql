@@ -87,9 +87,7 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(1400
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(14002,14,'找回密码',null,2);
 
 
-insert into t_sys_parameter_type(id,name,description) values(15,'会员状态',null);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(15001,15,'正常',null,1);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(15002,15,'停用',null,2);
+
 
 insert into t_sys_parameter_type(id,name,description) values(16,'博客分类',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(16001,16,'会员博客',null,1);
@@ -128,11 +126,20 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2200
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22004,22,'区',null,4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(22005,22,'县（街道)',null,5);
 
+insert into t_sys_parameter_type(id,name,description) values(23,'性别',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23001,23,'男',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23002,23,'女',null,2);
+
+
 
 
 /*
 select * from t_sys_parameter_type;
-select * from t_sys_parameter;
+select * from t_sys_parameter where type_id = 23;
+
+delete from t_sys_parameter where type_id = 23;
+
+select * from t_sys_parameter where type_id = 23;
 */
 
 /*
@@ -147,6 +154,11 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2300
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23003,23,'摄影师',null,3);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23004,23,'化妆师',null,4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23005,23,'摄像师)',null,5);
+
+--状态用是否代替
+insert into t_sys_parameter_type(id,name,description) values(15,'会员状态',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(15001,15,'正常',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(15002,15,'停用',null,2);
 
 
 
@@ -171,10 +183,11 @@ select * from t_sys_app_release;
 
 update t_sys_app_release set name = 'v1.0' where
 delete from t_vip_case_type where id >5
+update t_sys_app_release set app_path = 'uploads/app/wedding.apk' where id = 1;
 */
 /**插入app信息*/
 insert into t_sys_app_info(name,code,description,release_id) values('婚礼兔andorid版','wedding_android',null,null);
-insert into t_sys_app_release(name,ver_no,upgrade_desc,force_upgrade,app_path,app_info_id)values('v1.0',1,'初始版本',1,'app/wedding.apk',1);
+insert into t_sys_app_release(name,ver_no,upgrade_desc,force_upgrade,app_path,app_info_id)values('v1.0',1,'初始版本',1,'uploads/app/wedding.apk',1);
 update t_sys_app_info set release_id =1 where code = 'wedding_android';
 
 
@@ -213,7 +226,31 @@ insert into t_vip_case_type(name,vip_type_id)values('摄影师',3);
 insert into t_vip_case_type(name,vip_type_id)values('化妆师',4);
 insert into t_vip_case_type(name,vip_type_id)values('摄像师',5);
 
-/***t_sys_config*/
+
+/***insert into t_vip_product_type 商家经营范围*/
+/**
+select * from t_vip_product_type;
+
+*/
+
+insert into t_vip_product_type(product_type_id,vip_type_id)values(2,1);
+insert into t_vip_product_type(product_type_id,vip_type_id)values(3,2);
+insert into t_vip_product_type(product_type_id,vip_type_id)values(4,3);
+insert into t_vip_product_type(product_type_id,vip_type_id)values(5,4);
+insert into t_vip_product_type(product_type_id,vip_type_id)values(6,5);
+
+
+/***博客分类**/
+insert into t_vip_blog_type(name)values('经验分享');
+insert into t_vip_blog_type(name)values('婚品转让');
+insert into t_vip_blog_type(name)values('有问必答');
+insert into t_vip_blog_type(name)values('分享婚礼');
+
+/**商家注册协议**/
+insert into t_sys_article(title,code,issue_date,is_show,is_sys_flag,content)
+values('商家注册协议','register_agreement',now(),1,1,'注册协议，完善中...');
+
+
 /**
 
 select * from t_sys_config;

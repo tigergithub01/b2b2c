@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/10/10 23:26:31                          */
+/* Created on:     2016/10/14 11:30:37                          */
 /*==============================================================*/
 
 
@@ -341,7 +341,10 @@ create table t_activity
    package_price        decimal(20,6) comment '套装价',
    deposit_amount       decimal(20,6) comment '最少定金金额',
    buy_limit_num        int comment '限购数量',
-   organization_id      bigint(20) not null comment '关联组织编码',
+   vip_id               bigint(20) not null comment '关联商户编号',
+   img_url              varchar(255) comment '图片（放大后查看）(上传商品图片后自动加入商品相册）',
+   thumb_url            varchar(255) comment '缩略图',
+   img_original         varchar(255) comment '原图',
    primary key (id)
 );
 
@@ -354,7 +357,7 @@ create table t_delivery_type
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
    tpl_id               bigint(20) not null comment '配送方式名称',
-   organization_id      bigint(20) not null comment '机构编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    description          varchar(255) comment '描述',
    status               bigint(20) not null comment '是否启用？(1:是；0:否)',
    primary key (id)
@@ -423,11 +426,11 @@ create table t_out_stock_sheet
    code                 varchar(30) not null comment '发货单编号（根据规则自动生成）',
    order_id             bigint(20) not null comment '关联订单编号',
    user_id              bigint(20) not null comment '制单人',
+   vip_id               bigint(20) not null comment '关联商户编号',
    sheet_date           datetime not null comment '单据生成时间',
    status               bigint(20) not null comment '发货单状态（未发货、已发货）',
    delivery_type        bigint(20) not null comment '配送方式',
    delivery_no          varchar(60) not null comment '快递单号',
-   organization_id      bigint(20) not null comment '关联机构编号',
    primary key (id)
 );
 
@@ -488,7 +491,7 @@ create unique index Index_pay_type_code on t_pay_type
 create table t_pick_up_point
 (
    id                   bigint(20) not null auto_increment comment '主键',
-   organization_id      bigint(20) not null comment '关联机构编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    name                 varchar(50) not null comment '自提点名称',
    address              varchar(100) not null comment '自提点地址',
    status               bigint(20) not null comment '是否启用：1、是；0、否；',
@@ -535,7 +538,7 @@ create table t_product
    return_days          bigint(20) comment '可退货天数(可以退货时才设置此字段)',
    return_desc          text comment '退货规则描述',
    cost_price           decimal(20,6) comment '成本价',
-   organization_id      bigint(20) not null comment '产品所属店铺（机构）',
+   vip_id               bigint(20) not null comment '关联商户编号',
    keywords             varchar(100) comment '商品关键字，供检索用',
    is_free_shipping     bigint(20) not null comment '是否免运费商品',
    give_integral        int(10) comment '赠送消费积分数',
@@ -575,7 +578,6 @@ create table t_product_comment
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
    product_id           bigint(20) comment '关联产品编号（评价商品时写此字段)',
-   organization_id      bigint(20) comment '关联店铺（机构）编号（评价店铺时写此字段）',
    vip_id               bigint(20) not null comment '会员编号',
    cmt_rank_id          bigint(20) comment '评价等级（好评、中评、差评）(也可以是星级1：差；2，3：中，4，5：好）',
    content              varchar(300) not null comment '评价内容',
@@ -791,7 +793,7 @@ create table t_refund_sheet
    return_amt           decimal(20,6) comment '实际退款金额',
    memo                 varchar(400) comment '备注',
    status               bigint(20) not null comment '退款单状态（待退款、已退款）',
-   organization_id      bigint(20) not null comment '关联机构编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -849,7 +851,7 @@ alter table t_return_apply_detail comment '退换货申请';
 /*==============================================================*/
 create table t_return_sheet
 (
-   id                   bigint(20) not null comment '主键编号',
+   id                   bigint(20) not null auto_increment comment '主键编号',
    sheet_type_id        bigint(20) not null comment '单据类型',
    return_apply_id      bigint(20) comment '退货申请单号',
    code                 varchar(30) not null comment '退货单编号（根据单据规则自动生成）',
@@ -860,7 +862,7 @@ create table t_return_sheet
    return_amt           decimal(20,6) comment '本次退货金额',
    memo                 varchar(400) comment '备注',
    status               bigint(20) not null comment '退货单状态（待退货、已完成）',
-   organization_id      bigint(20) not null comment '关联机构编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -1234,10 +1236,12 @@ create table t_sys_notify
    title                varchar(60) not null comment '标题',
    issue_date           datetime not null comment '发布日期',
    content              text comment '内容',
-   organization_id      bigint(20) comment '发布机构(店铺发布公告时使用此字段）',
-   issue_user_id        bigint(20) comment '发布公告时使用此字段',
+   vip_id               bigint(20) comment '关联商户编号(联商户布公告时使用此字段)',
+   issue_user_id        bigint(20) comment '发布人（发布公告时使用此字段）',
    send_extend          bigint(20) not null comment '发送范围[全部（商户+会员)-待定,商户,会员]',
    status               bigint(20) not null comment '是否有效（1：是，0：否）',
+   is_sent              bigint(20) not null comment '是否已发送（1：是，0：否）',
+   sent_time            datetime comment '发送时间',
    primary key (id)
 );
 
@@ -1337,8 +1341,8 @@ alter table t_sys_parameter_type comment '参数类型表';
 create table t_sys_region
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
-   name                 varchar(60) not null comment '省份名称',
-   parent_id            bigint(20) comment '上级区域编号',
+   name                 varchar(60) not null comment '区域名称',
+   parent_id            bigint(20) comment '上级区域',
    region_type          bigint(20) not null comment '国家省市区类别',
    primary key (id)
 );
@@ -1355,7 +1359,7 @@ create table t_sys_relative_module
    is_show              bigint(20) not null comment '是否显示',
    footer_content       text comment '底部内容',
    header_content       text comment '底部内容',
-   organization_id      bigint(20) not null comment '关联机构编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -1450,7 +1454,7 @@ create table t_sys_warehouse
 (
    id                   bigint(20) not null auto_increment comment '主键',
    name                 varchar(30) not null comment '仓库名称',
-   organization_id      bigint(20) not null comment '所属机构',
+   vip_id               bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -1485,9 +1489,9 @@ create table t_vip
    mobile_verify_flag   bigint(20) comment '手机号码是否已经验证',
    email                varchar(30) comment '安全邮箱',
    email_verify_flag    bigint(20) not null comment '安全邮箱是否已验证(1:是；0：否)',
-   status               bigint(20) not null comment '会员状态(1:正常、0:停用)',
+   status               bigint(20) not null comment '是否有效(1:正常、0:停用)',
    register_date        datetime not null comment '注册时间',
-   rank_id              bigint(20) comment '会员等级',
+   rank_id              bigint(20) comment '会员等级（关联和会员类型应该不需要会员等级）',
    audit_status         bigint(20) not null comment '审核状态(商户字段)：未审核，审核不通过，已审核',
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
@@ -1539,11 +1543,10 @@ alter table t_vip_address comment '会员收货地址表';
 /*==============================================================*/
 create table t_vip_blog
 (
-   id                   bigint(20) not null comment '主键编号',
+   id                   bigint(20) not null auto_increment comment '主键编号',
    blog_type            bigint(20) comment '博客频道',
    blog_flag            bigint(20) not null comment '博客分类：会员博客，商户博客',
-   vip_id               bigint(20) comment '关联用户编号(普通博客填写此字段)',
-   organization_id      bigint(20) comment '店铺动态（店铺博客填写此字段）',
+   vip_id               bigint(20) comment '关联会员编号',
    content              text not null comment '发布内容',
    create_date          datetime not null comment '发布时间',
    update_date          datetime not null comment '更新时间',
@@ -1625,7 +1628,7 @@ create table t_vip_case
    id                   bigint(20) not null auto_increment comment '主键编号',
    name                 varchar(50) not null comment '案例名称',
    type_id              bigint(20) not null comment '案例类型',
-   organization_id      bigint(20) not null comment '关联店铺（机构）编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    content              text not null comment '发布内容',
    create_date          datetime not null comment '发布时间',
    update_date          datetime not null comment '更新时间',
@@ -1795,7 +1798,7 @@ create table t_vip_coupon_type
    send_end_date        datetime comment '发放结束日期',
    use_start_date       datetime comment '使用起始日期（只有当前时间介于起始日期和截止日期之间时，此类型的红包才可以使用）',
    use_end_date         datetime comment '使用结束日期',
-   organization_id      bigint(20) not null comment '关联机构编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -1973,10 +1976,10 @@ create table t_vip_type
 (
    id                   bigint(20) not null auto_increment comment '主键',
    code                 varchar(30) comment '编号',
-   name                 varchar(60) not null comment '经营范围名称',
+   name                 varchar(60) not null comment '名称',
    description          varchar(400) comment '描述',
    seq_id               int comment '排序',
-   merchant_flag        bigint(20) not null comment '商家分类与会员分类？1：商家；0：会员',
+   merchant_flag        bigint(20) not null comment '是否商家类型？1：商家；0：会员',
    primary key (id)
 );
 
@@ -2042,17 +2045,17 @@ alter table t_activity add constraint fk_act_scope_ref_param foreign key (activi
 alter table t_activity add constraint fk_act_type_ref_param foreign key (activity_type)
       references t_sys_parameter (id);
 
-alter table t_activity add constraint fk_activity_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
+alter table t_activity add constraint fk_activity_vip_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_delivery_type add constraint fk_delivery_ref_tpl foreign key (tpl_id)
       references t_delivery_type_tpl (id);
 
-alter table t_delivery_type add constraint fk_delivery_type_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
 alter table t_delivery_type add constraint fk_delivery_type_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
+
+alter table t_delivery_type add constraint fk_delivery_type_vip_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_delivery_type_area add constraint fk_delivery_area_ref_delivery foreign key (delivery_id)
       references t_delivery_type (id);
@@ -2072,8 +2075,8 @@ alter table t_out_stock_sheet add constraint fk_out_ref_delivery_type foreign ke
 alter table t_out_stock_sheet add constraint fk_out_stock_ref_so foreign key (order_id)
       references t_so_sheet (id);
 
-alter table t_out_stock_sheet add constraint fk_out_stock_st_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
+alter table t_out_stock_sheet add constraint fk_out_stock_sheet_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_out_stock_sheet add constraint fk_out_stock_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
@@ -2096,8 +2099,8 @@ alter table t_pay_type add constraint fk_pay_type_stat_ref_param foreign key (st
 alter table t_pick_up_point add constraint fk_pick_up_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
 
-alter table t_pick_up_point add constraint fk_pickup_point_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
+alter table t_pick_up_point add constraint fk_pick_up_vip_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_pick_up_point_region add constraint fk_pickup_region_ref_pickup foreign key (point_id)
       references t_pick_up_point (id);
@@ -2132,11 +2135,11 @@ alter table t_product add constraint fk_product_on_sale_ref_param foreign key (i
 alter table t_product add constraint fk_product_ref_brand foreign key (brand_id)
       references t_product_brand (id);
 
-alter table t_product add constraint fk_product_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
 alter table t_product add constraint fk_product_ref_rel_module foreign key (relative_module)
       references t_sys_relative_module (id);
+
+alter table t_product add constraint fk_product_vip_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_product_comment add constraint fk_fk_p_comment_result_ref_param foreign key (cmt_rank_id)
       references t_sys_parameter (id);
@@ -2147,10 +2150,7 @@ alter table t_product_comment add constraint fk_p_comment_ref_product foreign ke
 alter table t_product_comment add constraint fk_prod_cmt_parent_ref_prod foreign key (parent_id)
       references t_product_comment (id);
 
-alter table t_product_comment add constraint fk_prod_cmt_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
-alter table t_product_comment add constraint fk_prod_cmt_ref_prod foreign key (vip_id)
+alter table t_product_comment add constraint fk_prod_cmt_ref_vip foreign key (vip_id)
       references t_vip (id);
 
 alter table t_product_comment add constraint fk_product_cmt_show_ref_param foreign key (status)
@@ -2237,8 +2237,8 @@ alter table t_refund_sheet add constraint fk_refund_ref_rfd_apply foreign key (r
 alter table t_refund_sheet add constraint fk_refund_ref_user foreign key (user_id)
       references t_sys_user (id);
 
-alter table t_refund_sheet add constraint fk_refund_st_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
+alter table t_refund_sheet add constraint fk_refund_st_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_refund_sheet add constraint fk_refund_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
@@ -2267,9 +2267,6 @@ alter table t_return_apply_detail add constraint fk_return_apply_dt_ref_prod for
 alter table t_return_apply_detail add constraint fk_rt_detail_ref_return foreign key (return_apply_id)
       references t_return_apply (id);
 
-alter table t_return_sheet add constraint fk_return_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
 alter table t_return_sheet add constraint fk_return_ref_return_apply foreign key (return_apply_id)
       references t_return_apply (id);
 
@@ -2278,6 +2275,9 @@ alter table t_return_sheet add constraint fk_return_sheet_ref_out foreign key (o
 
 alter table t_return_sheet add constraint fk_return_sheet_ref_user foreign key (user_id)
       references t_sys_user (id);
+
+alter table t_return_sheet add constraint fk_return_sheet_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_return_sheet add constraint fk_return_sheet_stat_ref_para foreign key (status)
       references t_sys_parameter (id);
@@ -2438,13 +2438,16 @@ alter table t_sys_notify add constraint fk_notify_extend_ref_param foreign key (
 alter table t_sys_notify add constraint fk_notify_issue_usr_ref_usr foreign key (issue_user_id)
       references t_sys_user (id);
 
-alter table t_sys_notify add constraint fk_notify_org_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
 alter table t_sys_notify add constraint fk_notify_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
 
 alter table t_sys_notify add constraint fk_notify_type_ref_param foreign key (notify_type)
+      references t_sys_parameter (id);
+
+alter table t_sys_notify add constraint fk_sys_notify_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
+alter table t_sys_notify add constraint fk_sys_notify_sent_ref_param foreign key (is_sent)
       references t_sys_parameter (id);
 
 alter table t_sys_notify_log add constraint fk_notify_push_his_ref_notify foreign key (notify_id)
@@ -2465,8 +2468,11 @@ alter table t_sys_parameter add constraint fk_param_val_ref_type foreign key (ty
 alter table t_sys_region add constraint fk_region_parent_ref_region foreign key (parent_id)
       references t_sys_region (id);
 
-alter table t_sys_relative_module add constraint fk_rel_module_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
+alter table t_sys_region add constraint fk_region_type_ref_param foreign key (region_type)
+      references t_sys_parameter (id);
+
+alter table t_sys_relative_module add constraint fk_relative_module_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_sys_relative_module add constraint fk_relative_module_show_ref_param foreign key (is_show)
       references t_sys_parameter (id);
@@ -2495,8 +2501,8 @@ alter table t_sys_verify_code add constraint fk_verify_code_type_ref_param forei
 alter table t_sys_verify_code add constraint fk_verify_type_ref_param foreign key (verify_type)
       references t_sys_parameter (id);
 
-alter table t_sys_warehouse add constraint fk_warehouse_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
+alter table t_sys_warehouse add constraint fk_sys_warehouse_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_sys_warehouse_region add constraint fk_wh_region_ref_region foreign key (region_id)
       references t_sys_region (id);
@@ -2528,6 +2534,9 @@ alter table t_vip add constraint fk_vip_mobile_verify_ref_param foreign key (mob
 alter table t_vip add constraint fk_vip_ref_vip_rank foreign key (rank_id)
       references t_vip_rank (id);
 
+alter table t_vip add constraint fk_vip_sex_ref_param foreign key (sex)
+      references t_sys_parameter (id);
+
 alter table t_vip add constraint fk_vip_stat_ref_param foreign key (status)
       references t_sys_parameter (id);
 
@@ -2554,9 +2563,6 @@ alter table t_vip_blog add constraint fk_org_blog_show_ref_param foreign key (st
 
 alter table t_vip_blog add constraint fk_vip_blog_flag_ref_param foreign key (blog_flag)
       references t_sys_parameter (id);
-
-alter table t_vip_blog add constraint fk_vip_blog_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
 
 alter table t_vip_blog add constraint fk_vip_blog_type_id_ref_type foreign key (blog_type)
       references t_vip_blog_type (id);
@@ -2594,9 +2600,6 @@ alter table t_vip_blog_type add constraint fk_blog_type_parent_ref_blog_type for
 alter table t_vip_case add constraint fk_org_case_ref_case_type foreign key (type_id)
       references t_vip_case_type (id);
 
-alter table t_vip_case add constraint fk_org_case_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
 alter table t_vip_case add constraint fk_org_case_ref_param foreign key (case_flag)
       references t_sys_parameter (id);
 
@@ -2605,6 +2608,9 @@ alter table t_vip_case add constraint fk_org_case_show_ref_param foreign key (st
 
 alter table t_vip_case add constraint fk_sys_org_case_ref_param foreign key (audit_status)
       references t_sys_parameter (id);
+
+alter table t_vip_case add constraint fk_vip_case_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_vip_case add constraint fk_vip_org_case_ref_user foreign key (audit_user_id)
       references t_sys_user (id);
@@ -2669,11 +2675,11 @@ alter table t_vip_coupon_log add constraint fk_coupon_log_ref_coupon foreign key
 alter table t_vip_coupon_log add constraint fk_coupon_log_ref_so foreign key (order_id)
       references t_so_sheet (id);
 
-alter table t_vip_coupon_type add constraint FK_coupon_type_ref_org foreign key (organization_id)
-      references t_vip_organization (id);
-
 alter table t_vip_coupon_type add constraint fk_couopn_send_type_ref_param foreign key (send_type)
       references t_sys_parameter (id);
+
+alter table t_vip_coupon_type add constraint fk_coupon_type_ref_vip foreign key (vip_id)
+      references t_vip (id);
 
 alter table t_vip_extend add constraint fk_vip_ext_audit_stat_ref_stat foreign key (audit_status)
       references t_sys_parameter (id);
@@ -2701,6 +2707,15 @@ alter table t_vip_operation_log add constraint fk_vip_op_log_ref_vmodule foreign
 
 alter table t_vip_org_gallery add constraint fk_org_gallery_ref_org foreign key (organization_id)
       references t_vip_organization (id);
+
+alter table t_vip_organization add constraint fk_org_city_ref_region foreign key (city_id)
+      references t_sys_region (id);
+
+alter table t_vip_organization add constraint fk_org_country_ref_region foreign key (country_id)
+      references t_sys_region (id);
+
+alter table t_vip_organization add constraint fk_org_province_ref_region foreign key (province_id)
+      references t_sys_region (id);
 
 alter table t_vip_organization add constraint fk_org_ref_vip foreign key (vip_id)
       references t_vip (id);
