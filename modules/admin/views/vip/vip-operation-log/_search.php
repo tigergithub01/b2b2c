@@ -50,7 +50,7 @@ use app\models\b2b2c\common\Constant;
 
     <?= $form->field($model, 'op_date') ?>
     
-    <?= $form->field($model, 'from_date')->widget(dosamigos\datepicker\DateRangePicker::className(), [
+    <?= $form->field($model, 'start_date')->widget(dosamigos\datepicker\DateRangePicker::className(), [
     		'attributeTo' => 'end_date',
     		'language' => Yii::$app->language,
     		'clientOptions' => [
