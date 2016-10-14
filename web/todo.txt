@@ -425,6 +425,11 @@ composer require 2amigos/yii2-date-time-picker-widget:~1.0
 
 composer yii2 移除包
 
+2016-10-15:
+会员日志中增加商户与会员的过滤条件，并且是必选项
+
+
+
 
 
 
