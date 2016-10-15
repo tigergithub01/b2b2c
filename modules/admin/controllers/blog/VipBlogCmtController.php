@@ -9,6 +9,10 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\VipBlog;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\Vip;
 
 /**
  * VipBlogCmtController implements the CRUD actions for VipBlogCmt model.
@@ -44,6 +48,9 @@ class VipBlogCmtController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'vipList' => $this->findVipList(),
+        		'vipBlogList'=>$this->findVipBlogList(),
+        		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
         ]);
     }
 
@@ -56,6 +63,9 @@ class VipBlogCmtController extends BaseAuthController
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        		'vipList' => $this->findVipList(),
+        		'vipBlogList'=>$this->findVipBlogList(),
+        		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
         ]);
     }
 
@@ -74,6 +84,9 @@ class VipBlogCmtController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'vipList' => $this->findVipList(),
+            	'vipBlogList'=>$this->findVipBlogList(),
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }
@@ -120,10 +133,37 @@ class VipBlogCmtController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipBlogCmt::findOne($id)) !== null) {
+        
+    	$model = VipBlogCmt::find()->alias('vipBlogCmt')
+    	->joinWith('blog blog')
+    	->joinWith('vip vip')
+    	->joinWith('status0 stat')
+    	->joinWith('parent parent')
+    	->where(['vipBlogCmt.id' => $id])->one();
+    	
+    	if($model !==null){
+    	// if (($model = VipBlogCmt::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipBlogList(){
+    	return VipBlog::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList(){
+    	return Vip::find()->where(['merchant_flag'=>SysParameter::no])->all();
+    }
+    
+    
 }

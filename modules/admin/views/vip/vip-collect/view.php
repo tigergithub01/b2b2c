@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipCollect */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Vip Collects'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Vip Collects'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-collect-view">
@@ -27,11 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'vip_id',
-            'product_id',
-            'package_id',
-            'case_id',
-            'blog_id',
+            //'vip_id',
+            'vip.vip_id',
+            //'product_id',
+            'product.name',
+            //'package_id',
+            'package.name',
+            //'case_id',
+            'case.name',
+            // 'blog_id',
             'collect_date',
 		        ],
 		    ]) ?>

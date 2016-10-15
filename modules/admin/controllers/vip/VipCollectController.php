@@ -9,6 +9,11 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\VipCase;
 
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.
@@ -44,6 +49,11 @@ class VipCollectController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'vipList' => $this->findVipList(SysParameter::no),
+        		'merchantList' => $this->findVipList(SysParameter::yes),
+        		'productList' => $this->findProductList(),
+        		'vipCaseList' => $this->findVipCaseList(),
+        		'activityList' => $this->findActivityList(),
         ]);
     }
 
@@ -74,6 +84,11 @@ class VipCollectController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'vipList' => $this->findVipList(SysParameter::no),
+            		'merchantList' => $this->findVipList(SysParameter::yes),
+            		'productList' => $this->findProductList(),
+            		'vipCaseList' => $this->findVipCaseList(),
+            		'activityList' => $this->findActivityList(),
             ]);
         }
     }
@@ -94,6 +109,11 @@ class VipCollectController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'vipList' => $this->findVipList(SysParameter::no),
+            	'merchantList' => $this->findVipList(SysParameter::yes),
+            	'productList' => $this->findProductList(),
+            	'vipCaseList' => $this->findVipCaseList(),
+            	'activityList' => $this->findActivityList(),
             ]);
         }
     }
@@ -120,10 +140,50 @@ class VipCollectController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipCollect::findOne($id)) !== null) {
+    	$model = VipCollect::find()->alias('vipCollect')
+    	->joinWith('vip vip')
+    	->joinWith('package package')
+    	->joinWith('case case')
+    	->joinWith('product product')
+    	->where(['vipCollect.id' => $id])->one();
+    	if($model !==null){
+//     	if (($model = VipCollect::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+	protected  function findVipList($merchant_flag){
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findProductList(){
+    	return Product::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findActivityList(){
+    	return Activity::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipCaseList(){
+    	return VipCase::find()->all();
     }
 }

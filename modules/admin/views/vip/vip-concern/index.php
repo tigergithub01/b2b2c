@@ -3,15 +3,19 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipConcernSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vip Concerns');
+$this->title = Module::t('app', 'Vip Concerns');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-concern-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 
+    		'vipList' => $vipList,
+    		'merchantList' => $merchantList,
+    ]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -24,8 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'vip_id',
-            'ref_vip_id',
+            //'vip_id',
+        	'vip.vip_id',
+            //'ref_vip_id',
+        	'refVip.vip_id',
             'concern_date',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',

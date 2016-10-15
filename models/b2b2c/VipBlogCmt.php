@@ -57,9 +57,9 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
         return [
             'id' => Yii::t('app', '主键'),
             'content' => Yii::t('app', '回复内容'),
-            'blog_id' => Yii::t('app', '关联评价编号'),
+            'blog_id' => Yii::t('app', '关联帖子编号'),
             'reply_date' => Yii::t('app', '回复日期'),
-            'vip_id' => Yii::t('app', '关联用户编号'),
+            'vip_id' => Yii::t('app', '关联会员编号'),
             'status' => Yii::t('app', '是否显示?1:是：0:否'),
             'parent_id' => Yii::t('app', '上级评论'),
         ];

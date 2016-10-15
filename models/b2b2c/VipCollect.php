@@ -22,12 +22,39 @@ use Yii;
  */
 class VipCollect extends \app\models\b2b2c\BasicModel
 {
+	/* 产品名称（查询用） */
+	public $product_name;
+	
+	/* 会员编号（查询用） */
+	public $vip_no;
+	
+	/* 套餐名称 （查询用） */
+	public $package_name;
+	
+	/* 案例名称 （查询用） */
+	public $case_name;
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip_collect';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'product_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'package_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'case_name';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -59,10 +86,14 @@ class VipCollect extends \app\models\b2b2c\BasicModel
             'case_id' => Yii::t('app', '关联案例'),
             'blog_id' => Yii::t('app', '关联话题'),
             'collect_date' => Yii::t('app', '收藏时间'),
-        	'vip.vip_id' => Yii::t('app', '会员'),
+        	'vip.vip_id' => Yii::t('app', '会员编号'),
         	'product.name' => Yii::t('app', '关联产品'),
         	'package.name' => Yii::t('app', '关联套餐'),
         	'case.name' => Yii::t('app', '关联案例'),
+        	'vip_no' => Yii::t('app', '会员编号'),
+        	'product_name' => Yii::t('app', '关联产品'),
+        	'package_name' => Yii::t('app', '关联套餐'),
+        	'case_name' => Yii::t('app', '关联案例'),
         ];
     }
 

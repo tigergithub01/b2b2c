@@ -30,7 +30,7 @@ use Yii;
  */
 class VipOperationLog extends \app\models\b2b2c\BasicModel
 {
-	/* 产品名称（查询用） */
+	/* 模块名称（查询用） */
 	public $module_name;
 	
 	/* 会员编号（查询用） */

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipConcern */
@@ -37,11 +38,24 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+	    <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+	    
+	    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'ref_vip_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'ref_vip_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'ref_vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'concern_date')->textInput() ?>
+    <?php //echo $form->field($model, 'concern_date')->textInput() ?>
+    
+    <?= $form->field($model, 'concern_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
 		</div>
 	

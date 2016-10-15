@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\VipConcernSearch */
@@ -36,20 +37,24 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
+    <?php //echo $form->field($model, 'vip_id') ?>
+    
+    <?= $form->field($model, 'vip_no') ?>
 
-    <?= $form->field($model, 'ref_vip_id') ?>
+    <?php //echo $form->field($model, 'ref_vip_id') ?>
+    
+    <?= $form->field($model, 'ref_vip_no') ?>
 
-    <?= $form->field($model, 'concern_date') ?>
+    <?php //echo $form->field($model, 'concern_date') ?>
 
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip Concern'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Vip Concern'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

@@ -29,7 +29,7 @@ class VipCollectSearch extends VipCollect
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -41,7 +41,11 @@ class VipCollectSearch extends VipCollect
      */
     public function search($params)
     {
-        $query = VipCollect::find();
+        $query = VipCollect::find()->alias('vipCollect')
+    	->joinWith('vip vip')
+    	->joinWith('package package')
+    	->joinWith('case case')
+    	->joinWith('product product');
 
         // add conditions that should always apply here
 
@@ -49,6 +53,28 @@ class VipCollectSearch extends VipCollect
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'product.name' => [
+        						'asc'  => ['product.name' => SORT_ASC],
+        						'desc' => ['product.name' => SORT_DESC],
+        				],
+        				'package.name' => [
+        						'asc'  => ['package.name' => SORT_ASC],
+        						'desc' => ['package.name' => SORT_DESC],
+        				],
+        				'case.name' => [
+        						'asc'  => ['case.name' => SORT_ASC],
+        						'desc' => ['case.name' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -61,14 +87,19 @@ class VipCollectSearch extends VipCollect
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'vip_id' => $this->vip_id,
-            'product_id' => $this->product_id,
-            'package_id' => $this->package_id,
-            'case_id' => $this->case_id,
-            'blog_id' => $this->blog_id,
-            'collect_date' => $this->collect_date,
+            'vipCollect.id' => $this->id,
+            'vipCollect.vip_id' => $this->vip_id,
+            'vipCollect.product_id' => $this->product_id,
+            'vipCollect.package_id' => $this->package_id,
+            'vipCollect.case_id' => $this->case_id,
+            'vipCollect.blog_id' => $this->blog_id,
+            'vipCollect.collect_date' => $this->collect_date,
         ]);
+        
+        $query->andFilterWhere(['like', 'product.name', $this->product_name])
+        ->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        ->andFilterWhere(['like', 'package.name', $this->package_name])
+        ->andFilterWhere(['like', 'case.name', $this->case_name]);
 
         return $dataProvider;
     }

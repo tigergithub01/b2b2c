@@ -144,6 +144,12 @@ return [
 		'Create Vip Blog'=>'新增帖子',
 		'Update Vip Blog'=>'编辑帖子',
 		
+		//帖子回复信息
+		'Vip Blog Cmt'=>'帖子回复',
+		'Vip Blog Cmts'=>'帖子回复列表',
+		'Create Vip Blog Cmt'=>'新增帖子回复',
+		'Update Vip Blog Cmt'=>'编辑帖子回复',
+		
 		//订单信息
 		'So Sheet'=>'订单',
 		'So Sheets'=>'订单列表',

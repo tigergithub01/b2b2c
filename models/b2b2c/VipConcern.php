@@ -17,12 +17,31 @@ use Yii;
  */
 class VipConcern extends \app\models\b2b2c\BasicModel
 {
+	/* 会员编号（查询用） */
+	public $vip_no;
+	
+	/* 商户编号（查询用） */
+	public $ref_vip_no;
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip_concern';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'ref_vip_no';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -49,6 +68,10 @@ class VipConcern extends \app\models\b2b2c\BasicModel
             'vip_id' => Yii::t('app', '会员编号'),
             'ref_vip_id' => Yii::t('app', '关注会员编号'),
             'concern_date' => Yii::t('app', '关注时间'),
+        	'vip.vip_id'=> Yii::t('app', '会员编号'),
+        	'refVip.vip_id'=> Yii::t('app', '关注商家编号'),
+        	'vip_no'=> Yii::t('app', '会员编号'),
+        	'ref_vip_no'=> Yii::t('app', '关注商家编号'),
         ];
     }
 

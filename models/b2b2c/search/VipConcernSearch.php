@@ -29,7 +29,7 @@ class VipConcernSearch extends VipConcern
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -41,7 +41,9 @@ class VipConcernSearch extends VipConcern
      */
     public function search($params)
     {
-        $query = VipConcern::find();
+        $query = VipConcern::find()->alias('vipConcern')
+    	->joinWith('vip vip')
+    	->joinWith('refVip refVip');
 
         // add conditions that should always apply here
 
@@ -49,6 +51,20 @@ class VipConcernSearch extends VipConcern
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'refVip.vip_id' => [
+        						'asc'  => ['refVip.vip_id' => SORT_ASC],
+        						'desc' => ['refVip.vip_id' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -66,6 +82,9 @@ class VipConcernSearch extends VipConcern
             'ref_vip_id' => $this->ref_vip_id,
             'concern_date' => $this->concern_date,
         ]);
+        
+        $query->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        ->andFilterWhere(['like', 'refVip.vip_id', $this->ref_vip_no]);
 
         return $dataProvider;
     }

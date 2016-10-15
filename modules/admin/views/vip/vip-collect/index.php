@@ -3,15 +3,22 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipCollectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vip Collects');
+$this->title = Module::t('app', 'Vip Collects');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-collect-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel,
+    		'vipList' => $vipList,
+    		'merchantList' => $merchantList,
+    		'productList' => $productList,
+    		'vipCaseList' => $vipCaseList,
+    		'activityList' => $activityList,
+    ]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -24,10 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'vip_id',
-            'product_id',
-            'package_id',
-            'case_id',
+            //'vip_id',
+            'vip.vip_id',
+            //'product_id',
+            'product.name',
+            //'package_id',
+            'package.name',
+            //'case_id',
+            'case.name',
             // 'blog_id',
             // 'collect_date',
 		[

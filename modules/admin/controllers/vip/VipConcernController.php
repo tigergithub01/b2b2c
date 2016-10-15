@@ -9,6 +9,8 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysParameter;
 
 /**
  * VipConcernController implements the CRUD actions for VipConcern model.
@@ -44,6 +46,8 @@ class VipConcernController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        	'vipList' => $this->findVipList(SysParameter::no),
+        	'merchantList' => $this->findVipList(SysParameter::yes),
         ]);
     }
 
@@ -56,6 +60,8 @@ class VipConcernController extends BaseAuthController
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        	'vipList' => $this->findVipList(SysParameter::no),
+            'merchantList' => $this->findVipList(SysParameter::yes),
         ]);
     }
 
@@ -74,6 +80,8 @@ class VipConcernController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'vipList' => $this->findVipList(SysParameter::no),
+            	'merchantList' => $this->findVipList(SysParameter::yes),
             ]);
         }
     }
@@ -94,6 +102,7 @@ class VipConcernController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'vipList' => $this->findVipList(),
             ]);
         }
     }
@@ -120,10 +129,25 @@ class VipConcernController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipConcern::findOne($id)) !== null) {
+    	$model = VipConcern::find()->alias('vipConcern')
+    	->joinWith('vip vip')
+    	->joinWith('refVip refVip')
+    	->where(['vipConcern.id' => $id])->one();
+    	if($model !==null){
+        // if (($model = VipConcern::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList($merchant_flag){
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    }
+    
 }
