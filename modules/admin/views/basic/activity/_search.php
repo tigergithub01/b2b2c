@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\ActivitySearch */
@@ -36,15 +37,19 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php // echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'activity_type') ?>
+    <?php //echo $form->field($model, 'activity_type') ?>
+    
+    <?php //echo $form->field($model, 'activity_type')->dropDownList(\yii\helpers\ArrayHelper::map($activityTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'activity_scope') ?>
+    <?php //echo $form->field($model, 'activity_scope') ?>
+    
+    <?php //echo $form->field($model, 'activity_scope')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'start_time') ?>
+    <?php //echo $form->field($model, 'start_time') ?>
 
     <?php // echo $form->field($model, 'end_date') ?>
 
@@ -57,6 +62,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'buy_limit_num') ?>
 
     <?php // echo $form->field($model, 'vip_id') ?>
+    
+    <?php echo $form->field($model, 'vip_no') ?>
 
     <?php // echo $form->field($model, 'img_url') ?>
 
@@ -64,12 +71,20 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'img_original') ?>
 
+    <?php // echo $form->field($model, 'audit_status') ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+
+    <?php // echo $form->field($model, 'audit_user_id') ?>
+
+    <?php // echo $form->field($model, 'audit_date') ?>
+
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Activity'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Activity'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

@@ -30,23 +30,35 @@ use Yii;
  * @property ActPackageProduct[] $actPackageProducts
  * @property ActScope[] $actScopes
  * @property ActSpecialPrice[] $actSpecialPrices
- * @property SysUser $auditUser
+ * @property ActivityType $activityType
  * @property Vip $vip
  * @property SysParameter $auditStatus
+ * @property SysUser $auditUser
  * @property SysParameter $activityScope
- * @property SysParameter $activityType
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheetDetail[] $soSheetDetails
  * @property VipCollect[] $vipCollects
  */
 class Activity extends \app\models\b2b2c\BasicModel
 {
+	/* 商户编号（查询用） */
+	public $vip_no;
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_activity';
+    }
+    
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -61,11 +73,11 @@ class Activity extends \app\models\b2b2c\BasicModel
             [['package_price', 'deposit_amount'], 'number'],
             [['name'], 'string', 'max' => 30],
             [['description', 'img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
-            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+            [['activity_type'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityType::className(), 'targetAttribute' => ['activity_type' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
+            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['activity_scope'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_scope' => 'id']],
-            [['activity_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_type' => 'id']],
         ];
     }
 
@@ -92,6 +104,12 @@ class Activity extends \app\models\b2b2c\BasicModel
             'audit_status' => Yii::t('app', '审核状态：未审核，审核不通过，已审核'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
+        	'activityType.name' => '活动类型',
+        	'vip.vip_id' => '商家编号',
+        	'auditStatus.param_val' => '审核状态',
+        	'auditUser.user_id' => '审核人',
+        	'actScopes.param_val' => '是否全场参与活动',
+        	'vip_no' => Yii::t('app', '商户编号'),
         ];
     }
 
@@ -138,9 +156,9 @@ class Activity extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuditUser()
+    public function getActivityType()
     {
-        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
+        return $this->hasOne(ActivityType::className(), ['id' => 'activity_type']);
     }
 
     /**
@@ -162,17 +180,17 @@ class Activity extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getActivityScope()
+    public function getAuditUser()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'activity_scope']);
+        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getActivityType()
+    public function getActivityScope()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'activity_type']);
+        return $this->hasOne(SysParameter::className(), ['id' => 'activity_scope']);
     }
 
     /**

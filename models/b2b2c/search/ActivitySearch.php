@@ -12,14 +12,16 @@ use app\models\b2b2c\Activity;
  */
 class ActivitySearch extends Activity
 {
+    
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'activity_type', 'activity_scope', 'buy_limit_num', 'vip_id'], 'integer'],
-            [['name', 'start_time', 'end_date', 'description', 'img_url', 'thumb_url', 'img_original'], 'safe'],
+            [['id', 'activity_type', 'activity_scope', 'buy_limit_num', 'vip_id', 'audit_status', 'audit_user_id'], 'integer'],
+            [['name', 'start_time', 'end_date', 'description', 'img_url', 'thumb_url', 'img_original', 'audit_date'], 'safe'],
             [['package_price', 'deposit_amount'], 'number'],
         ];
     }
@@ -42,7 +44,12 @@ class ActivitySearch extends Activity
      */
     public function search($params)
     {
-        $query = Activity::find();
+        $query = Activity::find()->alias('act')
+    	->joinWith('activityType activityType')
+    	->joinWith('vip vip')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('auditUser auditUser')
+    	->joinWith('actScopes actScopes');
 
         // add conditions that should always apply here
 
@@ -50,6 +57,29 @@ class ActivitySearch extends Activity
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'activityType.name' => [
+        						'asc'  => ['activityType.name' => SORT_ASC],
+        						'desc' => ['activityType.name' => SORT_DESC],
+        				],
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'auditStatus.param_val' => [
+        						'asc'  => ['auditStatus.param_val' => SORT_ASC],
+        						'desc' => ['auditStatus.param_val' => SORT_DESC],
+        				],
+        				'actScopes.param_val' => [
+        						'asc'  => ['actScopes.param_val' => SORT_ASC],
+        						'desc' => ['actScopes.param_val' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -62,22 +92,26 @@ class ActivitySearch extends Activity
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'activity_type' => $this->activity_type,
-            'activity_scope' => $this->activity_scope,
-            'start_time' => $this->start_time,
-            'end_date' => $this->end_date,
-            'package_price' => $this->package_price,
-            'deposit_amount' => $this->deposit_amount,
-            'buy_limit_num' => $this->buy_limit_num,
-            'vip_id' => $this->vip_id,
+            'act.id' => $this->id,
+            'act.activity_type' => $this->activity_type,
+            'act.activity_scope' => $this->activity_scope,
+            'act.start_time' => $this->start_time,
+            'act.end_date' => $this->end_date,
+            'act.package_price' => $this->package_price,
+            'act.deposit_amount' => $this->deposit_amount,
+            'act.buy_limit_num' => $this->buy_limit_num,
+            'act.vip_id' => $this->vip_id,
+            'act.audit_status' => $this->audit_status,
+            'act.audit_user_id' => $this->audit_user_id,
+            'act.audit_date' => $this->audit_date,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'img_url', $this->img_url])
-            ->andFilterWhere(['like', 'thumb_url', $this->thumb_url])
-            ->andFilterWhere(['like', 'img_original', $this->img_original]);
+        $query->andFilterWhere(['like', 'act.name', $this->name])
+            ->andFilterWhere(['like', 'act.description', $this->description])
+            ->andFilterWhere(['like', 'act.img_url', $this->img_url])
+            ->andFilterWhere(['like', 'act.thumb_url', $this->thumb_url])
+            ->andFilterWhere(['like', 'act.img_original', $this->img_original])
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
 
         return $dataProvider;
     }

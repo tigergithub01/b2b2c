@@ -3,15 +3,22 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\ActivitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Activities');
+$this->title = Module::t('app', 'Activities');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="activity-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel,
+    		'activityTypeList' => $activityTypeList,
+    		'vipList' => $vipList,
+    		'sysUserList' => $sysUserList,
+    		'yesNoList' => $yesNoList,
+    		'auditStatList' => $auditStatList,
+    		]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,9 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'name',
-            'activity_type',
-            'activity_scope',
-            'start_time',
+            // 'activity_type',
+            'activityType.name',
+            // 'activity_scope',
+            'actScopes.param_val',
+            // 'start_time',
             // 'end_date',
             // 'description',
             // 'package_price',
@@ -37,6 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'img_url:url',
             // 'thumb_url:url',
             // 'img_original',
+            // 'audit_status',
+           'auditStatus.param_val',
+            // 'audit_user_id',
+            // 'audit_date',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

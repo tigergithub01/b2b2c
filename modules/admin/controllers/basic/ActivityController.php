@@ -9,6 +9,11 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\ActivityType;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysParameter;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -44,6 +49,11 @@ class ActivityController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'activityTypeList' => $this->findActivityTypeList(),
+        		'vipList' => $this->findVipList(),
+        		'sysUserList' => $this->findSysUserList(),
+        		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+        		'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
         ]);
     }
 
@@ -74,6 +84,11 @@ class ActivityController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'activityTypeList' => $this->findActivityTypeList(),
+            		'vipList' => $this->findVipList(),
+            		'sysUserList' => $this->findSysUserList(),
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
             ]);
         }
     }
@@ -94,6 +109,11 @@ class ActivityController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'activityTypeList' => $this->findActivityTypeList(),
+            		'vipList' => $this->findVipList(),
+            		'sysUserList' => $this->findSysUserList(),
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
             ]);
         }
     }
@@ -120,10 +140,42 @@ class ActivityController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = Activity::findOne($id)) !== null) {
+    	$model = Activity::find()->alias('act')
+    	->joinWith('activityType activityType')
+    	->joinWith('vip vip')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('auditUser auditUser')
+    	->joinWith('actScopes actScopes')
+    	->where(['act.id' => $id])->one();
+    	if($model !==null){
+//     	if (($model = Activity::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findActivityTypeList(){
+    	return ActivityType::find()->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList(){
+    	return Vip::find()->where(['merchant_flag'=>SysParameter::yes])->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findSysUserList(){
+    	return SysUser::find()->all();
     }
 }

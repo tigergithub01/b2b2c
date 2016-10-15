@@ -65,6 +65,12 @@ return [
 		'Create Product'=>'新增产品',
 		'Update Product'=>'编辑产品',
 		
+		//团体服务信息
+		'Activity'=>'团体服务信息',
+		'Activities'=>'团体服务列表',
+		'Create Activity'=>'新增团体服务',
+		'Update Activity'=>'编辑团体服务',
+		
 		//产品品牌
 		'Product Brand'=>'产品品牌',
 		'Product Brands'=>'产品品牌列表',
