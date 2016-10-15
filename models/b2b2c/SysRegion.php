@@ -35,7 +35,20 @@ class SysRegion extends \app\models\b2b2c\BasicModel
 	/* 上级区域名称（查询用） */
 	public $parent_name;
 	
+	//国家
+	const region_type_country = 22001;
 	
+	//省份（直辖市）
+	const region_type_province = 22002;
+	
+	//市
+	const region_type_city = 22003;
+	
+	//区
+	const region_type_district = 22004;
+	
+	//县（街道)
+	const region_type_town = 22005;
 	
     /**
      * @inheritdoc

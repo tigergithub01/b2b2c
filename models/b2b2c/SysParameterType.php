@@ -46,6 +46,38 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 帖子类别  */
 	const BLOG_FLAG = 16;
 	
+	/* 订单类型 */
+	const ORDER_TYPE = 4;
+	
+	/* 订单状态 */
+	const ORDER_STATUS = 5;
+	
+	/* 付款状态 */
+	const PAY_STATUS = 6;
+	
+	/* 配送状态 */
+	const SHIPPING_STATUS = 7;
+	
+	/* 发票类型 */
+	const INVOICE_TYPE = 8;
+	
+	/* 退货申请单状态 */
+	const RETURN_APPLY_STATUS = 9;
+	
+	/* 退货单状态 */
+	const RETURN_STATUS = 10;
+	
+	/* 发货单状态 */
+	const OUT_STOCK_STATUS = 11;
+	
+	/* 退款申请单状态 */
+	const REFUND_APPLY_STATUS = 24;
+	
+	/* 退款单状态 */
+	const REFUND_STATUS = 25;
+	
+	
+	
 	
 	
     /**

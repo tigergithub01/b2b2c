@@ -9,6 +9,13 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\PayType;
+use app\models\b2b2c\PickUpPoint;
+use app\models\b2b2c\SheetType;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -74,6 +81,18 @@ class SoSheetController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'vipList' => $this->findVipList(SysParameter::no),
+            		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province),
+            		'cityList' => $this->findSysRegionList(SysRegion::region_type_city),
+            		'districtList' => $this->findSysRegionList(SysRegion::region_type_district),
+            		'countryList' => $this->findSysRegionList(SysRegion::region_type_country),
+            		'deliveryStatusList' => SysParameterType::getSysParametersById(SysParameterType::SHIPPING_STATUS),
+            		'invoiceTypeList' => SysParameterType::getSysParametersById(SysParameterType::INVOICE_TYPE),
+            		'orderStatusList' => SysParameterType::getSysParametersById(SysParameterType::ORDER_STATUS),
+            		'payStatusList' => SysParameterType::getSysParametersById(SysParameterType::PAY_STATUS),
+            		'payTypeList' => $this->findPayTypeList(),
+            		'pickUpPointList' => $this->findPickUpPointList(),
+            		'sheetTypeList' => $this->findSheetTypeList(),
             ]);
         }
     }
@@ -126,4 +145,48 @@ class SoSheetController extends BaseAuthController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList($merchant_flag){
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findSysRegionList($region_type, $parent_id = null){
+    	return SysRegion::find()
+    	->where(['region_type' =>$region_type])
+    	->andFilterWhere(['parent_id' => $parent_id])->limit(100)->offset(0)->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findPayTypeList(){
+    	return PayType::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findPickUpPointList(){
+    	return PickUpPoint::find()->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findSheetTypeList(){
+    	return SheetType::find()->all();
+    }
+    
 }
