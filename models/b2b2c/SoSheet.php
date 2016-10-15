@@ -90,7 +90,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', 'delivery_type', 'integral', 'integral_money', 'coupon', 'discount', 'order_status', 'delivery_status', 'pay_status', 'consignee', 'mobile'], 'required'],
+            [['sheet_type_id', 'code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
             [['sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id'], 'integer'],
             [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'budget_amount'], 'number'],
             [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date'], 'safe'],
