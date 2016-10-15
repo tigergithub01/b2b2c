@@ -19,7 +19,10 @@ use Yii;
  * @property string $audit_date
  * @property string $audit_memo
  * @property string $status
+ * @property string $name
  *
+ * @property SysParameter $auditStatus
+ * @property SysUser $auditUser
  * @property Vip $vip
  * @property SysParameter $status0
  * @property SysParameter $blogFlag
@@ -30,12 +33,36 @@ use Yii;
  */
 class VipBlog extends \app\models\b2b2c\BasicModel
 {
+	
+	/* 会员编号（查询用） */
+	public $vip_no;
+	
+	/* 起始日期 （查询用） */
+	public $start_date;
+	
+	/* 结束日期 （查询用） */
+	public $end_date;
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip_blog';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -45,12 +72,14 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     {
         return [
             [['blog_type', 'blog_flag', 'vip_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
-            [['blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status'], 'required'],
+            [['blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status', 'name'], 'required'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
-            [['audit_memo'], 'string', 'max' => 200],
+            [['audit_memo', 'name'], 'string', 'max' => 200],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+        	[['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
+        	[['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+        	[['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['blog_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['blog_flag' => 'id']],
             [['blog_type'], 'exist', 'skipOnError' => true, 'targetClass' => VipBlogType::className(), 'targetAttribute' => ['blog_type' => 'id']],
         ];
@@ -63,6 +92,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
+        	'name' => Yii::t('app', '帖子标题'),
             'blog_type' => Yii::t('app', '博客频道'),
             'blog_flag' => Yii::t('app', '博客分类：会员博客，商户博客'),
             'vip_id' => Yii::t('app', '关联会员编号'),
@@ -70,10 +100,19 @@ class VipBlog extends \app\models\b2b2c\BasicModel
             'create_date' => Yii::t('app', '发布时间'),
             'update_date' => Yii::t('app', '更新时间'),
             'audit_user_id' => Yii::t('app', '审核人'),
-            'audit_status' => Yii::t('app', '审核状态（未审核，审核通过，审核不通过）'),
+            'audit_status' => Yii::t('app', /* '审核状态（未审核，审核通过，审核不通过）' */'审核状态'),
             'audit_date' => Yii::t('app', '审核日期'),
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
+        	'vip.vip_id' => Yii::t('app', '会员编号'),
+        	'blogType.name' => Yii::t('app', '博客频道'),
+        	'blogFlag.param_val' => Yii::t('app', '博客分类(会员博客，商户博客)'),
+        	'status0.param_val' => Yii::t('app', '是否显示'),
+        	'auditStatus.param_val' => Yii::t('app', '审核状态'),
+        	'auditUser.user_id' => Yii::t('app', '审核人'),
+        	'vip_no' => Yii::t('app', '会员编号'),
+        	'start_date' => Yii::t('app', '开始日期'),
+        	'end_date' => Yii::t('app', '结束日期'),
         ];
     }
 
@@ -83,6 +122,22 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     public function getVip()
     {
         return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuditStatus()
+    {
+    	return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuditUser()
+    {
+    	return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 
     /**

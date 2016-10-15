@@ -21,13 +21,18 @@ use Yii;
  * @property string $img_url
  * @property string $thumb_url
  * @property string $img_original
+ * @property string $audit_status
+ * @property string $audit_user_id
+ * @property string $audit_date
  *
  * @property ActBuyDiscount[] $actBuyDiscounts
  * @property ActBuyGivingDetail[] $actBuyGivingDetails
  * @property ActPackageProduct[] $actPackageProducts
  * @property ActScope[] $actScopes
  * @property ActSpecialPrice[] $actSpecialPrices
+ * @property SysUser $auditUser
  * @property Vip $vip
+ * @property SysParameter $auditStatus
  * @property SysParameter $activityScope
  * @property SysParameter $activityType
  * @property ShoppingCart[] $shoppingCarts
@@ -50,13 +55,15 @@ class Activity extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'activity_type', 'start_time', 'end_date', 'vip_id'], 'required'],
-            [['activity_type', 'activity_scope', 'buy_limit_num', 'vip_id'], 'integer'],
-            [['start_time', 'end_date'], 'safe'],
+            [['name', 'activity_type', 'start_time', 'end_date', 'vip_id', 'audit_status'], 'required'],
+            [['activity_type', 'activity_scope', 'buy_limit_num', 'vip_id', 'audit_status', 'audit_user_id'], 'integer'],
+            [['start_time', 'end_date', 'audit_date'], 'safe'],
             [['package_price', 'deposit_amount'], 'number'],
             [['name'], 'string', 'max' => 30],
             [['description', 'img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
+            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
+            [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['activity_scope'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_scope' => 'id']],
             [['activity_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_type' => 'id']],
         ];
@@ -82,6 +89,9 @@ class Activity extends \app\models\b2b2c\BasicModel
             'img_url' => Yii::t('app', '图片（放大后查看）(上传商品图片后自动加入商品相册）'),
             'thumb_url' => Yii::t('app', '缩略图'),
             'img_original' => Yii::t('app', '原图'),
+            'audit_status' => Yii::t('app', '审核状态：未审核，审核不通过，已审核'),
+            'audit_user_id' => Yii::t('app', '审核人'),
+            'audit_date' => Yii::t('app', '审核日期'),
         ];
     }
 
@@ -128,9 +138,25 @@ class Activity extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getAuditUser()
+    {
+        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVip()
     {
         return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuditStatus()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
     }
 
     /**

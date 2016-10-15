@@ -43,6 +43,9 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 案例类别  */
 	const CASE_FLAG = 19;
 	
+	/* 帖子类别  */
+	const BLOG_FLAG = 16;
+	
 	
 	
     /**

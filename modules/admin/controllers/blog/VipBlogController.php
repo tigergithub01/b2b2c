@@ -9,6 +9,11 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\VipBlogType;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\SysParameter;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
@@ -44,6 +49,11 @@ class VipBlogController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'vipList' => $this->findVipList(),
+        		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+        		'blogFlagList' => SysParameterType::getSysParametersById(SysParameterType::BLOG_FLAG),
+        		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+        		'vipBlogTypeList' => $this->findVipBlogTypeList(),
         ]);
     }
 
@@ -74,6 +84,12 @@ class VipBlogController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'vipList' => $this->findVipList(),
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'blogFlagList' => SysParameterType::getSysParametersById(SysParameterType::BLOG_FLAG),
+            		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+            		'vipBlogTypeList' => $this->findVipBlogTypeList(),
+            		'sysUserList' => $this->findSysUserList(),
             ]);
         }
     }
@@ -94,6 +110,12 @@ class VipBlogController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'vipList' => $this->findVipList(),
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            	'blogFlagList' => SysParameterType::getSysParametersById(SysParameterType::BLOG_FLAG),
+            	'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+            	'vipBlogTypeList' => $this->findVipBlogTypeList(),
+            	'sysUserList' => $this->findSysUserList(),
             ]);
         }
     }
@@ -120,10 +142,49 @@ class VipBlogController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipBlog::findOne($id)) !== null) {
+    	$model = VipBlog::find()->alias('vipBlog')
+    	->joinWith('vip vip')
+    	->joinWith('status0 stat')
+    	->joinWith('blogFlag blogFlag')
+    	->joinWith('blogType blogType')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('auditUser auditUser')
+    	->where(['vipBlog.id'=>$id])->one();
+    	
+    	if($model){
+//         if (($model = VipBlog::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findVipList(){
+    	$vipList = Vip::find()->all();
+    	foreach ($vipList as $key => $model) {
+    		$model->vip_id = $model->vip_id . (($model->merchant_flag==SysParameter::yes)?'(商户)':'(会员)');
+    	}
+    	return $vipList;
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipBlogTypeList(){
+    	return VipBlogType::find()->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findSysUserList(){
+    	return SysUser::find()->all();
     }
 }

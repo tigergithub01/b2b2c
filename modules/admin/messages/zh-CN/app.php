@@ -126,11 +126,11 @@ return [
 		'Create Vip Case'=>'新增案例',
 		'Update Vip Case'=>'编辑案例',
 		
-		//案例分类
-		'Vip Blog Type'=>'帖子分类',
-		'Vip Blog Types'=>'帖子分类列表',
-		'Create Vip Blog Type'=>'新增帖子分类',
-		'Update Vip Blog Type'=>'编辑帖子分类',
+		//帖子分类
+		'Vip Blog Type'=>'频道',
+		'Vip Blog Types'=>'频道列表',
+		'Create Vip Blog Type'=>'新增频道',
+		'Update Vip Blog Type'=>'编辑频道',
 		
 		//帖子信息
 		'Vip Blog'=>'帖子',

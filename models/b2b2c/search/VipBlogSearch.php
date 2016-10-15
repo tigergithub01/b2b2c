@@ -19,7 +19,7 @@ class VipBlogSearch extends VipBlog
     {
         return [
             [['id', 'blog_type', 'blog_flag', 'vip_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
-            [['content', 'create_date', 'update_date', 'audit_date', 'audit_memo'], 'safe'],
+            [['content', 'create_date', 'update_date', 'audit_date', 'audit_memo', 'name'], 'safe'],
         ];
     }
 
@@ -41,17 +41,14 @@ class VipBlogSearch extends VipBlog
      */
     public function search($params)
     {
-        $query = VipBlog::find()->alias('vip')
+        $query = VipBlog::find()->alias('vipBlog')
+        ->joinWith('vip vip')
         ->joinWith('status0 stat')
-        ->joinWith('auditStatus auditStat')
-        ->joinWith('auditUser auditStatUsr')
-        ->joinWith('emailVerifyFlag emailVerify')
-        ->joinWith('parent parent')
-        ->joinWith('merchantFlag mercFlag')
-        ->joinWith('vipType vipType')
-        ->joinWith('mobileVerifyFlag mobileVerify')    
-        ->joinWith('rank rank')    
-        ->joinWith('sex0 sex');
+        ->joinWith('blogFlag blogFlag')
+        ->joinWith('auditStatus auditStatus')
+        ->joinWith('auditUser auditUser')
+        ->joinWith('blogType blogType');
+        
 
         // add conditions that should always apply here
 
@@ -59,6 +56,28 @@ class VipBlogSearch extends VipBlog
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'blogFlag.param_val' => [
+        						'asc'  => ['blogFlag.param_val' => SORT_ASC],
+        						'desc' => ['blogFlag.param_val' => SORT_DESC],
+        				],
+        				'blogType.name' => [
+        						'asc'  => ['blogType.name' => SORT_ASC],
+        						'desc' => ['blogType.name' => SORT_DESC],
+        				],
+        				'auditStatus.param_val' => [
+        						'asc'  => ['auditStatus.param_val' => SORT_ASC],
+        						'desc' => ['auditStatus.param_val' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -71,20 +90,30 @@ class VipBlogSearch extends VipBlog
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'blog_type' => $this->blog_type,
-            'blog_flag' => $this->blog_flag,
-            'vip_id' => $this->vip_id,
-            'create_date' => $this->create_date,
-            'update_date' => $this->update_date,
-            'audit_user_id' => $this->audit_user_id,
-            'audit_status' => $this->audit_status,
-            'audit_date' => $this->audit_date,
-            'status' => $this->status,
+            'vipBlog.id' => $this->id,
+            'vipBlog.blog_type' => $this->blog_type,
+            'vipBlog.blog_flag' => $this->blog_flag,
+            'vipBlog.vip_id' => $this->vip_id,
+            'vipBlog.create_date' => $this->create_date,
+            'vipBlog.update_date' => $this->update_date,
+            'vipBlog.audit_user_id' => $this->audit_user_id,
+            'vipBlog.audit_status' => $this->audit_status,
+            'vipBlog.audit_date' => $this->audit_date,
+            'vipBlog.status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'audit_memo', $this->audit_memo]);
+        $query->andFilterWhere(['like', 'vipBlog.content', $this->content])
+            ->andFilterWhere(['like', 'vipBlog.audit_memo', $this->audit_memo])
+        	->andFilterWhere(['like', 'vipBlog.name', $this->name])
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        
+        if($this->start_date){
+        	$query->andFilterWhere(['>=', 'vipBlog.create_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);
+        }
+        
+        if($this->end_date){
+        	$query->andFilterWhere(['<=', 'vipBlog.create_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+        }
 
         return $dataProvider;
     }

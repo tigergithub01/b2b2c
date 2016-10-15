@@ -13,9 +13,9 @@ use Yii;
  * @property string $blog_cmt_id
  * @property string $create_date
  *
- * @property Vip $vip
  * @property VipBlog $blog
  * @property VipBlogCmt $blogCmt
+ * @property Vip $vip
  */
 class VipBlogLikes extends \app\models\b2b2c\BasicModel
 {
@@ -33,12 +33,12 @@ class VipBlogLikes extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['id', 'vip_id', 'create_date'], 'required'],
-            [['id', 'vip_id', 'blog_id', 'blog_cmt_id'], 'integer'],
+            [['vip_id', 'create_date'], 'required'],
+            [['vip_id', 'blog_id', 'blog_cmt_id'], 'integer'],
             [['create_date'], 'safe'],
-            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['blog_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipBlog::className(), 'targetAttribute' => ['blog_id' => 'id']],
             [['blog_cmt_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipBlogCmt::className(), 'targetAttribute' => ['blog_cmt_id' => 'id']],
+            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         ];
     }
 
@@ -59,14 +59,6 @@ class VipBlogLikes extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVip()
-    {
-        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getBlog()
     {
         return $this->hasOne(VipBlog::className(), ['id' => 'blog_id']);
@@ -78,5 +70,13 @@ class VipBlogLikes extends \app\models\b2b2c\BasicModel
     public function getBlogCmt()
     {
         return $this->hasOne(VipBlogCmt::className(), ['id' => 'blog_cmt_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVip()
+    {
+        return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
     }
 }

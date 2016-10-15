@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\VipBlogSearch */
@@ -36,23 +38,40 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php //echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'blog_type') ?>
+    <?php //echo $form->field($model, 'blog_type') ?>
+    
+    <?= $form->field($model, 'blog_type')->dropDownList(\yii\helpers\ArrayHelper::map($vipBlogTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'blog_flag') ?>
+    <?php //echo $form->field($model, 'blog_flag') ?>
+    
+    <?= $form->field($model, 'blog_flag')->dropDownList(\yii\helpers\ArrayHelper::map($blogFlagList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'vip_id') ?>
-
-    <?= $form->field($model, 'content') ?>
+    <?= $form->field($model, 'vip_no') ?>
+	
+	<?= $form->field($model, 'name') ?>
+	
+    <?php // echo  $form->field($model, 'content') ?>
 
     <?php // echo $form->field($model, 'create_date') ?>
+    
+    <?= $form->field($model, 'start_date')->widget(dosamigos\datepicker\DateRangePicker::className(), [
+    		'attributeTo' => 'end_date',
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_PICKER_FORMAT,
+    			]
+          ]) ?>
 
     <?php // echo $form->field($model, 'update_date') ?>
 
     <?php // echo $form->field($model, 'audit_user_id') ?>
 
     <?php // echo $form->field($model, 'audit_status') ?>
+    
+    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'audit_date') ?>
 
@@ -65,7 +84,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Vip Blog'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Vip Blog'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>
