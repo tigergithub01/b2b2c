@@ -47,6 +47,7 @@ class VipBlogType extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键'),
             'name' => Yii::t('app', '名字'),
             'parent_id' => Yii::t('app', '上级频道分类'),
+        	'parent.name' => Yii::t('app', '上级频道分类'),
         ];
     }
 

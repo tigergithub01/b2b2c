@@ -44,6 +44,7 @@ class VipBlogTypeController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        	'vipBlogTypeList' => $this->findVipBlogTypeList(),
         ]);
     }
 
@@ -74,6 +75,7 @@ class VipBlogTypeController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            	'vipBlogTypeList' => $this->findVipBlogTypeList(),
             ]);
         }
     }
@@ -94,6 +96,7 @@ class VipBlogTypeController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'vipBlogTypeList' => $this->findVipBlogTypeList(),
             ]);
         }
     }
@@ -120,10 +123,22 @@ class VipBlogTypeController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipBlogType::findOne($id)) !== null) {
+    	$model = VipBlogType::find()->alias('bType')
+        ->joinWith('parent parent')
+    	->where(['bType.id'=>$id])->one();
+    	if($model){
+//     	if (($model = VipBlogType::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipBlogTypeList(){
+    	return VipBlogType::find()->all();
     }
 }

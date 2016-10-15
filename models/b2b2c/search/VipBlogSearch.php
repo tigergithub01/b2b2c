@@ -41,7 +41,17 @@ class VipBlogSearch extends VipBlog
      */
     public function search($params)
     {
-        $query = VipBlog::find();
+        $query = VipBlog::find()->alias('vip')
+        ->joinWith('status0 stat')
+        ->joinWith('auditStatus auditStat')
+        ->joinWith('auditUser auditStatUsr')
+        ->joinWith('emailVerifyFlag emailVerify')
+        ->joinWith('parent parent')
+        ->joinWith('merchantFlag mercFlag')
+        ->joinWith('vipType vipType')
+        ->joinWith('mobileVerifyFlag mobileVerify')    
+        ->joinWith('rank rank')    
+        ->joinWith('sex0 sex');
 
         // add conditions that should always apply here
 

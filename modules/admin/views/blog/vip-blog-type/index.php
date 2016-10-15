@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipBlogTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Vip Blog Types');
+$this->title = Module::t('app', 'Vip Blog Types');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-blog-type-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 'vipBlogTypeList' => $vipBlogTypeList,]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,7 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'name',
-            'parent_id',
+            // 'parent_id',
+            'parent.name',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

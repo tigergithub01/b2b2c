@@ -41,7 +41,8 @@ class VipBlogTypeSearch extends VipBlogType
      */
     public function search($params)
     {
-        $query = VipBlogType::find();
+        $query = VipBlogType::find()->alias('bType')
+        ->joinWith('parent parent');
 
         // add conditions that should always apply here
 
@@ -49,6 +50,16 @@ class VipBlogTypeSearch extends VipBlogType
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'parent.name' => [
+        						'asc'  => ['parent.name' => SORT_ASC],
+        						'desc' => ['parent.name' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -61,11 +72,11 @@ class VipBlogTypeSearch extends VipBlogType
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
+            'bType.id' => $this->id,
+            'bType.parent_id' => $this->parent_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'bType.name', $this->name]);
 
         return $dataProvider;
     }
