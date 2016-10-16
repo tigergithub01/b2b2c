@@ -18,11 +18,11 @@ use Yii;
  * @property string $delivery_type
  * @property string $delivery_no
  *
- * @property SysUser $user
- * @property DeliveryType $deliveryType
+ * @property DeliveryTypeTpl $deliveryType
  * @property SoSheet $order
  * @property Vip $vip
  * @property SysParameter $status0
+ * @property SysUser $user
  * @property OutStockSheetDetail[] $outStockSheetDetails
  * @property ReturnSheet[] $returnSheets
  */
@@ -48,11 +48,11 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
             [['code'], 'string', 'max' => 30],
             [['delivery_no'], 'string', 'max' => 60],
             [['code'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryType::className(), 'targetAttribute' => ['delivery_type' => 'id']],
+            [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryTypeTpl::className(), 'targetAttribute' => ['delivery_type' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -78,17 +78,9 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
-    {
-        return $this->hasOne(SysUser::className(), ['id' => 'user_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getDeliveryType()
     {
-        return $this->hasOne(DeliveryType::className(), ['id' => 'delivery_type']);
+        return $this->hasOne(DeliveryTypeTpl::className(), ['id' => 'delivery_type']);
     }
 
     /**
@@ -113,6 +105,14 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
     public function getStatus0()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(SysUser::className(), ['id' => 'user_id']);
     }
 
     /**

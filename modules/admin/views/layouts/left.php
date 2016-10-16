@@ -76,6 +76,7 @@ use app\models\b2b2c\VipBlog;
                 					['label' => '文章管理', 'url' => ['system/sys-article/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '地区信息', 'url' => ['system/sys-region/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '消息列表', 'url' => ['system/sys-notify/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '单据类型', 'url' => ['system/sheet-type/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => 'API测试', 'url' => ['api/api-test/index'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],

@@ -16,6 +16,7 @@ use app\models\b2b2c\PickUpPoint;
 use app\models\b2b2c\SheetType;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\DeliveryTypeTpl;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -91,8 +92,11 @@ class SoSheetController extends BaseAuthController
             		'orderStatusList' => SysParameterType::getSysParametersById(SysParameterType::ORDER_STATUS),
             		'payStatusList' => SysParameterType::getSysParametersById(SysParameterType::PAY_STATUS),
             		'payTypeList' => $this->findPayTypeList(),
+            		'deliveryTypeList' => $this->findDeliveryTypeList(),
             		'pickUpPointList' => $this->findPickUpPointList(),
             		'sheetTypeList' => $this->findSheetTypeList(),
+            		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
+            		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
             ]);
         }
     }
@@ -170,6 +174,14 @@ class SoSheetController extends BaseAuthController
      */
     protected function findPayTypeList(){
     	return PayType::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findDeliveryTypeList(){
+    	return DeliveryTypeTpl::find()->all();
     }
     
     /**

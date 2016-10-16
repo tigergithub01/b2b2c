@@ -76,8 +76,11 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 退款单状态 */
 	const REFUND_STATUS = 25;
 	
+	/* 婚礼类型 */
+	const SERVICE_STYLE = 26;
 	
-	
+	/* 婚礼人服务 */
+	const RELATED_SERVICE = 27;
 	
 	
     /**

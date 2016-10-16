@@ -16,6 +16,8 @@ use Yii;
  *
  * @property DeliveryType[] $deliveryTypes
  * @property SysParameter $status0
+ * @property OutStockSheet[] $outStockSheets
+ * @property SoSheet[] $soSheets
  */
 class DeliveryTypeTpl extends \app\models\b2b2c\BasicModel
 {
@@ -73,5 +75,21 @@ class DeliveryTypeTpl extends \app\models\b2b2c\BasicModel
     public function getStatus0()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOutStockSheets()
+    {
+        return $this->hasMany(OutStockSheet::className(), ['delivery_type' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoSheets()
+    {
+        return $this->hasMany(SoSheet::className(), ['delivery_type' => 'id']);
     }
 }

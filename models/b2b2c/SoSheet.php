@@ -63,7 +63,7 @@ use Yii;
  * @property SysParameter $orderStatus
  * @property SysParameter $payStatus
  * @property SysRegion $province
- * @property DeliveryType $deliveryType
+ * @property DeliveryTypeTpl $deliveryType
  * @property VipCase $relatedCase
  * @property PayType $payType
  * @property PickUpPoint $pickPoint
@@ -73,6 +73,7 @@ use Yii;
  * @property SoSheetPayInfo[] $soSheetPayInfos
  * @property VipCoupon[] $vipCoupons
  * @property VipCouponLog[] $vipCouponLogs
+ * @property SysParameter $serviceStyle
  */
 class SoSheet extends \app\models\b2b2c\BasicModel
 {
@@ -110,7 +111,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             [['order_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['order_status' => 'id']],
             [['pay_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['pay_status' => 'id']],
             [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['province_id' => 'id']],
-            [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryType::className(), 'targetAttribute' => ['delivery_type' => 'id']],
+            [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryTypeTpl::className(), 'targetAttribute' => ['delivery_type' => 'id']],
             [['related_case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['related_case_id' => 'id']],
             [['pay_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PayType::className(), 'targetAttribute' => ['pay_type_id' => 'id']],
             [['pick_point_id'], 'exist', 'skipOnError' => true, 'targetClass' => PickUpPoint::className(), 'targetAttribute' => ['pick_point_id' => 'id']],
@@ -163,8 +164,24 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'service_date' => Yii::t('app', '服务时间(婚礼)'),
             'budget_amount' => Yii::t('app', '婚礼预算'),
             'related_service' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
-            'service_style' => Yii::t('app', '婚礼样式（多选）（浪漫，简约）'),
+            'service_style' => Yii::t('app', '婚礼类型（单选）（室内，室外）'),
             'related_case_id' => Yii::t('app', '关联案例编号'),
+        	'vip.vip_id' =>  Yii::t('app', '会员编号'),
+        		'city.name' =>  Yii::t('app', '城市'),
+        		'country.vip_id' =>  Yii::t('app', '国家'),
+        		'deliveryStatus.param_val' =>  Yii::t('app', '配送状态'),
+        		'district.param_val' =>  Yii::t('app', '区域街道'),
+        		'invoiceType.param_val' =>  Yii::t('app', '发票类型'),
+        		'orderStatus.param_val' =>  Yii::t('app', '订单状态'),
+        		'payStatus.param_val' =>  Yii::t('app', '支付状态'),
+        		'province.name' =>  Yii::t('app', '省份'),
+        		'deliveryTypeTpl.name' =>  Yii::t('app', '配送方式'),
+        		'payType.name' =>  Yii::t('app', '支付方式'),
+        		'pickPoint.name' =>  Yii::t('app', '自提点'),
+        		'sheetType.name' =>  Yii::t('app', '订单类型'),
+        		'serviceStyle.param_val' =>  Yii::t('app', '婚礼类型'),
+        	
+        		
         ];
     }
 
@@ -285,7 +302,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
      */
     public function getDeliveryType()
     {
-        return $this->hasOne(DeliveryType::className(), ['id' => 'delivery_type']);
+        return $this->hasOne(DeliveryTypeTpl::className(), ['id' => 'delivery_type']);
     }
 
     /**
@@ -358,5 +375,13 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getVipCouponLogs()
     {
         return $this->hasMany(VipCouponLog::className(), ['order_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getServiceStyle()
+    {
+    	return $this->hasOne(SysParameter::className(), ['id' => 'service_style']);
     }
 }
