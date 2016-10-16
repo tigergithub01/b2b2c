@@ -214,6 +214,156 @@ select now();
 alter table t_vip_case add constraint fk_case_is_hot_ref_param foreign key (is_hot)
       references t_sys_parameter (id);
 
+select * from t_vip_blog_type;
+
+alter table t_vip_blog add constraint fk_vip_blog_audit_stat_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+
+alter table t_vip_blog add constraint fk_vip_blog_audit_usr_ref_usr foreign key (audit_user_id)
+      references t_sys_user (id);
+
+alter table t_vip_blog add name                 varchar(200) not null comment '帖子标题'
+
+
+alter table t_activity add  audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核';
+  alter table t_activity add audit_user_id        bigint(20) comment '审核人';
+  alter table t_activity add audit_date           datetime comment '审核日期';
+
+
+alter table t_activity add constraint fk_act_audit_stat_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_activity add constraint fk_act_audit_usr_ref_usr foreign key (audit_user_id)
+      references t_sys_user (id);
+
+select * from t_vip;
+
+select * from t_vip_blog;
+
+
+create table t_activity_type
+(
+   id                   bigint not null auto_increment comment '主键',
+   name                 varchar(60) not null comment '活动类别名称',
+   primary key (id)
+);
+
+alter table t_activity_type comment '促销活动类型';
+
+alter table t_activity add constraint fk_activity_type_ref_type foreign key (activity_type)
+      references t_activity_type (id);
+
+alter table t_activity drop  FOREIGN KEY fk_act_type_ref_param
+
+CREATE TABLE `t_so_sheet` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `sheet_type_id` bigint(20) NOT NULL COMMENT '订单类型（普通订单，定制订单）',
+  `code` varchar(30) NOT NULL COMMENT '订单编号(so-年月日-顺序号，根据单据设置进行生成)',
+  `vip_id` bigint(20) NOT NULL COMMENT '会员编号',
+  `order_amt` decimal(20,6) NOT NULL COMMENT '订单待支付费用',
+  `order_quantity` int(11) NOT NULL COMMENT '产品数量（所有商品数量汇总）',
+  `goods_amt` decimal(20,6) NOT NULL COMMENT '商品总金额',
+  `deliver_fee` decimal(20,6) NOT NULL COMMENT '运费',
+  `order_date` datetime NOT NULL COMMENT '订单提交日期',
+  `delivery_date` datetime DEFAULT NULL COMMENT '发货日期',
+  `delivery_type` bigint(20) DEFAULT NULL COMMENT '配送方式',
+  `pay_type_id` bigint(20) DEFAULT NULL COMMENT '支付方式',
+  `pay_date` datetime DEFAULT NULL COMMENT '付款日期',
+  `delivery_no` varchar(60) DEFAULT NULL COMMENT '快递单号',
+  `pick_point_id` bigint(20) DEFAULT NULL COMMENT '自提点',
+  `paid_amt` decimal(20,6) DEFAULT NULL COMMENT '已付款金额',
+  `integral` bigint(20) NOT NULL COMMENT '消耗积分',
+  `integral_money` decimal(20,6) NOT NULL COMMENT '积分折合金额',
+  `coupon` decimal(20,6) NOT NULL COMMENT '优惠券消耗金额',
+  `discount` decimal(20,6) NOT NULL COMMENT '折扣费用',
+  `return_amt` decimal(20,6) DEFAULT NULL COMMENT '退款金额',
+  `return_date` datetime DEFAULT NULL COMMENT '退款日期',
+  `memo` varchar(400) DEFAULT NULL COMMENT '备注',
+  `message` varchar(300) DEFAULT NULL COMMENT '买家留言',
+  `order_status` bigint(20) NOT NULL COMMENT '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）',
+  `delivery_status` bigint(20) DEFAULT NULL COMMENT '配送状态',
+  `pay_status` bigint(20) NOT NULL COMMENT '支付状态',
+  `consignee` varchar(30) NOT NULL COMMENT '收货人',
+  `country_id` bigint(20) DEFAULT NULL COMMENT '国家',
+  `province_id` bigint(20) DEFAULT NULL COMMENT '省份',
+  `city_id` bigint(20) DEFAULT NULL COMMENT '城市',
+  `district_id` bigint(20) DEFAULT NULL COMMENT '区域街道',
+  `mobile` varchar(20) NOT NULL COMMENT '联系手机号码',
+  `detail_address` varchar(255) DEFAULT NULL COMMENT '详细地址',
+  `invoice_type` bigint(20) DEFAULT NULL COMMENT '发票类型（电子发票，纸质发票)',
+  `invoice_header` varchar(60) DEFAULT NULL COMMENT '发票抬头名称',
+  `service_date` datetime DEFAULT NULL COMMENT '服务时间(婚礼)',
+  `budget_amount` decimal(20,6) DEFAULT NULL COMMENT '婚礼预算',
+  `related_service` varchar(60) DEFAULT NULL COMMENT '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）',
+  `service_style` varchar(60) DEFAULT NULL COMMENT '婚礼样式（多选）（浪漫，简约）',
+  `related_case_id` bigint(20) DEFAULT NULL COMMENT '关联案例编号',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Index_so_code` (`code`),
+  KEY `fk_so_city_ref_region` (`city_id`),
+  KEY `fk_so_country_ref_region` (`country_id`),
+  KEY `fk_so_district_ref_region` (`district_id`),
+  KEY `fk_so_invoice_ref_param` (`invoice_type`),
+  KEY `fk_so_order_stat_ref_param` (`order_status`),
+  KEY `fk_so_pay_stat_ref_param` (`pay_status`),
+  KEY `fk_so_province_ref_region` (`province_id`),
+  KEY `fk_so_sheet_case_id_ref_org_case` (`related_case_id`),
+  KEY `fk_so_sheet_ref_pay_type` (`pay_type_id`),
+  KEY `fk_so_sheet_ref_pickup_point` (`pick_point_id`),
+  KEY `fk_so_sheet_ref_st_type` (`sheet_type_id`),
+  KEY `fk_so_sheet_ref_vip` (`vip_id`),
+  KEY `fk_so_delivery_stat_ref_param` (`delivery_status`),
+  KEY `fk_so_ref_delivery_type` (`delivery_type`),
+  CONSTRAINT `fk_so_delivery_stat_ref_param` FOREIGN KEY (`delivery_status`) REFERENCES `t_sys_parameter` (`id`),
+  CONSTRAINT `fk_so_ref_delivery_type` FOREIGN KEY (`delivery_type`) REFERENCES `t_delivery_type` (`id`),
+  CONSTRAINT `fk_so_city_ref_region` FOREIGN KEY (`city_id`) REFERENCES `t_sys_region` (`id`),
+  CONSTRAINT `fk_so_country_ref_region` FOREIGN KEY (`country_id`) REFERENCES `t_sys_region` (`id`),
+  CONSTRAINT `fk_so_district_ref_region` FOREIGN KEY (`district_id`) REFERENCES `t_sys_region` (`id`),
+  CONSTRAINT `fk_so_invoice_ref_param` FOREIGN KEY (`invoice_type`) REFERENCES `t_sys_parameter` (`id`),
+  CONSTRAINT `fk_so_order_stat_ref_param` FOREIGN KEY (`order_status`) REFERENCES `t_sys_parameter` (`id`),
+  CONSTRAINT `fk_so_pay_stat_ref_param` FOREIGN KEY (`pay_status`) REFERENCES `t_sys_parameter` (`id`),
+  CONSTRAINT `fk_so_province_ref_region` FOREIGN KEY (`province_id`) REFERENCES `t_sys_region` (`id`),
+  CONSTRAINT `fk_so_sheet_case_id_ref_org_case` FOREIGN KEY (`related_case_id`) REFERENCES `t_vip_case` (`id`),
+  CONSTRAINT `fk_so_sheet_ref_pay_type` FOREIGN KEY (`pay_type_id`) REFERENCES `t_pay_type` (`id`),
+  CONSTRAINT `fk_so_sheet_ref_pickup_point` FOREIGN KEY (`pick_point_id`) REFERENCES `t_pick_up_point` (`id`),
+  CONSTRAINT `fk_so_sheet_ref_st_type` FOREIGN KEY (`sheet_type_id`) REFERENCES `t_sheet_type` (`id`),
+  CONSTRAINT `fk_so_sheet_ref_vip` FOREIGN KEY (`vip_id`) REFERENCES `t_vip` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单信息表';
+
+
+
+alter table t_out_stock_sheet drop  FOREIGN KEY  `fk_out_ref_delivery_type` FOREIGN KEY (`delivery_type`) REFERENCES `t_delivery_type` (`id`)
+alter table t_out_stock_sheet add constraint fk_out_ref_delivery_type foreign key (delivery_type)
+      references t_delivery_type_tpl (id);
+
+CREATE TABLE `t_out_stock_sheet` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
+  `sheet_type_id` bigint(20) NOT NULL COMMENT '单据类型',
+  `code` varchar(30) NOT NULL COMMENT '发货单编号（根据规则自动生成）',
+  `order_id` bigint(20) NOT NULL COMMENT '关联订单编号',
+  `user_id` bigint(20) NOT NULL COMMENT '制单人',
+  `vip_id` bigint(20) NOT NULL COMMENT '关联商户编号',
+  `sheet_date` datetime NOT NULL COMMENT '单据生成时间',
+  `status` bigint(20) NOT NULL COMMENT '发货单状态（未发货、已发货）',
+  `delivery_type` bigint(20) NOT NULL COMMENT '配送方式',
+  `delivery_no` varchar(60) NOT NULL COMMENT '快递单号',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Index_out_code` (`code`),
+  KEY `fk_out_ref_delivery_type` (`delivery_type`),
+  KEY `fk_out_stock_ref_so` (`order_id`),
+  KEY `fk_out_stock_sheet_ref_vip` (`vip_id`),
+  KEY `fk_out_stock_stat_ref_param` (`status`),
+  KEY `fk_out_stock_user_ref_user` (`user_id`),
+  CONSTRAINT `fk_out_stock_user_ref_user` FOREIGN KEY (`user_id`) REFERENCES `t_sys_user` (`id`),
+  CONSTRAINT `fk_out_ref_delivery_type` FOREIGN KEY (`delivery_type`) REFERENCES `t_delivery_type` (`id`),
+  CONSTRAINT `fk_out_stock_ref_so` FOREIGN KEY (`order_id`) REFERENCES `t_so_sheet` (`id`),
+  CONSTRAINT `fk_out_stock_sheet_ref_vip` FOREIGN KEY (`vip_id`) REFERENCES `t_vip` (`id`),
+  CONSTRAINT `fk_out_stock_stat_ref_param` FOREIGN KEY (`status`) REFERENCES `t_sys_parameter` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='发货单';
+
+
+
+select * from t_sys_region limit 0,100
 
 
 */

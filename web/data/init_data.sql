@@ -130,12 +130,35 @@ insert into t_sys_parameter_type(id,name,description) values(23,'性别',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23001,23,'男',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23002,23,'女',null,2);
 
+insert into t_sys_parameter_type(id,name,description) values(24,'退款申请单状态',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24001,24,'审核中',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24002,24,'退款处理中(审核通过)',null,2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24003,24,'已退款',null,3);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24004,24,'审核不通过',null,4);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24005,24,'已撤销',null,5);
 
+insert into t_sys_parameter_type(id,name,description) values(25,'退款单状态',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(25001,25,'待退款',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(25002,25,'已退款',null,2);
+
+insert into t_sys_parameter_type(id,name,description) values(26,'婚礼类型',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(26001,26,'室内',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(26002,26,'室外',null,2);
+
+insert into t_sys_parameter_type(id,name,description) values(27,'婚礼类型',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27001,27,'策划师',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27002,27,'主持人',null,2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27003,27,'摄影师',null,3);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27004,27,'化妆师',null,4);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27005,27,'摄像师',null,5);
 
 
 /*
 select * from t_sys_parameter_type;
 select * from t_sys_parameter where type_id = 23;
+
+select * from t_vip;
+
 
 delete from t_sys_parameter where type_id = 23;
 
@@ -159,6 +182,15 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2300
 insert into t_sys_parameter_type(id,name,description) values(15,'会员状态',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(15001,15,'正常',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(15002,15,'停用',null,2);
+
+--促销活动类别
+insert into t_sys_parameter_type(id,name,description) values(24,'促销活动类别',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24001,24,'特价促销',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24002,24,'优惠套装',null,2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24003,24,'产品满几件赠几件',null,3);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24004,24,'满金额赠送产品',null,4);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24005,24,'折扣',null,5);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24006,24,'满金额减金额',null,6);
 
 
 
@@ -260,4 +292,29 @@ select * from t_sys_config;
 
 insert into t_sys_config(code,value,description)values('thumb_width','220','缩略图宽度');
 insert into t_sys_config(code,value,description)values('thumb_height','220','缩略图高度');
+
+/***
+	select * from t_activity_type;
+*/
+insert into t_activity_type(name)values('优惠套装');
+insert into t_activity_type(name)values('特价促销');
+insert into t_activity_type(name)values('产品满几件赠几件');
+insert into t_activity_type(name)values('满金额赠送产品');
+insert into t_activity_type(name)values('折扣');
+insert into t_activity_type(name)values('满金额减金额');
+
+/***
+	select * from t_sheet_type;
+
+update t_sheet_type set date_format = 'Ymd' where date_format = 'YmdHis';
+*/
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (1,'so','普通订单','so','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (2,'sc','定制订单','sc','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (3,'ra','退款申请单','ra','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (4,'rd','退款单','rd','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (5,'ta','退货申请单','ta','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (6,'tt','退货单','tt','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (7,'ot','发货单','ot','Ymd','',5,1);
+
+
 
