@@ -179,7 +179,7 @@ class ImageUtils{
 		}
 		 
 		$base_dir = $uploadPath;
-		$path = $base_dir . '/' . date('ym',time()) . '/';
+		$path = $base_dir . '/' . date('Ym',time()) . '/';
 		//     	$webroot = Yii::getAlias("@webroot")  ;
 		 
 		//创建文件夹
