@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\RefundSheetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Refund Sheets');
+$this->title = Module::t('app', 'Refund Sheets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="refund-sheet-index">
@@ -24,19 +25,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'sheet_type_id',
-            'refund_apply_id',
+            // 'sheet_type_id',
+            // 'refund_apply_id',
+        	'refundApply.code',
             'code',
-            'order_id',
+            //'order_id',
+            'order.code',
             // 'return_id',
+            // 'return.code',
             // 'user_id',
             // 'sheet_date',
             // 'need_return_amt',
             // 'return_amt',
             // 'memo',
             // 'status',
+        	'status0.param_val',
             // 'vip_id',
+            'vip.vip_id',
             // 'merchant_id',
+            'merchant.vip_id',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

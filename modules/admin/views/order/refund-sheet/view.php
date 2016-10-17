@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheet */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Refund Sheets'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Refund Sheets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="refund-sheet-view">
@@ -27,19 +28,26 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'sheet_type_id',
-            'refund_apply_id',
+            // 'sheet_type_id',
+            // 'refund_apply_id',
+            'refundApply.code',
             'code',
-            'order_id',
-            'return_id',
-            'user_id',
+            // 'order_id',
+            'order.code',
+            // 'return_id',
+            'return.code',
+            //'user_id',
+            'user.user_id',
             'sheet_date',
             'need_return_amt',
             'return_amt',
             'memo',
-            'status',
-            'vip_id',
-            'merchant_id',
+            // 'status',
+            'status0.param_val',
+            //'vip_id',
+            'vip.vip_id',
+            // 'merchant_id',
+            'merchant.vip_id',
 		        ],
 		    ]) ?>
     	</div>

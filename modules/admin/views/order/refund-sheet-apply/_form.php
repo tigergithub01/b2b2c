@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Console;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheetApply */
@@ -37,17 +39,35 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
+	    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+	    
 	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo  $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'order_id')->dropDownList(\yii\helpers\ArrayHelper::map($soSheetList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'reason')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'reason')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php // echo  $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($refundApplyStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'apply_date')->textInput() ?>
+    <?php // echo $form->field($model, 'apply_date')->textInput() ?>
+    
+    
+    <?= $form->field($model, 'apply_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
 		</div>
 	

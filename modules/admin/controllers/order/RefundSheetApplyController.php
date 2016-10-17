@@ -9,6 +9,11 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\SheetType;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\Vip;
 
 /**
  * RefundSheetApplyController implements the CRUD actions for RefundSheetApply model.
@@ -44,6 +49,9 @@ class RefundSheetApplyController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'vipList' => $this->findVipList(SysParameter::no),
+        		'refundApplyStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_APPLY_STATUS),
+        		'soSheetList' => $this->findSoSheetList(),
         ]);
     }
 
@@ -67,6 +75,7 @@ class RefundSheetApplyController extends BaseAuthController
     public function actionCreate()
     {
         $model = new RefundSheetApply();
+        $model->sheet_type_id = SheetType::ra;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
@@ -74,6 +83,9 @@ class RefundSheetApplyController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'vipList' => $this->findVipList(SysParameter::no),
+            		'refundApplyStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_APPLY_STATUS),
+            		'soSheetList' => $this->findSoSheetList(),
             ]);
         }
     }
@@ -94,6 +106,9 @@ class RefundSheetApplyController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'vipList' => $this->findVipList(SysParameter::no),
+            		'refundApplyStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_APPLY_STATUS),
+            		'soSheetList' => $this->findSoSheetList(),
             ]);
         }
     }
@@ -120,10 +135,36 @@ class RefundSheetApplyController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = RefundSheetApply::findOne($id)) !== null) {
+    	
+    	$model = RefundSheetApply::find()->alias("refundApply")
+    	->joinWith("vip vip")
+    	->joinWith("order order")
+    	->joinWith("status0 stat")
+    	->where(['refundApply.id' => $id])->one();
+    	 
+    	if($model){
+//         if (($model = RefundSheetApply::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList($merchant_flag){
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findSoSheetList(){
+    	return SoSheet::find()->all();
+    }
+    
 }

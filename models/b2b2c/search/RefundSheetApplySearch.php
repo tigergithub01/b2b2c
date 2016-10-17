@@ -19,7 +19,7 @@ class RefundSheetApplySearch extends RefundSheetApply
     {
         return [
             [['id', 'sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
-            [['reason', 'apply_date'], 'safe'],
+            [['reason', 'apply_date', 'code'], 'safe'],
         ];
     }
 
@@ -29,7 +29,7 @@ class RefundSheetApplySearch extends RefundSheetApply
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -41,7 +41,10 @@ class RefundSheetApplySearch extends RefundSheetApply
      */
     public function search($params)
     {
-        $query = RefundSheetApply::find();
+        $query = RefundSheetApply::find()->alias("refundApply")
+    	->joinWith("vip vip")
+    	->joinWith("order order")
+    	->joinWith("status0 stat");
 
         // add conditions that should always apply here
 
@@ -49,6 +52,24 @@ class RefundSheetApplySearch extends RefundSheetApply
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'order.code' => [
+        						'asc'  => ['order.code' => SORT_ASC],
+        						'desc' => ['order.code' => SORT_DESC],
+        				],
+        				'status0.param_val' => [
+        						'asc'  => ['status0.param_val' => SORT_ASC],
+        						'desc' => ['status0.param_val' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -61,15 +82,25 @@ class RefundSheetApplySearch extends RefundSheetApply
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'sheet_type_id' => $this->sheet_type_id,
-            'vip_id' => $this->vip_id,
-            'order_id' => $this->order_id,
-            'status' => $this->status,
-            'apply_date' => $this->apply_date,
+            'refundApply.id' => $this->id,
+            'refundApply.sheet_type_id' => $this->sheet_type_id,
+            'refundApply.vip_id' => $this->vip_id,
+            'refundApply.order_id' => $this->order_id,
+            'refundApply.status' => $this->status,
+            'refundApply.apply_date' => $this->apply_date,
         ]);
 
-        $query->andFilterWhere(['like', 'reason', $this->reason]);
+        $query->andFilterWhere(['like', 'reason', $this->reason])
+        	->andFilterWhere(['like', 'code', $this->code])
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        
+        if($this->start_date){
+        	$query->andFilterWhere(['>=', 'refundApply.apply_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);
+        }
+        
+        if($this->end_date){
+        	$query->andFilterWhere(['<=', 'refundApply.apply_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+        }
 
         return $dataProvider;
     }

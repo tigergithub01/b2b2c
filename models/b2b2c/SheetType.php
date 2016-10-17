@@ -20,6 +20,15 @@ use Yii;
  */
 class SheetType extends \app\models\b2b2c\BasicModel
 {
+	const so = 1; //普通订单
+	const sc = 2; //定制订单
+	const ra = 3; //退款申请单
+	const rd = 4; //退款单
+	const ta = 5; //退货申请单
+	const tt = 6; //退货单
+	const ot = 7; //发货单
+	
+    
     /**
      * @inheritdoc
      */

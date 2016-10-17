@@ -30,7 +30,7 @@ class RefundSheetSearch extends RefundSheet
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -42,7 +42,14 @@ class RefundSheetSearch extends RefundSheet
      */
     public function search($params)
     {
-        $query = RefundSheet::find();
+        $query = RefundSheet::find()->alias("refundSheet")
+    	->joinWith("merchant merchant")
+    	->joinWith("order order")
+    	->joinWith("return return")
+    	->joinWith("refundApply refundApply")
+    	->joinWith("user user")
+    	->joinWith("status0 stat")
+    	->joinWith("vip vip");
 
         // add conditions that should always apply here
 
@@ -51,6 +58,37 @@ class RefundSheetSearch extends RefundSheet
             //'pagination' => ['pagesize' => '15',],
             
         ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'merchant.vip_id' => [
+        						'asc'  => ['merchant.vip_id' => SORT_ASC],
+        						'desc' => ['merchant.vip_id' => SORT_DESC],
+        				],
+        				'order.code' => [
+        						'asc'  => ['order.code' => SORT_ASC],
+        						'desc' => ['order.code' => SORT_DESC],
+        				],
+        				'return.code' => [
+        						'asc'  => ['return.code' => SORT_ASC],
+        						'desc' => ['return.code' => SORT_DESC],
+        				],
+        				'refundApply.code' => [
+        						'asc'  => ['order.code' => SORT_ASC],
+        						'desc' => ['order.code' => SORT_DESC],
+        				],
+        				'status0.param_val' => [
+        						'asc'  => ['status0.param_val' => SORT_ASC],
+        						'desc' => ['status0.param_val' => SORT_DESC],
+        				],
+        		])
+        ]);
+        
 
         $this->load($params);
 
@@ -62,18 +100,18 @@ class RefundSheetSearch extends RefundSheet
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'sheet_type_id' => $this->sheet_type_id,
-            'refund_apply_id' => $this->refund_apply_id,
-            'order_id' => $this->order_id,
-            'return_id' => $this->return_id,
-            'user_id' => $this->user_id,
-            'sheet_date' => $this->sheet_date,
-            'need_return_amt' => $this->need_return_amt,
-            'return_amt' => $this->return_amt,
-            'status' => $this->status,
-            'vip_id' => $this->vip_id,
-            'merchant_id' => $this->merchant_id,
+            'refundSheet.id' => $this->id,
+            'refundSheet.sheet_type_id' => $this->sheet_type_id,
+            'refundSheet.refund_apply_id' => $this->refund_apply_id,
+            'refundSheet.order_id' => $this->order_id,
+            'refundSheet.return_id' => $this->return_id,
+            'refundSheet.user_id' => $this->user_id,
+            'refundSheet.sheet_date' => $this->sheet_date,
+            'refundSheet.need_return_amt' => $this->need_return_amt,
+            'refundSheet.return_amt' => $this->return_amt,
+            'refundSheet.status' => $this->status,
+            'refundSheet.vip_id' => $this->vip_id,
+            'refundSheet.merchant_id' => $this->merchant_id,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])

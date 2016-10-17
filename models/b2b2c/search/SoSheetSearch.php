@@ -134,6 +134,14 @@ class SoSheetSearch extends SoSheet
             ->andFilterWhere(['like', 'so.related_service', $this->related_service])
             ->andFilterWhere(['like', 'so.service_style', $this->service_style])
         	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        
+        if($this->start_date){
+        	$query->andFilterWhere(['>=', 'so.order_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);
+        }
+        
+        if($this->end_date){
+        	$query->andFilterWhere(['<=', 'so.order_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+        }
 
         return $dataProvider;
     }

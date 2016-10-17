@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheet */
@@ -39,29 +40,53 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'refund_apply_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'refund_apply_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'refund_apply_id')->dropDownList(\yii\helpers\ArrayHelper::map($refundApplyList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'order_id')->dropDownList(\yii\helpers\ArrayHelper::map($orderList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'return_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'return_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'return_id')->dropDownList(\yii\helpers\ArrayHelper::map($returnList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'user_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'user_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'user_id')->dropDownList(\yii\helpers\ArrayHelper::map($userList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'sheet_date')->textInput() ?>
+    <?php // echo $form->field($model, 'sheet_date')->textInput() ?>
+    
+    <?= $form->field($model, 'sheet_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
+    
 
     <?= $form->field($model, 'need_return_amt')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'return_amt')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'memo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($refundStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
 		</div>
 	

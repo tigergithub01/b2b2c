@@ -180,6 +180,12 @@ return [
 		'Create Return Sheet'=>'新增退货单',
 		'Update Return Sheet'=>'编辑退货单',
 		
+		//发货单
+		'Out Stock Sheet'=>'发货单',
+		'Out Stock Sheets'=>'发货单列表',
+		'Create Out Stock Sheet'=>'新增发货单',
+		'Update Out Stock Sheet'=>'编辑发货单',
+		
 		
 		
 ];

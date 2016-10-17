@@ -14,10 +14,11 @@ use Yii;
  * @property string $order_id
  * @property string $reason
  * @property string $status
+ * @property string $code
  *
- * @property SysParameter $status0
  * @property SoSheet $order
  * @property Vip $vip
+ * @property SysParameter $status0
  * @property ReturnApplyDetail[] $returnApplyDetails
  * @property ReturnSheet[] $returnSheets
  */
@@ -37,13 +38,14 @@ class ReturnApply extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'apply_date', 'vip_id', 'order_id', 'reason', 'status'], 'required'],
+            [['sheet_type_id', 'apply_date', 'vip_id', 'order_id', 'reason', 'status', 'code'], 'required'],
             [['sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
             [['apply_date'], 'safe'],
             [['reason'], 'string', 'max' => 255],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+            [['code'], 'string', 'max' => 30],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
         ];
     }
 
@@ -60,15 +62,8 @@ class ReturnApply extends \app\models\b2b2c\BasicModel
             'order_id' => Yii::t('app', '关联订单编号'),
             'reason' => Yii::t('app', '退货申请原因'),
             'status' => Yii::t('app', '审核中，退货处理中(审核通过)，已退货，审核不通过，用户撤销'),
+            'code' => Yii::t('app', '退货申请单编号'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStatus0()
-    {
-        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**
@@ -85,6 +80,14 @@ class ReturnApply extends \app\models\b2b2c\BasicModel
     public function getVip()
     {
         return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus0()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**

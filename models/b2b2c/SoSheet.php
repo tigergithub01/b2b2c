@@ -86,6 +86,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	/* 结束日期 （查询用） */
 	public $end_date;
 	
+	/* 订单编号 （查询用） */
+	public $order_code;
+	
 	/* 服务类别（多选）用来接收数据 */
 	public $related_services;
 	
@@ -130,6 +133,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_code';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'related_services';
     	return $scenarios;
     	// 		return parent::scenarios();
@@ -176,12 +180,12 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'sheet_type_id' => Yii::t('app', '订单类型（普通订单，定制订单）'),
-            'code' => Yii::t('app', '订单编号(so-年月日-顺序号，根据单据设置进行生成)'),
+            'sheet_type_id' => Yii::t('app', /* '订单类型（普通订单，定制订单）' */'订单类型'),
+            'code' => Yii::t('app', '订单编号'/* '订单编号(so-年月日-顺序号，根据单据设置进行生成)' */),
             'vip_id' => Yii::t('app', '会员编号'),
             'order_amt' => Yii::t('app', '订单待支付费用'),
             'order_quantity' => Yii::t('app', '产品数量（所有商品数量汇总）'),
-            'goods_amt' => Yii::t('app', '商品总金额'),
+            'goods_amt' => Yii::t('app', '订单总金额'),
             'deliver_fee' => Yii::t('app', '运费'),
             'order_date' => Yii::t('app', '订单提交日期'),
             'delivery_date' => Yii::t('app', '发货日期'),
@@ -199,7 +203,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'return_date' => Yii::t('app', '退款日期'),
             'memo' => Yii::t('app', '备注'),
             'message' => Yii::t('app', '买家留言'),
-            'order_status' => Yii::t('app', '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）'),
+            'order_status' => Yii::t('app', '订单状态'/* '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）' */),
             'delivery_status' => Yii::t('app', '配送状态'),
             'pay_status' => Yii::t('app', '支付状态'),
             'consignee' => Yii::t('app', '收货人'),
@@ -235,6 +239,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         		'vip_no' => Yii::t('app', '会员编号'),
         		'start_date' => Yii::t('app', '开始日期'),
         		'end_date' => Yii::t('app', '结束日期'),
+        		'order_code' => Yii::t('app', '订单编号'),
         ];
     }
 

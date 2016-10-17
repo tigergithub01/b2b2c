@@ -49,6 +49,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+
 		</div>
 	
 	    <div class="box-footer form-group">

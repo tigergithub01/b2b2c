@@ -19,7 +19,7 @@ class ReturnApplySearch extends ReturnApply
     {
         return [
             [['id', 'sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
-            [['apply_date', 'reason'], 'safe'],
+            [['apply_date', 'reason', 'code'], 'safe'],
         ];
     }
 
@@ -69,7 +69,8 @@ class ReturnApplySearch extends ReturnApply
             'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'reason', $this->reason]);
+        $query->andFilterWhere(['like', 'reason', $this->reason])
+            ->andFilterWhere(['like', 'code', $this->code]);
 
         return $dataProvider;
     }

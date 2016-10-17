@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'order_id',
             // 'reason',
             // 'status',
+            // 'code',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

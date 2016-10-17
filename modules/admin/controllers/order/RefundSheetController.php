@@ -9,6 +9,14 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\RefundSheetApply;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\ReturnSheet;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SheetType;
 
 /**
  * RefundSheetController implements the CRUD actions for RefundSheet model.
@@ -67,6 +75,7 @@ class RefundSheetController extends BaseAuthController
     public function actionCreate()
     {
         $model = new RefundSheet();
+        $model->sheet_type_id = SheetType::rd;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
@@ -74,6 +83,13 @@ class RefundSheetController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'merchantList' => $this->findVipList(SysParameter::yes),
+            		'orderList' => $this->findSoSheetList(),
+            		'returnList' => $this->findReturnSheetList(),
+            		'refundApplyList' => $this->findRefundSheetApplyList(),
+            		'userList' => $this->findSysUserList(),
+            		'refundStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_STATUS),
+            		'vipList' =>  $this->findVipList(SysParameter::no),
             ]);
         }
     }
@@ -120,10 +136,62 @@ class RefundSheetController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = RefundSheet::findOne($id)) !== null) {
+    	$model = RefundSheet::find()->alias("refundSheet")
+    	->joinWith("merchant merchant")
+    	->joinWith("order order")
+    	->joinWith("return return")
+    	->joinWith("refundApply refundApply")
+    	->joinWith("user user")
+    	->joinWith("status0 stat")
+    	->joinWith("vip vip")
+    	->where(['refundSheet.id' => $id])->one();
+    	
+    	if($model){
+//     	if (($model = RefundSheet::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList($merchant_flag){
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findSoSheetList(){
+    	return SoSheet::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findReturnSheetList(){
+    	return ReturnSheet::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findRefundSheetApplyList(){
+    	return RefundSheetApply::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findSysUserList(){
+    	return SysUser::find()->all();
     }
 }

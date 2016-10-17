@@ -52,6 +52,21 @@ class SoSheetController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'vipList' => $this->findVipList(SysParameter::no),
+        		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province),
+        		'cityList' => $this->findSysRegionList(SysRegion::region_type_city),
+        		'districtList' => $this->findSysRegionList(SysRegion::region_type_district),
+        		'countryList' => $this->findSysRegionList(SysRegion::region_type_country),
+        		'deliveryStatusList' => SysParameterType::getSysParametersById(SysParameterType::SHIPPING_STATUS),
+        		'invoiceTypeList' => SysParameterType::getSysParametersById(SysParameterType::INVOICE_TYPE),
+        		'orderStatusList' => SysParameterType::getSysParametersById(SysParameterType::ORDER_STATUS),
+        		'payStatusList' => SysParameterType::getSysParametersById(SysParameterType::PAY_STATUS),
+        		'payTypeList' => $this->findPayTypeList(),
+        		'deliveryTypeList' => $this->findDeliveryTypeList(),
+        		'pickUpPointList' => $this->findPickUpPointList(),
+        		'sheetTypeList' => $this->findSheetTypeList(),
+        		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
+        		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
         ]);
     }
 
@@ -238,7 +253,7 @@ class SoSheetController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected function findSheetTypeList(){
-    	return SheetType::find()->all();
+    	return SheetType::find()->where(['id' => [SheetType::so, SheetType::sc]])->all();
     }
     
 }

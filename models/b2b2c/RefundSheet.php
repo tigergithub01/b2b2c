@@ -32,12 +32,47 @@ use Yii;
  */
 class RefundSheet extends \app\models\b2b2c\BasicModel
 {
+	/* 会员编号（查询用） */
+	public $vip_no;
+	
+	/* 起始日期 （查询用） */
+	public $start_date;
+	
+	/* 结束日期 （查询用） */
+	public $end_date;
+	
+	/* 订单编号 （查询用） */
+	public $order_code;
+	
+	/* 退款申请单编号 （查询用） */
+	public $refund_apply_code;
+	
+	/* 退货申请单编号 （查询用） */
+	public $return_code;
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_refund_sheet';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_code';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'refund_apply_code';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'return_code';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -71,7 +106,7 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'sheet_type_id' => Yii::t('app', '单据类型'),
             'refund_apply_id' => Yii::t('app', '关联退款申请编号'),
-            'code' => Yii::t('app', '退款单编号（根据单据规则自动生成）'),
+            'code' => Yii::t('app', /* '退款单编号（根据单据规则自动生成）' */'退款单编号'),
             'order_id' => Yii::t('app', '关联订单编号'),
             'return_id' => Yii::t('app', '关联退货单编号'),
             'user_id' => Yii::t('app', '制单人'),
@@ -82,6 +117,13 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
             'status' => Yii::t('app', '退款单状态（待退款、已退款）'),
             'vip_id' => Yii::t('app', '会员编号'),
             'merchant_id' => Yii::t('app', '关联商户编号'),
+        	'merchant.vip_id' => Yii::t('app', '会员编号'),
+        	'order.code' => Yii::t('app', '关联订单编号'),
+        	'return.code' => Yii::t('app', '关联退货单编号'),
+        	'refundApply.code' => Yii::t('app', '关联退款申请编号'),
+        	'user.user_id' => Yii::t('app', '制单人'),
+        	'status0.param_val' => Yii::t('app', /* '退款单状态（待退款、已退款）' */'退款单状态'),
+        	'vip.vip_id' => Yii::t('app', '会员编号'),
         ];
     }
 

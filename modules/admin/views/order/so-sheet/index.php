@@ -12,7 +12,23 @@ $this->title = Module::t('app', 'So Sheets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="so-sheet-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel, 
+    		'vipList' => $vipList,
+    		'proviceList' => $proviceList,
+    		'cityList' => $cityList,
+    		'districtList' => $districtList,
+    		'countryList' => $countryList,
+    		'deliveryStatusList' => $deliveryStatusList,
+    		'invoiceTypeList' => $invoiceTypeList,
+    		'orderStatusList' => $orderStatusList,
+    		'payStatusList' => $payStatusList,
+    		'payTypeList' => $payTypeList,
+    		'deliveryTypeList' => $deliveryTypeList,
+    		'pickUpPointList' => $pickUpPointList,
+    		'sheetTypeList' => $sheetTypeList,
+    		'serviceStyleList' => $serviceStyleList,
+    		'relatedServiceList' => $relatedServiceList,
+    ]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -32,16 +48,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'vip.vip_id',
             'order_amt',
             // 'order_quantity',
-            // 'goods_amt',
+            'goods_amt',
             // 'deliver_fee',
-            // 'order_date',
+            'order_date',
             // 'delivery_date',
             // 'delivery_type',
             // 'pay_type_id',
             // 'pay_date',
             // 'delivery_no',
             // 'pick_point_id',
-            // 'paid_amt',
+            'paid_amt',
             // 'integral',
             // 'integral_money',
             // 'coupon',
@@ -51,8 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'memo',
             // 'message',
             // 'order_status',
+            'orderStatus.param_val',
             // 'delivery_status',
             // 'pay_status',
+        	'payStatus.param_val',
             // 'consignee',
             // 'country_id',
             // 'province_id',

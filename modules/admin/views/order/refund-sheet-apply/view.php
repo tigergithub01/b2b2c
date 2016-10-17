@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheetApply */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Refund Sheet Applies'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Refund Sheet Applies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="refund-sheet-apply-view">
@@ -27,11 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'sheet_type_id',
-            'vip_id',
-            'order_id',
+            //'sheet_type_id',
+            'code',
+            // 'vip_id',
+            'vip.vip_id',
+            // 'order_id',
+            'order.code',
             'reason',
-            'status',
+            // 'status',
+            'status0.param_val',
             'apply_date',
 		        ],
 		    ]) ?>

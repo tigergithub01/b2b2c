@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\admin\Module;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\SoSheetSearch */
@@ -37,9 +38,11 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php // echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'sheet_type_id') ?>
+    <?php // echo $form->field($model, 'sheet_type_id') ?>
+    
+    <?= $form->field($model, 'sheet_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($sheetTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'code') ?>
 
@@ -47,7 +50,7 @@ use app\modules\admin\Module;
     
     <?= $form->field($model, 'vip_no') ?>
 
-    <?= $form->field($model, 'order_amt') ?>
+    <?php // echo  $form->field($model, 'order_amt') ?>
 
     <?php // echo $form->field($model, 'order_quantity') ?>
 
@@ -56,6 +59,15 @@ use app\modules\admin\Module;
     <?php // echo $form->field($model, 'deliver_fee') ?>
 
     <?php // echo $form->field($model, 'order_date') ?>
+    
+    <?= $form->field($model, 'start_date')->widget(dosamigos\datepicker\DateRangePicker::className(), [
+    		'attributeTo' => 'end_date',
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_PICKER_FORMAT,
+    			]
+          ]) ?>
 
     <?php // echo $form->field($model, 'delivery_date') ?>
 
@@ -88,10 +100,14 @@ use app\modules\admin\Module;
     <?php // echo $form->field($model, 'message') ?>
 
     <?php // echo $form->field($model, 'order_status') ?>
+    
+    <?= $form->field($model, 'order_status')->dropDownList(\yii\helpers\ArrayHelper::map($orderStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'delivery_status') ?>
 
     <?php // echo $form->field($model, 'pay_status') ?>
+    
+    <?= $form->field($model, 'pay_status')->dropDownList(\yii\helpers\ArrayHelper::map($payStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'consignee') ?>
 
