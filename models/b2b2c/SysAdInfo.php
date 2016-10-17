@@ -21,8 +21,8 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
 {
 	//上传文件
 	public $imageFile;
-	const SCENARIO_CREATE = 'create';//登陆
-	const SCENARIO_UPDATE = 'update';//登陆
+	const SCENARIO_CREATE = 'create';//创建
+	const SCENARIO_UPDATE = 'update';//更新
 	
     /**
      * @inheritdoc

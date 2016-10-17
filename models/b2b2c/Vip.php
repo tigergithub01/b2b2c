@@ -98,6 +98,11 @@ class Vip extends \app\models\b2b2c\BasicModel
 	//新密码(登陆后修改密码）
 	public $new_pwd;
 	
+	//用户图像
+	public $imageFile;
+	
+	
+	
 	/* 会员 */
 	const SCENARIO_REGISTER = 'register';//注册
 	const SCENARIO_LOGIN = 'login';//登陆
@@ -178,6 +183,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 			[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['vip_type_id'], 'required','on' => [self::SCENARIO_MERCHANT_REGISTER]],
+        	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         ];
     }
 
@@ -226,6 +232,7 @@ class Vip extends \app\models\b2b2c\BasicModel
         	'auditUser.user_id' => Yii::t('app', '审核人'),
         	'vipType.name' => Yii::t('app', /*'会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）'*/'婚礼人类型'),
         	'sex0.param_val' => Yii::t('app', '性别'),
+        	'imageFile' => Yii::t('app', '用户图像'),
         ];
     }
 

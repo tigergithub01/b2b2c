@@ -45,6 +45,9 @@ class VipCase extends \app\models\b2b2c\BasicModel
 	/* 商户编号（查询用） */
 	public $vip_no;
 	
+	//案例封面
+	public $imageFile;
+	
     /**
      * @inheritdoc
      */
@@ -68,7 +71,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'is_hot'], 'required'],
+            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'is_hot'], 'required'],
             [['type_id', 'vip_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
@@ -83,6 +86,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
+        	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         ];
     }
 
@@ -119,6 +123,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
         	'isHot.param_val' => Yii::t('app', '是否经典案例'),
         	'vip.vip_id' => Yii::t('app', '商户编号'),
         	'vip_no' => Yii::t('app', '商户编号'),
+        	'imageFile' => Yii::t('app', '案例封面'),
         ];
     }
     /**
