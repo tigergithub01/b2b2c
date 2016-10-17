@@ -9,6 +9,10 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\SysParameter;
 
 /**
  * SysNotifyController implements the CRUD actions for SysNotify model.
@@ -44,6 +48,11 @@ class SysNotifyController extends BaseAuthController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+        		'sendExtendList' => SysParameterType::getSysParametersById(SysParameterType::NOTIFY_EXTEND),
+        		'sysUserList' => $this->findSysUserList(),
+        		'notifyTypeList' => SysParameterType::getSysParametersById(SysParameterType::NOTIFY_TYPE),
+        		'vipList' => $this->findVipList(SysParameter::yes),
         ]);
     }
 
@@ -74,6 +83,11 @@ class SysNotifyController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'sendExtendList' => SysParameterType::getSysParametersById(SysParameterType::NOTIFY_EXTEND),
+            		'sysUserList' => $this->findSysUserList(),
+            		'notifyTypeList' => SysParameterType::getSysParametersById(SysParameterType::NOTIFY_TYPE),
+            		'vipList' => $this->findVipList(SysParameter::yes),
             ]);
         }
     }
@@ -94,6 +108,11 @@ class SysNotifyController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'sendExtendList' => SysParameterType::getSysParametersById(SysParameterType::NOTIFY_EXTEND),
+            		'sysUserList' => $this->findSysUserList(),
+            		'notifyTypeList' => SysParameterType::getSysParametersById(SysParameterType::NOTIFY_TYPE),
+            		'vipList' => $this->findVipList(SysParameter::yes),
             ]);
         }
     }
@@ -120,10 +139,36 @@ class SysNotifyController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = SysNotify::findOne($id)) !== null) {
+    	$model = SysNotify::find()->alias("sysNotify")
+    	->joinWith("isSent isSent")
+    	->joinWith("sendExtend sendExtend")
+    	->joinWith("issueUser issueUser")
+    	->joinWith("status0 stat")
+    	->joinWith("notifyType notifyType")
+    	->joinWith("vip vip")
+    	->where(['sysNotify.id' => $id])->one();
+    	 
+    	if($model){
+//         if (($model = SysNotify::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findSysUserList(){
+    	return SysUser::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findVipList($merchant_flag){
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
     }
 }

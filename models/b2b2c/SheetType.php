@@ -62,7 +62,7 @@ class SheetType extends \app\models\b2b2c\BasicModel
             'code' => Yii::t('app', '单据唯一编码'),
             'name' => Yii::t('app', '单据名称'),
             'prefix' => Yii::t('app', '单据前缀'),
-            'date_format' => Yii::t('app', '日期格式(yyyyMMdd)'),
+            'date_format' => Yii::t('app', '日期格式(YmdHis)'),
             'sep' => Yii::t('app', '分隔符(Null、’-’)'),
             'seq_length' => Yii::t('app', '序列长度'),
             'cur_seq' => Yii::t('app', '当前序列号'),

@@ -82,6 +82,12 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 婚礼人服务 */
 	const RELATED_SERVICE = 27;
 	
+	/* 公告类型 */
+	const NOTIFY_TYPE = 20;
+	
+	/* 公告发送范围 */
+	const NOTIFY_EXTEND = 21;
+	
 	
     /**
      * @inheritdoc

@@ -41,7 +41,13 @@ class SysNotifySearch extends SysNotify
      */
     public function search($params)
     {
-        $query = SysNotify::find();
+        $query = SysNotify::find()->alias("sysNotify")
+    	->joinWith("isSent isSent")
+    	->joinWith("sendExtend sendExtend")
+    	->joinWith("issueUser issueUser")
+    	->joinWith("status0 stat")
+    	->joinWith("notifyType notifyType")
+    	->joinWith("vip vip");
 
         // add conditions that should always apply here
 
@@ -61,19 +67,19 @@ class SysNotifySearch extends SysNotify
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'notify_type' => $this->notify_type,
-            'issue_date' => $this->issue_date,
-            'vip_id' => $this->vip_id,
-            'issue_user_id' => $this->issue_user_id,
-            'send_extend' => $this->send_extend,
-            'status' => $this->status,
-            'is_sent' => $this->is_sent,
-            'sent_time' => $this->sent_time,
+            'sysNotify.id' => $this->id,
+            'sysNotify.notify_type' => $this->notify_type,
+            'sysNotify.issue_date' => $this->issue_date,
+            'sysNotify.vip_id' => $this->vip_id,
+            'sysNotify.issue_user_id' => $this->issue_user_id,
+            'sysNotify.send_extend' => $this->send_extend,
+            'sysNotify.status' => $this->status,
+            'sysNotify.is_sent' => $this->is_sent,
+            'sysNotify.sent_time' => $this->sent_time,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content]);
+        $query->andFilterWhere(['like', 'sysNotify.title', $this->title])
+            ->andFilterWhere(['like', 'sysNotify.content', $this->content]);
 
         return $dataProvider;
     }

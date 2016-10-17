@@ -186,6 +186,18 @@ return [
 		'Create Out Stock Sheet'=>'新增发货单',
 		'Update Out Stock Sheet'=>'编辑发货单',
 		
+		//会员信息
+		'Sheet Type'=>'单据类型',
+		'Sheet Types'=>'单据类型列表',
+		'Create Sheet Type'=>'新增单据类型',
+		'Update Sheet Type'=>'编辑单据类型',
+		
+		
+		//通知信息
+		'Sys Notify'=>'通知信息',
+		'Sys Notifies'=>'通知列表',
+		'Create Sys Notify'=>'新增通知',
+		'Update Sys Notify'=>'编辑通知',
 		
 		
 ];

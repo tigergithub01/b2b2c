@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysNotify */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sys Notifies'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Notifies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sys-notify-view">
@@ -27,15 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'notify_type',
+            // 'notify_type',
+            'notifyType.param_val',
             'title',
             'issue_date',
             'content:ntext',
-            'vip_id',
-            'issue_user_id',
-            'send_extend',
-            'status',
-            'is_sent',
+            // 'vip_id',
+            'vip.vip_id',
+            // 'issue_user_id',
+            'issueUser.user_id',
+            // 'send_extend',
+            'sendExtend.param_val',
+            // 'status',
+            'status0.param_val',
+            // 'is_sent',
+            'isSent.param_val',
             'sent_time',
 		        ],
 		    ]) ?>

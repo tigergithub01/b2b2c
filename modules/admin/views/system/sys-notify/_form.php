@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysNotify */
@@ -37,25 +38,55 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'notify_type')->textInput(['maxlength' => true]) ?>
+	    <?php // echo $form->field($model, 'notify_type')->textInput(['maxlength' => true]) ?>
+	    
+	    <?= $form->field($model, 'notify_type')->dropDownList(\yii\helpers\ArrayHelper::map($notifyTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'issue_date')->textInput() ?>
+    <?php // echo $form->field($model, 'issue_date')->textInput() ?>
+    
+    <?= $form->field($model, 'issue_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
+    <?php //echo $form->field($model, 'issue_user_id')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'issue_user_id')->dropDownList(\yii\helpers\ArrayHelper::map($sysUserList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'send_extend')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'send_extend')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'send_extend')->dropDownList(\yii\helpers\ArrayHelper::map($sendExtendList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'is_sent')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'is_sent')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'is_sent')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'sent_time')->textInput() ?>
+    <?php // echo $form->field($model, 'sent_time')->textInput() ?>
+    
+    <?= $form->field($model, 'sent_time')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
+    				'todayBtn' => true,
+    			]
+          ]) ?>
 
 		</div>
 	

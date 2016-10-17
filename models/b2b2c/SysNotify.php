@@ -64,16 +64,22 @@ class SysNotify extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'notify_type' => Yii::t('app', '公告类型：店铺公告，平台公告'),
+            'notify_type' => Yii::t('app', /* '公告类型：店铺公告，平台公告' */'公告类型'),
             'title' => Yii::t('app', '标题'),
             'issue_date' => Yii::t('app', '发布日期'),
             'content' => Yii::t('app', '内容'),
-            'vip_id' => Yii::t('app', '关联商户编号(联商户布公告时使用此字段)'),
-            'issue_user_id' => Yii::t('app', '发布人（发布公告时使用此字段）'),
-            'send_extend' => Yii::t('app', '发送范围[全部（商户+会员)-待定,商户,会员]'),
-            'status' => Yii::t('app', '是否有效（1：是，0：否）'),
-            'is_sent' => Yii::t('app', '是否已发送（1：是，0：否）'),
+            'vip_id' => Yii::t('app', /* '关联商户编号(联商户布公告时使用此字段)' */'关联商户编号'),
+            'issue_user_id' => Yii::t('app', /* '发布人（发布公告时使用此字段）' */'发布人'),
+            'send_extend' => Yii::t('app', /* '发送范围[全部（商户+会员)-待定,商户,会员]' */'发送范围'),
+            'status' => Yii::t('app', /* '是否有效（1：是，0：否）' */'是否有效'),
+            'is_sent' => Yii::t('app', /* '是否已发送（1：是，0：否）' */'是否已发送'),
             'sent_time' => Yii::t('app', '发送时间'),
+        	'isSent.param_val' => Yii::t('app', /* '是否已发送（1：是，0：否）' */'是否已发送'),
+        	'sendExtend.param_val' => Yii::t('app', /* '发送范围[全部（商户+会员)-待定,商户,会员]' */'发送范围'),
+        	'issueUser.user_id' =>  Yii::t('app', /* '发布人（发布公告时使用此字段）' */'发布人'),
+        	'status0.param_val' =>  Yii::t('app', /* '是否有效（1：是，0：否）' */'是否有效'),
+        	'notifyType.param_val' => Yii::t('app', /* '公告类型：店铺公告，平台公告' */'公告类型'),
+        	'vip.vip_id' =>  Yii::t('app', /* '关联商户编号(联商户布公告时使用此字段)' */'关联商户编号'),
         ];
     }
 
