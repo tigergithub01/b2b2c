@@ -102,7 +102,7 @@ class SysAdInfoController extends BaseAuthController
         	}
         	if($model->save()){
         		//rename file name
-        		$file_info = pathinfo($model->img_original);
+        		//$file_info = pathinfo($model->img_original);
 //         		rename($model->img_original, $file_info)
         		$new_img_original =  $imageUtils->renameImage($model->img_original, $model->id, 'ads');
         		$new_thumb_url = $imageUtils->renameImage($model->thumb_url, $model->id, 'ads', Constant::thumb_flag);
@@ -117,7 +117,7 @@ class SysAdInfoController extends BaseAuthController
         			$model->img_url = $new_img_url;
         		}        	
         			
-        		if($model->update(true,['img_original','thumb_url', 'img_url'])){
+        		if($model->save(true,['img_original','thumb_url', 'img_url'])){
         			MsgUtils::success();
         			return $this->redirect(['view', 'id' => $model->id]);
         		}
@@ -175,14 +175,11 @@ class SysAdInfoController extends BaseAuthController
         			}
         		}	
         	}
-        	
-        	
-            
-        } else {
+        } /* else { */
             return $this->render('update', [
                 'model' => $model,
             ]);
-        }
+        /* } */
     }
 
     /**

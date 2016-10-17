@@ -14,6 +14,10 @@ use app\models\b2b2c\VipRank;
 use app\models\b2b2c\VipType;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysUser;
+use yii\web\UploadedFile;
+use app\common\utils\image\ImageUtils;
+use app\models\b2b2c\SysConfig;
+use app\models\b2b2c\common\Constant;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -76,11 +80,42 @@ class VipController extends BaseAuthController
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	//加密
         	$model->password = md5($model->password);
-        	if($model->save()){
-        		MsgUtils::success();
-        		return $this->redirect(['view', 'id' => $model->id]);
+        	$model->imageFile = UploadedFile::getInstance($model, "imageFile");
+        	
+        	//处理图片
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'vip';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = 0 /* SysConfig::getInstance()->getConfigVal("thumb_height") */;
+        	
+        	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type,null, $width, $height))){
+        		$model->img_url = $files['img_url'];
+        		$model->img_original = $files['img_original'];
+        		$model->thumb_url = $files['thumb_url'];
         	}
-           
+        	
+        	if($model->save()){
+        		//重命名图片地址
+        		if($files){
+	        		$new_img_original =  $imageUtils->renameImage($model->img_original, $model->id, $image_type);
+	        		$new_thumb_url = $imageUtils->renameImage($model->thumb_url, $model->id, $image_type, Constant::thumb_flag);
+	        		$new_img_url = $imageUtils->renameImage($model->img_url, $model->id, $image_type, Constant::img_flag);
+	        		if($new_img_original){
+	        			$model->img_original = $new_img_original;
+	        		}
+	        		if($new_thumb_url){
+	        			$model->thumb_url = $new_thumb_url;
+	        		}
+	        		if($new_img_url){
+	        			$model->img_url = $new_img_url;
+	        		}
+        		}
+        		
+        		if($model->save(true,['img_original','thumb_url', 'img_url'])){
+        			MsgUtils::success();
+        			return $this->redirect(['view', 'id' => $model->id]);
+        		}
+        	}
         }
         
        return $this->render('create', [
@@ -103,12 +138,52 @@ class VipController extends BaseAuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        	MsgUtils::success();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
+		
+        if ($model->load(Yii::$app->request->post())) {
+        	 
+        	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+        	if(empty($model->imageFile)){
+        		//如果没有上传文件，则不处理文件信息
+        		if($model->save()){
+        			MsgUtils::success();
+        			return $this->redirect(['view', 'id' => $model->id]);
+        		}
+        	}else{
+        		$imageUtils = new ImageUtils();
+        		$image_type = 'vip';
+        		$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        		$height = 0 /* SysConfig::getInstance()->getConfigVal("thumb_height") */;
+        		
+        		if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type, $model->id, $width, $height))){
+        			//旧图片地址
+        			$old_img_url = $model->img_url;
+        			$old_img_original = $model->img_original;
+        			$old_thumb_url = $model->thumb_url;
+        
+        			//新图片地址
+        			$model->img_url = $files['img_url'];
+        			$model->img_original = $files['img_original'];
+        			$model->thumb_url = $files['thumb_url'];
+        
+        			if($model->save()){
+        				//删除旧图片
+        				if(file_exists($old_img_url)){
+        					unlink($old_img_url);
+        				}
+        				if(file_exists($old_img_original)){
+        					unlink($old_img_original);
+        				}
+        				if(file_exists($old_thumb_url)){
+        					unlink($old_thumb_url);
+        				}
+        				MsgUtils::success();
+        				return $this->redirect(['view', 'id' => $model->id]);
+        			}
+        		}
+        	}
+        }
+        
+        return $this->render('update', [
                 	'model' => $model,
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'vipRankList' => $this->findVipRankList(),
@@ -117,7 +192,6 @@ class VipController extends BaseAuthController
             		'sexList' => SysParameterType::getSysParametersById(SysParameterType::VIP_SEX),
             		'userList' => $this->findSysUserList(),
             ]);
-        }
     }
 
     /**

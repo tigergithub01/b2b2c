@@ -59,9 +59,26 @@ $this->params['breadcrumbs'][] = $this->title;
 //             'nick_name',
             'wedding_date',
             'birthday',
-            'img_url:url',
-            'thumb_url:url',
-            'img_original',
+            // 'img_url:url',
+            // 'thumb_url:url',
+            // 'img_original',
+		        		
+        		[
+        		'attribute' => 'img_url',
+        		'format' =>'raw',
+        		'value'=>Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',]),
+        		],
+        		[
+        				'attribute' => 'thumb_url',
+        				'format' =>'raw',
+        				'value'=>Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',]),
+        		],
+        		[
+        				'attribute' => 'img_original',
+        				'format' =>'raw',
+        				'value'=>Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',]),
+        		],
+		        		
 		        ],
 		    ]) ?>
     	</div>

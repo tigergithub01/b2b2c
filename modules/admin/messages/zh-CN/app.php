@@ -96,10 +96,10 @@ return [
 		'Update Vip Operation Log'=>'编辑会员操作日志',
 		
 		//产品评价
-		'Product Comment'=>'产品信息',
-		'Product Comments'=>'产品列表',
-		'Create Product Comment'=>'新增产品',
-		'Update Product Comment'=>'编辑产品',
+		'Product Comment'=>'产品评价信息',
+		'Product Comments'=>'产品评价列表',
+		'Create Product Comment'=>'新增产品评价',
+		'Update Product Comment'=>'编辑产品评价',
 		
 		
 		//会员类型
