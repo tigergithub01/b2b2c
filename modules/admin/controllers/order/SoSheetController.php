@@ -110,13 +110,27 @@ class SoSheetController extends BaseAuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
         	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'vipList' => $this->findVipList(SysParameter::no),
+            		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province),
+            		'cityList' => $this->findSysRegionList(SysRegion::region_type_city),
+            		'districtList' => $this->findSysRegionList(SysRegion::region_type_district),
+            		'countryList' => $this->findSysRegionList(SysRegion::region_type_country),
+            		'deliveryStatusList' => SysParameterType::getSysParametersById(SysParameterType::SHIPPING_STATUS),
+            		'invoiceTypeList' => SysParameterType::getSysParametersById(SysParameterType::INVOICE_TYPE),
+            		'orderStatusList' => SysParameterType::getSysParametersById(SysParameterType::ORDER_STATUS),
+            		'payStatusList' => SysParameterType::getSysParametersById(SysParameterType::PAY_STATUS),
+            		'payTypeList' => $this->findPayTypeList(),
+            		'deliveryTypeList' => $this->findDeliveryTypeList(),
+            		'pickUpPointList' => $this->findPickUpPointList(),
+            		'sheetTypeList' => $this->findSheetTypeList(),
+            		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
+            		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
             ]);
         }
     }
@@ -143,7 +157,33 @@ class SoSheetController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = SoSheet::findOne($id)) !== null) {
+    	
+    	$model = SoSheet::find()->alias("so")
+    	->joinWith("vip vip")
+    	->joinWith("city city")
+    	->joinWith("country country")
+    	->joinWith("deliveryStatus deliveryStatus")
+    	->joinWith("district district")
+    	->joinWith("invoiceType invoiceType")
+    	->joinWith("orderStatus orderStatus")
+    	->joinWith("payStatus payStatus")
+    	->joinWith("province province")
+    	->joinWith("deliveryType deliveryType")
+    	->joinWith("payType payType")
+    	->joinWith("pickPoint pickPoint")
+    	->joinWith("sheetType sheetType")
+    	->joinWith("serviceStyle serviceStyle")
+    	->where(['so.id' => $id])->one();
+    	
+    	if($model){
+    		if($model->related_services){
+    			$related_service_names = [];
+    			foreach ($model->related_services as $value) {
+    				$related_service_names[] =  SysParameter::findOne($value)->param_val;
+    			}
+    			$model->related_service_names = implode("，", $related_service_names);
+    		}
+//     	if (($model = SoSheet::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

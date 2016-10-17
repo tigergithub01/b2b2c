@@ -17,7 +17,9 @@ use Yii;
  * @property string $status
  * @property string $delivery_type
  * @property string $delivery_no
+ * @property string $merchant_id
  *
+ * @property Vip $merchant
  * @property DeliveryTypeTpl $deliveryType
  * @property SoSheet $order
  * @property Vip $vip
@@ -42,12 +44,13 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'order_id', 'user_id', 'vip_id', 'sheet_date', 'status', 'delivery_type', 'delivery_no'], 'required'],
-            [['sheet_type_id', 'order_id', 'user_id', 'vip_id', 'status', 'delivery_type'], 'integer'],
+            [['sheet_type_id', 'code', 'order_id', 'user_id', 'vip_id', 'sheet_date', 'status', 'delivery_type', 'delivery_no', 'merchant_id'], 'required'],
+            [['sheet_type_id', 'order_id', 'user_id', 'vip_id', 'status', 'delivery_type', 'merchant_id'], 'integer'],
             [['sheet_date'], 'safe'],
             [['code'], 'string', 'max' => 30],
             [['delivery_no'], 'string', 'max' => 60],
             [['code'], 'unique'],
+            [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['merchant_id' => 'id']],
             [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryTypeTpl::className(), 'targetAttribute' => ['delivery_type' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
@@ -67,12 +70,21 @@ class OutStockSheet extends \app\models\b2b2c\BasicModel
             'code' => Yii::t('app', '发货单编号（根据规则自动生成）'),
             'order_id' => Yii::t('app', '关联订单编号'),
             'user_id' => Yii::t('app', '制单人'),
-            'vip_id' => Yii::t('app', '关联商户编号'),
+            'vip_id' => Yii::t('app', '会员编号'),
             'sheet_date' => Yii::t('app', '单据生成时间'),
             'status' => Yii::t('app', '发货单状态（未发货、已发货）'),
             'delivery_type' => Yii::t('app', '配送方式'),
             'delivery_no' => Yii::t('app', '快递单号'),
+            'merchant_id' => Yii::t('app', '关联商户编号'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMerchant()
+    {
+        return $this->hasOne(Vip::className(), ['id' => 'merchant_id']);
     }
 
     /**

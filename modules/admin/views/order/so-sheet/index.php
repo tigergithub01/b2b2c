@@ -25,9 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'sheet_type_id',
+            // 'sheet_type_id',
+            'sheetType.name',
             'code',
-            'vip_id',
+            // 'vip_id',
+            'vip.vip_id',
             'order_amt',
             // 'order_quantity',
             // 'goods_amt',

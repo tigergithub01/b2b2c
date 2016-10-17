@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\RefundSheetApply */
+/* @var $model app\models\b2b2c\OutStockSheet */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="refund-sheet-apply-form">
+<div class="out-stock-sheet-form">
 
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -39,15 +39,23 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'reason')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'user_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'sheet_date')->textInput() ?>
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'apply_date')->textInput() ?>
+    <?= $form->field($model, 'delivery_type')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'delivery_no')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

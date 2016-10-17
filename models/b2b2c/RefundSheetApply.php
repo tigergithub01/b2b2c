@@ -13,11 +13,12 @@ use Yii;
  * @property string $order_id
  * @property string $reason
  * @property string $status
+ * @property string $apply_date
  *
  * @property RefundSheet[] $refundSheets
- * @property SysParameter $status0
  * @property SoSheet $order
  * @property Vip $vip
+ * @property SysParameter $status0
  */
 class RefundSheetApply extends \app\models\b2b2c\BasicModel
 {
@@ -35,12 +36,13 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'order_id', 'reason'], 'required'],
+            [['sheet_type_id', 'order_id', 'reason', 'apply_date'], 'required'],
             [['sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
+            [['apply_date'], 'safe'],
             [['reason'], 'string', 'max' => 255],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
         ];
     }
 
@@ -56,6 +58,7 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
             'order_id' => Yii::t('app', '订单编号'),
             'reason' => Yii::t('app', '申请退款原因'),
             'status' => Yii::t('app', '退款申请状态（审核中，退款处理中[审核通过]，已退款，审核不通过，已撤销）'),
+            'apply_date' => Yii::t('app', '申请日期'),
         ];
     }
 
@@ -65,14 +68,6 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
     public function getRefundSheets()
     {
         return $this->hasMany(RefundSheet::className(), ['refund_apply_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStatus0()
-    {
-        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**
@@ -89,5 +84,13 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
     public function getVip()
     {
         return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus0()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 }

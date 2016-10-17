@@ -48,6 +48,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'status') ?>
 
+    <?php // echo $form->field($model, 'apply_date') ?>
+
 	    
 	    </div>
 	    

@@ -18,7 +18,7 @@ class RefundSheetSearch extends RefundSheet
     public function rules()
     {
         return [
-            [['id', 'sheet_type_id', 'refund_apply_id', 'order_id', 'return_id', 'user_id', 'status', 'vip_id'], 'integer'],
+            [['id', 'sheet_type_id', 'refund_apply_id', 'order_id', 'return_id', 'user_id', 'status', 'vip_id', 'merchant_id'], 'integer'],
             [['code', 'sheet_date', 'memo'], 'safe'],
             [['need_return_amt', 'return_amt'], 'number'],
         ];
@@ -73,6 +73,7 @@ class RefundSheetSearch extends RefundSheet
             'return_amt' => $this->return_amt,
             'status' => $this->status,
             'vip_id' => $this->vip_id,
+            'merchant_id' => $this->merchant_id,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])

@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\RefundSheetApply;
+use app\models\b2b2c\OutStockSheet;
 
 /**
- * RefundSheetApplySearch represents the model behind the search form about `app\models\b2b2c\RefundSheetApply`.
+ * OutStockSheetSearch represents the model behind the search form about `app\models\b2b2c\OutStockSheet`.
  */
-class RefundSheetApplySearch extends RefundSheetApply
+class OutStockSheetSearch extends OutStockSheet
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class RefundSheetApplySearch extends RefundSheetApply
     public function rules()
     {
         return [
-            [['id', 'sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
-            [['reason', 'apply_date'], 'safe'],
+            [['id', 'sheet_type_id', 'order_id', 'user_id', 'vip_id', 'status', 'delivery_type', 'merchant_id'], 'integer'],
+            [['code', 'sheet_date', 'delivery_no'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class RefundSheetApplySearch extends RefundSheetApply
      */
     public function search($params)
     {
-        $query = RefundSheetApply::find();
+        $query = OutStockSheet::find();
 
         // add conditions that should always apply here
 
@@ -63,13 +63,17 @@ class RefundSheetApplySearch extends RefundSheetApply
         $query->andFilterWhere([
             'id' => $this->id,
             'sheet_type_id' => $this->sheet_type_id,
-            'vip_id' => $this->vip_id,
             'order_id' => $this->order_id,
+            'user_id' => $this->user_id,
+            'vip_id' => $this->vip_id,
+            'sheet_date' => $this->sheet_date,
             'status' => $this->status,
-            'apply_date' => $this->apply_date,
+            'delivery_type' => $this->delivery_type,
+            'merchant_id' => $this->merchant_id,
         ]);
 
-        $query->andFilterWhere(['like', 'reason', $this->reason]);
+        $query->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'delivery_no', $this->delivery_no]);
 
         return $dataProvider;
     }

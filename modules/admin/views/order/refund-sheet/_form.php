@@ -61,6 +61,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
+
 		</div>
 	
 	    <div class="box-footer form-group">

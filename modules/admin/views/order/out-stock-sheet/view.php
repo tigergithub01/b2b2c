@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\RefundSheet */
+/* @var $model app\models\b2b2c\OutStockSheet */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Refund Sheets'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Out Stock Sheets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="refund-sheet-view">
+<div class="out-stock-sheet-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -28,17 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            'id',
             'sheet_type_id',
-            'refund_apply_id',
             'code',
             'order_id',
-            'return_id',
             'user_id',
-            'sheet_date',
-            'need_return_amt',
-            'return_amt',
-            'memo',
-            'status',
             'vip_id',
+            'sheet_date',
+            'status',
+            'delivery_type',
+            'delivery_no',
             'merchant_id',
 		        ],
 		    ]) ?>

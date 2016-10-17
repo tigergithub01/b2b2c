@@ -20,12 +20,14 @@ use Yii;
  * @property string $memo
  * @property string $status
  * @property string $vip_id
+ * @property string $merchant_id
  *
- * @property SysParameter $status0
+ * @property Vip $merchant
  * @property SoSheet $order
  * @property ReturnSheet $return
  * @property RefundSheetApply $refundApply
  * @property SysUser $user
+ * @property SysParameter $status0
  * @property Vip $vip
  */
 class RefundSheet extends \app\models\b2b2c\BasicModel
@@ -44,17 +46,18 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'order_id', 'user_id', 'sheet_date', 'status', 'vip_id'], 'required'],
-            [['sheet_type_id', 'refund_apply_id', 'order_id', 'return_id', 'user_id', 'status', 'vip_id'], 'integer'],
+            [['sheet_type_id', 'code', 'order_id', 'user_id', 'sheet_date', 'status', 'vip_id', 'merchant_id'], 'required'],
+            [['sheet_type_id', 'refund_apply_id', 'order_id', 'return_id', 'user_id', 'status', 'vip_id', 'merchant_id'], 'integer'],
             [['sheet_date'], 'safe'],
             [['need_return_amt', 'return_amt'], 'number'],
             [['code'], 'string', 'max' => 30],
             [['memo'], 'string', 'max' => 400],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
+            [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['merchant_id' => 'id']],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['return_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReturnSheet::className(), 'targetAttribute' => ['return_id' => 'id']],
             [['refund_apply_id'], 'exist', 'skipOnError' => true, 'targetClass' => RefundSheetApply::className(), 'targetAttribute' => ['refund_apply_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         ];
     }
@@ -77,16 +80,17 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
             'return_amt' => Yii::t('app', '实际退款金额'),
             'memo' => Yii::t('app', '备注'),
             'status' => Yii::t('app', '退款单状态（待退款、已退款）'),
-            'vip_id' => Yii::t('app', '关联商户编号'),
+            'vip_id' => Yii::t('app', '会员编号'),
+            'merchant_id' => Yii::t('app', '关联商户编号'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus0()
+    public function getMerchant()
     {
-        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
+        return $this->hasOne(Vip::className(), ['id' => 'merchant_id']);
     }
 
     /**
@@ -119,6 +123,14 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
     public function getUser()
     {
         return $this->hasOne(SysUser::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus0()
+    {
+        return $this->hasOne(SysParameter::className(), ['id' => 'status']);
     }
 
     /**

@@ -77,12 +77,62 @@ use Yii;
  */
 class SoSheet extends \app\models\b2b2c\BasicModel
 {
+	/* 会员编号（查询用） */
+	public $vip_no;
+	
+	/* 起始日期 （查询用） */
+	public $start_date;
+	
+	/* 结束日期 （查询用） */
+	public $end_date;
+	
+	/* 服务类别（多选）用来接收数据 */
+	public $related_services;
+	
+	/* 服务类别，用来显示数据 */
+	public $related_service_names;
+	
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_so_sheet';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert) {
+    	if($this->related_services) {
+    		$this->related_service = implode(',',$this->related_services);
+    	}
+    	return parent::beforeSave($insert);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function afterFind() {
+    	$this->related_services = explode(',',$this->related_service);
+    	parent::afterFind();
+    }
+    
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'related_services';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**
@@ -168,20 +218,23 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'related_case_id' => Yii::t('app', '关联案例编号'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         		'city.name' =>  Yii::t('app', '城市'),
-        		'country.vip_id' =>  Yii::t('app', '国家'),
+        		'country.name' =>  Yii::t('app', '国家'),
         		'deliveryStatus.param_val' =>  Yii::t('app', '配送状态'),
-        		'district.param_val' =>  Yii::t('app', '区域街道'),
+        		'district.name' =>  Yii::t('app', '区域街道'),
         		'invoiceType.param_val' =>  Yii::t('app', '发票类型'),
         		'orderStatus.param_val' =>  Yii::t('app', '订单状态'),
         		'payStatus.param_val' =>  Yii::t('app', '支付状态'),
         		'province.name' =>  Yii::t('app', '省份'),
-        		'deliveryTypeTpl.name' =>  Yii::t('app', '配送方式'),
+        		'deliveryType.name' =>  Yii::t('app', '配送方式'),
         		'payType.name' =>  Yii::t('app', '支付方式'),
         		'pickPoint.name' =>  Yii::t('app', '自提点'),
         		'sheetType.name' =>  Yii::t('app', '订单类型'),
         		'serviceStyle.param_val' =>  Yii::t('app', '婚礼类型'),
-        	
-        		
+        		'related_services' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
+        		'related_service_names' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
+        		'vip_no' => Yii::t('app', '会员编号'),
+        		'start_date' => Yii::t('app', '开始日期'),
+        		'end_date' => Yii::t('app', '结束日期'),
         ];
     }
 

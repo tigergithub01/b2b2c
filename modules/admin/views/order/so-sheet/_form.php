@@ -117,7 +117,7 @@ use app\models\b2b2c\common\Constant;
     			]
           ]) ?>
 
-    <?= $form->field($model, 'memo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
 
@@ -175,7 +175,7 @@ use app\models\b2b2c\common\Constant;
 
     <?php //echo $form->field($model, 'related_service')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'related_service')->checkboxList(\yii\helpers\ArrayHelper::map($relatedServiceList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'related_services')->checkboxList(\yii\helpers\ArrayHelper::map($relatedServiceList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'service_style')->textInput(['maxlength' => true]) ?>
     

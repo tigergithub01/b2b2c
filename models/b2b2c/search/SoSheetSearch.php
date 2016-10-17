@@ -30,7 +30,7 @@ class SoSheetSearch extends SoSheet
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -42,7 +42,21 @@ class SoSheetSearch extends SoSheet
      */
     public function search($params)
     {
-        $query = SoSheet::find();
+        $query = SoSheet::find()->alias("so")
+        ->joinWith("vip vip")
+    	->joinWith("city city")
+    	->joinWith("country country")
+    	->joinWith("deliveryStatus deliveryStatus")
+    	->joinWith("district district")
+    	->joinWith("invoiceType invoiceType")
+    	->joinWith("orderStatus orderStatus")
+    	->joinWith("payStatus payStatus")
+    	->joinWith("province province")
+    	->joinWith("deliveryType deliveryType")
+    	->joinWith("payType payType")
+    	->joinWith("pickPoint pickPoint")
+    	->joinWith("sheetType sheetType")
+    	->joinWith("serviceStyle serviceStyle");
 
         // add conditions that should always apply here
 
@@ -50,6 +64,20 @@ class SoSheetSearch extends SoSheet
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_id' => [
+        						'asc'  => ['vip.vip_id' => SORT_ASC],
+        						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'sheetType.name' => [
+        						'asc'  => ['sheetType.name' => SORT_ASC],
+        						'desc' => ['sheetType.name' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -62,49 +90,50 @@ class SoSheetSearch extends SoSheet
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'sheet_type_id' => $this->sheet_type_id,
-            'vip_id' => $this->vip_id,
-            'order_amt' => $this->order_amt,
-            'order_quantity' => $this->order_quantity,
-            'goods_amt' => $this->goods_amt,
-            'deliver_fee' => $this->deliver_fee,
-            'order_date' => $this->order_date,
-            'delivery_date' => $this->delivery_date,
-            'delivery_type' => $this->delivery_type,
-            'pay_type_id' => $this->pay_type_id,
-            'pay_date' => $this->pay_date,
-            'pick_point_id' => $this->pick_point_id,
-            'paid_amt' => $this->paid_amt,
-            'integral' => $this->integral,
-            'integral_money' => $this->integral_money,
-            'coupon' => $this->coupon,
-            'discount' => $this->discount,
-            'return_amt' => $this->return_amt,
-            'return_date' => $this->return_date,
-            'order_status' => $this->order_status,
-            'delivery_status' => $this->delivery_status,
-            'pay_status' => $this->pay_status,
-            'country_id' => $this->country_id,
-            'province_id' => $this->province_id,
-            'city_id' => $this->city_id,
-            'district_id' => $this->district_id,
-            'invoice_type' => $this->invoice_type,
-            'service_date' => $this->service_date,
-            'budget_amount' => $this->budget_amount,
-            'related_case_id' => $this->related_case_id,
+            'so.id' => $this->id,
+            'so.sheet_type_id' => $this->sheet_type_id,
+            'so.vip_id' => $this->vip_id,
+            'so.order_amt' => $this->order_amt,
+            'so.order_quantity' => $this->order_quantity,
+            'so.goods_amt' => $this->goods_amt,
+            'so.deliver_fee' => $this->deliver_fee,
+            'so.order_date' => $this->order_date,
+            'so.delivery_date' => $this->delivery_date,
+            'so.delivery_type' => $this->delivery_type,
+            'so.pay_type_id' => $this->pay_type_id,
+            'so.pay_date' => $this->pay_date,
+            'so.pick_point_id' => $this->pick_point_id,
+            'so.paid_amt' => $this->paid_amt,
+            'so.integral' => $this->integral,
+            'so.integral_money' => $this->integral_money,
+            'so.coupon' => $this->coupon,
+            'so.discount' => $this->discount,
+            'so.return_amt' => $this->return_amt,
+            'so.return_date' => $this->return_date,
+            'so.order_status' => $this->order_status,
+            'so.delivery_status' => $this->delivery_status,
+            'so.pay_status' => $this->pay_status,
+            'so.country_id' => $this->country_id,
+            'so.province_id' => $this->province_id,
+            'so.city_id' => $this->city_id,
+            'so.district_id' => $this->district_id,
+            'so.invoice_type' => $this->invoice_type,
+            'so.service_date' => $this->service_date,
+            'so.budget_amount' => $this->budget_amount,
+            'so.related_case_id' => $this->related_case_id,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'delivery_no', $this->delivery_no])
-            ->andFilterWhere(['like', 'memo', $this->memo])
-            ->andFilterWhere(['like', 'message', $this->message])
-            ->andFilterWhere(['like', 'consignee', $this->consignee])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'detail_address', $this->detail_address])
-            ->andFilterWhere(['like', 'invoice_header', $this->invoice_header])
-            ->andFilterWhere(['like', 'related_service', $this->related_service])
-            ->andFilterWhere(['like', 'service_style', $this->service_style]);
+        $query->andFilterWhere(['like', 'so.code', $this->code])
+            ->andFilterWhere(['like', 'so.delivery_no', $this->delivery_no])
+            ->andFilterWhere(['like', 'so.memo', $this->memo])
+            ->andFilterWhere(['like', 'so.message', $this->message])
+            ->andFilterWhere(['like', 'so.consignee', $this->consignee])
+            ->andFilterWhere(['like', 'so.mobile', $this->mobile])
+            ->andFilterWhere(['like', 'so.detail_address', $this->detail_address])
+            ->andFilterWhere(['like', 'so.invoice_header', $this->invoice_header])
+            ->andFilterWhere(['like', 'so.related_service', $this->related_service])
+            ->andFilterWhere(['like', 'so.service_style', $this->service_style])
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
 
         return $dataProvider;
     }

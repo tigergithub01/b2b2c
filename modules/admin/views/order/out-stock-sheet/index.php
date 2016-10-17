@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\RefundSheetApplySearch */
+/* @var $searchModel app\models\b2b2c\search\OutStockSheetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Refund Sheet Applies');
+$this->title = Yii::t('app', 'Out Stock Sheets');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="refund-sheet-apply-index">
+<div class="out-stock-sheet-index">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 		<div class="box box-primary">
@@ -25,11 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
             'sheet_type_id',
-            'vip_id',
+            'code',
             'order_id',
-            'reason',
+            'user_id',
+            // 'vip_id',
+            // 'sheet_date',
             // 'status',
-            // 'apply_date',
+            // 'delivery_type',
+            // 'delivery_no',
+            // 'merchant_id',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

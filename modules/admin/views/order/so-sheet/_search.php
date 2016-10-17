@@ -43,7 +43,9 @@ use app\modules\admin\Module;
 
     <?= $form->field($model, 'code') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
+    <?php //echo $form->field($model, 'vip_id') ?>
+    
+    <?= $form->field($model, 'vip_no') ?>
 
     <?= $form->field($model, 'order_amt') ?>
 

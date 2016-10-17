@@ -113,7 +113,7 @@ class VipOperationLog extends \app\models\b2b2c\BasicModel
         	'module.name' => Yii::t('app', '模块名称'),
         	'vip.vip_id' => Yii::t('app', '操作会员'),
         	'module_name' => Yii::t('app', '模块名称'),
-        	'vip_no' => Yii::t('app', '会员'),
+        	'vip_no' => Yii::t('app', '会员编号'),
         	'start_date' => Yii::t('app', '开始日期'),
         	'end_date' => Yii::t('app', '结束日期'),
         ];

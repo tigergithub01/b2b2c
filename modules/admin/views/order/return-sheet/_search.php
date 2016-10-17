@@ -60,6 +60,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'vip_id') ?>
 
+    <?php // echo $form->field($model, 'merchant_id') ?>
+
 	    
 	    </div>
 	    

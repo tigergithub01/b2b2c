@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'memo',
             'status',
             'vip_id',
+            'merchant_id',
 		        ],
 		    ]) ?>
     	</div>

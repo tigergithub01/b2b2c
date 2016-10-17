@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\RefundSheetSearch */
+/* @var $model app\models\b2b2c\search\OutStockSheetSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="refund-sheet-search">
+<div class="out-stock-sheet-search">
 	
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -40,27 +40,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sheet_type_id') ?>
 
-    <?= $form->field($model, 'refund_apply_id') ?>
-
     <?= $form->field($model, 'code') ?>
 
     <?= $form->field($model, 'order_id') ?>
 
-    <?php // echo $form->field($model, 'return_id') ?>
+    <?= $form->field($model, 'user_id') ?>
 
-    <?php // echo $form->field($model, 'user_id') ?>
+    <?php // echo $form->field($model, 'vip_id') ?>
 
     <?php // echo $form->field($model, 'sheet_date') ?>
 
-    <?php // echo $form->field($model, 'need_return_amt') ?>
-
-    <?php // echo $form->field($model, 'return_amt') ?>
-
-    <?php // echo $form->field($model, 'memo') ?>
-
     <?php // echo $form->field($model, 'status') ?>
 
-    <?php // echo $form->field($model, 'vip_id') ?>
+    <?php // echo $form->field($model, 'delivery_type') ?>
+
+    <?php // echo $form->field($model, 'delivery_no') ?>
 
     <?php // echo $form->field($model, 'merchant_id') ?>
 
@@ -69,7 +63,7 @@ use yii\widgets\ActiveForm;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Yii::t('app', 'Create Refund Sheet'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Yii::t('app', 'Create Out Stock Sheet'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

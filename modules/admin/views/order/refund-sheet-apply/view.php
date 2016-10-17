@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'order_id',
             'reason',
             'status',
+            'apply_date',
 		        ],
 		    ]) ?>
     	</div>
