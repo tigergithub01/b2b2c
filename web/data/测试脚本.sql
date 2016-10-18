@@ -363,7 +363,43 @@ CREATE TABLE `t_out_stock_sheet` (
 
 
 
-select * from t_sys_region limit 0,100
+select * from t_sys_region limit 0,100;
 
+select * from t_so_sheet;
+
+alter table t_refund_sheet add merchant_id          bigint(20) not null comment '关联商户编号';
+
+alter table t_refund_sheet add constraint fk_refund_st_merc_ref_vip foreign key (merchant_id)
+      references t_vip (id);
+
+alter table t_refund_sheet modify vip_id               bigint(20) not null comment '会员编号';
+
+alter table t_refund_sheet_apply  add apply_date           datetime not null comment '申请日期',
+
+alter table t_return_sheet add merchant_id          bigint(20) not null comment '关联商户编号';
+
+alter table t_return_sheet add constraint fk_return_sheet_merc_ref_vip foreign key (merchant_id)
+      references t_vip (id);
+
+alter table t_out_stock_sheet modify vip_id               bigint(20) not null comment '会员编号';
+
+alter table t_out_stock_sheet add merchant_id          bigint(20) not null comment '关联商户编号';
+
+alter table t_out_stock_sheet add constraint fk_out_stock_sheet_merc_ref_vip foreign key (merchant_id)
+      references t_vip (id);
+
+
+
+alter table t_return_sheet modify vip_id               bigint(20) not null comment '会员编号';
+
+alter table t_refund_sheet_apply  add code                 varchar(30) not null comment '退款申请单编号';
+alter table t_return_apply  add code                 varchar(30) not null comment '退货申请单编号';
+
+delete from t_refund_sheet_apply
+
+
+alter table t_vip_case modify cover_img_url        varchar(255) comment '图片（放大后查看）(封面)';
+ alter table t_vip_case modify cover_thumb_url      varchar(255) comment '缩略图(封面)';
+ alter table t_vip_case  modify cover_img_original   varchar(255) comment '原图(封面)';
 
 */
