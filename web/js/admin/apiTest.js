@@ -156,6 +156,146 @@ $(function() {
 	});
 	
 	
+	/*
+	 	案例列表
+		http://localhost:8089/vip/api/vip/vip-case/index?page=2&per-page=3&sort=name&VipCaseSearch[name]=test
+	*/
+	$("#btn_vip_case_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				'VipCaseSearch[name]' : 'test', //参数（案例名称)
+				}
+			);
+	});
+	
+	/*
+	 	案例详情
+		http://localhost:8089/vip/api/vip/vip-case/view?id=1
+	*/
+	$("#btn_vip_case_detail").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//案例编号
+				}
+			);
+	});
+	
+	/*
+	 	商户列表
+		http://localhost:8089/vip/api/vip/merchant/index?page=2&per-page=3&sort=vip_id&MerchantSearch[vip_name]=1
+	*/
+	$("#btn_merchant_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : 'vip_name', //排序
+				//'MerchantSearch[vip_id]' : '137', //手机号码
+				'MerchantSearch[vip_name]' : '1', //商户名（昵称）
+				}
+			);
+	});
+	
+	/*
+	 	商户详情
+		http://localhost:8089/vip/api/vip/merchant/view?id=1
+	*/
+	$("#btn_merchant_detail").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//商户编号
+				}
+			);
+	});
+	
+	/*
+	 	商户案例列表
+		http://localhost:8089/vip/api/vip/vip-case/index?page=2&per-page=3&sort=name&VipCaseSearch[vip_id]=1
+	*/
+	$("#btn_merchant_case_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				'VipCaseSearch[vip_id]' : 1, //商户编号
+				}
+			);
+	});
+	
+	/*
+	 	商户团体服务列表
+	 	http://localhost:8089/vip/api/basic/activity/index
+		http://localhost:8089/vip/api/basic/activity/index?page=2&per-page=3&sort=name&ActivitySearch[vip_id]=2
+	*/
+	$("#btn_merchant_package_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				'ActivitySearch[vip_id]' : 2, //商户编号
+				}
+			);
+	});
+	
+	/*
+	 	商户评价列表
+		http://localhost:8089/vip/api/vip/product-comment/index?page=2&per-page=3&sort=-comment_date&ProductCommentSearch[merchant_id]=1
+	*/
+	$("#btn_merchant_cmt_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-comment_date', //排序（降序为sort=-comment_date)
+				'ProductCommentSearch[merchant_id]' : 1, //商户编号
+				}
+			);
+	});
+	
+	
+	/*
+	 	组团服务列表
+		http://localhost:8089/vip/api/basic/activity/index?page=2&per-page=3&sort=name
+	*/
+	$("#btn_activity_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				//'VipCaseSearch[vip_id]' : 1, //商户编号
+				}
+			);
+	});
+	
+	/*
+ 	组团服务明细
+		http://localhost:8089/vip/api/basic/activity/view?id=1
+	*/
+	$("#btn_activity_detail").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//团体服务编号
+				}
+			);
+	});
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
