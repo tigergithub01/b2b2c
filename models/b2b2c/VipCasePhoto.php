@@ -12,6 +12,8 @@ use Yii;
  * @property string $img_url
  * @property string $thumb_url
  * @property string $img_original
+ * @property string $sequence_id
+ * @property string $description
  *
  * @property VipCase $case
  */
@@ -32,8 +34,8 @@ class VipCasePhoto extends \app\models\b2b2c\BasicModel
     {
         return [
             [['case_id', 'img_url', 'thumb_url', 'img_original'], 'required'],
-            [['case_id'], 'integer'],
-            [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
+            [['case_id', 'sequence_id'], 'integer'],
+            [['img_url', 'thumb_url', 'img_original', 'description'], 'string', 'max' => 255],
             [['case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['case_id' => 'id']],
         ];
     }
@@ -49,6 +51,8 @@ class VipCasePhoto extends \app\models\b2b2c\BasicModel
             'img_url' => Yii::t('app', '图片（放大后查看）'),
             'thumb_url' => Yii::t('app', '缩略图'),
             'img_original' => Yii::t('app', '原始图片'),
+            'sequence_id' => Yii::t('app', '显示顺序'),
+            'description' => Yii::t('app', '描述'),
         ];
     }
 

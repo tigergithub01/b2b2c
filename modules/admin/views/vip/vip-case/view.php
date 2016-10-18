@@ -44,9 +44,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'auditUser.user_id',
             'audit_date',
             'audit_memo',
-            'cover_img_url:url',
-            'cover_thumb_url:url',
-            'cover_img_original',
+            // 'cover_img_url:url',
+            // 'cover_thumb_url:url',
+            // 'cover_img_original',
+        		[
+        		'attribute' => 'cover_img_url',
+        		'format' =>'raw',
+        		'value'=>Html::img(Yii::$app->request->hostInfo . '/' . $model->cover_img_url,['width'=>220,'height'=>220]),
+        		],
+        		/* [
+        		'attribute' => 'cover_img_url',
+        		'format' =>'raw',
+        		'value'=>Html::a($model->cover_img_url,Yii::$app->request->hostInfo . '/' . $model->cover_img_url,['target'=>'_blank',]),
+        		], */
+        		[
+        				'attribute' => 'cover_thumb_url',
+        				'format' =>'raw',
+        				'value'=>Html::a($model->cover_thumb_url,Yii::$app->request->hostInfo . '/' . $model->cover_thumb_url,['target'=>'_blank',]),
+        		],
+        		[
+        				'attribute' => 'cover_img_original',
+        				'format' =>'raw',
+        				'value'=>Html::a($model->cover_img_original,Yii::$app->request->hostInfo . '/' . $model->cover_img_original,['target'=>'_blank',]),
+        		],
+		        		
             // 'is_hot',
             'isHot.param_val',
             //'case_flag',
@@ -58,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
     	</div>
     
 	    <div class="box-footer">
+	    	<?= Html::a(Module::t('app', 'Create Vip Case'), ['create'], ['class' => 'btn btn-success']) ?>
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',

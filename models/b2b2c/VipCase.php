@@ -48,6 +48,9 @@ class VipCase extends \app\models\b2b2c\BasicModel
 	//案例封面
 	public $imageFile;
 	
+	//案例相册
+	public $imageFiles;
+	
     /**
      * @inheritdoc
      */
@@ -87,6 +90,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
         	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+        	[['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 10],
         ];
     }
 
@@ -124,6 +128,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
         	'vip.vip_id' => Yii::t('app', '商户编号'),
         	'vip_no' => Yii::t('app', '商户编号'),
         	'imageFile' => Yii::t('app', '案例封面'),
+        	'imageFiles' => Yii::t('app', '案例相册'),	
         ];
     }
     /**

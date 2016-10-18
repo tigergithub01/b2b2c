@@ -62,7 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'img_url:url',
             // 'thumb_url:url',
             // 'img_original',
-		        		
         		[
         		'attribute' => 'img_url',
         		'format' =>'raw',

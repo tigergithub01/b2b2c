@@ -97,12 +97,35 @@ use app\models\b2b2c\common\Constant;
           ]) ?>
 
     <?= $form->field($model, 'audit_memo')->textarea(['rows' => 6]) ?>
+	
+	<?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
+    
+    <?php if(!($model->isNewRecord)) {?>
+    	<div class="form-group">
+    		<?= Html::activeLabel($model, 'cover_img_url',['class'=>'col-lg-2 control-label']) ?>
+			<div class="col-lg-6">
+				<?= Html::a($model->cover_img_url,Yii::$app->request->hostInfo . '/' . $model->cover_img_url,['target'=>'_blank',])?>
+			</div>
+		</div>
+		<div class="form-group">
+    		<?= Html::activeLabel($model, 'cover_thumb_url',['class'=>'col-lg-2 control-label']) ?>
+			<div class="col-lg-6">
+				<?= Html::a($model->cover_thumb_url,Yii::$app->request->hostInfo . '/' . $model->cover_thumb_url,['target'=>'_blank',])?>
+			</div>
+		</div>
+		<div class="form-group">
+    		<?= Html::activeLabel($model, 'cover_img_original',['class'=>'col-lg-2 control-label']) ?>
+			<div class="col-lg-6">
+				<?= Html::a($model->cover_img_original,Yii::$app->request->hostInfo . '/' . $model->cover_img_original,['target'=>'_blank',])?>
+			</div>
+		</div>
+    <?php }?>
+    
+    <?php // echo $form->field($model, 'cover_img_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cover_img_url')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'cover_thumb_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cover_thumb_url')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cover_img_original')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'cover_img_original')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'is_hot')->textInput(['maxlength' => true]) ?>
 	
@@ -115,8 +138,12 @@ use app\models\b2b2c\common\Constant;
     <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'sale_price')->textInput(['maxlength' => true]) ?>
+    
+    <?php echo $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']); ?>
+    
 
 		</div>
+		
 	
 	    <div class="box-footer form-group">
 	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -125,5 +152,7 @@ use app\models\b2b2c\common\Constant;
     	<?php ActiveForm::end(); ?>
 	
 	</div>
+	
+	
 	
 </div>
