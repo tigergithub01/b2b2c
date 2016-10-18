@@ -96,7 +96,7 @@ class MerchantController extends BaseAuthController
         	
         	//处理图片
         	$imageUtils = new ImageUtils();
-        	$image_type = 'vip_case';
+        	$image_type = 'merchant';
         	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	
@@ -170,7 +170,7 @@ class MerchantController extends BaseAuthController
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         	 
         	$imageUtils = new ImageUtils();
-        	$image_type = 'vip_case';
+        	$image_type = 'merchant';
         	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	 

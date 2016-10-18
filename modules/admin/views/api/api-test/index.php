@@ -53,16 +53,16 @@ use yii\helpers\Url;
 			</div>
 			
 			<div class="form-group">
-				<?php echo Html::button('案例列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
-				<?php echo Html::button('案例详情',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('案例列表',['id'=>'btn_vip_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/index'])]);?>
+				<?php echo Html::button('案例详情',['id'=>'btn_vip_case_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/view'])]);?>
 			</div>
 			
 			<div class="form-group">
-				<?php echo Html::button('商户列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
-				<?php echo Html::button('商户详情',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
-				<?php echo Html::button('商户案例列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
-				<?php echo Html::button('商户组团服务列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
-				<?php echo Html::button('商户服务评价列表',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
+				<?php echo Html::button('商户列表',['id'=>'btn_merchant_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/index'])]);?>
+				<?php echo Html::button('商户详情',['id'=>'btn_merchant_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/view'])]);?>
+				<?php echo Html::button('商户案例列表',['id'=>'btn_merchant_case_list','class' => 'btn btn-primary',Url::to(['/vip/api/vip/vip-case/index'])]);?>
+				<?php echo Html::button('商户组团服务列表',['id'=>'btn_merchant_package_list','class' => 'btn btn-primary',Url::to(['/vip/api/vip/merchant/index'])]);?>
+				<?php echo Html::button('商户服务评价列表',['id'=>'btn_merchant_cmt_list','class' => 'btn btn-primary',Url::to(['/vip/api/vip/merchant/index'])]);?>
 			</div>
 			
 			<div class="form-group">

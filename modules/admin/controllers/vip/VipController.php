@@ -140,57 +140,52 @@ class VipController extends BaseAuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $vipOrganization = $this->findVipOrganization($model->vip_id);
-        $vipExtend = $this->findVipExtend($model->vip_id);
+//         $vipOrganization = $this->findVipOrganization($model->vip_id);
+//         $vipExtend = $this->findVipExtend($model->vip_id);
 		
-        if ($model->load(Yii::$app->request->post()) && $vipOrganization->load(Yii::$app->request->post()) && $vipExtend->load(Yii::$app->request->post()) ) {
+        if ($model->load(Yii::$app->request->post())/*  && $vipOrganization->load(Yii::$app->request->post()) && $vipExtend->load(Yii::$app->request->post()) */ ) {
         	
+        	//获取图片信息
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-        	if(empty($model->imageFile)){
-        		//如果没有上传文件，则不处理文件信息
-        		if($model->save() && $vipOrganization->save() && $vipExtend->save()){
-        			MsgUtils::success();
-        			return $this->redirect(['view', 'id' => $model->id]);
-        		}
-        	}else{
-        		$imageUtils = new ImageUtils();
-        		$image_type = 'vip';
-        		$width = SysConfig::getInstance()->getConfigVal("thumb_width");
-        		$height = 0 /* SysConfig::getInstance()->getConfigVal("thumb_height") */;
-        		
-        		if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type, $model->id, $width, $height))){
-        			//旧图片地址
-        			$old_img_url = $model->img_url;
-        			$old_img_original = $model->img_original;
-        			$old_thumb_url = $model->thumb_url;
-        
-        			//新图片地址
-        			$model->img_url = $files['img_url'];
-        			$model->img_original = $files['img_original'];
-        			$model->thumb_url = $files['thumb_url'];
-        
-        			if($model->save()){
-        				//删除旧图片
-        				if(file_exists($old_img_url)){
-        					unlink($old_img_url);
-        				}
-        				if(file_exists($old_img_original)){
-        					unlink($old_img_original);
-        				}
-        				if(file_exists($old_thumb_url)){
-        					unlink($old_thumb_url);
-        				}
-        				MsgUtils::success();
-        				return $this->redirect(['view', 'id' => $model->id]);
+        	 
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'vip';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	 
+        	//旧图片地址
+        	$old_img_url = $model->img_url;
+        	$old_img_original = $model->img_original;
+        	$old_thumb_url = $model->thumb_url;
+        	
+        	
+        	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type, $model->id, $width, $height))){
+        		//新图片地址
+        		$model->img_url = $files['img_url'];
+        		$model->img_original = $files['img_original'];
+        		$model->thumb_url = $files['thumb_url'];
+        	}
+        	
+        	if($model->save()){
+        		if($files){
+        			//删除旧图片
+        			if(file_exists($old_img_url)){
+        				unlink($old_img_url);
+        			}
+        			if(file_exists($old_img_original)){
+        				unlink($old_img_original);
+        			}
+        			if(file_exists($old_thumb_url)){
+        				unlink($old_thumb_url);
         			}
         		}
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
         	}
         }
         
         return $this->render('update', [
                 	'model' => $model,
-        			'vipOrganization' => $vipOrganization,
-        			'vipExtend' => $vipExtend,
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'vipRankList' => $this->findVipRankList(),
             		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),

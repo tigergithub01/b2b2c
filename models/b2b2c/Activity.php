@@ -43,6 +43,9 @@ class Activity extends \app\models\b2b2c\BasicModel
 {
 	/* 商户编号（查询用） */
 	public $vip_no;
+	
+	//封面
+	public $imageFile;
     
     /**
      * @inheritdoc
@@ -78,6 +81,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['activity_scope'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['activity_scope' => 'id']],
+        	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         ];
     }
 
@@ -110,6 +114,7 @@ class Activity extends \app\models\b2b2c\BasicModel
         	'auditUser.user_id' => '审核人',
         	'actScopes.param_val' => '是否全场参与活动',
         	'vip_no' => Yii::t('app', '商户编号'),
+        	'imageFile' => Yii::t('app', '案例封面'),
         ];
     }
 

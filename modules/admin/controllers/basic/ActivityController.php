@@ -14,6 +14,9 @@ use app\models\b2b2c\SysUser;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\Vip;
 use app\models\b2b2c\SysParameter;
+use yii\web\UploadedFile;
+use app\common\utils\image\ImageUtils;
+use app\models\b2b2c\SysConfig;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -78,11 +81,47 @@ class ActivityController extends BaseAuthController
     {
         $model = new Activity();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            MsgUtils::success();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
+        if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
+        	
+        	$model->imageFile = UploadedFile::getInstance($model, "imageFile");
+        	
+        	//处理图片
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'activity';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = 0 /* SysConfig::getInstance()->getConfigVal("thumb_height") */;
+        	
+        	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type,null, $width, $height))){
+        		$model->img_url = $files['img_url'];
+        		$model->img_original = $files['img_original'];
+        		$model->thumb_url = $files['thumb_url'];
+        	}
+        	
+        	if($model->save()){
+        		//重命名图片地址
+        		if($files){
+	        		$new_img_original =  $imageUtils->renameImage($model->img_original, $model->id, $image_type);
+	        		$new_thumb_url = $imageUtils->renameImage($model->thumb_url, $model->id, $image_type, Constant::thumb_flag);
+	        		$new_img_url = $imageUtils->renameImage($model->img_url, $model->id, $image_type, Constant::img_flag);
+	        		if($new_img_original){
+	        			$model->img_original = $new_img_original;
+	        		}
+	        		if($new_thumb_url){
+	        			$model->thumb_url = $new_thumb_url;
+	        		}
+	        		if($new_img_url){
+	        			$model->img_url = $new_img_url;
+	        		}
+        		}
+        		
+        		if($model->save(true,['img_original','thumb_url', 'img_url'])){
+        			MsgUtils::success();
+        			return $this->redirect(['view', 'id' => $model->id]);
+        		}
+        	}
+        }
+            
+      	return $this->render('create', [
                 'model' => $model,
             		'activityTypeList' => $this->findActivityTypeList(),
             		'vipList' => $this->findVipList(),
@@ -90,7 +129,6 @@ class ActivityController extends BaseAuthController
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
             ]);
-        }
     }
 
     /**
@@ -103,10 +141,46 @@ class ActivityController extends BaseAuthController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        	MsgUtils::success();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
+        //获取图片信息
+        	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+        	 
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'activity';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	 
+        	//旧图片地址
+        	$old_img_url = $model->img_url;
+        	$old_img_original = $model->img_original;
+        	$old_thumb_url = $model->thumb_url;
+        	
+        	
+        	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type, $model->id, $width, $height))){
+        		//新图片地址
+        		$model->img_url = $files['img_url'];
+        		$model->img_original = $files['img_original'];
+        		$model->thumb_url = $files['thumb_url'];
+        	}
+        	
+        	if($model->save()){
+        		if($files){
+        			//删除旧图片
+        			if(file_exists($old_img_url)){
+        				unlink($old_img_url);
+        			}
+        			if(file_exists($old_img_original)){
+        				unlink($old_img_original);
+        			}
+        			if(file_exists($old_thumb_url)){
+        				unlink($old_thumb_url);
+        			}
+        		}
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        	}
+        }
+        
             return $this->render('update', [
                 'model' => $model,
             		'activityTypeList' => $this->findActivityTypeList(),
@@ -115,7 +189,7 @@ class ActivityController extends BaseAuthController
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
             ]);
-        }
+       
     }
 
     /**
