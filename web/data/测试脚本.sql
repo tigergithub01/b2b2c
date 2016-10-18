@@ -402,4 +402,28 @@ alter table t_vip_case modify cover_img_url        varchar(255) comment '图片�
  alter table t_vip_case modify cover_thumb_url      varchar(255) comment '缩略图(封面)';
  alter table t_vip_case  modify cover_img_original   varchar(255) comment '原图(封面)';
 
+
+alter table t_vip_case_photo add sequence_id          bigint(20) comment '显示顺序',
+alter table t_vip_case_photo add   description          varchar(255) comment '描述',
+
+
+alter table t_vip_organization add district_id          bigint(20) comment '所属区域';
+alter table t_vip_organization add    address              varchar(255) comment '联系地址';
+
+
+alter table t_vip_organization add constraint fk_org_district_ref_region foreign key (district_id)
+      references t_sys_region (id);
+
+select * from t_vip_extend;
+
+select * from t_vip_organization;
+
+select * from t_vip_case_photo;
+
+delete  from t_vip_extend;
+
+delete  from t_vip_organization;
+
+
+
 */
