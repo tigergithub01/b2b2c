@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/10/14 11:30:37                          */
+/* Created on:     2016/10/18 17:53:59                          */
 /*==============================================================*/
 
 
@@ -19,6 +19,8 @@ drop table if exists t_act_scope;
 drop table if exists t_act_special_price;
 
 drop table if exists t_activity;
+
+drop table if exists t_activity_type;
 
 drop table if exists t_delivery_type;
 
@@ -345,10 +347,25 @@ create table t_activity
    img_url              varchar(255) comment '图片（放大后查看）(上传商品图片后自动加入商品相册）',
    thumb_url            varchar(255) comment '缩略图',
    img_original         varchar(255) comment '原图',
+   audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
+   audit_user_id        bigint(20) comment '审核人',
+   audit_date           datetime comment '审核日期',
    primary key (id)
 );
 
 alter table t_activity comment '促销活动';
+
+/*==============================================================*/
+/* Table: t_activity_type                                       */
+/*==============================================================*/
+create table t_activity_type
+(
+   id                   bigint not null auto_increment comment '主键',
+   name                 varchar(60) not null comment '活动类别名称',
+   primary key (id)
+);
+
+alter table t_activity_type comment '促销活动类型';
 
 /*==============================================================*/
 /* Table: t_delivery_type                                       */
@@ -356,6 +373,7 @@ alter table t_activity comment '促销活动';
 create table t_delivery_type
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
+   name                 char(10),
    tpl_id               bigint(20) not null comment '配送方式名称',
    vip_id               bigint(20) not null comment '关联商户编号',
    description          varchar(255) comment '描述',
@@ -426,11 +444,12 @@ create table t_out_stock_sheet
    code                 varchar(30) not null comment '发货单编号（根据规则自动生成）',
    order_id             bigint(20) not null comment '关联订单编号',
    user_id              bigint(20) not null comment '制单人',
-   vip_id               bigint(20) not null comment '关联商户编号',
+   vip_id               bigint(20) not null comment '关联会员编号',
    sheet_date           datetime not null comment '单据生成时间',
    status               bigint(20) not null comment '发货单状态（未发货、已发货）',
    delivery_type        bigint(20) not null comment '配送方式',
    delivery_no          varchar(60) not null comment '快递单号',
+   merchant_id          bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -793,7 +812,8 @@ create table t_refund_sheet
    return_amt           decimal(20,6) comment '实际退款金额',
    memo                 varchar(400) comment '备注',
    status               bigint(20) not null comment '退款单状态（待退款、已退款）',
-   vip_id               bigint(20) not null comment '关联商户编号',
+   vip_id               bigint(20) not null comment '会员编号',
+   merchant_id          bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -806,6 +826,8 @@ create table t_refund_sheet_apply
 (
    id                   bigint(20) not null auto_increment comment '主键',
    sheet_type_id        bigint(20) not null comment '单据类型（退款申请单）',
+   code                 varchar(30) not null comment '退款申请单编号',
+   apply_date           datetime not null comment '申请日期',
    vip_id               bigint(20) comment '关联会员编号',
    order_id             bigint(20) not null comment '订单编号',
    reason               varchar(255) not null comment '申请退款原因',
@@ -822,6 +844,7 @@ create table t_return_apply
 (
    id                   bigint(20) not null auto_increment comment '主键',
    sheet_type_id        bigint(20) not null comment '退货申请单',
+   code                 varchar(30) not null comment '退货申请单编号',
    apply_date           datetime not null comment '申请日期',
    vip_id               bigint(20) not null comment '申请会员',
    order_id             bigint(20) not null comment '关联订单编号',
@@ -862,7 +885,8 @@ create table t_return_sheet
    return_amt           decimal(20,6) comment '本次退货金额',
    memo                 varchar(400) comment '备注',
    status               bigint(20) not null comment '退货单状态（待退货、已完成）',
-   vip_id               bigint(20) not null comment '关联商户编号',
+   vip_id               bigint(20) not null comment '会员编号',
+   merchant_id          bigint(20) not null comment '关联商户编号',
    primary key (id)
 );
 
@@ -959,11 +983,11 @@ create table t_so_sheet
    vip_id               bigint(20) not null comment '会员编号',
    order_amt            decimal(20,6) not null comment '订单待支付费用',
    order_quantity       int not null comment '产品数量（所有商品数量汇总）',
-   goods_amt            decimal(20,6) not null comment '商品总金额',
+   goods_amt            decimal(20,6) not null comment '订单总金额',
    deliver_fee          decimal(20,6) not null comment '运费',
    order_date           datetime not null comment '订单提交日期',
+   delivery_type        bigint(20) comment '配送方式',
    delivery_date        datetime comment '发货日期',
-   delivery_type        bigint(20) not null comment '配送方式',
    pay_type_id          bigint(20) comment '支付方式',
    pay_date             datetime comment '付款日期',
    delivery_no          varchar(60) comment '快递单号',
@@ -978,7 +1002,7 @@ create table t_so_sheet
    memo                 varchar(400) comment '备注',
    message              varchar(300) comment '买家留言',
    order_status         bigint(20) not null comment '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）',
-   delivery_status      bigint(20) not null comment '配送状态',
+   delivery_status      bigint(20) comment '配送状态',
    pay_status           bigint(20) not null comment '支付状态',
    consignee            varchar(30) not null comment '收货人',
    country_id           bigint(20) comment '国家',
@@ -992,7 +1016,7 @@ create table t_so_sheet
    service_date         datetime comment '服务时间(婚礼)',
    budget_amount        decimal(20,6) comment '婚礼预算',
    related_service      varchar(60) comment '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）',
-   service_style        varchar(60) comment '婚礼样式（多选）（浪漫，简约）',
+   service_style        varchar(60) comment '婚礼类型（单选）（室内，室外）',
    related_case_id      bigint(20) comment '关联案例编号',
    primary key (id)
 );
@@ -1544,6 +1568,7 @@ alter table t_vip_address comment '会员收货地址表';
 create table t_vip_blog
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
+   name                 varchar(200) not null comment '帖子标题',
    blog_type            bigint(20) comment '博客频道',
    blog_flag            bigint(20) not null comment '博客分类：会员博客，商户博客',
    vip_id               bigint(20) comment '关联会员编号',
@@ -1565,11 +1590,11 @@ alter table t_vip_blog comment '店铺博客';
 /*==============================================================*/
 create table t_vip_blog_cmt
 (
-   id                   bigint(20) not null comment '主键',
+   id                   bigint(20) not null auto_increment comment '主键',
    content              varchar(255) not null comment '回复内容',
-   blog_id              bigint(20) not null comment '关联评价编号',
+   blog_id              bigint(20) not null comment '关联帖子编号',
    reply_date           datetime not null comment '回复日期',
-   vip_id               bigint(20) not null comment '关联用户编号',
+   vip_id               bigint(20) not null comment '关联会员编号',
    status               bigint(20) not null comment '是否显示?1:是：0:否',
    parent_id            bigint(20) comment '上级评论',
    primary key (id)
@@ -1582,7 +1607,7 @@ alter table t_vip_blog_cmt comment '博客评价';
 /*==============================================================*/
 create table t_vip_blog_likes
 (
-   id                   bigint(20) not null comment '主键',
+   id                   bigint(20) not null auto_increment comment '主键',
    vip_id               bigint(20) not null comment '点赞会员',
    blog_id              bigint(20) comment '关联博客',
    blog_cmt_id          bigint(20) comment '关联博客评论',
@@ -1637,11 +1662,11 @@ create table t_vip_case
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
    audit_memo           varchar(200) comment '审核意见（不通过时必须填写）',
-   cover_img_url        varchar(255) not null comment '图片（放大后查看）(封面)',
-   cover_thumb_url      varchar(255) not null comment '缩略图(封面)',
-   cover_img_original   varchar(255) not null comment '原图(封面)',
+   cover_img_url        varchar(255) comment '图片（放大后查看）(封面)',
+   cover_thumb_url      varchar(255) comment '缩略图(封面)',
+   cover_img_original   varchar(255) comment '原图(封面)',
    is_hot               bigint(20) not null comment '是否经典案例（经典案例显示在首页）',
-   case_flag            bigint(20) not null comment '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）',
+   case_flag            bigint(20) comment '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）',
    market_price         decimal(20,6) comment '市场价',
    sale_price           decimal(20,6) comment '销售价',
    primary key (id)
@@ -1660,7 +1685,7 @@ create table t_vip_case_detail
    primary key (id)
 );
 
-alter table t_vip_case_detail comment '案例明细';
+alter table t_vip_case_detail comment '案例明细（此表暂时不需要）';
 
 /*==============================================================*/
 /* Table: t_vip_case_photo                                      */
@@ -1672,6 +1697,8 @@ create table t_vip_case_photo
    img_url              varchar(255) not null comment '图片（放大后查看）',
    thumb_url            varchar(255) not null comment '缩略图',
    img_original         varchar(255) not null comment '原始图片',
+   sequence_id          bigint(20) comment '显示顺序',
+   description          varchar(255) comment '描述',
    primary key (id)
 );
 
@@ -1929,6 +1956,8 @@ create table t_vip_organization
    country_id           bigint(20) comment '关联国家编号',
    province_id          bigint(20) comment '关联省份编号',
    city_id              bigint(20) comment '关联城市编号',
+   district_id          bigint(20) comment '所属区域',
+   address              varchar(255) comment '联系地址',
    audit_status         bigint(20) not null comment '审核状态：未审核，审核不通过，已审核',
    audit_user_id        bigint(20) comment '审核人',
    audit_date           datetime comment '审核日期',
@@ -2039,11 +2068,17 @@ alter table t_act_special_price add constraint fk_spec_price_ref_prod foreign ke
 alter table t_act_special_price add constraint fk_special_price_ref_act foreign key (act_id)
       references t_activity (id);
 
+alter table t_activity add constraint fk_act_audit_stat_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_activity add constraint fk_act_audit_usr_ref_usr foreign key (audit_user_id)
+      references t_sys_user (id);
+
 alter table t_activity add constraint fk_act_scope_ref_param foreign key (activity_scope)
       references t_sys_parameter (id);
 
-alter table t_activity add constraint fk_act_type_ref_param foreign key (activity_type)
-      references t_sys_parameter (id);
+alter table t_activity add constraint fk_activity_type_ref_type foreign key (activity_type)
+      references t_activity_type (id);
 
 alter table t_activity add constraint fk_activity_vip_ref_vip foreign key (vip_id)
       references t_vip (id);
@@ -2070,10 +2105,13 @@ alter table t_delivery_type_tpl add constraint fk_deliv_type_tpl_stat_ref_param 
       references t_sys_parameter (id);
 
 alter table t_out_stock_sheet add constraint fk_out_ref_delivery_type foreign key (delivery_type)
-      references t_delivery_type (id);
+      references t_delivery_type_tpl (id);
 
 alter table t_out_stock_sheet add constraint fk_out_stock_ref_so foreign key (order_id)
       references t_so_sheet (id);
+
+alter table t_out_stock_sheet add constraint fk_out_stock_sheet_merc_ref_vip foreign key (merchant_id)
+      references t_vip (id);
 
 alter table t_out_stock_sheet add constraint fk_out_stock_sheet_ref_vip foreign key (vip_id)
       references t_vip (id);
@@ -2237,6 +2275,9 @@ alter table t_refund_sheet add constraint fk_refund_ref_rfd_apply foreign key (r
 alter table t_refund_sheet add constraint fk_refund_ref_user foreign key (user_id)
       references t_sys_user (id);
 
+alter table t_refund_sheet add constraint fk_refund_st_merc_ref_vip foreign key (merchant_id)
+      references t_vip (id);
+
 alter table t_refund_sheet add constraint fk_refund_st_ref_vip foreign key (vip_id)
       references t_vip (id);
 
@@ -2269,6 +2310,9 @@ alter table t_return_apply_detail add constraint fk_rt_detail_ref_return foreign
 
 alter table t_return_sheet add constraint fk_return_ref_return_apply foreign key (return_apply_id)
       references t_return_apply (id);
+
+alter table t_return_sheet add constraint fk_return_sheet_merc_ref_vip foreign key (merchant_id)
+      references t_vip (id);
 
 alter table t_return_sheet add constraint fk_return_sheet_ref_out foreign key (out_id)
       references t_out_stock_sheet (id);
@@ -2339,11 +2383,11 @@ alter table t_so_sheet add constraint fk_so_pay_stat_ref_param foreign key (pay_
 alter table t_so_sheet add constraint fk_so_province_ref_region foreign key (province_id)
       references t_sys_region (id);
 
-alter table t_so_sheet add constraint fk_so_ref_delivery_type foreign key (delivery_type)
-      references t_delivery_type (id);
-
 alter table t_so_sheet add constraint fk_so_sheet_case_id_ref_org_case foreign key (related_case_id)
       references t_vip_case (id);
+
+alter table t_so_sheet add constraint fk_so_sheet_ref_delivery_type foreign key (delivery_type)
+      references t_delivery_type_tpl (id);
 
 alter table t_so_sheet add constraint fk_so_sheet_ref_pay_type foreign key (pay_type_id)
       references t_pay_type (id);
@@ -2561,6 +2605,12 @@ alter table t_vip_address add constraint fk_vip_addr_provice_ref_region foreign 
 alter table t_vip_blog add constraint fk_org_blog_show_ref_param foreign key (status)
       references t_sys_parameter (id);
 
+alter table t_vip_blog add constraint fk_vip_blog_audit_stat_ref_param foreign key (audit_status)
+      references t_sys_parameter (id);
+
+alter table t_vip_blog add constraint fk_vip_blog_audit_usr_ref_usr foreign key (audit_user_id)
+      references t_sys_user (id);
+
 alter table t_vip_blog add constraint fk_vip_blog_flag_ref_param foreign key (blog_flag)
       references t_sys_parameter (id);
 
@@ -2596,6 +2646,9 @@ alter table t_vip_blog_photo add constraint fk_org_blog_phpto_ref_blog foreign k
 
 alter table t_vip_blog_type add constraint fk_blog_type_parent_ref_blog_type foreign key (parent_id)
       references t_vip_blog_type (id);
+
+alter table t_vip_case add constraint fk_case_is_hot_ref_param foreign key (is_hot)
+      references t_sys_parameter (id);
 
 alter table t_vip_case add constraint fk_org_case_ref_case_type foreign key (type_id)
       references t_vip_case_type (id);
@@ -2712,6 +2765,9 @@ alter table t_vip_organization add constraint fk_org_city_ref_region foreign key
       references t_sys_region (id);
 
 alter table t_vip_organization add constraint fk_org_country_ref_region foreign key (country_id)
+      references t_sys_region (id);
+
+alter table t_vip_organization add constraint fk_org_district_ref_region foreign key (district_id)
       references t_sys_region (id);
 
 alter table t_vip_organization add constraint fk_org_province_ref_region foreign key (province_id)
