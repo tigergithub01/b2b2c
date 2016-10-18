@@ -430,11 +430,13 @@ composer yii2 移除包
 
 1、案例信息完善（封面，相册）
 2、商家信息完善（封面）（服务定价-商家基础信息）
-3、组团服务（封面）
-5、一个页面多个$model的情况
-6、tab页面的问题。
+3、组团服务（封面)
+5、一个页面多个$model的情况 ->ok
+6、tab页面的问题。 ->ok
 7、批量上传图片问题
 8、ajax上传图片问题。
+
+http://blog.csdn.net/xundh/article/details/45439077
 
 第一次填写时，使用panel。查看时，使用tab页面进行查看。
 bootstrap modals:
