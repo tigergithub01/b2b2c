@@ -35,7 +35,7 @@ use app\models\b2b2c\common\Constant;
 				],
 	    ]); ?>
     
-    	<?php //echo $form->errorSummary($model);?>
+    	<?php echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
 	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

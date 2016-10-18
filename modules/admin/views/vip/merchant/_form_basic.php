@@ -123,12 +123,35 @@ use app\models\b2b2c\common\Constant;
     				'format' => Constant::DATE_PICKER_FORMAT,
     			]
           ]) ?>
+	
+	<?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
+	
+	<?php if(!($model->isNewRecord)) {?>
+    	<div class="form-group">
+    		<?= Html::activeLabel($model, 'img_url',['class'=>'col-lg-2 control-label']) ?>
+			<div class="col-lg-6">
+				<?= Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',])?>
+			</div>
+		</div>
+		<div class="form-group">
+    		<?= Html::activeLabel($model, 'thumb_url',['class'=>'col-lg-2 control-label']) ?>
+			<div class="col-lg-6">
+				<?= Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',])?>
+			</div>
+		</div>
+		<div class="form-group">
+    		<?= Html::activeLabel($model, 'img_original',['class'=>'col-lg-2 control-label']) ?>
+			<div class="col-lg-6">
+				<?= Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',])?>
+			</div>
+		</div>
+    <?php }?>
+    
+    <?php // echo $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

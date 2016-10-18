@@ -18,6 +18,9 @@ use yii\web\UploadedFile;
 use app\common\utils\image\ImageUtils;
 use app\models\b2b2c\SysConfig;
 use app\models\b2b2c\common\Constant;
+use app\modules\admin\models\AdminConst;
+use app\models\b2b2c\VipCasePhoto;
+use app\common\utils\CommonUtils;
 
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
@@ -82,6 +85,11 @@ class VipCaseController extends BaseAuthController
     public function actionCreate()
     {
         $model = new VipCase();
+        $model->create_date = date(AdminConst::DATE_FORMAT,time());
+        $model->update_date= date(AdminConst::DATE_FORMAT,time());
+        $model->is_hot = SysParameter::no;
+        $model->status = SysParameter::yes;
+        $model->audit_status = SysParameter::audit_need_approve;
         
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	
@@ -90,8 +98,8 @@ class VipCaseController extends BaseAuthController
         	//处理图片
         	$imageUtils = new ImageUtils();
         	$image_type = 'vip_case';
-        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
-        	$height = 0 /* SysConfig::getInstance()->getConfigVal("thumb_height") */;
+        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	 
         	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type,null, $width, $height))){
         		$model->cover_img_url = $files['img_url'];
@@ -99,47 +107,100 @@ class VipCaseController extends BaseAuthController
         		$model->cover_thumb_url = $files['thumb_url'];
         	}
         	
+        	
         	//处理案例相册
-        	/* $model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
+        	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
         	$vipCasePhotos = [];
         	foreach ($model->imageFiles as $galleryFile) {
-        		$galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,null, $width, $height);
+        		$galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
         		$vipcasePhoto = new VipCasePhoto();
-        		$vipcasePhoto->img_url = $files['img_url'];
-        		$vipcasePhoto->img_original = $files['img_original'];
-        		$model->thumb_url = $files['thumb_url'];
+        		$vipcasePhoto->img_url = $galleryFiles['img_url'];
+        		$vipcasePhoto->img_original = $galleryFiles['img_original'];
+        		$vipcasePhoto->thumb_url = $galleryFiles['thumb_url'];
         		$vipCasePhotos[] = $vipcasePhoto;
-        	} */
-        	 
-        	if($model->save()){
+        	}
+        	
+        	//开始保存事务
+        	$transaction = VipCase::getDb()->beginTransaction();
+        	try {
+        		/* 保存失败处理 */
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderCreate();
+        		}
+        		
         		//重命名图片地址
         		if($files){
-        			$new_img_original =  $imageUtils->renameImage($model->cover_img_original, $model->id, $image_type);
-        			$new_thumb_url = $imageUtils->renameImage($model->cover_thumb_url, $model->id, $image_type, Constant::thumb_flag);
-        			$new_img_url = $imageUtils->renameImage($model->cover_img_url, $model->id, $image_type, Constant::img_flag);
-        			if($new_img_original){
-        				$model->cover_img_original = $new_img_original;
-        			}
-        			if($new_thumb_url){
-        				$model->cover_thumb_url = $new_thumb_url;
-        			}
-        			if($new_img_url){
-        				$model->cover_img_url = $new_img_url;
+        				$new_img_original =  $imageUtils->renameImage($model->cover_img_original, $model->id, $image_type);
+        				$new_thumb_url = $imageUtils->renameImage($model->cover_thumb_url, $model->id, $image_type, Constant::thumb_flag);
+        				$new_img_url = $imageUtils->renameImage($model->cover_img_url, $model->id, $image_type, Constant::img_flag);
+        				if($new_img_original){
+        					$model->cover_img_original = $new_img_original;
+        				}
+        				if($new_thumb_url){
+        					$model->cover_thumb_url = $new_thumb_url;
+        				}
+        				if($new_img_url){
+        					$model->cover_img_url = $new_img_url;
+        				}
+        		}
+        		
+        		if(!($model->save(true,['cover_img_original','cover_thumb_url', 'cover_img_url']))){
+        				$model->addError('imageFile','重命名文件失败');
+        				$transaction->rollBack();
+        				return $this->renderCreate();
+        		}
+        		
+        		
+        		//插入相册信息
+        		if(!empty($vipCasePhotos)){
+        			foreach ($vipCasePhotos as $vipCasePhoto) {
+        				$vipCasePhoto->case_id = $model->id;
+        				if(!($vipCasePhoto->save())){
+        					//         					var_dump($vipCasePhoto);
+        					$model->addError('imageFiles','案例相册上传失败');
+        					$transaction->rollBack();
+        					return $this->renderCreate();
+        				}
         			}
         		}
-        
-        		if($model->save(true,['cover_img_original','cover_thumb_url', 'cover_img_url'])){
-        			MsgUtils::success();
-        			return $this->redirect(['view', 'id' => $model->id]);
-        		}
-        	}
+        		
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        		
+        	}catch (\Exception $e) {
+				$transaction->rollBack();
+// 	            throw $e;
+				$model->addError('name',$e->getMessage());
+				return $this->renderCreate($model);
+			}
+        	
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            MsgUtils::success();
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
+//         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//             MsgUtils::success();
+//             return $this->redirect(['view', 'id' => $model->id]);
+//         } else {
+			return $this->renderCreate($model);
+            /* return $this->render('create', [
+                'model' => $model,
+            		'vipCaseTypeList' => $this->findVipCaseTypeList(),
+            		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+            		'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+            		'caseFlagList' => SysParameterType::getSysParametersById(SysParameterType::CASE_FLAG),
+            		'vipList' => $this->findVipList(),
+            		'sysUserList' => $this->findSysUserList(),
+            ]); */
+//         }
+    }
+    
+    
+    /**
+     * @return Ambigous <string, string>
+     */
+    protected function renderCreate($model){
+    	return $this->render('create', [
                 'model' => $model,
             		'vipCaseTypeList' => $this->findVipCaseTypeList(),
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
@@ -148,7 +209,6 @@ class VipCaseController extends BaseAuthController
             		'vipList' => $this->findVipList(),
             		'sysUserList' => $this->findSysUserList(),
             ]);
-        }
     }
 
     /**
@@ -163,53 +223,94 @@ class VipCaseController extends BaseAuthController
         
         if ($model->load(Yii::$app->request->post())) {
         	
+        	//获取案例封面信息
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-        	if(empty($model->imageFile)){
-        		//如果没有上传文件，则不处理文件信息
-        		if($model->save()){
-        			MsgUtils::success();
-        			return $this->redirect(['view', 'id' => $model->id]);
+        	
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'vip_case';
+        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	
+        	//旧图片地址
+        	$old_img_url = $model->cover_img_url;
+        	$old_img_original = $model->cover_img_original;
+        	$old_thumb_url = $model->cover_thumb_url;
+        	
+        	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type, $model->id, $width, $height))){
+        		//新图片地址
+        		$model->cover_img_url = $files['img_url'];
+        		$model->cover_img_original = $files['img_original'];
+        		$model->cover_thumb_url = $files['thumb_url'];
+        	}
+        	
+        	//处理案例相册
+        	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
+        	$vipCasePhotos = [];
+        	foreach ($model->imageFiles as $galleryFile) {
+	        	 $galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
+	        	 $vipcasePhoto = new VipCasePhoto();
+	        	 $vipcasePhoto->img_url = $galleryFiles['img_url'];
+	        	 $vipcasePhoto->img_original = $galleryFiles['img_original'];
+	        	 $vipcasePhoto->thumb_url = $galleryFiles['thumb_url'];
+	        	 $vipCasePhotos[] = $vipcasePhoto;
+        	 }
+        	
+        	$transaction = VipCase::getDb()->beginTransaction();
+        	try {
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderUpdate();
         		}
-        	}else{
-        		$imageUtils = new ImageUtils();
-        		$image_type = 'vip_case';
-        		$width = SysConfig::getInstance()->getConfigVal("thumb_width");
-        		$height = 0 /* SysConfig::getInstance()->getConfigVal("thumb_height") */;
-        
-        		if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type, $model->id, $width, $height))){
-        			//旧图片地址
-        			$old_img_url = $model->cover_img_url;
-        			$old_img_original = $model->cover_img_original;
-        			$old_thumb_url = $model->cover_thumb_url;
-        
-        			//新图片地址
-        			$model->cover_img_url = $files['img_url'];
-        			$model->cover_img_original = $files['img_original'];
-        			$model->cover_thumb_url = $files['thumb_url'];
-        
-        			if($model->save()){
-        				//删除旧图片
-        				if(file_exists($old_img_url)){
-        					unlink($old_img_url);
-        				}
-        				if(file_exists($old_img_original)){
-        					unlink($old_img_original);
-        				}
-        				if(file_exists($old_thumb_url)){
-        					unlink($old_thumb_url);
-        				}
-        				MsgUtils::success();
-        				return $this->redirect(['view', 'id' => $model->id]);
+        		
+        		if($files){
+        			//删除旧图片
+        			if(file_exists($old_img_url)){
+        				unlink($old_img_url);
+        			}
+        			if(file_exists($old_img_original)){
+        				unlink($old_img_original);
+        			}
+        			if(file_exists($old_thumb_url)){
+        				unlink($old_thumb_url);
         			}
         		}
-        	}
+        		
+//         			MsgUtils::success();
+//         			return $this->redirect(['view', 'id' => $model->id]);
+        		
+        		//插入相册信息
+        		if(!empty($vipCasePhotos)){
+        			foreach ($vipCasePhotos as $vipCasePhoto) {
+        				$vipCasePhoto->case_id = $model->id;
+        				if(!($vipCasePhoto->save())){
+//         					var_dump($vipCasePhoto);
+        					$model->addError('imageFiles','案例相册上传失败');
+        					$transaction->rollBack();
+        					return $this->renderUpdate();
+        				}
+        			}
+        		}
+        		
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        	}catch (\Exception $e) {
+				$transaction->rollBack();
+// 	            throw $e;
+				$model->addError('name',$e->getMessage());
+				return $this->renderUpdate($model);
+			}
+        	
         }
 
 //         if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
 //         	MsgUtils::success();
 //             return $this->redirect(['view', 'id' => $model->id]);
 //         } else {
-            return $this->render('update', [
+
+        	return $this->renderUpdate($model);
+        	
+            /* return $this->render('update', [
                 'model' => $model,
             		'vipCaseTypeList' => $this->findVipCaseTypeList(),
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
@@ -217,9 +318,26 @@ class VipCaseController extends BaseAuthController
             		'caseFlagList' => SysParameterType::getSysParametersById(SysParameterType::CASE_FLAG),
             		'vipList' => $this->findVipList(),
             		'sysUserList' => $this->findSysUserList(),
-            ]);
+            ]); */
 //         }
     }
+    
+    /**
+     * @return Ambigous <string, string>
+     */
+    protected function renderUpdate($model){
+    	return $this->render('update', [
+    			'model' => $model,
+    			'vipCaseTypeList' => $this->findVipCaseTypeList(),
+    			'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
+    			'auditStatList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
+    			'caseFlagList' => SysParameterType::getSysParametersById(SysParameterType::CASE_FLAG),
+    			'vipList' => $this->findVipList(),
+    			'sysUserList' => $this->findSysUserList(),
+    	]);
+    }
+    
+    
 
     /**
      * Deletes an existing VipCase model.
