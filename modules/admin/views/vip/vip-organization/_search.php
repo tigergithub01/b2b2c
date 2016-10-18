@@ -76,6 +76,10 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'update_date') ?>
 
+    <?php // echo $form->field($model, 'district_id') ?>
+
+    <?php // echo $form->field($model, 'address') ?>
+
 	    
 	    </div>
 	    

@@ -46,6 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'audit_memo',
             'create_date',
             'update_date',
+            'district_id',
+            'address',
 		        ],
 		    ]) ?>
     	</div>

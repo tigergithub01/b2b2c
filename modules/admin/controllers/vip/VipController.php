@@ -18,6 +18,8 @@ use yii\web\UploadedFile;
 use app\common\utils\image\ImageUtils;
 use app\models\b2b2c\SysConfig;
 use app\models\b2b2c\common\Constant;
+use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\VipExtend;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -138,13 +140,15 @@ class VipController extends BaseAuthController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $vipOrganization = $this->findVipOrganization($model->vip_id);
+        $vipExtend = $this->findVipExtend($model->vip_id);
 		
-        if ($model->load(Yii::$app->request->post())) {
-        	 
+        if ($model->load(Yii::$app->request->post()) && $vipOrganization->load(Yii::$app->request->post()) && $vipExtend->load(Yii::$app->request->post()) ) {
+        	
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         	if(empty($model->imageFile)){
         		//如果没有上传文件，则不处理文件信息
-        		if($model->save()){
+        		if($model->save() && $vipOrganization->save() && $vipExtend->save()){
         			MsgUtils::success();
         			return $this->redirect(['view', 'id' => $model->id]);
         		}
@@ -185,6 +189,8 @@ class VipController extends BaseAuthController
         
         return $this->render('update', [
                 	'model' => $model,
+        			'vipOrganization' => $vipOrganization,
+        			'vipExtend' => $vipExtend,
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'vipRankList' => $this->findVipRankList(),
             		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
@@ -234,6 +240,41 @@ class VipController extends BaseAuthController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * findVipOrganization
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findVipOrganization($vip_id)
+    {
+    	$model = VipOrganization::find()->alias('vipOrg')
+    	->joinWith('auditUser auditUser')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('district district')
+    	->joinWith('city city')
+    	->joinWith('country country')
+    	->joinWith('province province')
+    	->joinWith('vip vip')
+    	->joinWith('status0 stat')
+    	->where(['vipOrg.vip_id'=>$vip_id])->one();
+    	return $model;
+    }
+    
+    /**
+     * findVipExtend
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findVipExtend($vip_id)
+    {
+    	$model = VipExtend::find()->alias('vipExtend')
+    	->joinWith('auditUser auditUser')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('vip vip')
+    	->where(['vipExtend.vip_id'=>$vip_id])->one();
+    	return $model;
     }
     
     /**

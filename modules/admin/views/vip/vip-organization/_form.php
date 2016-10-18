@@ -75,6 +75,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'update_date')->textInput() ?>
 
+    <?= $form->field($model, 'district_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+
 		</div>
 	
 	    <div class="box-footer form-group">

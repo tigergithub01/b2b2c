@@ -11,18 +11,7 @@ use app\models\b2b2c\common\Constant;
 
 <div class="vip-form">
 
-	<div class="box box-primary">
-		<div class="box-header with-border">
-			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
-			<div class="box-tools pull-right">
-				<button type="button" class="btn btn-box-tool"
-					data-widget="collapse" data-toggle="tooltip" title="Collapse">
-					<i class="fa fa-minus"></i>
-				</button>
-			</div>
-		</div>
-
-	    <?php $form = ActiveForm::begin([
+	 <?php $form = ActiveForm::begin([
 	    	'options' => [ 
 						'enctype' => 'multipart/form-data',
 						'class' => 'form-horizontal',
@@ -33,132 +22,37 @@ use app\models\b2b2c\common\Constant;
 								'class' => 'col-lg-2 control-label' 
 						] 
 				],
-	    ]); ?>
-    
-    	<?php //echo $form->errorSummary($model);?>
-
-	    <div class="box-body">
-	    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
-
-    <?php //echo $form->field($model, 'merchant_flag')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'merchant_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?= $form->field($model, 'vip_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'last_login_date')->textInput(['readonly'=>true]) ?>
-
-    <?php if($model->isNewRecord){?>
-    	<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-    <?php }?>
-
-    <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
-
-    <?php //echo $form->field($model, 'mobile_verify_flag')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'mobile_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?php //echo $form->field($model, 'email_verify_flag')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'email_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'register_date')->textInput() ?>
-    
-    <?= $form->field($model, 'register_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
-    		'language' => Yii::$app->language,
-    		'clientOptions' => [
-    				'autoclose' => true,
-    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
-    				'todayBtn' => true,
-    			]
-          ]) ?>
-
-    <?php //echo $form->field($model, 'rank_id')->textInput(['maxlength' => true]) ?>
-    
-    <?php //echo $form->field($model, 'rank_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipRankList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'audit_user_id')->dropDownList(\yii\helpers\ArrayHelper::map($userList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'audit_date')->textInput() ?>
-    
-    <?= $form->field($model, 'audit_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
-    		'language' => Yii::$app->language,
-    		'clientOptions' => [
-    				'autoclose' => true,
-    				'format' => Constant::DATE_TIME_PICKER_FORMAT,
-    				'todayBtn' => true,
-    			]
-          ]) ?>
-
-    <?= $form->field($model, 'audit_memo')->textInput(['maxlength' => true]) ?>
-
-    <?php //echo $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'sex')->dropDownList(\yii\helpers\ArrayHelper::map($sexList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?= $form->field($model, 'nick_name')->textInput(['maxlength' => true]) ?>
-
-    <?php //echo $form->field($model, 'wedding_date')->textInput() ?>
-    
-    <?= $form->field($model, 'wedding_date')->widget(dosamigos\datepicker\DatePicker::className(), [
-//     		'options' => ['readonly'=>true],
-    		'language' => Yii::$app->language,
-//     		'template' => '{input}{addon}',
-    		'clientOptions' => [
-    				'autoclose' => true,
-    				//'format' => 'yyyy-mm-dd HH:ii:ss',
-    				'format' => Constant::DATE_PICKER_FORMAT,
-//     				'todayBtn' => true,
-    			]
-          ]) ?>
-
-    <?php //echo $form->field($model, 'birthday')->textInput() ?>
-    
-    <?php /* $form->field($model, 'birthday')->widget(\yii\jui\DatePicker::className(), [
-    		'dateFormat' => 'yyyy-MM-dd',
-    		'options' => ['readonly'=>true]
-                    ]) */?>
-    
-    <?= $form->field($model, 'birthday')->widget(\dosamigos\datepicker\DatePicker::className(), [
-    		'language' => Yii::$app->language,
-    		'clientOptions' => [
-    				'autoclose' => true,
-    				'format' => Constant::DATE_PICKER_FORMAT,
-    			]
-          ]) ?>
-
-    <?= $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
-
-		</div>
+	    ]); ?>	
+	    
 	
-	    <div class="box-footer form-group">
-	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-	    </div>
-
-    	<?php ActiveForm::end(); ?>
-	
-	</div>
+	<div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab">基础信息</a></li>
+              
+              <?php if(!$model->isNewRecord){?>
+              <li><a href="#tab_2" data-toggle="tab">营业信息</a></li>
+              <li><a href="#tab_3" data-toggle="tab">个人信息</a></li>
+              <?php }?>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+              	<?php include '_form_basic.php';?>
+              </div>
+              <!-- /.tab-pane -->
+              <?php if(!$model->isNewRecord){?>
+              <div class="tab-pane" id="tab_2">
+                <?php include '_form_vip_org.php';?>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_3">
+                <?php include '_form_vip_extend.php';?>
+              </div>
+              <!-- /.tab-pane -->
+              <?php }?>
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          
+          <?php ActiveForm::end(); ?>
 	
 </div>

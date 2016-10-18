@@ -43,6 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'audit_memo',
             // 'create_date',
             // 'update_date',
+            // 'district_id',
+            // 'address',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

@@ -27,15 +27,18 @@ use Yii;
  * @property string $audit_memo
  * @property string $create_date
  * @property string $update_date
+ * @property string $district_id
+ * @property string $address
  *
  * @property VipOrgGallery[] $vipOrgGalleries
- * @property SysUser $auditUser
+ * @property SysRegion $district
  * @property SysRegion $city
  * @property SysRegion $country
  * @property SysRegion $province
  * @property Vip $vip
  * @property SysParameter $status0
  * @property SysParameter $auditStatus
+ * @property SysUser $auditUser
  */
 class VipOrganization extends \app\models\b2b2c\BasicModel
 {
@@ -54,19 +57,20 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     {
         return [
             [['status', 'vip_id', 'audit_status', 'create_date', 'update_date'], 'required'],
-            [['status', 'vip_id', 'country_id', 'province_id', 'city_id', 'audit_status', 'audit_user_id'], 'integer'],
+            [['status', 'vip_id', 'country_id', 'province_id', 'city_id', 'audit_status', 'audit_user_id', 'district_id'], 'integer'],
             [['audit_date', 'create_date', 'update_date'], 'safe'],
             [['name'], 'string', 'max' => 30],
-            [['logo_img_url', 'logo_thumb_url', 'logo_img_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
+            [['logo_img_url', 'logo_thumb_url', 'logo_img_original', 'cover_img_url', 'cover_thumb_url', 'cover_img_original', 'address'], 'string', 'max' => 255],
             [['description'], 'string', 'max' => 500],
             [['audit_memo'], 'string', 'max' => 200],
-            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+            [['district_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['district_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['city_id' => 'id']],
             [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['country_id' => 'id']],
             [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['province_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
+            [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
         ];
     }
 
@@ -96,6 +100,8 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
             'create_date' => Yii::t('app', '创建时间'),
             'update_date' => Yii::t('app', '更新时间'),
+            'district_id' => Yii::t('app', '所属区域'),
+            'address' => Yii::t('app', '联系地址'),
         ];
     }
 
@@ -110,9 +116,9 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAuditUser()
+    public function getDistrict()
     {
-        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
+        return $this->hasOne(SysRegion::className(), ['id' => 'district_id']);
     }
 
     /**
@@ -161,5 +167,13 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
     public function getAuditStatus()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'audit_status']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuditUser()
+    {
+        return $this->hasOne(SysUser::className(), ['id' => 'audit_user_id']);
     }
 }
