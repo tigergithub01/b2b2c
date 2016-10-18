@@ -33,6 +33,9 @@ class ProductComment extends \app\models\b2b2c\BasicModel
 	
 	/* 会员名（查询用） */
 	public $vip_no;
+	
+	/* 商户主键（查询用） */
+	public $merchant_id;
     
     /**
      * @inheritdoc
@@ -51,6 +54,7 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'product_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'merchant_id';
     	return $scenarios;
     	// 		return parent::scenarios();
     }

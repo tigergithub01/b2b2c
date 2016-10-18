@@ -93,6 +93,7 @@ class ProductCommentSearch extends ProductComment
             'pcmt.comment_date' => $this->comment_date,
             'pcmt.status' => $this->status,
             'pcmt.parent_id' => $this->parent_id,
+        	'prod.vip_id' => $this->merchant_id,
         ]);
 
         $query->andFilterWhere(['like', 'pcmt.content', $this->content])
