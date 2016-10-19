@@ -71,6 +71,12 @@ return [
 		'Create Activity'=>'新增团体服务',
 		'Update Activity'=>'编辑团体服务',
 		
+		//团体服务明细
+		'Act Package Product'=>'团体服务明细信息',
+		'Act Package Products'=>'团体服务明细列表',
+		'Create Act Package Product'=>'新增团体服务明细',
+		'Update Act Package Product'=>'编辑团体服务明细',
+		
 		//产品品牌
 		'Product Brand'=>'产品品牌',
 		'Product Brands'=>'产品品牌列表',
@@ -155,6 +161,12 @@ return [
 		'So Sheets'=>'订单列表',
 		'Create So Sheet'=>'新增订单',
 		'Update So Sheet'=>'编辑订单',
+		
+		//订单明细信息
+		'So Sheet Detail'=>'订单明细信息',
+		'So Sheet Details'=>'订单明细列表',
+		'Create So Sheet Detail'=>'新增订单明细',
+		'Update So Sheet Detail'=>'编辑订单明细',
 		
 		//退款申请单
 		'Refund Sheet Apply'=>'退款申请单',

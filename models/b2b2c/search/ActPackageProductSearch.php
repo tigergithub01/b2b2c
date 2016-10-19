@@ -5,12 +5,12 @@ namespace app\models\b2b2c\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SysNotifyLog;
+use app\models\b2b2c\ActPackageProduct;
 
 /**
- * SysNotifyLogSearch represents the model behind the search form about `app\models\b2b2c\SysNotifyLog`.
+ * ActPackageProductSearch represents the model behind the search form about `app\models\b2b2c\ActPackageProduct`.
  */
-class SysNotifyLogSearch extends SysNotifyLog
+class ActPackageProductSearch extends ActPackageProduct
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SysNotifyLogSearch extends SysNotifyLog
     public function rules()
     {
         return [
-            [['id', 'notify_id', 'vip_id'], 'integer'],
-            [['create_date', 'read_date', 'expiration_time'], 'safe'],
+            [['id', 'act_id', 'product_id', 'quantity'], 'integer'],
+            [['sale_price', 'package_price'], 'number'],
         ];
     }
 
@@ -41,9 +41,9 @@ class SysNotifyLogSearch extends SysNotifyLog
      */
     public function search($params)
     {
-        $query = SysNotifyLog::find()->alias('notifyLog')
-    	->joinWith('vip vip')
-    	->joinWith('notify notify');
+        $query = ActPackageProduct::find()->alias('actProd')
+    	->joinWith('act act')
+    	->joinWith('product product');
 
         // add conditions that should always apply here
 
@@ -63,12 +63,12 @@ class SysNotifyLogSearch extends SysNotifyLog
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'notifyLog.id' => $this->id,
-            'notifyLog.notify_id' => $this->notify_id,
-            'notifyLog.vip_id' => $this->vip_id,
-            'notifyLog.create_date' => $this->create_date,
-            'notifyLog.read_date' => $this->read_date,
-            'notifyLog.expiration_time' => $this->expiration_time,
+            'actProd.id' => $this->id,
+            'actProd.act_id' => $this->act_id,
+            'actProd.product_id' => $this->product_id,
+            'actProd.sale_price' => $this->sale_price,
+            'actProd.package_price' => $this->package_price,
+            'actProd.quantity' => $this->quantity,
         ]);
 
         return $dataProvider;

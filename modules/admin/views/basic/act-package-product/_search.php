@@ -5,11 +5,11 @@ use yii\widgets\ActiveForm;
 use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\search\SoSheetDetailSearch */
+/* @var $model app\models\b2b2c\search\ActPackageProductSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="so-sheet-detail-search">
+<div class="act-package-product-search">
 	
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -39,24 +39,22 @@ use app\modules\admin\Module;
 	
 	    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'order_id') ?>
+    <?= $form->field($model, 'act_id') ?>
 
     <?= $form->field($model, 'product_id') ?>
 
-    <?= $form->field($model, 'quantity') ?>
+    <?= $form->field($model, 'sale_price') ?>
 
-    <?= $form->field($model, 'price') ?>
+    <?= $form->field($model, 'package_price') ?>
 
-    <?php // echo $form->field($model, 'amount') ?>
-
-    <?php // echo $form->field($model, 'package_id') ?>
+    <?php // echo $form->field($model, 'quantity') ?>
 
 	    
 	    </div>
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Module::t('app', 'Create So Sheet Detail'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Module::t('app', 'Create Act Package Product'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

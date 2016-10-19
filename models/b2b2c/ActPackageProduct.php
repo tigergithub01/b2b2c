@@ -14,11 +14,10 @@ use Yii;
  * @property string $package_price
  * @property integer $quantity
  *
- * @property Product $product
  * @property Activity $act
- * @property Product $product0
+ * @property Product $product
  */
-class ActPackageProduct extends \app\models\b2b2c\BasicModel
+class ActPackageProduct extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -37,7 +36,6 @@ class ActPackageProduct extends \app\models\b2b2c\BasicModel
             [['act_id', 'product_id', 'sale_price', 'package_price', 'quantity'], 'required'],
             [['act_id', 'product_id', 'quantity'], 'integer'],
             [['sale_price', 'package_price'], 'number'],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
             [['act_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['act_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
@@ -55,15 +53,9 @@ class ActPackageProduct extends \app\models\b2b2c\BasicModel
             'sale_price' => Yii::t('app', '原价'),
             'package_price' => Yii::t('app', '套装价'),
             'quantity' => Yii::t('app', '数量'),
+        	'act.name' => Yii::t('app', '关联活动编号'),
+        	'product.name' => Yii::t('app', '关联产品编号'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProduct()
-    {
-        return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
     /**
@@ -77,7 +69,7 @@ class ActPackageProduct extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProduct0()
+    public function getProduct()
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }

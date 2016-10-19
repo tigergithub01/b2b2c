@@ -5,19 +5,18 @@ use app\modules\admin\Module;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SoSheetDetail */
+/* @var $model app\models\b2b2c\ActPackageProduct */
 
-$this->title = Module::t('app', 'Create So Sheet Detail');
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'So Sheet Details'), 'url' => ['index']];
+$this->title = Module::t('app', 'Create Act Package Product');
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Act Package Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="so-sheet-detail-create">
+<div class="act-package-product-create">
 
     <?= $this->render('_form', [
         'model' => $model,
     		'activityList' => $activityList,
     		'productList' => $productList,
-    		'soSheetList' => $soSheetList,
     ]) ?>
 
 </div>

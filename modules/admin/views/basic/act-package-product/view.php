@@ -5,13 +5,13 @@ use yii\widgets\DetailView;
 use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SoSheetDetail */
+/* @var $model app\models\b2b2c\ActPackageProduct */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'So Sheet Details'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Act Package Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="so-sheet-detail-view">
+<div class="act-package-product-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -28,15 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            //'order_id',
-            'order.code',
+            //'act_id',
+            'act.name',
             //'product_id',
             'product.name',
+            'sale_price',
+            'package_price',
             'quantity',
-            'price',
-            'amount',
-            //'package_id',
-            'package.name',
 		        ],
 		    ]) ?>
     	</div>

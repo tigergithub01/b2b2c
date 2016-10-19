@@ -5,14 +5,17 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use app\modules\admin\Module;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\b2b2c\search\SoSheetDetailSearch */
+/* @var $searchModel app\models\b2b2c\search\ActPackageProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('app', 'So Sheet Details');
+$this->title = Module::t('app', 'Act Package Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="so-sheet-detail-index">
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="act-package-product-index">
+    <?php  echo $this->render('_search', ['model' => $searchModel, 
+    		'activityList' => $activityList,
+    		'productList' => $productList,
+    ]); ?>
 
 		<div class="box box-primary">
 		    <div class="box-header with-border">
@@ -25,15 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            //'order_id',
-            'order.code',
+            //'act_id',
+            'act.name',
             //'product_id',
             'product.name',
-            'quantity',
-            'price',
-            'amount',
-            //'package_id',
-            'package.name',
+            'sale_price',
+            'package_price',
+            // 'quantity',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

@@ -41,7 +41,10 @@ class SoSheetDetailSearch extends SoSheetDetail
      */
     public function search($params)
     {
-        $query = SoSheetDetail::find();
+        $query = SoSheetDetail::find()->alias('soDetail')
+    	->joinWith('order order')
+    	->joinWith('package package')
+    	->joinWith('product product');
 
         // add conditions that should always apply here
 
@@ -61,13 +64,13 @@ class SoSheetDetailSearch extends SoSheetDetail
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'order_id' => $this->order_id,
-            'product_id' => $this->product_id,
-            'quantity' => $this->quantity,
-            'price' => $this->price,
-            'amount' => $this->amount,
-            'package_id' => $this->package_id,
+            'soDetail.id' => $this->id,
+            'soDetail.order_id' => $this->order_id,
+            'soDetail.product_id' => $this->product_id,
+            'soDetail.quantity' => $this->quantity,
+            'soDetail.price' => $this->price,
+            'soDetail.amount' => $this->amount,
+            'soDetail.package_id' => $this->package_id,
         ]);
 
         return $dataProvider;

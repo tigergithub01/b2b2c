@@ -29,6 +29,7 @@ use app\models\b2b2c\VipBlog;
                 					['label' => '产品品牌',  'url' => ['basic/product-brand/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '个人服务',  'url' => ['basic/product/index'],'icon' => 'fa fa-circle-o'],
                 					['label' => '团体服务',  'url' => ['basic/activity/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '团体服务明细',  'url' => ['basic/act-package-product/index'],'icon' => 'fa fa-circle-o',],
                                  ],
 					],
                 	['label' => '会员管理', 'icon' => 'fa fa-table','url' => '#',
@@ -58,6 +59,7 @@ use app\models\b2b2c\VipBlog;
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
                 					['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '订单明细',  'url' => ['order/so-sheet-detail/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '退款申请单', 'url' => ['order/refund-sheet-apply/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '退款单', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
                 					// ['label' => '退货申请单', 'url' => ['order/return-apply/index'],'icon' => 'fa fa-circle-o',],

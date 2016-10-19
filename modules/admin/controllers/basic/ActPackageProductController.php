@@ -1,22 +1,21 @@
 <?php
 
-namespace app\modules\admin\controllers\order;
+namespace app\modules\admin\controllers\basic;
 
 use Yii;
-use app\models\b2b2c\SoSheetDetail;
-use app\models\b2b2c\search\SoSheetDetailSearch;
-use app\modules\admin\common\controllers\BaseAuthController;
+use app\models\b2b2c\ActPackageProduct;
+use app\models\b2b2c\search\ActPackageProductSearch;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\Activity;
 use app\models\b2b2c\Product;
 
 /**
- * SoSheetDetailController implements the CRUD actions for SoSheetDetail model.
+ * ActPackageProductController implements the CRUD actions for ActPackageProduct model.
  */
-class SoSheetDetailController extends BaseAuthController
+class ActPackageProductController extends Controller
 {
     /**
      * @inheritdoc
@@ -36,12 +35,12 @@ class SoSheetDetailController extends BaseAuthController
     */
 
     /**
-     * Lists all SoSheetDetail models.
+     * Lists all ActPackageProduct models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SoSheetDetailSearch();
+        $searchModel = new ActPackageProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -49,12 +48,11 @@ class SoSheetDetailController extends BaseAuthController
             'dataProvider' => $dataProvider,
         		'activityList' => $this->findActivityList(),
         		'productList' => $this->findProductList(),
-        		'soSheetList' => $this->findSoSheetList(),
         ]);
     }
 
     /**
-     * Displays a single SoSheetDetail model.
+     * Displays a single ActPackageProduct model.
      * @param string $id
      * @return mixed
      */
@@ -66,13 +64,13 @@ class SoSheetDetailController extends BaseAuthController
     }
 
     /**
-     * Creates a new SoSheetDetail model.
+     * Creates a new ActPackageProduct model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new SoSheetDetail();
+        $model = new ActPackageProduct();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
@@ -80,15 +78,14 @@ class SoSheetDetailController extends BaseAuthController
         } else {
             return $this->render('create', [
                 'model' => $model,
-            		'activityList' => $this->findActivityList(),
-            		'productList' => $this->findProductList(),
-            		'soSheetList' => $this->findSoSheetList(),
+            	'activityList' => $this->findActivityList(),
+            	'productList' => $this->findProductList(),
             ]);
         }
     }
 
     /**
-     * Updates an existing SoSheetDetail model.
+     * Updates an existing ActPackageProduct model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -105,13 +102,12 @@ class SoSheetDetailController extends BaseAuthController
                 'model' => $model,
             		'activityList' => $this->findActivityList(),
             		'productList' => $this->findProductList(),
-            		'soSheetList' => $this->findSoSheetList(),
             ]);
         }
     }
 
     /**
-     * Deletes an existing SoSheetDetail model.
+     * Deletes an existing ActPackageProduct model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -124,22 +120,21 @@ class SoSheetDetailController extends BaseAuthController
     }
 
     /**
-     * Finds the SoSheetDetail model based on its primary key value.
+     * Finds the ActPackageProduct model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return SoSheetDetail the loaded model
+     * @return ActPackageProduct the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+	protected function findModel($id)
     {
-    	$model = SoSheetDetail::find()->alias('soDetail')
-    	->joinWith('order order')
-    	->joinWith('package package')
+    	$model = ActPackageProduct::find()->alias('actProd')
+    	->joinWith('act act')
     	->joinWith('product product')
-    	->where(['soDetail.id' => $id])->one();
-    	 
+    	->where(['actProd.id' => $id])->one();
+    	
     	if($model !==null){
-//         if (($model = SoSheetDetail::findOne($id)) !== null) {
+//         if (($model = ActPackageProduct::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -151,13 +146,6 @@ class SoSheetDetailController extends BaseAuthController
      */
     protected function findActivityList(){
     	return Activity::find()->all();
-    }
-    
-    /**
-     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
-     */
-    protected function findSoSheetList(){
-    	return SoSheet::find()->all();
     }
     
     

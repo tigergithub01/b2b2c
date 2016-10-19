@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use app\modules\vip\models\VipConst;
 use app\common\utils\CommonUtils;
 use app\models\b2b2c\common\Constant;
+use app\modules\vip\service\vip\VipService;
 
 class VipAuthBehavior extends Behavior{
 	
@@ -26,7 +27,7 @@ class VipAuthBehavior extends Behavior{
 	 	$session = Yii::$app->session;
 	 	$login_vip = $session->get(VipConst::LOGIN_VIP_USER);
 	 	$cookies = Yii::$app->request->cookies;
-	 	$merchant_user_id = $cookies->getValue(VipConst::COOKIE_VIP_USER_ID);
+	 	$vip_user_id = $cookies->getValue(VipConst::COOKIE_VIP_USER_ID);
 // 	 	$admin_user_id = $_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID];
 // 	 	$admin_user_id = $cookies[AdminConst::COOKIE_ADMIN_USER_ID]->value;
 	 	if(empty($login_vip)){
@@ -34,15 +35,15 @@ class VipAuthBehavior extends Behavior{
 	 		$session->set(VipConst::VIP_LAST_ACCESS_URL,Yii::$app->request->url);
 	 		
 	 		//是否自动登陆
-	 		if($merchant_user_id){
+	 		if($vip_user_id){
 	 			//auto login
 	 			$model = new Vip();
 	 			$model->setScenario(Vip::SCENARIO_AUTO_LOGIN);
-	 			$model->vip_id = $merchant_user_id;
+	 			$model->vip_id = $vip_user_id;
 	 			$model->password = $cookies->getValue(VipConst::COOKIE_VIP_PASSWORD);
-	 			$merchantService = new MerchantService();
+	 			$vipService = new VipService();
 // 	 			if($model->validate() && ($user_db = $model->login())){
-	 			if($model->validate() && ($vip_db = $merchantService->login($model,true))){
+	 			if($model->validate() && ($vip_db = $vipService->login($model,true))){
 	 				// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
 	 				//设置用户
 	 				$session->set(VipConst::LOGIN_VIP_USER,$vip_db);

@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SoSheetDetail */
+/* @var $model app\models\b2b2c\ActPackageProduct */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="so-sheet-detail-form">
+<div class="act-package-product-form">
 
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -37,23 +37,19 @@ use yii\widgets\ActiveForm;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?php //echo $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
+	    <?php // echo $form->field($model, 'act_id')->textInput(['maxlength' => true]) ?>
 	    
-	    <?= $form->field($model, 'order_id')->dropDownList(\yii\helpers\ArrayHelper::map($soSheetList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	    <?= $form->field($model, 'act_id')->dropDownList(\yii\helpers\ArrayHelper::map($activityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'product_id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
+    <?= $form->field($model, 'sale_price')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'quantity')->textInput() ?>
-
-    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
-
-    <?php // echo $form->field($model, 'package_id')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'package_id')->dropDownList(\yii\helpers\ArrayHelper::map($activityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
 		</div>
 	
