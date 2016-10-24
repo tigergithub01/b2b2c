@@ -41,7 +41,6 @@ source init_data.sql;
 source t_sys_region.sql;
 
 
-
 GRANT ALL PRIVILEGES ON *.* TO 'b2b'@'%'WITH GRANT OPTION;
 update user set host = 'localhost' where user = 'root' and host='%';
 select host,user from user where  user = 'root';

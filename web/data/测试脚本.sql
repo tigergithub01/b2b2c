@@ -424,6 +424,22 @@ delete  from t_vip_extend;
 
 delete  from t_vip_organization;
 
+CREATE TABLE `t_act_package_product` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `act_id` bigint(20) NOT NULL COMMENT '关联活动编号',
+  `product_id` bigint(20) NOT NULL COMMENT '关联产品编号',
+  `sale_price` decimal(20,6) NOT NULL COMMENT '原价',
+  `package_price` decimal(20,6) NOT NULL COMMENT '套装价',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  PRIMARY KEY (`id`),
+  KEY `fk_package_goods_ref_act` (`act_id`),
+  KEY `fk_pkg_prod_ref_prod` (`product_id`),
+  CONSTRAINT `fk_pkg_prod_ref_prod` FOREIGN KEY (`product_id`) REFERENCES `t_product` (`id`),
+  CONSTRAINT `fk_package_goods_ref_act` FOREIGN KEY (`act_id`) REFERENCES `t_activity` (`id`),
+  CONSTRAINT `fk_package_prod_ref_product` FOREIGN KEY (`product_id`) REFERENCES `t_product` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='优惠套装';
+
+alter table t_act_package_product drop foreign key fk_pkg_prod_ref_prod;
 
 
 */
