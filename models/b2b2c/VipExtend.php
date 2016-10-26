@@ -37,6 +37,12 @@ use Yii;
  */
 class VipExtend extends \app\models\b2b2c\BasicModel
 {
+	//身份证正面照
+	public $imageFileIdCard;
+	
+	//身份证背面照
+	public $imageFileIdCardBack;
+    
     /**
      * @inheritdoc
      */
@@ -61,6 +67,7 @@ class VipExtend extends \app\models\b2b2c\BasicModel
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+        	[['imageFileIdCard', 'imageFileIdCardBack'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         ];
     }
 
@@ -74,10 +81,10 @@ class VipExtend extends \app\models\b2b2c\BasicModel
             'vip_id' => Yii::t('app', '关联会员编号'),
             'real_name' => Yii::t('app', '真实姓名'),
             'id_card_no' => Yii::t('app', '身份证号码'),
-            'id_card_img_url' => Yii::t('app', '身份证正面照-图片（放大后查看）'),
+            'id_card_img_url' => Yii::t('app', /* '身份证正面照-图片（放大后查看）' */'身份证正面照'),
             'id_card_thumb_url' => Yii::t('app', '身份证正面照-缩略图'),
             'id_card_img_original' => Yii::t('app', '身份证正面照-原图'),
-            'id_back_img_url' => Yii::t('app', '身份证背面照-图片（放大后查看）'),
+            'id_back_img_url' => Yii::t('app', /* '身份证背面照-图片（放大后查看）' */'身份证背面照'),
             'id_back_thumb_url' => Yii::t('app', '身份证背面照-缩略图'),
             'id_back_img_original' => Yii::t('app', '身份证背面照-原图'),
             'bl_img_url' => Yii::t('app', '公司营业执照-图片（放大后查看）'),
@@ -93,6 +100,8 @@ class VipExtend extends \app\models\b2b2c\BasicModel
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
             'create_date' => Yii::t('app', '创建时间'),
             'update_date' => Yii::t('app', '更新时间'),
+        	'imageFileIdCard' => Yii::t('app', '身份证正面照'),
+        	'imageFileIdCardBack' => Yii::t('app', '身份证背面照'),
         ];
     }
 

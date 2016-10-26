@@ -29,6 +29,20 @@ use Yii;
  */
 class SysNotify extends \app\models\b2b2c\BasicModel
 {
+	/* 公告类型：店铺发通告  */
+	const notify_type_merchant = 20001;
+	
+	/* 公告类型：平台发公告  */
+	const notify_type_platform = 20002;
+    
+    /* 发送范围：商户  */
+	const send_extend_merchant = 21002;
+    
+	/* 发送范围：会员 */
+	const send_extend_vip = 21003;
+	
+	
+    
     /**
      * @inheritdoc
      */

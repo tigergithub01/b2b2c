@@ -123,9 +123,9 @@ class Vip extends \app\models\b2b2c\BasicModel
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code','nick_name'];
-		$scenarios[self::SCENARIO_MERCHANT_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id'];
-		$scenarios[self::SCENARIO_REGISTER_NO_VERIFY] = ['vip_id', 'password','confirm_pwd','sms_code','nick_name'];
+		$scenarios[self::SCENARIO_REGISTER] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code', 'vip_name'];
+		$scenarios[self::SCENARIO_MERCHANT_REGISTER] = ['vip_id', 'password','agreement','verify_code','confirm_pwd','sms_code','vip_type_id', 'vip_name'];
+		$scenarios[self::SCENARIO_REGISTER_NO_VERIFY] = ['vip_id', 'password','confirm_pwd','sms_code','vip_name'];
 		$scenarios[self::SCENARIO_LOGIN] = ['vip_id', 'password','remember_me','verify_code'];
 		$scenarios[self::SCENARIO_LOGIN_NO_VERIFY] = ['vip_id', 'password','remember_me'];
 		$scenarios[self::SCENARIO_FORGOT_PWD] = ['vip_id', 'password','verify_code','confirm_pwd','sms_code',];
@@ -154,7 +154,8 @@ class Vip extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['vip_id', 'merchant_flag', 'password', 'email_verify_flag', 'status', 'register_date', 'audit_status'], 'required'],
+            [['vip_id', 'merchant_flag', 'password', 'email_verify_flag', 'status', 'register_date', 'audit_status', 'vip_name'], 'required'],
+        	['vip_type_id', 'required', 'when' => function($model) {return $model->merchant_flag == '1';}],
             [['vip_id'],'match','pattern'=>'/^1[0-9]{10}$/','message'=>'{attribute}格式不正确'],
             [['merchant_flag', 'parent_id', 'mobile_verify_flag', 'email_verify_flag', 'status', 'rank_id', 'audit_status', 'audit_user_id', 'vip_type_id', 'sex'], 'integer'],
             [['last_login_date', 'register_date', 'audit_date', 'wedding_date', 'birthday'], 'safe'],
@@ -184,6 +185,7 @@ class Vip extends \app\models\b2b2c\BasicModel
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['vip_type_id'], 'required','on' => [self::SCENARIO_MERCHANT_REGISTER]],
         	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+        	[['vip_name'], 'required','on' => [self::SCENARIO_MERCHANT_REGISTER, self::SCENARIO_REGISTER, self::SCENARIO_REGISTER_NO_VERIFY]],
         ];
     }
 
@@ -197,7 +199,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'vip_id' => Yii::t('app', /*'会员登陆名'*/'手机号码'),
             'merchant_flag' => Yii::t('app', '是否商户?1:是；0：否'),
             // 'vip_name' => Yii::t('app', '姓名'),
-        	'vip_name' => Yii::t('app', '昵称'),
+        	'vip_name' => Yii::t('app', '名称'),
             'last_login_date' => Yii::t('app', '最后一次登陆时间'),
             'password' => Yii::t('app', '密码'),
             'parent_id' => Yii::t('app', '上级会员编号'),
@@ -205,7 +207,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'mobile_verify_flag' => Yii::t('app', '手机号码是否已经验证'),
             'email' => Yii::t('app', '安全邮箱'),
             'email_verify_flag' => Yii::t('app', '安全邮箱是否已验证(1:是；0：否)'),
-            'status' => Yii::t('app', '状态是否有效(1:正常、0:停用)'),
+            'status' => Yii::t('app', /* '状态是否有效(1:正常、0:停用)' */'状态是否有效'),
             'register_date' => Yii::t('app', '注册时间'),
             'rank_id' => Yii::t('app', '会员等级（关联和会员类型应该不需要会员等级）'),
             'audit_status' => Yii::t('app', /* '审核状态(商户字段)：未审核，审核不通过，已审核' */'审核状态'),
@@ -217,7 +219,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'nick_name' => Yii::t('app', '会员昵称'),
             'wedding_date' => Yii::t('app', '婚期'),
             'birthday' => Yii::t('app', '生日'),
-            'img_url' => Yii::t('app', '用户图像-图片（放大后查看）'),
+            'img_url' => Yii::t('app', /* '用户图像-图片（放大后查看）' */'用户图像'),
             'thumb_url' => Yii::t('app', '用户图像-缩略图'),
             'img_original' => Yii::t('app', '用户图像-原图'),
             'verify_code' => Yii::t('app', '验证码'),

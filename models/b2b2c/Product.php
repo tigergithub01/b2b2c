@@ -41,6 +41,7 @@ use Yii;
  * @property string $img_url
  * @property string $thumb_url
  * @property string $img_original
+ * @property string $service_flag
  *
  * @property ActBuyGivingDetail[] $actBuyGivingDetails
  * @property ActBuyGivingDetailPkg[] $actBuyGivingDetailPkgs
@@ -50,6 +51,7 @@ use Yii;
  * @property ActScope[] $actScopes
  * @property ActSpecialPrice[] $actSpecialPrices
  * @property OutStockSheetDetail[] $outStockSheetDetails
+ * @property SysParameter $serviceFlag
  * @property Vip $vip
  * @property SysParameter $auditStatus
  * @property SysUser $auditUser
@@ -97,8 +99,8 @@ class Product extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'type_id', 'market_price', 'sale_price', 'deposit_amount', 'is_on_sale', 'is_hot', 'audit_status', 'can_return_flag', 'vip_id', 'is_free_shipping'], 'required'],
-            [['type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'vip_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id'], 'integer'],
+            [['name', 'type_id', 'market_price', 'sale_price', 'deposit_amount', 'is_on_sale', 'is_hot', 'audit_status', 'can_return_flag', 'vip_id', 'is_free_shipping', 'service_flag'], 'required'],
+            [['type_id', 'brand_id', 'is_on_sale', 'is_hot', 'audit_status', 'audit_user_id', 'can_return_flag', 'return_days', 'vip_id', 'is_free_shipping', 'give_integral', 'rank_integral', 'integral', 'relative_module', 'bonus', 'product_weight_unit', 'product_group_id', 'service_flag'], 'integer'],
             [['market_price', 'sale_price', 'deposit_amount', 'stock_quantity', 'safety_quantity', 'cost_price', 'product_weight'], 'number'],
             [['description', 'return_desc'], 'string'],
             [['audit_date'], 'safe'],
@@ -107,6 +109,7 @@ class Product extends \app\models\b2b2c\BasicModel
             [['keywords'], 'string', 'max' => 100],
             [['img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
+        	[['service_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['service_flag' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['can_return_flag'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['can_return_flag' => 'id']],
@@ -160,6 +163,7 @@ class Product extends \app\models\b2b2c\BasicModel
             'img_url' => Yii::t('app', '图片（放大后查看）(上传商品图片后自动加入商品相册）'),
             'thumb_url' => Yii::t('app', '缩略图'),
             'img_original' => Yii::t('app', '原图'),
+        	'service_flag' => Yii::t('app', '是否个人服务？1：是；0：否（每个商户只有一个个人服务）'),
         	'brand.name' => Yii::t('app', '品牌'),
         	'type.name' => Yii::t('app', '产品分类'),
         	'vip.vip_id' => Yii::t('app', '关联商户编号'),
@@ -242,6 +246,14 @@ class Product extends \app\models\b2b2c\BasicModel
     public function getVip()
     {
         return $this->hasOne(Vip::className(), ['id' => 'vip_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getServiceFlag()
+    {
+    	return $this->hasOne(SysParameter::className(), ['id' => 'service_flag']);
     }
 
     /**

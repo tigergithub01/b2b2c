@@ -53,7 +53,7 @@ class SysAdInfo extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'img_url' => Yii::t('app', '图片（放大后查看）'),
+            'img_url' => Yii::t('app', /* '图片（放大后查看）' */'图片'),
             'thumb_url' => Yii::t('app', '缩略图'),
             'img_original' => Yii::t('app', '原图'),
             'sequence_id' => Yii::t('app', '显示顺序'),

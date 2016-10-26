@@ -33,7 +33,7 @@ class ActPackageProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['act_id', 'product_id', 'sale_price', 'package_price', 'quantity'], 'required'],
+            [['act_id', 'product_id', /* 'sale_price', */ 'package_price', 'quantity'], 'required'],
             [['act_id', 'product_id', 'quantity'], 'integer'],
             [['sale_price', 'package_price'], 'number'],
             [['act_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['act_id' => 'id']],
@@ -48,13 +48,13 @@ class ActPackageProduct extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', '主键'),
-            'act_id' => Yii::t('app', '关联活动编号'),
-            'product_id' => Yii::t('app', '关联产品编号'),
+            'act_id' => Yii::t('app', /* '关联活动编号' */'关联团体服务'),
+            'product_id' => Yii::t('app', /* '关联产品编号' */'关联个人服务'),
             'sale_price' => Yii::t('app', '原价'),
-            'package_price' => Yii::t('app', '套装价'),
+            'package_price' => Yii::t('app', /* '套装价' */'团体价'),
             'quantity' => Yii::t('app', '数量'),
-        	'act.name' => Yii::t('app', '关联活动编号'),
-        	'product.name' => Yii::t('app', '关联产品编号'),
+        	'act.name' => Yii::t('app', /* '关联活动编号' */'关联团体服务'),
+        	'product.name' => Yii::t('app', /* '关联产品编号' */'关联个人服务'),
         ];
     }
 

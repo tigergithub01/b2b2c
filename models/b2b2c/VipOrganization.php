@@ -42,6 +42,12 @@ use Yii;
  */
 class VipOrganization extends \app\models\b2b2c\BasicModel
 {
+	//商户LOGO（这个先不用，用vip的图像来代替logo）
+	public $imageFileLogo;
+    
+	//商户封面
+	public $imageFilecover;
+	
     /**
      * @inheritdoc
      */
@@ -71,6 +77,7 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
+        	[['imageFileLogo', 'imageFilecover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         ];
     }
 
@@ -86,11 +93,11 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             'logo_img_url' => Yii::t('app', '图片（放大后查看）（logo）'),
             'logo_thumb_url' => Yii::t('app', '缩略图（logo）'),
             'logo_img_original' => Yii::t('app', '原始图片（logo）'),
-            'cover_img_url' => Yii::t('app', '图片（放大后查看）(封面)'),
+            'cover_img_url' => Yii::t('app', /* '图片（放大后查看）(封面)' */'商户封面'),
             'cover_thumb_url' => Yii::t('app', '缩略图(封面)'),
             'cover_img_original' => Yii::t('app', '原图(封面)'),
             'vip_id' => Yii::t('app', '所属会员'),
-            'description' => Yii::t('app', '店铺简介'),
+            'description' => Yii::t('app', /* '店铺简介' */'商户简介'),
             'country_id' => Yii::t('app', '关联国家编号'),
             'province_id' => Yii::t('app', '关联省份编号'),
             'city_id' => Yii::t('app', '关联城市编号'),
@@ -102,6 +109,8 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             'update_date' => Yii::t('app', '更新时间'),
             'district_id' => Yii::t('app', '所属区域'),
             'address' => Yii::t('app', '联系地址'),
+        	'imageFileLogo' => Yii::t('app', '商户LOGO'),
+        	'imageFilecover' => Yii::t('app', '商户封面'),
         ];
     }
 

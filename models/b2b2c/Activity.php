@@ -92,20 +92,20 @@ class Activity extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键'),
-            'name' => Yii::t('app', '买赠活动名称'),
+            'name' => Yii::t('app', /* '买赠活动名称' */'团队名称'),
             'activity_type' => Yii::t('app', '活动类型（特价促销，优惠套装，产品满几件赠几件，满金额赠送产品、折扣、满金额减金额）'),
             'activity_scope' => Yii::t('app', '是否全场参与活动'),
             'start_time' => Yii::t('app', '开始时间'),
             'end_date' => Yii::t('app', '结束时间'),
-            'description' => Yii::t('app', '活动描述'),
-            'package_price' => Yii::t('app', '套装价'),
+            'description' => Yii::t('app', /* '活动描述' */'描述'),
+            'package_price' => Yii::t('app', /* '套装价' */'价格'),
             'deposit_amount' => Yii::t('app', '最少定金金额'),
             'buy_limit_num' => Yii::t('app', '限购数量'),
             'vip_id' => Yii::t('app', '关联商户编号'),
-            'img_url' => Yii::t('app', '图片（放大后查看）(上传商品图片后自动加入商品相册）'),
+            'img_url' => Yii::t('app', /* '图片（放大后查看）(上传商品图片后自动加入商品相册）' */'团体封面'),
             'thumb_url' => Yii::t('app', '缩略图'),
             'img_original' => Yii::t('app', '原图'),
-            'audit_status' => Yii::t('app', '审核状态：未审核，审核不通过，已审核'),
+            'audit_status' => Yii::t('app', /* '审核状态：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
         	'activityType.name' => '活动类型',
@@ -114,7 +114,7 @@ class Activity extends \app\models\b2b2c\BasicModel
         	'auditUser.user_id' => '审核人',
         	'actScopes.param_val' => '是否全场参与活动',
         	'vip_no' => Yii::t('app', '商户编号'),
-        	'imageFile' => Yii::t('app', '案例封面'),
+        	'imageFile' => Yii::t('app', '团体封面'),
         ];
     }
 
