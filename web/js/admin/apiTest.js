@@ -131,7 +131,7 @@ $(function() {
 			'Vip[password]' : '111111', //密码
 			'Vip[confirm_pwd]' : '111111', //确认密码
 			'Vip[sms_code]' : '019705', //手机验证码（完成注册吗）
-			'Vip[nick_name]' : 'tiger', //昵称
+			'Vip[vip_name]' : 'tiger', //昵称
 			}
 		);		
 	});
@@ -286,8 +286,135 @@ $(function() {
 	});
 	
 	
-	
+	/*
+	 	我的消息
+		http://localhost:8089/vip/api/member/system/sys-notify-log/index?page=1&per-page=3&sort=-create_date
+	*/
+	$("#btn_sys_notify_log_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'2',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-create_date', //排序
+				}
+			);
+	});
 
+	/*
+	 	我的关注
+		http://localhost:8089/vip/api/member/vip/vip-concern/index?page=1&per-page=3&sort=-concern_date
+		http://localhost:8089/vip/api/member/vip/vip-concern/view?id=1
+	*/
+	$("#btn_vip_concern_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-concern_date', //排序
+				}
+			);
+	});
+	
+	/*
+	 	我的收藏
+		http://localhost:8089/vip/api/member/vip/vip-collect/index?page=1&per-page=3&sort=-collect_date
+		http://localhost:8089/vip/api/member/vip/vip-collect/view?id=1
+	*/
+	$("#btn_vip_collect_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-collect_date', //排序
+				}
+			);
+	});
+	
+	/*
+	 	订单列表
+		http://localhost:8089/vip/api/member/order/so-sheet/index?page=1&per-page=3&sort=-order_date
+	*/
+	$("#btn_so_sheet_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-collect_date', //排序
+				}
+			);
+	});
+	
+	
+	/*
+	 	订单详情
+		http://localhost:8089/vip/api/member/order/so-sheet/view?id=1
+	*/
+	$("#btn_so_sheet_detail").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//编号
+				}
+			);
+	});
+	
+	/*
+	 	论坛板块
+		http://localhost:8089/vip/api/blog/vip-blog-type/index?page=1&per-page=3&sort=name
+	*/
+	$("#btn_blog_type_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '3', //每页行数
+				'sort' : 'name', //排序
+				}
+			);
+	});
+	
+	
+	/*
+ 		帖子列表
+		http://localhost:8089/vip/api/blog/vip-blog/index?page=1&per-page=3&sort=-create_date
+	*/
+	$("#btn_blog_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-create_date', //排序
+				}
+			);
+	});
+	
+	/*
+			帖子详情
+		http://localhost:8089/vip/api/blog/vip-blog/view?id=1
+	*/
+	$("#btn_blog_detail").click(function() {
+		test_api($(this).attr('url'),
+				{
+			'id':'1',//编号
+				}
+			);
+	});
+	
+	
+	/*
+		论坛评论
+		http://localhost:8089/vip/api/blog/vip-blog-cmt/index?page=1&per-page=3&sort=-reply_date&VipBlogCmtSearch[blog_id]=1
+	*/
+	$("#btn_blog_cmt_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '3', //每页行数
+				'sort' : '-reply_date', //排序
+				'VipBlogCmtSearch[blog_id]' : 1, //帖子编号
+				}
+			);
+	});
+	
+	
 	
 	
 	

@@ -19,5 +19,9 @@ $(document).ready(function() {
 	$('form').on('beforeSubmit', function (e) {
 		$.blockUI();
 	});
+	
+	//fancybox
+	$('.fancybox').fancybox();
+	
 }).ajaxStart($.blockUI).ajaxStop($.unblockUI);
 
