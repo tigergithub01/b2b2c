@@ -63,6 +63,12 @@ $fieldOptions2 = [
         			->textInput([
         				'placeholder' => $model->getAttributeLabel('sms_code'),
                     ]) ?> 
+                    
+        <?= $form
+            ->field($model,'vip_name')
+            ->label(false)
+            ->textInput(['placeholder' => '商户名称']) ?>
+            
         
         <?= $form->field($model, 'vip_type_id')
         		  ->label(false)

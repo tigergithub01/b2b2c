@@ -31,7 +31,8 @@ use app\models\b2b2c\common\Constant;
               
               <?php if(!$model->isNewRecord){?>
               <li><a href="#tab_2" data-toggle="tab">营业信息</a></li>
-              <li><a href="#tab_3" data-toggle="tab">个人信息</a></li>
+              <li><a href="#tab_3" data-toggle="tab">身份信息</a></li>
+              <li><a href="#tab_4" data-toggle="tab">服务定价</a></li>
               <?php }?>
             </ul>
             <div class="tab-content">
@@ -46,6 +47,10 @@ use app\models\b2b2c\common\Constant;
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_3">
                 <?php include '_form_vip_extend.php';?>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_4">
+                <?php include '_form_product.php';?>
               </div>
               <!-- /.tab-pane -->
               <?php }?>

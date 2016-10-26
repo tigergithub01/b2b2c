@@ -25,24 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
+            //'id',
             //'img_url:url',
 //             'thumb_url:url',
 //             'img_original',
         		[
-		        		'attribute' => 'img_url',
-		        		'format' =>'raw',
-		        		'value'=>function($model){return Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',]);},
-        		],
-        		[
-        				'attribute' => 'thumb_url',
-        				'format' =>'raw',
-        				'value'=>function($model){return Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',]);},
-        		],
-        		[
-        				'attribute' => 'img_original',
-        				'format' =>'raw',
-        				'value'=>function($model){return Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',]);},
+        		'attribute' => 'img_url',
+        		'format' =>'raw',
+        		'value' => function($model){
+        				//var_dump($model);
+        				return empty($model->img_url)?'':'<a class="fancybox" href="'.Yii::$app->request->hostInfo . '/' . $model->img_url. '"><img src="'.Yii::$app->request->hostInfo . '/' . $model->thumb_url.'" width="100" height="100"></a>';
+        				},
         		],
             'sequence_id',
             // 'redirect_url:url',

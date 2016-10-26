@@ -7,11 +7,12 @@ use yii\web\Controller;
 use app\modules\vip\common\controllers\BaseController;
 use yii\helpers\Url;
 use app\modules\vip\service\vip\VipService;
+use app\modules\vip\common\controllers\BaseAuthController;
 
 /**
  * Default controller for the `vip` module
  */
-class DefaultController extends BaseController
+class DefaultController extends BaseAuthController
 {
     /**
      * Renders the index view for the module

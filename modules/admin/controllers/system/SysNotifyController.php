@@ -13,6 +13,8 @@ use app\models\b2b2c\SysUser;
 use app\models\b2b2c\Vip;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysNotifyLog;
+use app\modules\admin\models\AdminConst;
 
 /**
  * SysNotifyController implements the CRUD actions for SysNotify model.
@@ -76,7 +78,12 @@ class SysNotifyController extends BaseAuthController
     public function actionCreate()
     {
         $model = new SysNotify();
-
+        $model->issue_date = date(AdminConst::DATE_FORMAT, time());
+        $model->issue_user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+        $model->status = SysParameter::yes;
+        $model->is_sent = SysParameter::no;
+        $model->notify_type=SysNotify::notify_type_platform;
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
@@ -128,6 +135,58 @@ class SysNotifyController extends BaseAuthController
         $this->findModel($id)->delete();
 		MsgUtils::success();
         return $this->redirect(['index']);
+    }
+    
+    
+    /**
+     * Displays a single SysNotify model.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionSendNotify($id)
+    {
+    	$model = $this->findModel($id);
+    	if($model->is_sent==SysParameter::yes){
+    		MsgUtils::warning("该消息已经发送，不能重复发送!");
+    		return $this->render('view', [
+    				'model' => $model,
+    		]);
+    	}
+    	
+    	$vipList = null;
+    	if($model->send_extend == SysNotify::send_extend_merchant){
+    		$vipList = $this->findVipList(SysParameter::yes);
+    	}
+    	
+    	if($model->send_extend == SysNotify::send_extend_vip){
+    		$vipList = $this->findVipList(SysParameter::no);
+    	}
+    	
+    	if($vipList){
+    		$transaction = Vip::getDb()->beginTransaction();
+    		try {
+	    		foreach ($vipList as $vip) {
+	    			$sysNotifyLog = new SysNotifyLog();
+	    			$sysNotifyLog->notify_id = $model->id;
+	    			$sysNotifyLog->vip_id = $vip->id;
+	    			$sysNotifyLog->create_date = date(AdminConst::DATE_FORMAT, time());
+	    			$sysNotifyLog->save();
+	    		}
+	    		
+	    		$model->is_sent = SysParameter::yes;
+	    		$model->sent_time = date(AdminConst::DATE_FORMAT, time());
+	    		$model->save();
+    			$transaction->commit();
+    		}catch (\Exception $e) {
+				$transaction->rollBack();
+	            throw $e;
+			}
+    	}
+    	
+    	MsgUtils::success();
+    	return $this->render('view', [
+    			'model' => $model,
+    	]);
     }
 
     /**

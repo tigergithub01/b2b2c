@@ -15,6 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         	'model' => $model,
+    		'vipOrganization' => $vipOrganization,
+    		'vipExtend' => $vipExtend,
+    		'product' => $product,
     		'yesNoList' => $yesNoList,
     		'vipRankList' => $vipRankList,
     		'auditStatusList' => $auditStatusList,

@@ -41,7 +41,7 @@ use app\modules\admin\Module;
 
     <?php // echo $form->field($model, 'notify_type') ?>
     
-    <?= $form->field($model, 'notify_type')->dropDownList(\yii\helpers\ArrayHelper::map($notifyTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'notify_type')->dropDownList(\yii\helpers\ArrayHelper::map($notifyTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'title') ?>
 
@@ -54,6 +54,8 @@ use app\modules\admin\Module;
     <?php // echo $form->field($model, 'issue_user_id') ?>
 
     <?php // echo $form->field($model, 'send_extend') ?>
+    
+    <?php  echo $form->field($model, 'send_extend')->dropDownList(\yii\helpers\ArrayHelper::map($sendExtendList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'status') ?>
 

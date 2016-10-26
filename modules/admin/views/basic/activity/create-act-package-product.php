@@ -2,10 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\ActPackageProduct */
+/* @var $model app\models\b2b2c\Activity */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->title = Module::t('app', 'Create Act Package Product');
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Activities'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $activity->name, 'url' => ['view', 'id' => $model->act_id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="act-package-product-form">
@@ -39,7 +45,7 @@ use yii\widgets\ActiveForm;
 	    <div class="box-body">
 	    <?php // echo $form->field($model, 'act_id')->textInput(['maxlength' => true]) ?>
 	    
-	    <?= $form->field($model, 'act_id')->dropDownList(\yii\helpers\ArrayHelper::map($activityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	    <?php // $form->field($model, 'act_id')->dropDownList(\yii\helpers\ArrayHelper::map($activityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'product_id')->textInput(['maxlength' => true]) ?>
     

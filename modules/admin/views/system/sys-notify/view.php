@@ -27,14 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             // 'notify_type',
-            'notifyType.param_val',
+            // 'notifyType.param_val',
             'title',
             'issue_date',
             'content:ntext',
             // 'vip_id',
-            'vip.vip_id',
+            // 'vip.vip_id',
             // 'issue_user_id',
             'issueUser.user_id',
             // 'send_extend',
@@ -54,6 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	            'class' => 'btn btn-danger',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+	                'method' => 'post',
+	            ],
+	        ]) ?>
+	        <?= Html::a(Yii::t('app', '立即发送'), ['send-notify', 'id' => $model->id], [
+	            'class' => 'btn btn-primary',
+	            'data' => [
+	                'confirm' => Yii::t('app', '是否发送消息?'),
 	                'method' => 'post',
 	            ],
 	        ]) ?>

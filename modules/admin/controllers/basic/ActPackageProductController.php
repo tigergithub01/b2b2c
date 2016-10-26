@@ -71,6 +71,7 @@ class ActPackageProductController extends Controller
     public function actionCreate()
     {
         $model = new ActPackageProduct();
+        $model->quantity = 1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();

@@ -12,14 +12,91 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="admin-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+	<div class="row">
+        <div class="col-md-6">
+		    <div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title" style="visibility: visible;">待审核商户</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse" data-toggle="tooltip" title="Collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				
+				<div class="box-body">
+				</div>
+			</div>
+		</div>	
+		
+		<div class="col-md-6">	
+			<div class="box box-success">
+				<div class="box-header with-border">
+					<h3 class="box-title" style="visibility: visible;">待审核案例</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse" data-toggle="tooltip" title="Collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				
+				<div class="box-body">
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6">	
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title" style="visibility: visible;">待审核团体服务</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse" data-toggle="tooltip" title="Collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				
+				<div class="box-body">
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6">	
+			<div class="box box-success">
+				<div class="box-header with-border">
+					<h3 class="box-title" style="visibility: visible;">最新订单信息</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse" data-toggle="tooltip" title="Collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				
+				<div class="box-body">
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="col-md-6">	
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 class="box-title" style="visibility: visible;">最新退款信息</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse" data-toggle="tooltip" title="Collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				
+				<div class="box-body">
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

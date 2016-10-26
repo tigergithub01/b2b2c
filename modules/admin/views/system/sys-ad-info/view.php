@@ -27,21 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             //             'img_url:url',
         		[
         		'attribute' => 'img_url',
-//         		'label'=>$model->getAttributeLabel('img_url'),
         		'format' =>'raw',
-        		'value'=>Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',]),
-        		],
+        		//         		'value'=>Html::img(Yii::$app->request->hostInfo . '/' . $model->img_url,['width'=>220,'height'=>220]),
+        		'value'=>empty($model->img_url)?'':'<a class="fancybox" href="'.Yii::$app->request->hostInfo . '/' . $model->img_url. '"><img src="'.Yii::$app->request->hostInfo . '/' . $model->thumb_url.'" width="200" height="200"></a>'
+        				],
 //             'thumb_url:url',
-		     [
-		     	'attribute' => 'thumb_url',
-// 		     	'label'=>$model->getAttributeLabel('thumb_url'),
-		     	'format' =>'raw',
-		     	'value'=>Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',]),
-			],
 //         	[
 //         		'attribute' => 'thumb_url',
 //         		'label'=>$model->getAttributeLabel('thumb_url'),
@@ -49,12 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
 //         		'value'=>Html::img(Yii::$app->request->hostInfo . $model->thumb_url,['width'=>'200','height'=>'200',]),
 //         	],
 //             'img_original',
-        		[
-        		'attribute' => 'img_original',
-//         		'label'=>$model->getAttributeLabel('img_original'),
-        		'format' =>'raw',
-        		'value'=>Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',]),
-        		],
             'sequence_id',
             'redirect_url:url',
             'description',

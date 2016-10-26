@@ -21,6 +21,12 @@ use yii\web\UploadedFile;
 use app\common\utils\image\ImageUtils;
 use app\models\b2b2c\common\Constant;
 use app\models\b2b2c\SysConfig;
+use app\modules\admin\models\AdminConst;
+use app\common\utils\CommonUtils;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\app\models\b2b2c;
+use app\models\b2b2c\ProductType;
+use app\models\b2b2c\VipProductType;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -71,8 +77,16 @@ class MerchantController extends BaseAuthController
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+    	$model = $this->findModel($id);
+    	$vipOrganization = $this->findVipOrganization($model->id);
+    	$vipExtend = $this->findVipExtend($model->id);
+    	$product = $this->findProduct($model->id);
+    	
+    	return $this->render('view', [
+            'model' => $model,
+    		'vipOrganization' => $vipOrganization,
+    		'vipExtend' => $vipExtend,
+    		'product' => $product,
         ]);
     }
 
@@ -84,9 +98,16 @@ class MerchantController extends BaseAuthController
     public function actionCreate()
     {
         $model = new Vip();
+        $model->merchant_flag = SysParameter::yes;
+        $model->mobile_verify_flag = SysParameter::yes;
+        $model->email_verify_flag = SysParameter::no;
+        $model->status = SysParameter::yes;
+        $model->audit_status = SysParameter::audit_need_approve;
+        $model->register_date = date(AdminConst::DATE_FORMAT, time());
         
         $vipOrganization= new VipOrganization();
         $vipExtend= new VipExtend();
+        $product = new Product();
 
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	//加密
@@ -135,6 +156,7 @@ class MerchantController extends BaseAuthController
                 'model' => $model,
        			'vipOrganization' => $vipOrganization,
        			'vipExtend' => $vipExtend,
+       			'product' => $product,
             	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             	'vipRankList' => $this->findVipRankList(),
             	'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
@@ -157,24 +179,42 @@ class MerchantController extends BaseAuthController
         if(empty($vipOrganization)){
         	$vipOrganization= new VipOrganization();
         	$vipOrganization->vip_id = $model->id;
+        	$vipOrganization->status = SysParameter::yes;
+        	$vipOrganization->create_date = date(AdminConst::DATE_FORMAT, time());
+        	$vipOrganization->update_date = date(AdminConst::DATE_FORMAT, time());
+        	$vipOrganization->audit_status = SysParameter::audit_approved;
         }
         $vipExtend = $this->findVipExtend($model->id);
         if(empty($vipExtend)){
         	$vipExtend= new VipExtend();
         	$vipExtend->vip_id = $model->id;
+        	$vipExtend->audit_status = SysParameter::audit_approved;
+        	$vipExtend->create_date = date(AdminConst::DATE_FORMAT, time());
+        	$vipExtend->update_date = date(AdminConst::DATE_FORMAT, time());
+        }
+        $product = $this->findProduct($model->id);
+        if(empty($product)){
+        	$product= new Product();
+        	$product->vip_id = $model->id;
+        	$product->service_flag = SysParameter::yes;
+        	$product->is_on_sale = SysParameter::yes;
+        	$product->is_hot = SysParameter::yes;
+        	$product->audit_status = SysParameter::audit_approved;
+        	$product->can_return_flag = SysParameter::yes;
+        	$product->is_free_shipping = SysParameter::no;
         }
 
-        if ($model->load(Yii::$app->request->post())  && $vipOrganization->load(Yii::$app->request->post()) && $vipExtend->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())  && $vipOrganization->load(Yii::$app->request->post()) && $vipExtend->load(Yii::$app->request->post()) && $product->load(Yii::$app->request->post())) {
         	
-        	//获取图片信息
+        	/** 基础信息图片 */
+        	//获取LOGO图片信息
         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-        	 
         	$imageUtils = new ImageUtils();
         	$image_type = 'merchant';
         	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	 
-        	//旧图片地址
+        	//旧LOGO图片地址
         	$old_img_url = $model->img_url;
         	$old_img_original = $model->img_original;
         	$old_thumb_url = $model->thumb_url;
@@ -185,8 +225,76 @@ class MerchantController extends BaseAuthController
         		$model->img_original = $files['img_original'];
         		$model->thumb_url = $files['thumb_url'];
         	}
+        	
+        	/** 营业信息图片 */
+        	//获取商户封面信息
+        	$vipOrganization->imageFilecover = UploadedFile::getInstance($vipOrganization, 'imageFilecover');
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'merchant';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	 
-        	if($model->save() && $vipOrganization->save() && $vipExtend->save()){
+        	//旧商户封面图片地址
+        	$old_cover_img_url = $vipOrganization->cover_img_url;
+        	$old_cover_img_original = $vipOrganization->cover_img_original;
+        	$old_cover_thumb_url = $vipOrganization->cover_thumb_url;   	  
+
+        	if($files_cover = ($imageUtils->uploadImage($vipOrganization->imageFilecover, "uploads/$image_type", $image_type, CommonUtils::random(6,1), $width, $height))){
+        		//新图片地址
+        		$vipOrganization->cover_img_url = $files_cover['img_url'];
+        		$vipOrganization->cover_img_original = $files_cover['img_original'];
+        		$vipOrganization->cover_thumb_url = $files_cover['thumb_url'];
+        	}
+        	
+        	/** 个人信息图片 */
+        	//1、获取个人身份证正面照信息
+        	$vipExtend->imageFileIdCard = UploadedFile::getInstance($vipExtend, 'imageFileIdCard');
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'merchant';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	
+        	//旧个人身份证正面照图片地址
+        	$old_id_card_img_url = $vipExtend->id_card_img_url;
+        	$old_id_card_img_original = $vipExtend->id_card_img_original;
+        	$old_id_card_thumb_url = $vipExtend->id_card_thumb_url;
+        	
+        	if($files_id_card = ($imageUtils->uploadImage($vipExtend->imageFileIdCard, "uploads/$image_type", $image_type, CommonUtils::random(6,1), $width, $height))){
+        		//新图片地址
+        		$vipExtend->id_card_img_url = $files_id_card['img_url'];
+        		$vipExtend->id_card_img_original = $files_id_card['img_original'];
+        		$vipExtend->id_card_thumb_url = $files_id_card['thumb_url'];
+        	}
+        	
+        	//2、获取个人身份证背面照信息
+        	$vipExtend->imageFileIdCardBack = UploadedFile::getInstance($vipExtend, 'imageFileIdCardBack');
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'merchant';
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	 
+        	//旧个人身份证背面照图片地址
+        	$old_id_back_img_url = $vipExtend->id_back_img_url;
+        	$old_id_back_img_original = $vipExtend->id_back_img_original;
+        	$old_id_back_thumb_url = $vipExtend->id_back_thumb_url;
+        	 
+        	if($files_id_card_back = ($imageUtils->uploadImage($vipExtend->imageFileIdCardBack, "uploads/$image_type", $image_type, CommonUtils::random(6,1), $width, $height))){
+        		//新图片地址
+        		$vipExtend->id_back_img_url = $files_id_card_back['img_url'];
+        		$vipExtend->id_back_img_original = $files_id_card_back['img_original'];
+        		$vipExtend->id_back_thumb_url = $files_id_card_back['thumb_url'];
+        	}
+        	
+        	
+        	//更新服务名称和商户名称相同
+        	$product->name = $model->vip_name;
+        	$vipProductType = $this->findProductTypeByVipTypeId($model->vip_type_id);
+        	if($vipProductType){
+        		$product->type_id= $vipProductType->product_type_id;
+        	}
+        	
+        	//保存数据
+        	if($model->save() && $vipOrganization->save() && $vipExtend->save() && $product->save()){
         		if($files){
         			//删除旧图片
         			if(file_exists($old_img_url)){
@@ -199,6 +307,46 @@ class MerchantController extends BaseAuthController
         				unlink($old_thumb_url);
         			}
         		}
+        		
+        		if($files_cover){
+        			//删除旧封面图片
+        			if(file_exists($old_cover_img_url)){
+        				unlink($old_cover_img_url);
+        			}
+        			if(file_exists($old_cover_img_original)){
+        				unlink($old_cover_img_original);
+        			}
+        			if(file_exists($old_cover_thumb_url)){
+        				unlink($old_cover_thumb_url);
+        			}
+        		}
+        		
+        		if($files_id_card){
+        			//删除旧身份证正面照
+        			if(file_exists($old_id_card_img_url)){
+        				unlink($old_id_card_img_url);
+        			}
+        			if(file_exists($old_id_card_img_original)){
+        				unlink($old_id_card_img_original);
+        			}
+        			if(file_exists($old_id_card_thumb_url)){
+        				unlink($old_id_card_thumb_url);
+        			}
+        		}
+        		
+        		if($files_id_card_back){
+        			//删除旧身份证背面照
+        			if(file_exists($old_id_back_img_url)){
+        				unlink($old_id_back_img_url);
+        			}
+        			if(file_exists($old_id_back_img_original)){
+        				unlink($old_id_back_img_original);
+        			}
+        			if(file_exists($old_id_back_thumb_url)){
+        				unlink($old_id_back_thumb_url);
+        			}
+        		}
+        		
         		MsgUtils::success();
         		return $this->redirect(['view', 'id' => $model->id]);
         	}
@@ -207,6 +355,7 @@ class MerchantController extends BaseAuthController
                 	'model' => $model,
             		'vipOrganization' => $vipOrganization,
             		'vipExtend' => $vipExtend,
+            		'product' => $product,
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             		'vipRankList' => $this->findVipRankList(),
             		'auditStatusList' => SysParameterType::getSysParametersById(SysParameterType::AUDIT_STATUS),
@@ -298,6 +447,31 @@ class MerchantController extends BaseAuthController
     	return $model;
     }
     
+    
+    /**
+     * findProduct
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findProduct($vip_id)
+    {
+    	$model = Product::find()
+    	->where(['vip_id'=>$vip_id, 'service_flag'=>SysParameter::yes])->one();
+    	return $model;
+    }
+    
+    /**
+     * findProductTypeIdByVipTypeId
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findProductTypeByVipTypeId($vip_type_id)
+    {
+    	$model = VipProductType::find()
+    	->where(['vip_type_id'=>$vip_type_id])->one();
+    	return $model;
+    }
+    
     /**
      * 
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
@@ -320,6 +494,8 @@ class MerchantController extends BaseAuthController
     protected function findSysUserList(){
     	return SysUser::find()->all();
     }
+    
+    
     
     /**
      *

@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
        		'model' => $model,
     		'vipOrganization' => $vipOrganization,
     		'vipExtend' => $vipExtend,
+    		'product' => $product,
     		'yesNoList' => $yesNoList,
     		'vipRankList' => $vipRankList,
     		'auditStatusList' => $auditStatusList,

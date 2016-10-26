@@ -13,7 +13,7 @@ use app\modules\merchant\models\MerchantConst;
                 <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p><?php echo Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)['vip_id']; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
+                <p><?php echo Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)['vip_name']; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
             </div>
         </div>
 

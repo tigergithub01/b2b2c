@@ -46,7 +46,7 @@ use app\models\b2b2c\common\Constant;
 
     <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
     
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
@@ -99,27 +99,16 @@ use app\models\b2b2c\common\Constant;
     <?= $form->field($model, 'audit_memo')->textarea(['rows' => 6]) ?>
 	
 	<?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
-    
-    <?php if(!($model->isNewRecord)) {?>
+	
+	<?php if($model->cover_img_url) {?>
     	<div class="form-group">
-    		<?= Html::activeLabel($model, 'cover_img_url',['class'=>'col-lg-2 control-label']) ?>
+    		<?= Html::activeLabel($model, 'cover_img_url',['class'=>'col-lg-2 control-label', 'style'=>'visibility:hidden;']) ?>
 			<div class="col-lg-6">
-				<?= Html::a($model->cover_img_url,Yii::$app->request->hostInfo . '/' . $model->cover_img_url,['target'=>'_blank',])?>
-			</div>
-		</div>
-		<div class="form-group">
-    		<?= Html::activeLabel($model, 'cover_thumb_url',['class'=>'col-lg-2 control-label']) ?>
-			<div class="col-lg-6">
-				<?= Html::a($model->cover_thumb_url,Yii::$app->request->hostInfo . '/' . $model->cover_thumb_url,['target'=>'_blank',])?>
-			</div>
-		</div>
-		<div class="form-group">
-    		<?= Html::activeLabel($model, 'cover_img_original',['class'=>'col-lg-2 control-label']) ?>
-			<div class="col-lg-6">
-				<?= Html::a($model->cover_img_original,Yii::$app->request->hostInfo . '/' . $model->cover_img_original,['target'=>'_blank',])?>
+				<a class="fancybox" href="<?php echo Yii::$app->request->hostInfo . '/' . $model->cover_img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $model->cover_thumb_url?>"></a>
 			</div>
 		</div>
     <?php }?>
+    
     
     <?php // echo $form->field($model, 'cover_img_url')->textInput(['maxlength' => true]) ?>
 

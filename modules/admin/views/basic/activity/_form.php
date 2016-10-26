@@ -34,40 +34,40 @@ use yii\widgets\ActiveForm;
 				],
 	    ]); ?>
     
-    	<?php //echo $form->errorSummary($model);?>
+    	<?php // echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
 	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'activity_type')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'activity_type')->dropDownList(\yii\helpers\ArrayHelper::map($activityTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'activity_type')->dropDownList(\yii\helpers\ArrayHelper::map($activityTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'activity_scope')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'activity_scope')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'activity_scope')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'start_time')->textInput() ?>
     
-    <?= $form->field($model, 'start_time')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* $form->field($model, 'start_time')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => \app\models\b2b2c\common\Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
     <?php //echo $form->field($model, 'end_date')->textInput() ?>
     
-    <?= $form->field($model, 'end_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* $form->field($model, 'end_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => \app\models\b2b2c\common\Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
     
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
@@ -76,7 +76,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'deposit_amount')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'buy_limit_num')->textInput() ?>
+    <?php // echo $form->field($model, 'buy_limit_num')->textInput() ?>
 
     <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
@@ -85,22 +85,10 @@ use yii\widgets\ActiveForm;
     <?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
 	
 	<?php if(!($model->isNewRecord)) {?>
-    	<div class="form-group">
-    		<?= Html::activeLabel($model, 'img_url',['class'=>'col-lg-2 control-label']) ?>
-			<div class="col-lg-6">
-				<?= Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',])?>
-			</div>
-		</div>
 		<div class="form-group">
-    		<?= Html::activeLabel($model, 'thumb_url',['class'=>'col-lg-2 control-label']) ?>
+    		<?= Html::activeLabel($model, 'img_url',['class'=>'col-lg-2 control-label', 'style'=>'visibility:hidden;']) ?>
 			<div class="col-lg-6">
-				<?= Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',])?>
-			</div>
-		</div>
-		<div class="form-group">
-    		<?= Html::activeLabel($model, 'img_original',['class'=>'col-lg-2 control-label']) ?>
-			<div class="col-lg-6">
-				<?= Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',])?>
+				<a class="fancybox" href="<?php echo Yii::$app->request->hostInfo . '/' . $model->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $model->thumb_url?>"></a>
 			</div>
 		</div>
     <?php }?>
@@ -134,6 +122,7 @@ use yii\widgets\ActiveForm;
 	
 	    <div class="box-footer form-group">
 	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	        <?php if (!($model->isNewRecord)) {echo Html::a('添加团队成员',['create-act-package-product', 'act_id'=>$model->id],['class' => 'btn btn-success']);}?>
 	    </div>
 
     	<?php ActiveForm::end(); ?>

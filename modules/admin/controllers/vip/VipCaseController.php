@@ -348,8 +348,55 @@ class VipCaseController extends BaseAuthController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        $vipCasePhotos = VipCasePhoto::find()->where(['case_id' => $id])->all();
+        foreach ($vipCasePhotos as $vipCasePhoto) {
+	        $thumb_url = iconv("UTF-8", "GBK", $vipCasePhoto->thumb_url);
+	    	$img_original = iconv("UTF-8", "GBK", $vipCasePhoto->img_original);
+	    	$img_url = iconv("UTF-8", "GBK", $vipCasePhoto->img_url);
+	    	 
+	    	if(is_file($thumb_url)){
+	    		unlink($thumb_url);
+	    	}
+	    	if(file_exists($img_original)){
+	    		unlink($img_original);
+	    	}
+	    	if(file_exists($img_url)){
+	    		unlink($img_url);
+	    	}
+        }       
+        
 		MsgUtils::success();
         return $this->redirect(['index']);
+    }
+    
+    /**
+     * Deletes an existing VipCasePhoto model.
+     * If deletion is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDeleteVipCasePhoto($id){
+    	$vipCasePhoto = VipCasePhoto::findOne($id);
+    	if(empty($vipCasePhoto)){
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    	$vipCasePhoto->delete();
+    	
+    	$thumb_url = iconv("UTF-8", "GBK", $vipCasePhoto->thumb_url);
+    	$img_original = iconv("UTF-8", "GBK", $vipCasePhoto->img_original);
+    	$img_url = iconv("UTF-8", "GBK", $vipCasePhoto->img_url);
+    	 
+    	if(is_file($thumb_url)){
+    		unlink($thumb_url);
+    	}
+    	if(file_exists($img_original)){
+    		unlink($img_original);
+    	}
+    	if(file_exists($img_url)){
+    		unlink($img_url);
+    	}
+    	MsgUtils::success();
+    	return $this->redirect(['view','id'=>$vipCasePhoto->case_id]);
     }
 
     /**
@@ -384,6 +431,17 @@ class VipCaseController extends BaseAuthController
      */
     protected  function findVipCaseTypeList(){
     	return VipCaseType::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findVipCaseTypeByVipTypeId($vip_type_id)
+    {
+    	$model = VipCaseType::find()
+    	->where(['vip_type_id'=>$vip_type_id])->one();
+    	return $model;
     }
     
     /**

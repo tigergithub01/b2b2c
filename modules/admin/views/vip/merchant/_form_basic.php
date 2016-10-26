@@ -14,14 +14,14 @@ use app\models\b2b2c\common\Constant;
 
 	   
     
-    	<?php echo $form->errorSummary([$model,$vipOrganization,$vipExtend]);?>
+    	<?php echo $form->errorSummary([$model,$vipOrganization,$vipExtend, $product]);?>
 
 	    <div class="box-body">
 	    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'merchant_flag')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'merchant_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'merchant_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'vip_name')->textInput(['maxlength' => true]) ?>
 
@@ -33,17 +33,17 @@ use app\models\b2b2c\common\Constant;
 
     <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'mobile_verify_flag')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'mobile_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'mobile_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'email_verify_flag')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'email_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'email_verify_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
     
@@ -93,11 +93,11 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'sex')->dropDownList(\yii\helpers\ArrayHelper::map($sexList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'nick_name')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'nick_name')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'wedding_date')->textInput() ?>
     
-    <?= $form->field($model, 'wedding_date')->widget(dosamigos\datepicker\DatePicker::className(), [
+    <?php /*$form->field($model, 'wedding_date')->widget(dosamigos\datepicker\DatePicker::className(), [
 //     		'options' => ['readonly'=>true],
     		'language' => Yii::$app->language,
 //     		'template' => '{input}{addon}',
@@ -107,7 +107,7 @@ use app\models\b2b2c\common\Constant;
     				'format' => Constant::DATE_PICKER_FORMAT,
 //     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
     <?php //echo $form->field($model, 'birthday')->textInput() ?>
     
@@ -116,33 +116,23 @@ use app\models\b2b2c\common\Constant;
     		'options' => ['readonly'=>true]
                     ]) */?>
     
-    <?= $form->field($model, 'birthday')->widget(\dosamigos\datepicker\DatePicker::className(), [
+    <?php /*$form->field($model, 'birthday')->widget(\dosamigos\datepicker\DatePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_PICKER_FORMAT,
     			]
-          ]) ?>
+          ])*/ ?>
 	
 	<?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
 	
-	<?php if(!($model->isNewRecord)) {?>
+	<?php if($model->img_url) {?>
     	<div class="form-group">
-    		<?= Html::activeLabel($model, 'img_url',['class'=>'col-lg-2 control-label']) ?>
+    		<?= Html::activeLabel($model, 'img_url',['class'=>'col-lg-2 control-label', 'style'=>'visibility:hidden;']) ?>
 			<div class="col-lg-6">
-				<?= Html::a($model->img_url,Yii::$app->request->hostInfo . '/' . $model->img_url,['target'=>'_blank',])?>
-			</div>
-		</div>
-		<div class="form-group">
-    		<?= Html::activeLabel($model, 'thumb_url',['class'=>'col-lg-2 control-label']) ?>
-			<div class="col-lg-6">
-				<?= Html::a($model->thumb_url,Yii::$app->request->hostInfo . '/' . $model->thumb_url,['target'=>'_blank',])?>
-			</div>
-		</div>
-		<div class="form-group">
-    		<?= Html::activeLabel($model, 'img_original',['class'=>'col-lg-2 control-label']) ?>
-			<div class="col-lg-6">
-				<?= Html::a($model->img_original,Yii::$app->request->hostInfo . '/' . $model->img_original,['target'=>'_blank',])?>
+				<?php if($model->img_url) {?>
+				<a class="fancybox" href="<?php echo Yii::$app->request->hostInfo . '/' . $model->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $model->thumb_url?>"></a>
+				<?php }?>
 			</div>
 		</div>
     <?php }?>

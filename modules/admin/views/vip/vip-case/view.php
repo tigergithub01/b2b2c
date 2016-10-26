@@ -47,26 +47,11 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'cover_img_url:url',
             // 'cover_thumb_url:url',
             // 'cover_img_original',
-        		[
-        		'attribute' => 'cover_img_url',
-        		'format' =>'raw',
-        		'value'=>Html::img(Yii::$app->request->hostInfo . '/' . $model->cover_img_url,['width'=>220,'height'=>220]),
-        		],
-        		[
-        		'attribute' => 'cover_img_url',
-        		'format' =>'raw',
-        		'value'=>Html::a($model->cover_img_url,Yii::$app->request->hostInfo . '/' . $model->cover_img_url,['target'=>'_blank',]),
-        		],
-        		[
-        				'attribute' => 'cover_thumb_url',
-        				'format' =>'raw',
-        				'value'=>Html::a($model->cover_thumb_url,Yii::$app->request->hostInfo . '/' . $model->cover_thumb_url,['target'=>'_blank',]),
-        		],
-        		[
-        				'attribute' => 'cover_img_original',
-        				'format' =>'raw',
-        				'value'=>Html::a($model->cover_img_original,Yii::$app->request->hostInfo . '/' . $model->cover_img_original,['target'=>'_blank',]),
-        		],
+		        		[
+		        		'attribute' => 'cover_img_url',
+		        		'format' =>'raw',
+		        		'value'=>empty($model->cover_img_url)?'':'<a class="fancybox" href="'.Yii::$app->request->hostInfo . '/' . $model->cover_img_url. '"><img src="'.Yii::$app->request->hostInfo . '/' . $model->cover_thumb_url.'" width="200" height="200"></a>'
+		        				],
 		        		
             // 'is_hot',
             'isHot.param_val',
@@ -77,47 +62,53 @@ $this->params['breadcrumbs'][] = $this->title;
 		        ],
 		    ]) ?>
     	</div>
-    	
-    	<div class="box">
+    </div>
+    
+    <div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">案例相册</h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <!--
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
                    <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
-            <!-- /.box-header -->
+            <!-- /.box-header -->        
+            
+            
+            
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
                 <tr>
                   <th></th>
-                  <th>ID</th>
-                  <th>User</th>
-                  <th>Date</th>
                   <th>操作</th>
                 </tr>
                 <?php foreach ($model->vipCasePhotos as $vipCasePhoto) {?>
                 <tr>
-                  <td><?php echo Html::img(Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url,['width'=>50, 'height'=>50])?></td>
-                  <td><?= $vipCasePhoto->img_url ?></td>
-                  <td><?= $vipCasePhoto->thumb_url ?></td>
-                  <td><?= $vipCasePhoto->img_original ?></td>
-                  <td>{delete}</td>
+                  <td>
+                  <a class="fancybox" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->thumb_url?>"></a>
+                  <td valign="middle">
+                  	<?= Html::a(Yii::t('app', 'Delete'), ['delete-vip-case-photo', 'id' => $vipCasePhoto->id], [
+			            'class' => '',
+			            'data' => [
+			                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+			                'method' => 'post',
+			            ],
+			        ]) ?>
+                  </td>
                 </tr>
                 <?php }?>
               </table>
             </div>
             <!-- /.box-body -->
-          </div>
+    </div>
           <!-- /.box -->
-    
-	    <div class="box-footer">
+          
+     <div class="box"> 
+          <div class="box-footer">
 	    	<?= Html::a(Module::t('app', 'Create Vip Case'), ['create'], ['class' => 'btn btn-success']) ?>
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
@@ -128,7 +119,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	            ],
 	        ]) ?>
 	    </div>
-    
-    </div>
+	</div>
 
 </div>

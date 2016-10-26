@@ -166,7 +166,7 @@ class MerchantService{
 			
 			//insert Product 插入产品(服务）信息-婚礼兔特殊处理
 			$product = new Product();
-			$product->name = $model->vip_id . '(个人服务)';
+			$product->name = $model->vip_name;
 			$product->type_id = $productType->id;
 			$product->market_price = 0;
 			$product->sale_price = 0;
@@ -177,6 +177,7 @@ class MerchantService{
 			$product->can_return_flag = SysParameter::no;
 			$product->vip_id = $model->id;
 			$product->is_free_shipping = SysParameter::no;
+			$product->service_flag = SysParameter::yes;
 			if(!($product->insert())){
 				Yii::error($product->errors);
 				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));

@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
+            // 'id',
             'name',
             //'type_id',
             'type.name',
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'cover_thumb_url:url',
             // 'cover_img_original',
             // 'is_hot',
-            'isHot.param_val',
+            // 'isHot.param_val',
             // 'case_flag',
             // 'market_price',
             // 'sale_price',

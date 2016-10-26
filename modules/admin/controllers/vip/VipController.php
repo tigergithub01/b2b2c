@@ -20,6 +20,7 @@ use app\models\b2b2c\SysConfig;
 use app\models\b2b2c\common\Constant;
 use app\models\b2b2c\VipOrganization;
 use app\models\b2b2c\VipExtend;
+use app\modules\admin\models\AdminConst;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -78,6 +79,12 @@ class VipController extends BaseAuthController
     public function actionCreate()
     {
         $model = new Vip();
+        $model->merchant_flag = SysParameter::no;
+        $model->mobile_verify_flag = SysParameter::yes;
+        $model->email_verify_flag = SysParameter::no;
+        $model->status = SysParameter::yes;
+        $model->audit_status = SysParameter::audit_approved;
+        $model->register_date = date(AdminConst::DATE_FORMAT, time());
 
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	//加密
