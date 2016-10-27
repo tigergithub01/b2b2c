@@ -24,4 +24,3 @@ $(document).ready(function() {
 	$('.fancybox').fancybox();
 	
 }).ajaxStart($.blockUI).ajaxStop($.unblockUI);
-
