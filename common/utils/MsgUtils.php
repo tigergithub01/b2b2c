@@ -14,7 +14,7 @@ class MsgUtils{
 	}
 	
 	public static function info($msg = ''){
-		\Yii::$app->getSession()->info('info', $msg);
+		\Yii::$app->getSession()->setFlash('info', $msg);
 	}
 	
 	public static function warning($msg = ''){
