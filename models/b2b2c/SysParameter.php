@@ -105,14 +105,12 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     /* 验证类型：邮箱验证 */
     const verify_email = 13002; 	
     
-    /* 审核结果：待审核 */
-    const audit_need_approve = 3001;
+    /* 审核结果 */
+    const audit_need_approve = 3001; //待审核
+    const audit_approved = 3003; //审核通过
+    const audit_rejected = 3002; //审核不通过
+    const audit_approving = 3004; //审核中
     
-    /* 审核结果：审核通过 */
-    const audit_approved = 3003;
-    
-    /* 审核结果：审核不通过 */
-    const audit_rejected = 3002;
     
     /* 商户类型（婚礼）：策划师 */
     const role_plan = 23001;
