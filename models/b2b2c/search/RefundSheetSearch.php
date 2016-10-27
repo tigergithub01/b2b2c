@@ -114,8 +114,9 @@ class RefundSheetSearch extends RefundSheet
             'refundSheet.merchant_id' => $this->merchant_id,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'memo', $this->memo]);
+        $query->andFilterWhere(['like', 'refundSheet.code', $this->code])
+            ->andFilterWhere(['like', 'refundSheet.memo', $this->memo])
+        	->andFilterWhere(['like', 'order.code', $this->order_code]);
 
         return $dataProvider;
     }

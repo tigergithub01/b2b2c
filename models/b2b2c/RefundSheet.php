@@ -32,6 +32,10 @@ use Yii;
  */
 class RefundSheet extends \app\models\b2b2c\BasicModel
 {
+	/* 退款单状态： */
+	const status_need_confirm = 25001; //待退款
+	const status_completed = 25002; // 已退款
+	
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
@@ -81,7 +85,7 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'order_id', 'user_id', 'sheet_date', 'status', 'vip_id', 'merchant_id'], 'required'],
+            [['sheet_type_id', 'code', 'order_id', 'user_id', 'sheet_date', 'status', 'vip_id'], 'required'],
             [['sheet_type_id', 'refund_apply_id', 'order_id', 'return_id', 'user_id', 'status', 'vip_id', 'merchant_id'], 'integer'],
             [['sheet_date'], 'safe'],
             [['need_return_amt', 'return_amt'], 'number'],
@@ -124,6 +128,12 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
         	'user.user_id' => Yii::t('app', '制单人'),
         	'status0.param_val' => Yii::t('app', /* '退款单状态（待退款、已退款）' */'退款单状态'),
         	'vip.vip_id' => Yii::t('app', '会员编号'),
+        	'vip.vip_name' => Yii::t('app', '申请会员'),
+        	'merchant.vip_name' => Yii::t('app', '商户名称'),
+        		'vip_no' => Yii::t('app', '会员手机号码'),
+        		'start_date' => Yii::t('app', '开始日期'),
+        		'end_date' => Yii::t('app', '结束日期'),
+        		'order_code' => Yii::t('app', '订单编号'),
         ];
     }
 

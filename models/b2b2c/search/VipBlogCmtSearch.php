@@ -41,7 +41,11 @@ class VipBlogCmtSearch extends VipBlogCmt
      */
     public function search($params)
     {
-        $query = VipBlogCmt::find();
+        $query = VipBlogCmt::find()->alias('vipBlogCmt')
+    	->joinWith('blog blog')
+    	->joinWith('vip vip')
+    	->joinWith('status0 stat')
+    	->joinWith('parent parent');
 
         // add conditions that should always apply here
 
@@ -61,15 +65,15 @@ class VipBlogCmtSearch extends VipBlogCmt
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'blog_id' => $this->blog_id,
-            'reply_date' => $this->reply_date,
-            'vip_id' => $this->vip_id,
-            'status' => $this->status,
-            'parent_id' => $this->parent_id,
+            'vipBlogCmt.id' => $this->id,
+            'vipBlogCmt.blog_id' => $this->blog_id,
+            'vipBlogCmt.reply_date' => $this->reply_date,
+            'vipBlogCmt.vip_id' => $this->vip_id,
+            'vipBlogCmt.status' => $this->status,
+            'vipBlogCmt.parent_id' => $this->parent_id,
         ]);
 
-        $query->andFilterWhere(['like', 'content', $this->content]);
+        $query->andFilterWhere(['like', 'vipBlogCmt.content', $this->content]);
 
         return $dataProvider;
     }

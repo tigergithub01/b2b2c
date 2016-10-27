@@ -3,6 +3,7 @@
 namespace app\models\b2b2c;
 
 use Yii;
+use app\common\utils\CommonUtils;
 
 /**
  * This is the model class for table "t_sheet_type".
@@ -75,5 +76,26 @@ class SheetType extends \app\models\b2b2c\BasicModel
     public function getSoSheets()
     {
         return $this->hasMany(SoSheet::className(), ['sheet_type_id' => 'id']);
+    }
+    
+    /**
+     * 获取单据编号
+     * @param unknown $sheetTypeId
+     * @return string
+     */
+    public static function getCode($sheetTypeId , $save = false) {
+    	//generate code
+    	$sheetType = self::findOne ( $sheetTypeId );
+    	$df = date ( $sheetType ['date_format'], time () );
+    	$seq = sprintf ( '%0' . $sheetType ['seq_length'] . 's', $sheetType ['cur_seq'] );
+    	$code = $sheetType ['prefix'] . $sheetType ['sep'] . $df . $sheetType ['sep'] . $seq . CommonUtils::random(4, 1);
+    
+    	//increment cur_seq field
+    	$sheetType->cur_seq = ($sheetType->cur_seq + 1);
+    	if($save){
+    		$sheetType->save();
+    	}
+    	return $code;
+    
     }
 }

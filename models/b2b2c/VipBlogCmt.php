@@ -60,8 +60,11 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
             'blog_id' => Yii::t('app', '关联帖子编号'),
             'reply_date' => Yii::t('app', '回复日期'),
             'vip_id' => Yii::t('app', '关联会员编号'),
-            'status' => Yii::t('app', '是否显示?1:是：0:否'),
+            'status' => Yii::t('app', /* '是否显示?1:是：0:否' */'是否显示'),
             'parent_id' => Yii::t('app', '上级评论'),
+        	'blog.name' => Yii::t('app', '帖子标题'),
+        	'vip.vip_name' => Yii::t('app', '回帖人'),
+        	'status0.param_val' => Yii::t('app', '是否显示'),
         ];
     }
 

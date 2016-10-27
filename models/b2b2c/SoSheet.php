@@ -77,6 +77,27 @@ use Yii;
  */
 class SoSheet extends \app\models\b2b2c\BasicModel
 {
+	/* 订单状态： */
+	const order_need_confirm = 5001; // 待确认（定制订单需要此状态，普通订单不需要）
+	const order_need_pay = 5002; // 待付款
+	const order_cancelled = 5003; // 已取消 （用户未付款时直接取消）
+	const order_need_schedule = 5004; // 待接单
+	const order_need_service = 5005; // 待服务
+	const order_need_refund = 5006; // 待退款 (用户申请退款，待接单与待服务状态都可以申请退款)
+	const order_closed = 5007; // 已关闭 (已经退款给用户，订单关闭) 
+	const order_completed = 5008; // 交易完成(客户付尾款，商户确认服务完成)
+	const order_need_commented = 5009; // 待评价 (交易完成可评价)
+	
+	/* 付款状态： */
+	const pay_need_pay = 6001; // 未付款
+	const pay_part_pay = 6002; // 部分支付
+	const pay_completed = 6003; // 已付款 
+	
+	
+	
+	
+	
+	
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
@@ -217,7 +238,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'invoice_header' => Yii::t('app', '发票抬头名称'),
             'service_date' => Yii::t('app', '服务时间(婚礼)'),
             'budget_amount' => Yii::t('app', '婚礼预算'),
-            'related_service' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
+            'related_service' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
             'service_style' => Yii::t('app', '婚礼类型（单选）（室内，室外）'),
             'related_case_id' => Yii::t('app', '关联案例编号'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),

@@ -35,7 +35,7 @@ class SoSheetDetail extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['order_id', 'product_id', 'quantity', 'price', 'amount'], 'required'],
+            [['order_id', 'quantity', 'price', 'amount'], 'required'],
             [['order_id', 'product_id', 'quantity', 'package_id'], 'integer'],
             [['price', 'amount'], 'number'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],

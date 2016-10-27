@@ -23,6 +23,13 @@ use Yii;
  */
 class RefundSheetApply extends \app\models\b2b2c\BasicModel
 {
+	/* 退款申请单状态： */
+	const status_need_confirm = 24001; //待审核
+	const status_approved = 24002; // 退款处理中(审核通过)
+	const status_refund = 24003; // 已退款
+	const status_rejected = 24004; // 审核不通过
+	const status_cancelled = 24005; // 用户已撤销
+	
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
@@ -64,7 +71,7 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'order_id', 'reason', 'apply_date', 'code'], 'required'],
+            [['sheet_type_id', 'order_id', 'reason', 'apply_date', 'code', 'vip_id'], 'required'],
             [['sheet_type_id', 'vip_id', 'order_id', 'status'], 'integer'],
             [['apply_date'], 'safe'],
             [['reason'], 'string', 'max' => 255],
@@ -89,10 +96,10 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
             'status' => Yii::t('app', /* '退款申请状态（审核中，退款处理中[审核通过]，已退款，审核不通过，已撤销）' */'退款申请状态'),
             'apply_date' => Yii::t('app', '申请日期'),
         	'code' => Yii::t('app', '退款申请单编号'),
-        	'vip.vip_id' => Yii::t('app', '关联会员编号'),
+        	'vip.vip_name' => Yii::t('app', '会员名称'),
         	'order.code' => Yii::t('app', '订单编号'),
         	'status0.param_val' => Yii::t('app', /* '退款申请状态（审核中，退款处理中[审核通过]，已退款，审核不通过，已撤销）' */'退款申请状态'),
-        		'vip_no' => Yii::t('app', '会员编号'),
+        		'vip_no' => Yii::t('app', '会员手机号码'),
         		'start_date' => Yii::t('app', '开始日期'),
         		'end_date' => Yii::t('app', '结束日期'),
         		'order_code' => Yii::t('app', '订单编号'),
