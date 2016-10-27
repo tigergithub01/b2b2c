@@ -38,21 +38,21 @@ use app\models\b2b2c\common\Constant;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
+	    <?php // echo $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'refund_apply_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'refund_apply_id')->dropDownList(\yii\helpers\ArrayHelper::map($refundApplyList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'refund_apply_id')->dropDownList(\yii\helpers\ArrayHelper::map($refundApplyList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt'), 'disabled' => true]) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'order_id')->dropDownList(\yii\helpers\ArrayHelper::map($orderList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'order_id')->dropDownList(\yii\helpers\ArrayHelper::map($orderList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt'), 'disabled' => true]) ?>
 
     <?php // echo $form->field($model, 'return_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'return_id')->dropDownList(\yii\helpers\ArrayHelper::map($returnList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo  $form->field($model, 'return_id')->dropDownList(\yii\helpers\ArrayHelper::map($returnList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'user_id')->textInput(['maxlength' => true]) ?>
     
@@ -78,15 +78,15 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($refundStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($refundStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt'), 'disabled' => true]) ?>
 
     <?php // echo $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt'), 'disabled' => true]) ?>
 
 		</div>
 	

@@ -37,15 +37,17 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php // echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'sheet_type_id') ?>
+    <?php // echo $form->field($model, 'sheet_type_id') ?>
 
-    <?= $form->field($model, 'refund_apply_id') ?>
+    <?php // echo $form->field($model, 'refund_apply_id') ?>
 
     <?= $form->field($model, 'code') ?>
 
-    <?= $form->field($model, 'order_id') ?>
+    <?php // echo $form->field($model, 'order_id') ?>
+    
+    <?= $form->field($model, 'order_code') ?>
 
     <?php // echo $form->field($model, 'return_id') ?>
 
@@ -70,7 +72,7 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Module::t('app', 'Create Refund Sheet'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?php // echo Html::a(Module::t('app', 'Create Refund Sheet'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

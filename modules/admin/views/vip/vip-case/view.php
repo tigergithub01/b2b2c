@@ -71,7 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                    <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                   </div>
                 </div>
               </div>

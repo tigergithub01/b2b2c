@@ -14,6 +14,12 @@ use app\models\b2b2c\VipBlogType;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysUser;
 use app\models\b2b2c\SysParameter;
+use app\modules\admin\models\AdminConst;
+use app\common\utils\image\ImageUtils;
+use yii\web\UploadedFile;
+use app\models\b2b2c\VipBlogPhoto;
+use app\models\b2b2c\SysConfig;
+use app\common\utils\CommonUtils;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
@@ -77,12 +83,73 @@ class VipBlogController extends BaseAuthController
     public function actionCreate()
     {
         $model = new VipBlog();
+        $model->create_date = date(AdminConst::DATE_FORMAT, time());
+        $model->update_date = date(AdminConst::DATE_FORMAT, time());
+        $model->audit_status = SysParameter::audit_need_approve;
+        $model->status = SysParameter::no;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
+        	
+        	//处理帖子相册
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'vip_blog';
+        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
+        	$vipBlogPhotos = [];
+        	foreach ($model->imageFiles as $galleryFile) {
+        		$galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
+        		$vipBlogPhoto = new VipBlogPhoto();
+        		$vipBlogPhoto->img_url = $galleryFiles['img_url'];
+        		$vipBlogPhoto->img_original = $galleryFiles['img_original'];
+        		$vipBlogPhoto->thumb_url = $galleryFiles['thumb_url'];
+        		$vipBlogPhotos[] = $vipBlogPhoto;
+        	}
+        	
+        	$transaction = VipBlog::getDb()->beginTransaction();
+        	try {
+        		/* 保存失败处理 */
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderCreate();
+        		}
+        	
+        		//插入相册信息
+        		if(!empty($vipBlogPhotos)){
+        			foreach ($vipBlogPhotos as $vipBlogPhoto) {
+        				$vipBlogPhoto->blog_id = $model->id;
+        				if(!($vipBlogPhoto->save())){
+        					$model->addError('imageFiles','帖子图片上传失败');
+        					$transaction->rollBack();
+        					return $this->renderCreate();
+        				}
+        			}
+        		}
+        	
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        	
+        	}catch (\Exception $e) {
+        		$transaction->rollBack();
+        		// 	            throw $e;
+        		$model->addError('name',$e->getMessage());
+        		return $this->renderCreate($model);
+        	}
+        	
+        	
             MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
+        } /* else { */
+            return $this->renderCreate($model);
+       /*  } */
+    }
+    
+    /**
+     * @return Ambigous <string, string>
+     */
+    protected function renderCreate($model){
+    	return $this->render('create', [
                 'model' => $model,
             		'vipList' => $this->findVipList(),
             		'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
@@ -91,7 +158,6 @@ class VipBlogController extends BaseAuthController
             		'vipBlogTypeList' => $this->findVipBlogTypeList(),
             		'sysUserList' => $this->findSysUserList(),
             ]);
-        }
     }
 
     /**
@@ -104,11 +170,67 @@ class VipBlogController extends BaseAuthController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
+        	//处理帖子相册
+        	$imageUtils = new ImageUtils();
+        	$image_type = 'vip_blog';
+        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
+        	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
+        	$vipBlogPhotos = [];
+        	foreach ($model->imageFiles as $galleryFile) {
+        		$galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
+        		$vipBlogPhoto = new VipBlogPhoto();
+        		$vipBlogPhoto->img_url = $galleryFiles['img_url'];
+        		$vipBlogPhoto->img_original = $galleryFiles['img_original'];
+        		$vipBlogPhoto->thumb_url = $galleryFiles['thumb_url'];
+        		$vipBlogPhotos[] = $vipBlogPhoto;
+        	}
+        	
+        	$transaction = VipBlog::getDb()->beginTransaction();
+        	try {
+        		/* 保存失败处理 */
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderUpdate($model);
+        		}
+        		 
+        		//插入相册信息
+        		if(!empty($vipBlogPhotos)){
+        			foreach ($vipBlogPhotos as $vipBlogPhoto) {
+        				$vipBlogPhoto->blog_id = $model->id;
+        				if(!($vipBlogPhoto->save())){
+        					$model->addError('imageFiles','帖子图片上传失败');
+        					$transaction->rollBack();
+        					return $this->renderUpdate($model);
+        				}
+        			}
+        		}
+        		 
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        		 
+        	}catch (\Exception $e) {
+        		$transaction->rollBack();
+        		// 	            throw $e;
+        		$model->addError('name',$e->getMessage());
+        		return $this->renderUpdate($model);
+        	}
+        	
+        	
         	MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
+        }/*  else { */
+           return $this->renderUpdate($model);
+       /*  } */
+    }
+    
+    /**
+     * @return Ambigous <string, string>
+     */
+    protected function renderUpdate($model){
+    	return $this->render('update', [
                 'model' => $model,
             	'vipList' => $this->findVipList(),
             	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
@@ -117,7 +239,6 @@ class VipBlogController extends BaseAuthController
             	'vipBlogTypeList' => $this->findVipBlogTypeList(),
             	'sysUserList' => $this->findSysUserList(),
             ]);
-        }
     }
 
     /**
@@ -131,6 +252,36 @@ class VipBlogController extends BaseAuthController
         $this->findModel($id)->delete();
 		MsgUtils::success();
         return $this->redirect(['index']);
+    }
+    
+    /**
+     * Deletes an existing VipCasePhoto model.
+     * If deletion is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDeleteVipBlogPhoto($id){
+    	$vipBlogPhoto = VipBlogPhoto::findOne($id);
+    	if(empty($vipBlogPhoto)){
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    	$vipBlogPhoto->delete();
+    	 
+    	$thumb_url = iconv("UTF-8", "GBK", $vipBlogPhoto->thumb_url);
+    	$img_original = iconv("UTF-8", "GBK", $vipBlogPhoto->img_original);
+    	$img_url = iconv("UTF-8", "GBK", $vipBlogPhoto->img_url);
+    
+    	if(is_file($thumb_url)){
+    		unlink($thumb_url);
+    	}
+    	if(file_exists($img_original)){
+    		unlink($img_original);
+    	}
+    	if(file_exists($img_url)){
+    		unlink($img_url);
+    	}
+    	MsgUtils::success();
+    	return $this->redirect(['view','id'=>$vipBlogPhoto->blog_id]);
     }
 
     /**

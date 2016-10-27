@@ -35,7 +35,7 @@ use app\models\b2b2c\common\Constant;
 				],
 	    ]); ?>
     
-    	<?php //echo $form->errorSummary($model);?>
+    	<?php echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
 	    <?php //echo $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
@@ -46,15 +46,15 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'order_amt')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'order_quantity')->textInput() ?>
+    <?php // echo $form->field($model, 'order_quantity')->textInput() ?>
 
     <?= $form->field($model, 'goods_amt')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'deliver_fee')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'deliver_fee')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'order_date')->textInput() ?>
     
@@ -67,11 +67,11 @@ use app\models\b2b2c\common\Constant;
     			]
           ]) ?>
 
-    <?= $form->field($model, 'delivery_date')->textInput() ?>
+    <?php  $form->field($model, 'delivery_date')->textInput() ?>
 
     <?php // echo $form->field($model, 'delivery_type')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'delivery_type')->dropDownList(\yii\helpers\ArrayHelper::map($deliveryTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'delivery_type')->dropDownList(\yii\helpers\ArrayHelper::map($deliveryTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'pay_type_id')->textInput(['maxlength' => true]) ?>
     
@@ -88,21 +88,21 @@ use app\models\b2b2c\common\Constant;
     			]
           ]) ?>
 
-    <?= $form->field($model, 'delivery_no')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'delivery_no')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'pick_point_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'pick_point_id')->dropDownList(\yii\helpers\ArrayHelper::map($pickUpPointList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'pick_point_id')->dropDownList(\yii\helpers\ArrayHelper::map($pickUpPointList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'paid_amt')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'integral')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'integral')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'integral_money')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'integral_money')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'coupon')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'coupon')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'discount')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'discount')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'return_amt')->textInput(['maxlength' => true]) ?>
 
@@ -127,7 +127,7 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'delivery_status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'delivery_status')->dropDownList(\yii\helpers\ArrayHelper::map($deliveryStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'delivery_status')->dropDownList(\yii\helpers\ArrayHelper::map($deliveryStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'pay_status')->textInput(['maxlength' => true]) ?>
     
@@ -137,19 +137,19 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'country_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map($countryList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map($countryList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'province_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'province_id')->dropDownList(\yii\helpers\ArrayHelper::map($proviceList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'province_id')->dropDownList(\yii\helpers\ArrayHelper::map($proviceList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'city_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'city_id')->dropDownList(\yii\helpers\ArrayHelper::map($cityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'city_id')->dropDownList(\yii\helpers\ArrayHelper::map($cityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'district_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map($districtList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'district_id')->dropDownList(\yii\helpers\ArrayHelper::map($districtList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
 
@@ -157,9 +157,9 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'invoice_type')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'invoice_type')->dropDownList(\yii\helpers\ArrayHelper::map($invoiceTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'invoice_type')->dropDownList(\yii\helpers\ArrayHelper::map($invoiceTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'invoice_header')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'invoice_header')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'service_date')->textInput() ?>
     
@@ -187,6 +187,7 @@ use app\models\b2b2c\common\Constant;
 	
 	    <div class="box-footer form-group">
 	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	        <?php if (!($model->isNewRecord)) {echo Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);}?>
 	    </div>
 
     	<?php ActiveForm::end(); ?>

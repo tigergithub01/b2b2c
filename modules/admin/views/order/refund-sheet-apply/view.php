@@ -7,7 +7,7 @@ use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheetApply */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Refund Sheet Applies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            //'id',
             //'sheet_type_id',
             'code',
             // 'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             // 'order_id',
             'order.code',
             'reason',
@@ -48,6 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
 	            'class' => 'btn btn-danger',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+	                'method' => 'post',
+	            ],
+	        ]) ?>
+	        <?= Html::a(Yii::t('app', '去退款'), ['/admin/order/refund-sheet/create', 'refund_apply_id' => $model->id], [
+	            'class' => 'btn btn-primary',
+	            'data' => [
 	                'method' => 'post',
 	            ],
 	        ]) ?>

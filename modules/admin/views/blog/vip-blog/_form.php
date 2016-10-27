@@ -51,7 +51,7 @@ use app\models\b2b2c\common\Constant;
     
     <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
@@ -102,7 +102,9 @@ use app\models\b2b2c\common\Constant;
     <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+	
+	<?php echo $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']); ?>
+	
 		</div>
 	
 	    <div class="box-footer form-group">

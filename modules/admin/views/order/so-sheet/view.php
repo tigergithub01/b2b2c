@@ -7,7 +7,7 @@ use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SoSheet */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'So Sheets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -32,62 +32,106 @@ $this->params['breadcrumbs'][] = $this->title;
             'sheetType.name',
             'code',
             //'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             'order_amt',
-            'order_quantity',
+            // 'order_quantity',
             'goods_amt',
-            'deliver_fee',
+            // 'deliver_fee',
             'order_date',
-            'delivery_date',
+            // 'delivery_date',
             //'delivery_type',
-            'deliveryType.name',
+            // 'deliveryType.name',
             //'pay_type_id',
 		    'payType.name',
             'pay_date',
-            'delivery_no',
+            // 'delivery_no',
             //'pick_point_id',
-            'pickPoint.name',
+            // 'pickPoint.name',
             'paid_amt',
-            'integral',
-            'integral_money',
-            'coupon',
-            'discount',
-            'return_amt',
-            'return_date',
+            // 'integral',
+            // 'integral_money',
+            // 'coupon',
+            // 'discount',
+            // 'return_amt',
+            // 'return_date',
             'memo',
             'message',
             //'order_status',
 		    'orderStatus.param_val',
             //'delivery_status',
-            'deliveryStatus.param_val',
+            // 'deliveryStatus.param_val',
             //'pay_status',
             'payStatus.param_val',
             'consignee',
             //'country_id',
-            'country.name',
+            // 'country.name',
             //'province_id',
-            'province.name',
+            // 'province.name',
             //'city_id',
-            'city.name',
+            // 'city.name',
             //'district_id',
-		    'district.name',
+		    // 'district.name',
             'mobile',
             'detail_address',
             //'invoice_type',
-            'invoiceType.param_val',
-            'invoice_header',
+            // 'invoiceType.param_val',
+            // 'invoice_header',
             'service_date',
             'budget_amount',
             //'related_service',
             'related_service_names',
             //'service_style',
             'serviceStyle.param_val',
-            'related_case_id',
+            // 'related_case_id',
 		        ],
 		    ]) ?>
     	</div>
     
-	    <div class="box-footer">
+    </div>
+    
+    <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">服务明细</h3>
+
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <!--
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                   <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th>服务</th>
+                  <th>价格</th>
+                  <th>操作</th>
+                </tr>
+                <?php foreach ($soSheetDetailList as $soSheetDetail) {?>
+                <tr>
+                  <td><?= ($soSheetDetail->package)?$soSheetDetail->package->name.'(团体服务)':$soSheetDetail->product->name?></td>
+                  <td><?= $soSheetDetail->price ?></td>
+                  <td><?= Html::a(Yii::t('app', 'Delete'), ['delete-so-sheet-detail', 'id' => $soSheetDetail->id], [
+	            'class' => '',
+	            'data' => [
+	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+	                'method' => 'post',
+	            ],
+	        ]) ?></td>
+                </tr>
+                <?php }?>
+              </table>
+            </div>
+            <!-- /.box-body -->
+    </div>
+          <!-- /.box -->
+          
+          <div class="box">
+    	<div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
@@ -96,8 +140,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	                'method' => 'post',
 	            ],
 	        ]) ?>
+	        <?= Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);?>
 	    </div>
-    
-    </div>
+	</div> 
 
 </div>

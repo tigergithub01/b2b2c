@@ -7,7 +7,7 @@ use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheet */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Refund Sheets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -45,9 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'status',
             'status0.param_val',
             //'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             // 'merchant_id',
-            'merchant.vip_id',
+            'merchant.vip_name',
 		        ],
 		    ]) ?>
     	</div>

@@ -33,8 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'blog.name',
             'reply_date',
             // 'vip_id',
-            'vip.vip_id',
-            'status',
+            'vip.vip_name',
+            // 'status',
+            'status0.param_val',
             'parent_id',
 		        ],
 		    ]) ?>

@@ -41,11 +41,11 @@ use app\models\b2b2c\common\Constant;
 	    <div class="box-body">
 	    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 	    
-	    <?= $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
+	    <?php // echo $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo  $form->field($model, 'order_id')->textInput(['maxlength' => true]) ?>
     

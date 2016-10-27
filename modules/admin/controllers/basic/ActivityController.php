@@ -227,8 +227,6 @@ class ActivityController extends BaseAuthController
     	$model->act_id = $act_id;
     	$model->quantity = 1;
     	
-    	$count = ActPackageProduct::find()->where(['act_id'=>$act_id, 'product_id' => 1])->count();
-    	
     	//查询活动
     	$activity = Activity::findOne($act_id);
     	if(empty($activity)){

@@ -17,6 +17,10 @@ use app\models\b2b2c\SheetType;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\DeliveryTypeTpl;
+use app\modules\admin\models\AdminConst;
+use app\models\b2b2c\SoSheetDetail;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\Product;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -77,9 +81,13 @@ class SoSheetController extends BaseAuthController
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+    	$model =  $this->findModel($id);
+    	$soSheetDetailList = $this->findSoSheetDetailList($id);
+    	 
+    	return $this->render('view', [
+    			'model' => $model,
+    			'soSheetDetailList' => $soSheetDetailList,
+    	]);
     }
 
     /**
@@ -90,12 +98,54 @@ class SoSheetController extends BaseAuthController
     public function actionCreate()
     {
         $model = new SoSheet();
+        $model->sheet_type_id = SheetType::so;
+        $model->code = SheetType::getCode($model->sheet_type_id); 
+        $model->order_date = date(AdminConst::DATE_FORMAT, time());
+        $model->integral = 0;
+        $model->integral_money = 0;
+        $model->coupon = 0;
+        $model->discount = 0;
+        $model->order_status = SoSheet::order_need_pay;
+        $model->pay_status= SoSheet::pay_need_pay;
+        $model->deliver_fee = 0;
+        $model->order_quantity = 0;
+       
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
+        	
+        	$transaction = SoSheet::getDb()->beginTransaction();
+        	try {
+        		//重新获取订单编号
+        		$model->code = SheetType::getCode($model->sheet_type_id, true);
+        		 
+        		/* 保存失败处理 */
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderCreate($model);
+        		}
+        	
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        	
+        	}catch (\Exception $e) {
+        		$transaction->rollBack();
+        		$model->addError('code',$e->getMessage());
+        		return $this->renderCreate($model);
+        	}
+        	
             MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
+        }/*  else { */
+            return $this->renderCreate($model);
+        /* } */
+    }
+    
+    /**
+     * @return Ambigous <string, string>
+     */
+    protected function renderCreate($model){
+    	return $this->render('create', [
                 'model' => $model,
             		'vipList' => $this->findVipList(SysParameter::no),
             		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province),
@@ -113,7 +163,6 @@ class SoSheetController extends BaseAuthController
             		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
             		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
             ]);
-        }
     }
 
     /**
@@ -161,6 +210,62 @@ class SoSheetController extends BaseAuthController
         $this->findModel($id)->delete();
 		MsgUtils::success();
         return $this->redirect(['index']);
+    }
+    
+    
+    /**
+     * 添加团队成员
+     * @return \yii\web\Response|Ambigous <string, string>
+     */
+    public function actionCreateSoSheetDetail($order_id){
+    	$model = new SoSheetDetail();
+    	$model->order_id = $order_id;
+    	$model->quantity = 1;
+    	$model->amount = 0;
+    	 
+    	//查询订单
+    	$soSheet = SoSheet::findOne($order_id);
+    	if(empty($soSheet)){
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    	 
+    	if ($model->load(Yii::$app->request->post())) {
+    		
+    		$model->amount = $model->quantity * $model->price;
+    		
+    		//save
+    		if($model->save()){
+    			MsgUtils::success();
+    			return $this->redirect(['view', 'id' => $order_id]);
+    		}
+    	}
+
+    	/* else { */
+    	return $this->render('create-so-sheet-detail', [
+    			'model' => $model,
+    			'soSheet' => $soSheet,
+    			'activityList' => $this->findActivityList(),
+            	'productList' => $this->findProductList(),
+            	'soSheetList' => $this->findSoSheetList(),
+    	]);
+    	/* } */
+    }
+    
+    /**
+     * Deletes an existing Activity model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDeleteSoSheetDetail($id)
+    {
+    	$soSheetDetail = SoSheetDetail::findOne($id);
+    	if(empty($soSheetDetail)){
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    	$soSheetDetail->delete();
+    	MsgUtils::success();
+    	return $this->redirect(['view','id'=>$soSheetDetail->order_id]);
     }
 
     /**
@@ -254,6 +359,42 @@ class SoSheetController extends BaseAuthController
      */
     protected function findSheetTypeList(){
     	return SheetType::find()->where(['id' => [SheetType::so, SheetType::sc]])->all();
+    }
+    
+    /**
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findActivityList(){
+    	return Activity::find()->all();
+    }
+    
+    /**
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findSoSheetList(){
+    	return SoSheet::find()->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findProductList(){
+    	return Product::find()->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    function findSoSheetDetailList($order_id){
+    	$models = SoSheetDetail::find()->alias('soDetail')
+    	->joinWith('order order')
+    	->joinWith('package package')
+    	->joinWith('product product')
+    	->where(['soDetail.order_id' => $order_id])->all();
+    	return $models;
     }
     
 }

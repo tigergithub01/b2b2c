@@ -13,6 +13,7 @@ use app\models\b2b2c\VipBlog;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\Vip;
+use app\modules\admin\models\AdminConst;
 
 /**
  * VipBlogCmtController implements the CRUD actions for VipBlogCmt model.
@@ -77,6 +78,8 @@ class VipBlogCmtController extends BaseAuthController
     public function actionCreate()
     {
         $model = new VipBlogCmt();
+        $model->reply_date = date(AdminConst::DATE_FORMAT, time());
+        $model->status = SysParameter::no;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
@@ -107,6 +110,9 @@ class VipBlogCmtController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            	'vipList' => $this->findVipList(),
+            	'vipBlogList'=>$this->findVipBlogList(),
+            	'yesNoList' => SysParameterType::getSysParametersById(SysParameterType::YES_NO),
             ]);
         }
     }

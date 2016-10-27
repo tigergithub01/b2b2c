@@ -17,6 +17,7 @@ use app\models\b2b2c\Vip;
 use app\models\b2b2c\ReturnSheet;
 use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\SheetType;
+use app\modules\admin\models\AdminConst;
 
 /**
  * RefundSheetController implements the CRUD actions for RefundSheet model.
@@ -74,8 +75,23 @@ class RefundSheetController extends BaseAuthController
      */
     public function actionCreate()
     {
-        $model = new RefundSheet();
+    	$model = new RefundSheet();
         $model->sheet_type_id = SheetType::rd;
+        $model->code = SheetType::getCode($model->sheet_type_id);
+        $model->status = RefundSheet::status_need_confirm;
+        $model->sheet_date = date(AdminConst::DATE_FORMAT, time());
+        $model->user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+        
+        $refund_apply_id = isset($_REQUEST['refund_apply_id'])?$_REQUEST['refund_apply_id']:null;
+        if($refund_apply_id){
+        	$refundApplySheet = RefundSheetApply::findOne($refund_apply_id);
+        	$soSheet = $refundApplySheet->order;
+        	$model->refund_apply_id = $refundApplySheet->id;
+        	$model->order_id = $soSheet->id;
+        	$model->status = RefundSheet::status_completed;
+        	$model->vip_id = $soSheet->vip_id;
+        }
+        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();
@@ -110,6 +126,13 @@ class RefundSheetController extends BaseAuthController
         } else {
             return $this->render('update', [
                 'model' => $model,
+            		'merchantList' => $this->findVipList(SysParameter::yes),
+            		'orderList' => $this->findSoSheetList(),
+            		'returnList' => $this->findReturnSheetList(),
+            		'refundApplyList' => $this->findRefundSheetApplyList(),
+            		'userList' => $this->findSysUserList(),
+            		'refundStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_STATUS),
+            		'vipList' =>  $this->findVipList(SysParameter::no),
             ]);
         }
     }

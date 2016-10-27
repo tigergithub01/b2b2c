@@ -14,6 +14,7 @@ use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\Vip;
+use app\modules\admin\models\AdminConst;
 
 /**
  * RefundSheetApplyController implements the CRUD actions for RefundSheetApply model.
@@ -76,6 +77,10 @@ class RefundSheetApplyController extends BaseAuthController
     {
         $model = new RefundSheetApply();
         $model->sheet_type_id = SheetType::ra;
+        $model->apply_date = date(AdminConst::DATE_FORMAT, time());
+        $model->sheet_type_id = SheetType::ra;
+        $model->code = SheetType::getCode($model->sheet_type_id);
+        $model->status = RefundSheetApply::status_need_confirm;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             MsgUtils::success();

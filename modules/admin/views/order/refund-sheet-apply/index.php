@@ -28,11 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
+            //'id',
             //'sheet_type_id',
             'code',
             // 'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             // 'order_id',
             'order.code',
             'reason',
