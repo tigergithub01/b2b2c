@@ -2,13 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\admin\Module;
+use app\modules\merchant\Module;
+use app\models\b2b2c\SysParameter;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Vip */
 
 $this->title = $model->vip_name;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Merchants'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-view">
@@ -192,14 +192,20 @@ $this->params['breadcrumbs'][] = $this->title;
 		
     
 	    <div class="box-footer">
-	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+	    
+	    	<?php if ($model->audit_status==SysParameter::audit_need_approve || $model->audit_status==SysParameter::audit_rejected) {?>
+	    		<?= Html::a(Yii::t('app', 'Update'), ['update'], ['class' => 'btn btn-primary']) ?>
+	    	<?php }?>
+	    	
+	    	<?php if ($model->audit_status==SysParameter::audit_need_approve || $model->audit_status==SysParameter::audit_rejected) {?>
+	        <?= Html::a(Yii::t('app', '提交审核'), ['submit', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
-	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+	                'confirm' => Yii::t('app', '是否提交审核?'),
 	                'method' => 'post',
 	            ],
 	        ]) ?>
+	        <?php }?>
 	    </div>
     
     </div>
