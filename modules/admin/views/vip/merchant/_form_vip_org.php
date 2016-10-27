@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\b2b2c\common\Constant;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $vipOrganization app\models\b2b2c\Vip */
@@ -103,15 +104,15 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($vipOrganization, 'country_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($vipOrganization, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map($countryList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($vipOrganization, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map($countryList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt'), 'sub_id'=>'viporganization-province_id', 'class' => 'form-control clsRegion', 'url' => Url::toRoute(['/admin/vip/merchant/sub-region-list']), ]) ?>
 
     <?php // echo $form->field($vipOrganization, 'province_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($vipOrganization, 'province_id')->dropDownList(\yii\helpers\ArrayHelper::map($proviceList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($vipOrganization, 'province_id')->dropDownList(\yii\helpers\ArrayHelper::map($proviceList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt'), 'sub_id'=>'viporganization-city_id', 'class' => 'form-control clsRegion', 'url' => Url::toRoute(['/admin/vip/merchant/sub-region-list']),  ]) ?>
 
     <?php // echo $form->field($vipOrganization, 'city_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($vipOrganization, 'city_id')->dropDownList(\yii\helpers\ArrayHelper::map($cityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($vipOrganization, 'city_id')->dropDownList(\yii\helpers\ArrayHelper::map($cityList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt'), 'sub_id'=>'viporganization-district_id', 'class' => 'form-control clsRegion', 'url' => Url::toRoute(['/admin/vip/merchant/sub-region-list']), ]) ?>
 	
 	<?php // echo $form->field($vipOrganization, 'district_id')->textInput(['maxlength' => true]) ?>
 	

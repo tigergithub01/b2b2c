@@ -163,6 +163,10 @@ class MerchantController extends BaseAuthController
             	'vipTypeList' => $this->findVipTypeList(),
             	'sexList' => SysParameterType::getSysParametersById(SysParameterType::VIP_SEX),
             	'userList' => $this->findSysUserList(),	
+	       		'proviceList' => null,
+	       		'cityList' => null,
+	       		'districtList' => null,
+	       		'countryList' => $this->findSysRegionList(SysRegion::region_type_country),
             ]);
     }
 
@@ -362,9 +366,9 @@ class MerchantController extends BaseAuthController
             		'vipTypeList' => $this->findVipTypeList(),
             		'sexList' => SysParameterType::getSysParametersById(SysParameterType::VIP_SEX),
             		'userList' => $this->findSysUserList(),
-            		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province),
-            		'cityList' => $this->findSysRegionList(SysRegion::region_type_city),
-            		'districtList' => $this->findSysRegionList(SysRegion::region_type_district),
+            		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province, $vipOrganization->country_id),
+            		'cityList' => $this->findSysRegionList(SysRegion::region_type_city, $vipOrganization->province_id),
+            		'districtList' => $this->findSysRegionList(SysRegion::region_type_district, $vipOrganization->city_id),
             		'countryList' => $this->findSysRegionList(SysRegion::region_type_country),
             ]);
         /* } */
@@ -505,6 +509,15 @@ class MerchantController extends BaseAuthController
     	return SysRegion::find()
     	->where(['region_type' =>$region_type])
     	->andFilterWhere(['parent_id' => $parent_id])->limit(100)->offset(0)->all();
+    }
+    
+    /**
+     *
+     * @param unknown $parent_id
+     */
+    public function actionSubRegionList($id){
+    	$models = SysRegion::find()->where(['parent_id' =>$id])->all();
+    	return CommonUtils::json_success($models);
     }
     
     

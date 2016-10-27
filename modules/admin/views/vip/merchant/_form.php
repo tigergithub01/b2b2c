@@ -61,3 +61,7 @@ use app\models\b2b2c\common\Constant;
           <?php ActiveForm::end(); ?>
 	
 </div>
+
+<?php 
+	$this->registerJsFile('/js/common/region.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>
