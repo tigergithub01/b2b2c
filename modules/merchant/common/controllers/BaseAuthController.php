@@ -4,6 +4,7 @@ namespace app\modules\merchant\common\controllers;
 use Yii;
 use yii\web\Controller;
 use app\modules\merchant\common\filters\MerchantAuthBehavior;
+use app\modules\merchant\common\filters\MerchantAuthFilter;
 
 class BaseAuthController extends BaseController
 {
@@ -23,10 +24,10 @@ class BaseAuthController extends BaseController
 	
 	public function behaviors()
 	{
-		return array_merge(parent::behaviors(),[
-				'authBehavior' => [
+		return array_merge(parent::behaviors(),[MerchantAuthFilter::className(),
+				/* 'authBehavior' => [
 					'class' => MerchantAuthBehavior::className(),
-				],
+				], */ 
 		]);
 	}
 	

@@ -45,8 +45,7 @@ use app\modules\merchant\models\MerchantConst;
                 	],
                 	['label' => '案例管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
-                					['label' => '个人案例',  'url' => ['organization/vip-organization/index'],'icon' => 'fa fa-circle-o'],
-                					['label' => '团体案例',  'url' => ['vip/vip-org-case/index'],'icon' => 'fa fa-circle-o',],
+                					['label' => '案例列表',  'url' => ['organization/vip-organization/index'],'icon' => 'fa fa-circle-o'],
                 			],
                 	],
                 	['label' => '个人中心', 'icon' => 'fa fa-table','url' => '#',

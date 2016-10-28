@@ -4,6 +4,7 @@ namespace app\modules\admin\common\controllers;
 use Yii;
 use yii\web\Controller;
 use app\modules\admin\common\filters\AdminAuthBehavior;
+use app\modules\admin\common\filters\AdminAuthFilter;
 
 class BaseAuthController extends BaseController
 {
@@ -23,10 +24,10 @@ class BaseAuthController extends BaseController
 	
 	public function behaviors()
 	{
-		return array_merge(parent::behaviors(),[
-				'authBehavior' => [
+		return array_merge(parent::behaviors(),[AdminAuthFilter::className(),
+				/* 'authBehavior' => [
 					'class' => AdminAuthBehavior::className(),
-				],
+				], */
 		]);
 	}
 	
