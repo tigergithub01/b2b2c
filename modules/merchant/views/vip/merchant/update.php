@@ -8,7 +8,7 @@ use app\modules\merchant\Module;
 
 $this->title = Module::t('app', 'Update {modelClass}: ', [
     'modelClass' => Module::t('app', 'Merchant'),
-]) . $model->id;
+]) . $model->vip_name;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Merchants'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');

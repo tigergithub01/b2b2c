@@ -17,7 +17,7 @@ use app\models\b2b2c\common\Constant;
     	<?php echo $form->errorSummary([$model,$vipOrganization,$vipExtend, $product]);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
+	    <?= $form->field($model, 'vip_id')->textInput(['maxlength' => true, 'readonly'=>true]) ?>
 
     <?php //echo $form->field($model, 'merchant_flag')->textInput(['maxlength' => true]) ?>
     
@@ -25,7 +25,7 @@ use app\models\b2b2c\common\Constant;
 
     <?= $form->field($model, 'vip_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'last_login_date')->textInput(['readonly'=>true]) ?>
+    <?php // echo $form->field($model, 'last_login_date')->textInput(['readonly'=>true]) ?>
 
     <?php if($model->isNewRecord){?>
     	<?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
@@ -47,18 +47,18 @@ use app\models\b2b2c\common\Constant;
 
     <?php //echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'register_date')->textInput() ?>
     
-    <?= $form->field($model, 'register_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* echo $form->field($model, 'register_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
     <?php //echo $form->field($model, 'rank_id')->textInput(['maxlength' => true]) ?>
     
@@ -66,28 +66,28 @@ use app\models\b2b2c\common\Constant;
 
     <?php //echo $form->field($model, 'audit_status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'audit_status')->dropDownList(\yii\helpers\ArrayHelper::map($auditStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'audit_user_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'audit_user_id')->dropDownList(\yii\helpers\ArrayHelper::map($userList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'audit_user_id')->dropDownList(\yii\helpers\ArrayHelper::map($userList, "id", "user_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php //echo $form->field($model, 'audit_date')->textInput() ?>
     
-    <?= $form->field($model, 'audit_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* echo $form->field($model, 'audit_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
-    <?= $form->field($model, 'audit_memo')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'audit_memo')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'vip_type_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt'), 'disabled'=>true, ]) ?>
 
     <?php //echo $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
     

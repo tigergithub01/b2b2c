@@ -34,6 +34,10 @@ use Yii;
 class VipBlog extends \app\models\b2b2c\BasicModel
 {
 	
+	/* 商户、会员帖子标志 */
+	const blog_flag_merchant = 16002; //商户博客
+	const blog_flag_vip = 16001; //会员博客
+	
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
@@ -115,7 +119,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
         	'auditUser.user_id' => Yii::t('app', '审核人'),
         	'vip_no' => Yii::t('app', '会员编号'),
-        	'start_date' => Yii::t('app', '开始日期'),
+        	'start_date' => Yii::t('app', '日期'),
         	'end_date' => Yii::t('app', '结束日期'),
         	'imageFiles' => Yii::t('app', '帖子图片'),
         ];

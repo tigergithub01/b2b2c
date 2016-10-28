@@ -193,11 +193,8 @@ $this->params['breadcrumbs'][] = $this->title;
     
 	    <div class="box-footer">
 	    
-	    	<?php if ($model->audit_status==SysParameter::audit_need_approve || $model->audit_status==SysParameter::audit_rejected) {?>
+	    	<?php if ($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected) {?>
 	    		<?= Html::a(Yii::t('app', 'Update'), ['update'], ['class' => 'btn btn-primary']) ?>
-	    	<?php }?>
-	    	
-	    	<?php if ($model->audit_status==SysParameter::audit_need_approve || $model->audit_status==SysParameter::audit_rejected) {?>
 	        <?= Html::a(Yii::t('app', '提交审核'), ['submit', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [

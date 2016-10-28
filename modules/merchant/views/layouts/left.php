@@ -24,13 +24,12 @@ use app\modules\merchant\models\MerchantConst;
             </div>
         </div>
 
-
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
-                	['label' => '我的消息', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
-                	['label' => '我的动态', 'icon' => 'fa fa-table','url' => ['basic/product/index'],],
+                	['label' => '我的消息', 'icon' => 'fa fa-table','url' => ['system/sys-notify-log/index','sort'=>'-create_date'],],
+                	['label' => '我的动态', 'icon' => 'fa fa-table','url' => ['blog/vip-blog/index','sort'=>'-create_date'],],
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
                 		'items' => [
                 				['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
@@ -39,8 +38,8 @@ use app\modules\merchant\models\MerchantConst;
                 	],
                 	['label' => '服务管理', 'icon' => 'fa fa-table','url' => '#',
                 		'items' => [
-                				['label' => '个人定价', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
-                				['label' => '团体服务', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
+                				['label' => '个人定价', 'url' => ['basic/product/update-service'],'icon' => 'fa fa-circle-o',],
+                				['label' => '团体服务', 'url' => ['basic/activity/index'],'icon' => 'fa fa-circle-o',],
                 		],
                 	],
                 	['label' => '案例管理', 'icon' => 'fa fa-table','url' => '#',
@@ -50,7 +49,7 @@ use app\modules\merchant\models\MerchantConst;
                 	],
                 	['label' => '个人中心', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
-                					['label' => '个人资料', 'url' => ['/merchant/vip/merchant/view'],'icon' => 'fa fa-circle-o',],
+                					['label' => '个人资料', 'url' => ['vip/merchant/view'],'icon' => 'fa fa-circle-o',],
                 					['label' => '密码修改', 'url' => ['system/modify-pwd/index'],'icon' => 'fa fa-circle-o',],
                 			],
        				 ],

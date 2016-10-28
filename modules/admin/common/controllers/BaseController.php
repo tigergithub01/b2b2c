@@ -31,7 +31,7 @@ class BaseController extends Controller
 						'class' => 'kucha\ueditor\UEditorAction',
 						'config' => [
 								//"imageUrlPrefix"  => "http://www.baidu.com",//图片访问路径前缀
-								"imagePathFormat" => "/upload/ueditor/image/{yyyy}{mm}{dd}/{time}{rand:6}", //上传保存路径
+								"imagePathFormat" => "/uploads/ueditor/image/{yyyy}{mm}{dd}/{time}{rand:6}", //上传保存路径
 								"imageRoot" => Yii::getAlias("@webroot"),
 						],
 				]

@@ -27,11 +27,11 @@ class DefaultController extends BaseAuthController
     	$id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
     	$model = Vip::findOne($id);
     	
-    	if($model->audit_status==SysParameter::audit_need_approve){
+    	if($model->audit_status==SysParameter::audit_need_submit){
        	 	MsgUtils::warning('<a href="'. Url::toRoute(['/merchant/vip/merchant/view']) .'">温馨提醒：请先完善个人资料，个人资料审核通过后，您的服务才能被用户看见！</a>');
     	}elseif ($model->audit_status==SysParameter::audit_rejected){
     		MsgUtils::warning('<a href="'. Url::toRoute(['/merchant/vip/merchant/view']) .'">温馨提醒：个人资料审核不成功，请先完善个人资料，个人资料审核通过后，您的服务才能被用户看见！</a>');
-    	}elseif ($model->audit_status==SysParameter::audit_approving){
+    	}elseif ($model->audit_status==SysParameter::audit_need_approve){
     		MsgUtils::info("温馨提醒：您的资料已经提交，我们将尽快审核您提交的资料！");
     	}
         

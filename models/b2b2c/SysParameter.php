@@ -106,10 +106,10 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     const verify_email = 13002; 	
     
     /* 审核结果 */
-    const audit_need_approve = 3001; //待审核
+    const audit_need_submit = 3001; //待提交(草稿）
     const audit_approved = 3003; //审核通过
     const audit_rejected = 3002; //审核不通过
-    const audit_approving = 3004; //审核中
+    const audit_need_approve = 3004; //待审核
     
     
     /* 商户类型（婚礼）：策划师 */

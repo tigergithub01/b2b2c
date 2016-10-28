@@ -152,7 +152,7 @@ return [
 		//帖子信息
 		'Vip Blog'=>'帖子',
 		'Vip Blogs'=>'帖子列表',
-		'Create Vip Blog'=>'新增帖子',
+		'Create Vip Blog'=>'发布动态',
 		'Update Vip Blog'=>'编辑帖子',
 		
 		//帖子回复信息
@@ -215,4 +215,10 @@ return [
 		'Sys Notifies'=>'通知列表',
 		'Create Sys Notify'=>'新增通知',
 		'Update Sys Notify'=>'编辑通知',
+		
+		//通知信息
+		'Sys Notify Log'=>'消息',
+		'Sys Notify Logs'=>'消息列表',
+		'Create Sys Notify Log'=>'新增通知',
+		'Update Sys Notify Log'=>'编辑通知',
 ];

@@ -204,7 +204,7 @@ class MerchantController extends BaseAuthController
         	$product= new Product();
         	$product->vip_id = $model->id;
         	$product->service_flag = SysParameter::yes;
-        	$product->is_on_sale = SysParameter::yes;
+        	$product->is_on_sale = Product::is_on_sale_yes;
         	$product->is_hot = SysParameter::yes;
         	$product->audit_status = SysParameter::audit_approved;
         	$product->can_return_flag = SysParameter::yes;
@@ -400,13 +400,13 @@ class MerchantController extends BaseAuthController
     	$vipExtend = $this->findVipExtend($model->id);
     	$product = $this->findProduct($model->id);
     	
-    	if($model->audit_status==SysParameter::audit_approved || $model->audit_status==SysParameter::audit_approving){
+    	if($model->audit_status==SysParameter::audit_approved || $model->audit_status==SysParameter::audit_need_approve){
     		MsgUtils::warning("商户资料已经提交审核，请不要重复提交！");
     		return $this->renderView($model, $vipOrganization, $vipExtend, $product);
     	}
 		
     	//设置商户状态为审核中状态
-    	$model->audit_status = SysParameter::audit_approving;
+    	$model->audit_status = SysParameter::audit_need_approve;
     	if($model->save()){
     		MsgUtils::success();
     		return $this->renderView($model, $vipOrganization, $vipExtend, $product);

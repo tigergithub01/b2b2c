@@ -14,6 +14,8 @@ use Yii;
  */
 class ActivityType extends \app\models\b2b2c\BasicModel
 {
+	const activity_type_package = 1; //优惠套装
+    
     /**
      * @inheritdoc
      */

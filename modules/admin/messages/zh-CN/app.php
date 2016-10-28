@@ -205,11 +205,17 @@ return [
 		'Update Sheet Type'=>'编辑单据类型',
 		
 		
-		//通知信息
+		//通知信息定义
 		'Sys Notify'=>'通知信息',
 		'Sys Notifies'=>'通知列表',
 		'Create Sys Notify'=>'新增通知',
 		'Update Sys Notify'=>'编辑通知',
+		
+		//通知信息
+		'Sys Notify Log'=>'通知消息',
+		'Sys Notify Logs'=>'通知列表',
+		'Create Sys Notify Log'=>'新增通知',
+		'Update Sys Notify Log'=>'编辑通知',
 		
 		
 ];
