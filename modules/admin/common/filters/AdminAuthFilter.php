@@ -9,6 +9,8 @@ use app\models\b2b2c\SysUser;
 use app\models\b2b2c\SysOperationLog;
 use yii\helpers\Json;
 use app\modules\admin\service\system\SysUserService;
+use app\models\b2b2c\common\Constant;
+use app\common\utils\CommonUtils;
 
 class AdminAuthFilter extends ActionFilter{
 	
@@ -19,6 +21,7 @@ class AdminAuthFilter extends ActionFilter{
 	public function beforeAction($action){
 		$session = Yii::$app->session;
 		$login_user = $session->get(AdminConst::LOGIN_ADMIN_USER);
+		
 		$cookies = Yii::$app->request->cookies;
 		$admin_user_id = $cookies->getValue(AdminConst::COOKIE_ADMIN_USER_ID);
 		// 	 	$admin_user_id = $_COOKIE[AdminConst::COOKIE_ADMIN_USER_ID];
@@ -45,12 +48,20 @@ class AdminAuthFilter extends ActionFilter{
 		
 				}else{
 					//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
-					Yii::$app->getResponse()->redirect("/admin/system/login/index");
+					if (Yii::$app->getRequest()->getIsAjax()) {
+						CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
+					}else{
+						Yii::$app->getResponse()->redirect("/admin/system/login/index");
+					}
 					return false;
 				}
 			}else{
 				//redirect to
-				Yii::$app->getResponse()->redirect("/admin/system/login/index");
+				if (Yii::$app->getRequest()->getIsAjax()) {
+					CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
+				}else{
+					Yii::$app->getResponse()->redirect("/admin/system/login/index");
+				}
 				return false;
 			}
 		}

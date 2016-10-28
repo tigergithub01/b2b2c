@@ -66,8 +66,9 @@ class VipAuthBehavior extends Behavior{
 	 				CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
 	 			}else{
 	 				Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
-// 	 				exit;
 	 			}
+	 			
+	 			
 	 			
 // 	 			
 	 		}

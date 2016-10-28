@@ -31,7 +31,7 @@ class Module extends \yii\base\Module
         $this->defaultRoute="/default/index";
          
         //错误处理页面
-        \Yii::trace(Yii::$app->errorHandler->errorAction);
+        //\Yii::trace(Yii::$app->errorHandler->errorAction);
         Yii::$app->errorHandler->errorAction = '/vip/common/error/error';
          
         //app的名字

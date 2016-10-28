@@ -52,6 +52,20 @@ class SysNotifyLogSearch extends SysNotifyLog
             //'pagination' => ['pagesize' => '15',],
             
         ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
+        				'notify.title' => [
+        						'asc'  => ['notify.title' => SORT_ASC],
+        						'desc' => ['notify.title' => SORT_DESC],
+        				],
+        		])
+        ]);
 
         $this->load($params);
 

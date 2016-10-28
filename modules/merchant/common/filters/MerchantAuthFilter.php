@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use app\models\b2b2c\VipOperationLog;
 use yii\helpers\Json;
 use yii\base\ActionFilter;
+use app\common\utils\CommonUtils;
 
 
 class MerchantAuthFilter extends ActionFilter{
@@ -20,10 +21,10 @@ class MerchantAuthFilter extends ActionFilter{
 	
 	public function beforeAction($action){
 		$session = Yii::$app->session;
-	 	$login_vip = $session->get(MerchantConst::LOGIN_MERCHANT_USER);
+	 	$login_merchant = $session->get(MerchantConst::LOGIN_MERCHANT_USER);
 	 	$cookies = Yii::$app->request->cookies;
 	 	$merchant_user_id = $cookies->getValue(MerchantConst::COOKIE_MERCHANT_USER_ID);
-	 	if(empty($login_vip)){
+	 	if(empty($login_merchant)){
 	 		//记录最后次访问URL
 	 		$session->set(MerchantConst::MERCHANT_LAST_ACCESS_URL,Yii::$app->request->url);
 	 		
@@ -35,9 +36,9 @@ class MerchantAuthFilter extends ActionFilter{
 	 			$model->vip_id = $merchant_user_id;
 	 			$model->password = $cookies->getValue(MerchantConst::COOKIE_MERCHANT_PASSWORD);
 	 			$merchantService = new MerchantService();
-	 			if($model->validate() && ($vip_db = $merchantService->login($model,true))){
+	 			if($model->validate() && ($merchant_db = $merchantService->login($model,true))){
 	 				//设置用户
-	 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db);
+	 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$merchant_db);
 	 				
 	 				//设置权限等信息TODO:
 	 				
@@ -46,12 +47,20 @@ class MerchantAuthFilter extends ActionFilter{
 	 				
 	 			}else{
 	 				//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
-	 				Yii::$app->getResponse()->redirect(Url::toRoute(['/merchant/system/login/index']));
+	 				if (Yii::$app->getRequest()->getIsAjax()) {
+	 					CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
+	 				}else{
+	 					Yii::$app->getResponse()->redirect(Url::toRoute(['/merchant/system/login/index']));
+	 				}
 	 				return false;
 	 			}	
 	 		}else{
 	 			//redirect to 
-	 			Yii::$app->getResponse()->redirect(Url::toRoute(['/merchant/system/login/index']));
+	 			if (Yii::$app->getRequest()->getIsAjax()) {
+	 				CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
+	 			}else{
+	 				Yii::$app->getResponse()->redirect(Url::toRoute(['/merchant/system/login/index']));
+	 			}
 	 			return false;
 	 		}
 	 	}
@@ -62,9 +71,9 @@ class MerchantAuthFilter extends ActionFilter{
 	 	//插入日志
 	 	$sys_log = new VipOperationLog();
 	 	$session = Yii::$app->session;
-	 	$login_user = $session->get(MerchantConst::COOKIE_MERCHANT_USER_ID);
-	 	if($login_user){
-	 		$sys_log->vip_id = $login_user->id;
+	 	$login_merchant = $session->get(MerchantConst::LOGIN_MERCHANT_USER);
+	 	if($login_merchant){
+	 		$sys_log->vip_id = $login_merchant->id;
 	 	}
 	 	$sys_log->op_date=date(MerchantConst::DATE_FORMAT,time());
 	 	$sys_log->op_ip_addr = Yii::$app->request->userIP;

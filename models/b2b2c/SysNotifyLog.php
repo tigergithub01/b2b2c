@@ -53,6 +53,8 @@ class SysNotifyLog extends \app\models\b2b2c\BasicModel
             'create_date' => Yii::t('app', '消息创建时间'),
             'read_date' => Yii::t('app', '消息阅读时间'),
             'expiration_time' => Yii::t('app', '消息过期时间'),
+        	'notify.title' => Yii::t('app', '通知标题'),
+        	'vip.vip_name' => Yii::t('app', '接收会员'),
         ];
     }
 

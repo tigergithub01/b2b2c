@@ -24,8 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             'id',
-            'notify_id',
-            'vip_id',
+            // 'notify_id',
+            //'notify.title',
+        	[
+        		'format'=>'raw',
+        		'attribute'=>'notify.title',
+        		'value' => function($model){
+        			//var_dump($model);
+        			return Html::a($model->notify->title, ['system/sys-notify/view', 'id' => $model->notify_id], ['title' => $model->notify->title]);
+        		}
+        		],
+            // 'vip_id',
+            'vip.vip_name',
             'create_date',
             'read_date',
             // 'expiration_time',

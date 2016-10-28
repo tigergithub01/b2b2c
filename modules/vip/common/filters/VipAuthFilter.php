@@ -50,62 +50,25 @@ class VipAuthFilter extends ActionFilter{
 					//自动登陆不成功，可能是用户密码有了变更，用户被禁用；而本地存储的密码没有改变。
 					if (Yii::$app->getRequest()->getIsAjax()) {
 						CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
-						return false;
 					}else{
 						Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
-						return false;
 					}
+					return false;
 				}
 			}else{
 				//redirect to
 				if (Yii::$app->getRequest()->getIsAjax()) {
 					CommonUtils::response_failed("请先登陆。", Constant::err_code_no_login);
-					return false;
 				}else{
 					Yii::$app->getResponse()->redirect(Url::toRoute(['/vip/member/system/login/index']));
-					// 	 				exit;
-					return false;
 				}
-			 	
-				//
+				return false;
 			}
 			}
 		return parent::beforeAction($action);
 	}
 	
 	public function afterAction($action, $result){
-		//TODO:
-// 		Yii::info('AdminLogFilter afterAction ');
-
-		//插入日志
-		$sys_log = new VipOperationLog();
-		$session = Yii::$app->session;
-		$login_user = $session->get(VipConst::LOGIN_VIP_USER);
-		if($login_user){
-			$sys_log->vip_id = $login_user->id;
-		}
-		$sys_log->op_date=date(VipConst::DATE_FORMAT,time());
-		$sys_log->op_ip_addr = Yii::$app->request->userIP;
-		$sys_log->op_browser_type = Yii::$app->request->userAgent;
-		$sys_log->op_url = Yii::$app->request->url;
-		/* var_dump($action->controller->module->id);
-		 var_dump($action->controller->id);
-		 var_dump($action->id); */
-		// 	 	var_dump(Yii::$app->request->userAgent);
-		$sys_log->op_method = Yii::$app->request->method;
-		$sys_log->op_referrer = Yii::$app->request->referrer;
-		$sys_log->op_module = $action->controller->module->id;
-		$sys_log->op_controller = $action->controller->id;
-		$sys_log->op_action = $action->id;
-		/* var_dump(Json::encode($_REQUEST)); */
-		if(isset($_REQUEST)){
-			$parameters = Json::encode($_REQUEST);
-			$sys_log->op_desc = $parameters;
-		}
-		$sys_log->insert();
-		if($sys_log->hasErrors()){
-			Yii::info($sys_log->getErrors());
-		}
 		return parent::afterAction($action, $result);
 	}
 	

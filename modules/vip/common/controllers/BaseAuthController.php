@@ -4,6 +4,7 @@ namespace app\modules\vip\common\controllers;
 use Yii;
 use yii\web\Controller;
 use app\modules\vip\common\filters\VipAuthBehavior;
+use app\modules\vip\common\filters\VipAuthFilter;
 
 
 /**
@@ -29,10 +30,10 @@ class BaseAuthController extends BaseController
 	
 	public function behaviors()
 	{
-		return array_merge(parent::behaviors(),[
-				'authBehavior' => [
+		return array_merge(parent::behaviors(),[VipAuthFilter::className(),
+				/* 'authBehavior' => [
 					'class' => VipAuthBehavior::className(),
-				],
+				], */
 		]);
 	}
 	
