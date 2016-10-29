@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use app\modules\admin\Module;
+use app\modules\merchant\Module;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\SoSheetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'related_case_id',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+            'template' => '<span class=\'tbl_operation\'>{view}</span>',
         ],
             
         ],

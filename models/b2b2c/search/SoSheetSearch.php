@@ -77,6 +77,14 @@ class SoSheetSearch extends SoSheet
         						'asc'  => ['sheetType.name' => SORT_ASC],
         						'desc' => ['sheetType.name' => SORT_DESC],
         				],
+        				'orderStatus.param_val' => [
+        						'asc'  => ['orderStatus.param_val' => SORT_ASC],
+        						'desc' => ['orderStatus.param_val' => SORT_DESC],
+        				],
+        				'payStatus.param_val' => [
+        						'asc'  => ['payStatus.param_val' => SORT_ASC],
+        						'desc' => ['payStatus.param_val' => SORT_DESC],
+        				],
         		])
         ]);
 

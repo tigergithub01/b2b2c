@@ -86,7 +86,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	const order_need_refund = 5006; // 待退款 (用户申请退款，待接单与待服务状态都可以申请退款)
 	const order_closed = 5007; // 已关闭 (已经退款给用户，订单关闭) 
 	const order_completed = 5008; // 交易完成(客户付尾款，商户确认服务完成)
-	const order_need_commented = 5009; // 待评价 (交易完成可评价)
+// 	const order_need_commented = 5009; // 待评价 (交易完成可评价)
 	
 	/* 付款状态： */
 	const pay_need_pay = 6001; // 未付款
@@ -204,11 +204,11 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'sheet_type_id' => Yii::t('app', /* '订单类型（普通订单，定制订单）' */'订单类型'),
             'code' => Yii::t('app', '订单编号'/* '订单编号(so-年月日-顺序号，根据单据设置进行生成)' */),
             'vip_id' => Yii::t('app', '会员编号'),
-            'order_amt' => Yii::t('app', '订单待支付费用'),
+            'order_amt' => Yii::t('app', '待支付金额'),
             'order_quantity' => Yii::t('app', '产品数量（所有商品数量汇总）'),
             'goods_amt' => Yii::t('app', '订单总金额'),
             'deliver_fee' => Yii::t('app', '运费'),
-            'order_date' => Yii::t('app', '订单提交日期'),
+            'order_date' => Yii::t('app', '订单日期'),
             'delivery_date' => Yii::t('app', '发货日期'),
             'delivery_type' => Yii::t('app', '配送方式'),
             'pay_type_id' => Yii::t('app', '支付方式'),
@@ -227,7 +227,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'order_status' => Yii::t('app', '订单状态'/* '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）' */),
             'delivery_status' => Yii::t('app', '配送状态'),
             'pay_status' => Yii::t('app', '支付状态'),
-            'consignee' => Yii::t('app', '收货人'),
+            'consignee' => Yii::t('app', /* '收货人' */'婚礼人'),
             'country_id' => Yii::t('app', '国家'),
             'province_id' => Yii::t('app', '省份'),
             'city_id' => Yii::t('app', '城市'),
@@ -236,12 +236,13 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'detail_address' => Yii::t('app', '详细地址'),
             'invoice_type' => Yii::t('app', '发票类型（电子发票，纸质发票)'),
             'invoice_header' => Yii::t('app', '发票抬头名称'),
-            'service_date' => Yii::t('app', '服务时间(婚礼)'),
+            'service_date' => Yii::t('app', /* '服务时间(婚礼)' */'婚礼服务时间'),
             'budget_amount' => Yii::t('app', '婚礼预算'),
             'related_service' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
             'service_style' => Yii::t('app', '婚礼类型（单选）（室内，室外）'),
             'related_case_id' => Yii::t('app', '关联案例编号'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
+        	'vip.vip_name' =>  Yii::t('app', '会员'),
         		'city.name' =>  Yii::t('app', '城市'),
         		'country.name' =>  Yii::t('app', '国家'),
         		'deliveryStatus.param_val' =>  Yii::t('app', '配送状态'),
@@ -255,8 +256,8 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         		'pickPoint.name' =>  Yii::t('app', '自提点'),
         		'sheetType.name' =>  Yii::t('app', '订单类型'),
         		'serviceStyle.param_val' =>  Yii::t('app', '婚礼类型'),
-        		'related_services' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
-        		'related_service_names' => Yii::t('app', '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）'),
+        		'related_services' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
+        		'related_service_names' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
         		'vip_no' => Yii::t('app', '会员编号'),
         		'start_date' => Yii::t('app', '开始日期'),
         		'end_date' => Yii::t('app', '结束日期'),

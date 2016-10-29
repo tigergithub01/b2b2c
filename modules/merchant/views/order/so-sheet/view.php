@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\admin\Module;
+use app\modules\merchant\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SoSheet */
@@ -111,19 +111,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th>服务</th>
                   <th>价格</th>
-                  <th>操作</th>
+                  <!-- <th>操作</th> -->
                 </tr>
                 <?php foreach ($soSheetDetailList as $soSheetDetail) {?>
                 <tr>
                   <td><?= ($soSheetDetail->package)?$soSheetDetail->package->name.'(团体服务)':$soSheetDetail->product->name?></td>
                   <td><?= $soSheetDetail->price ?></td>
-                  <td><?= Html::a(Yii::t('app', 'Delete'), ['delete-so-sheet-detail', 'id' => $soSheetDetail->id], [
+                  <!-- <td> --><?php /* echo Html::a(Yii::t('app', 'Delete'), ['delete-so-sheet-detail', 'id' => $soSheetDetail->id], [
 	            'class' => '',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
 	                'method' => 'post',
 	            ],
-	        ]) ?></td>
+	        ])*/ ?><!-- </td> -->
                 </tr>
                 <?php }?>
               </table>
@@ -134,15 +134,15 @@ $this->params['breadcrumbs'][] = $this->title;
           
           <div class="box">
     	<div class="box-footer">
-	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+	    	<?php // echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+	        <?php /*echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
 	                'method' => 'post',
 	            ],
-	        ]) ?>
-	        <?= Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);?>
+	        ])*/ ?>
+	        <?php // echo Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);?>
 	    </div>
 	</div> 
 

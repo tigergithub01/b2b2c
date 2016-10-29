@@ -33,7 +33,7 @@ use app\modules\merchant\models\MerchantConst;
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
                 		'items' => [
                 				['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
-                				['label' => '退款单', 'url' => ['order/refund-sheet/index'],'icon' => 'fa fa-circle-o',],
+                				['label' => '退款申请单', 'url' => ['order/refund-sheet-apply/index'],'icon' => 'fa fa-circle-o',],
                 		],
                 	],
                 	['label' => '服务管理', 'icon' => 'fa fa-table','url' => '#',
