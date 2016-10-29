@@ -442,7 +442,14 @@ http://blog.csdn.net/xundh/article/details/45439077
 bootstrap modals:
 http://getbootstrap.com/javascript/#modals
 
+商户省市区选择问题
 
+apache 500错误问题。
+
+E:\\source\\workplace-php\\b2b2c\\vendor\\yiisoft\\yii2\\web\\Session.php on line 175
+
+缺少分单功能，缺少订单与商户对应关系表。增加此表是便于查询。
+表名暂定为：t_so_sheet_vip
 
 
 
