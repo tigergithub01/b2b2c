@@ -45,7 +45,9 @@ class LoginController extends BaseController
 			if($user_db){
 				//写用户信息
 				$session = Yii::$app->session;
-				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+				
+				//会话用户
+				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db->getWebSysUser());
 				
 				//写权限信息 TODO:
 					

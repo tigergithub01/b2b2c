@@ -3,6 +3,7 @@
 namespace app\models\b2b2c;
 
 use Yii;
+use app\models\b2b2c\web\WebSysUser;
 
 /**
  * This is the model class for table "t_sys_user".
@@ -265,5 +266,17 @@ class SysUser extends \app\models\b2b2c\BasicModel
     public function getVipOrganizations()
     {
         return $this->hasMany(VipOrganization::className(), ['audit_user_id' => 'id']);
+    }
+    
+    /**
+     * 获取会话用户
+     * @return \app\models\b2b2c\web\WebSysUser
+     */
+    public function getWebSysUser(){
+    	$webUser = new WebSysUser();
+    	$webUser->id = $this->id;
+    	$webUser->user_id = $this->user_id;
+    	$webUser->user_name = $this->user_name;
+    	return $webUser;
     }
 }

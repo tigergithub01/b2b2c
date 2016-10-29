@@ -7,6 +7,7 @@ use app\models\b2b2c\SysUser;
 use app\modules\admin\models\AdminConst;
 use app\models\b2b2c\SysParameter;
 use app\modules\merchant\models\MerchantConst;
+use yii\helpers\ArrayHelper;
 
 
 class SysUserService{
@@ -50,7 +51,6 @@ class SysUserService{
     	//更新最后一次登录时间
     	$_user->last_login_date = date(AdminConst::DATE_FORMAT,time());
     	$_user->update(true,['last_login_date']);
-    	 
     	return $_user;
     }
     

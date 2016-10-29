@@ -546,7 +546,7 @@ class MerchantController extends BaseAuthController
     protected function findSysRegionList($region_type, $parent_id = null){
     	return SysRegion::find()
     	->where(['region_type' =>$region_type])
-    	->andFilterWhere(['parent_id' => $parent_id])->limit(100)->offset(0)->all();
+    	->andFilterWhere(['parent_id' => $parent_id])->all();
     }
     
     /**

@@ -65,7 +65,7 @@ return [
 		'Update Product Type'=>'编辑产品分类',
 		
 		//产品信息
-		'Product'=>'产品信息',
+		'Product'=>'服务信息',
 		'Products'=>'产品列表',
 		'Create Product'=>'新增产品',
 		'Update Product'=>'编辑产品',

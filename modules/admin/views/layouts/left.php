@@ -14,7 +14,7 @@ use app\models\b2b2c\VipBlog;
                 <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p><?php echo Yii::$app->session->get('login_admin_user')['user_id']; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
+                <p><?php echo Yii::$app->session->get('login_admin_user')->user_id; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
             </div>
         </div>
 

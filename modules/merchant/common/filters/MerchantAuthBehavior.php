@@ -45,7 +45,7 @@ class MerchantAuthBehavior extends Behavior{
 	 			if($model->validate() && ($vip_db = $merchantService->login($model,true))){
 	 				// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
 	 				//设置用户
-	 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db);
+	 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db->getWebVip());
 	 				
 	 				//设置权限等信息TODO:
 	 				

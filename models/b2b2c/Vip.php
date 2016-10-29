@@ -3,6 +3,7 @@
 namespace app\models\b2b2c;
 
 use Yii;
+use app\models\b2b2c\web\WebVip;
 
 /**
  * This is the model class for table "t_vip".
@@ -581,4 +582,21 @@ class Vip extends \app\models\b2b2c\BasicModel
     {
         return $this->hasMany(VipProductType::className(), ['vip_id' => 'id']);
     }
+    
+    /**
+     *  获取会话用户
+     * @return \app\models\b2b2c\web\WebVip
+     */
+    public function getWebVip(){
+    	$webVip = new WebVip();
+    	$webVip->id = $this->id;
+    	$webVip->vip_id = $this->vip_id;
+    	$webVip->vip_name = $this->vip_name;
+    	$webVip->merchant_flag = $this->merchant_flag;
+    	$webVip->img_url = $this->img_url;
+    	$webVip->thumb_url = $this->thumb_url;
+    	$webVip->vip_type_id = $this->vip_type_id;
+    	return $webVip;
+    }
+    
 }

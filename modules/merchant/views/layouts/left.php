@@ -20,7 +20,7 @@ use app\modules\merchant\models\MerchantConst;
                 
             </div>
             <div class="pull-left info">
-                <p><?php echo Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)['vip_name']; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
+                <p><?php echo Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->vip_name; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
             </div>
         </div>
 
@@ -44,7 +44,7 @@ use app\modules\merchant\models\MerchantConst;
                 	],
                 	['label' => '案例管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
-                					['label' => '案例列表',  'url' => ['organization/vip-organization/index'],'icon' => 'fa fa-circle-o'],
+                					['label' => '案例列表',  'url' => ['vip/vip-case/index'],'icon' => 'fa fa-circle-o'],
                 			],
                 	],
                 	['label' => '个人中心', 'icon' => 'fa fa-table','url' => '#',

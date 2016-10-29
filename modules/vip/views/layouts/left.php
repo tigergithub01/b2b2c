@@ -10,10 +10,14 @@ use app\modules\vip\models\VipConst;
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+               <?php if(Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->thumb_url){?>
+                	<img src="<?= Yii::$app->request->hostInfo . '/' . Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->thumb_url ?>" class="img-circle" alt="User Image"/>
+               	<?php } else {?>
+               		<img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+               	<?php }?>
             </div>
             <div class="pull-left info">
-                <p><?php echo Yii::$app->session->get(VipConst::LOGIN_VIP_USER)['vip_name']; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
+                <p><?php echo Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->vip_name; /* echo $_SESSION['login_admin_user']['user_id']; */?></p>
             </div>
         </div>
 

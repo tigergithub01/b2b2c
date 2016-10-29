@@ -9,6 +9,7 @@ use app\models\b2b2c\SysUser;
 use app\models\b2b2c\SysOperationLog;
 use yii\helpers\Json;
 use app\modules\admin\service\system\SysUserService;
+use app\models\b2b2c\web\WebUser;
 
 class AdminAuthBehavior extends Behavior{
 	
@@ -54,7 +55,7 @@ class AdminAuthBehavior extends Behavior{
 	 			if($model->validate() && ($user_db = $userService->login($model,true))){
 	 				// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
 	 				//设置用户
-	 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+	 				$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db->getWebSysUser());
 	 				
 	 				//设置权限等信息TODO:
 	 				

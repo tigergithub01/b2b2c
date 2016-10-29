@@ -42,7 +42,7 @@ class AdminAuthFilter extends ActionFilter{
 				if($model->validate() && ($user_db = $userService->login($model,true))){
 					// 	 			$_SESSION[AdminConst::LOGIN_ADMIN_USER]=$user_db;
 					//设置用户
-					$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db);
+					$session->set(AdminConst::LOGIN_ADMIN_USER,$user_db->getWebSysUser());
 		
 					//设置权限等信息TODO:
 		

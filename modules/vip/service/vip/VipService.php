@@ -57,7 +57,7 @@ class VipService{
 		
 		//写登录后信息
 		$session = Yii::$app->session;
-		$session->set(VipConst::LOGIN_VIP_USER,$_vip);
+		$session->set(VipConst::LOGIN_VIP_USER,$_vip->getWebVip());
 		
 		//写权限信息 TODO：
 			
@@ -153,7 +153,7 @@ class VipService{
 		
 		//写会话信息
 		$session = Yii::$app->session;
-		$session->set(VipConst::LOGIN_VIP_USER,$model);
+		$session->set(VipConst::LOGIN_VIP_USER,$model->getWebVip());
 		//写权限信息 TOOD：
 		
 		

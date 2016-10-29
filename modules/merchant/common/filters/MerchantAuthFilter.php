@@ -38,7 +38,8 @@ class MerchantAuthFilter extends ActionFilter{
 	 			$merchantService = new MerchantService();
 	 			if($model->validate() && ($merchant_db = $merchantService->login($model,true))){
 	 				//设置用户
-	 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$merchant_db);
+	 				
+	 				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$merchant_db->getWebVip());
 	 				
 	 				//设置权限等信息TODO:
 	 				

@@ -91,7 +91,7 @@ class MerchantService{
 		$model->email_verify_flag=SysParameter::no;
 		$model->status = SysParameter::yes;
 		$model->register_date=date(MerchantConst::DATE_FORMAT,time());
-		$model->audit_status = SysParameter::audit_need_approve;
+		$model->audit_status = SysParameter::audit_need_submit;
 		$model->mobile_verify_flag = SysParameter::yes;
 		$model->password = md5($model->password);
 		$model->last_login_date = date(MerchantConst::DATE_FORMAT,time());//注册成功后自动登录
@@ -187,7 +187,7 @@ class MerchantService{
 			
 			//写session
 			$session = Yii::$app->session;
-			$session->set(MerchantConst::LOGIN_MERCHANT_USER,$model);
+			$session->set(MerchantConst::LOGIN_MERCHANT_USER,$model->getWebVip());
 			//写权限信息 TOOD：
 			
 			

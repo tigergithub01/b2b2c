@@ -44,7 +44,8 @@ class LoginController extends BaseController
 			if($vip_db){
 				//写session
 				$session = Yii::$app->session;
-				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db);
+ 				
+				$session->set(MerchantConst::LOGIN_MERCHANT_USER,$vip_db->getWebVip());
 				
 				//写权限信息 TODO：
 					
