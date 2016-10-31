@@ -71,6 +71,7 @@ use Yii;
  * @property SoSheetCoupon[] $soSheetCoupons
  * @property SoSheetDetail[] $soSheetDetails
  * @property SoSheetPayInfo[] $soSheetPayInfos
+ * @property SoSheetVip[] $soSheetVips
  * @property VipCoupon[] $vipCoupons
  * @property VipCouponLog[] $vipCouponLogs
  * @property SysParameter $serviceStyle
@@ -115,6 +116,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	
 	/* 服务类别，用来显示数据 */
 	public $related_service_names;
+	
+	/* 商户编号  */
+	public $merchant_id;
 	
 	
     /**
@@ -439,6 +443,14 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getSoSheetPayInfos()
     {
         return $this->hasMany(SoSheetPayInfo::className(), ['order_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoSheetVips()
+    {
+    	return $this->hasMany(SoSheetVip::className(), ['order_id' => 'id']);
     }
 
     /**

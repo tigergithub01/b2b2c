@@ -51,6 +51,8 @@ class SoSheetController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new SoSheetSearch();
+        $searchModel->merchant_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+        
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

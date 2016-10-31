@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\b2b2c\RefundSheetApply;
+use app\models\b2b2c\SoSheetVip;
 
 /**
  * RefundSheetApplySearch represents the model behind the search form about `app\models\b2b2c\RefundSheetApply`.
@@ -45,6 +46,7 @@ class RefundSheetApplySearch extends RefundSheetApply
     	->joinWith("vip vip")
     	->joinWith("order order")
     	->joinWith("status0 stat");
+        
 
         // add conditions that should always apply here
 
@@ -100,6 +102,12 @@ class RefundSheetApplySearch extends RefundSheetApply
         
         if($this->end_date){
         	$query->andFilterWhere(['<=', 'refundApply.apply_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+        }
+        
+        //根据商户编号进行过滤
+        if($this->merchant_id){
+        	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$this->merchant_id])->column();
+        	$query->andFilterWhere(['refundApply.order_id' => $subquery]);
         }
 
         return $dataProvider;

@@ -41,6 +41,9 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
 	
 	/* 订单编号 （查询用） */
 	public $order_code;
+	
+	/* 商户编号  */
+	public $merchant_id;
     
     /**
      * @inheritdoc

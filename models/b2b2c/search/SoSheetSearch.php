@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SoSheetVip;
 
 /**
  * SoSheetSearch represents the model behind the search form about `app\models\b2b2c\SoSheet`.
@@ -57,7 +58,9 @@ class SoSheetSearch extends SoSheet
     	->joinWith("pickPoint pickPoint")
     	->joinWith("sheetType sheetType")
     	->joinWith("serviceStyle serviceStyle");
-
+        
+        
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -150,6 +153,14 @@ class SoSheetSearch extends SoSheet
         if($this->end_date){
         	$query->andFilterWhere(['<=', 'so.order_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
         }
+        
+        
+        //根据商户编号进行过滤
+        if($this->merchant_id){
+        	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$this->merchant_id])->column();
+        	$query->andFilterWhere(['so.id' => $subquery]);
+        }
+        
 
         return $dataProvider;
     }
