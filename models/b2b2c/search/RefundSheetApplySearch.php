@@ -63,6 +63,10 @@ class RefundSheetApplySearch extends RefundSheetApply
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'order.code' => [
         						'asc'  => ['order.code' => SORT_ASC],
         						'desc' => ['order.code' => SORT_DESC],

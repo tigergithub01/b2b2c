@@ -12,6 +12,7 @@ use app\models\b2b2c\common\PaginationObj;
 use yii\helpers\ArrayHelper;
 use app\models\b2b2c\search\VipConcernSearch;
 use app\models\b2b2c\VipConcern;
+use app\modules\vip\models\VipConst;
 
 /**
  * VipConcernController implements the CRUD actions for VipConcern model.
@@ -42,6 +43,7 @@ class VipConcernController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new VipConcernSearch();
+        $searchModel->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $models = $dataProvider->getModels();

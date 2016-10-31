@@ -76,6 +76,10 @@ class SoSheetSearch extends SoSheet
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'sheetType.name' => [
         						'asc'  => ['sheetType.name' => SORT_ASC],
         						'desc' => ['sheetType.name' => SORT_DESC],

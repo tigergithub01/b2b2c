@@ -82,17 +82,44 @@ class RefundSheetApplyController extends BaseAuthController
         $model->code = SheetType::getCode($model->sheet_type_id);
         $model->status = RefundSheetApply::status_need_confirm;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            MsgUtils::success();
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
+        	 
+        	$transaction = RefundSheetApply::getDb()->beginTransaction();
+        	try {
+        		//重新获取订单编号
+        		$model->code = SheetType::getCode($model->sheet_type_id, true);
+        		 
+        		/* 保存失败处理 */
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderCreate($model);
+        		}
+        		 
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        		 
+        	}catch (\Exception $e) {
+        		$transaction->rollBack();
+        		$model->addError('code',$e->getMessage());
+        		return $this->renderCreate($model);
+        	}
+        	 
+        	MsgUtils::success();
+        	return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            		'vipList' => $this->findVipList(SysParameter::no),
-            		'refundApplyStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_APPLY_STATUS),
-            		'soSheetList' => $this->findSoSheetList(),
-            ]);
+        	return $this->renderCreate($model);
         }
+    }
+    
+    
+    private function renderCreate($model){
+    	return $this->render('create', [
+    			'model' => $model,
+    			'vipList' => $this->findVipList(SysParameter::no),
+    			'refundApplyStatusList' => SysParameterType::getSysParametersById(SysParameterType::REFUND_APPLY_STATUS),
+    			'soSheetList' => $this->findSoSheetList(),
+    	]);
     }
 
     /**

@@ -70,6 +70,7 @@ class VipConcern extends \app\models\b2b2c\BasicModel
             'concern_date' => Yii::t('app', '关注时间'),
         	'vip.vip_id'=> Yii::t('app', '会员编号'),
         	'refVip.vip_id'=> Yii::t('app', '关注商家编号'),
+        	'refVip.vip_name'=> Yii::t('app', '关注商家'),
         	'vip_no'=> Yii::t('app', '会员编号'),
         	'ref_vip_no'=> Yii::t('app', '关注商家编号'),
         ];

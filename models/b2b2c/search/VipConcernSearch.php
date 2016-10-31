@@ -64,6 +64,10 @@ class VipConcernSearch extends VipConcern
         						'asc'  => ['refVip.vip_id' => SORT_ASC],
         						'desc' => ['refVip.vip_id' => SORT_DESC],
         				],
+        				'refVip.vip_name' => [
+        						'asc'  => ['refVip.vip_name' => SORT_ASC],
+        						'desc' => ['refVip.vip_name' => SORT_DESC],
+        				],
         		])
         ]);
 
@@ -77,10 +81,10 @@ class VipConcernSearch extends VipConcern
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'vip_id' => $this->vip_id,
-            'ref_vip_id' => $this->ref_vip_id,
-            'concern_date' => $this->concern_date,
+            'vipConcern.id' => $this->id,
+            'vipConcern.vip_id' => $this->vip_id,
+            'vipConcern.ref_vip_id' => $this->ref_vip_id,
+            'vipConcern.concern_date' => $this->concern_date,
         ]);
         
         $query->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])

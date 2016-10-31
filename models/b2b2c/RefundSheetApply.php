@@ -29,6 +29,7 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
 	const status_refund = 24003; // 已退款
 	const status_rejected = 24004; // 审核不通过
 	const status_cancelled = 24005; // 用户已撤销
+	const status_need_submit = 24006; //未提交
 	
 	/* 会员编号（查询用） */
 	public $vip_no;

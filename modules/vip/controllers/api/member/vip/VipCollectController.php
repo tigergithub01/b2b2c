@@ -14,6 +14,7 @@ use app\models\b2b2c\search\VipConcernSearch;
 use app\models\b2b2c\VipConcern;
 use app\models\b2b2c\search\VipCollectSearch;
 use app\models\b2b2c\VipCollect;
+use app\modules\vip\models\VipConst;
 
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.
@@ -44,6 +45,7 @@ class VipCollectController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new VipCollectSearch();
+        $searchModel->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $models = $dataProvider->getModels();
