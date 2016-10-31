@@ -8,7 +8,7 @@ use app\modules\vip\Module;
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-mini">'.Module::t('app', 'app_vip_short_name').'</span><span class="logo-lg">' . Module::t('app', 'app_vip_name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a('<span class="logo-mini">'.Module::t('app', 'app_vip_short_name').'</span><span class="logo-lg">' . Module::t('app', 'app_vip_name') . '</span>', ['member/default/index'], ['class' => 'logo']) ?>
 
     <nav class="navbar navbar-static-top" role="navigation">
 
