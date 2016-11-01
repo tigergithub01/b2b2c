@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\admin\Module;
+use app\modules\vip\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\ProductSearch */
@@ -116,7 +116,7 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Module::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?php // echo Html::a(Module::t('app', 'Create Product'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

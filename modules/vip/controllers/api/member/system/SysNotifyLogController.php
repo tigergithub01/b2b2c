@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\member\system;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseAuthController;
+use app\modules\vip\common\controllers\BaseAuthApiController;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
 use app\common\utils\UrlUtils;
@@ -16,7 +16,7 @@ use app\models\b2b2c\search\SysNotifyLogSearch;
 /**
  * SysNotifyLogController implements the CRUD actions for SysNotifyLog model.
  */
-class SysNotifyLogController extends BaseAuthController
+class SysNotifyLogController extends BaseAuthApiController
 {
     /**
      * @inheritdoc

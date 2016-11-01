@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\vip;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseApiController;
 use app\models\b2b2c\SysAdInfo;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
@@ -20,7 +20,7 @@ use app\models\b2b2c\Vip;
 /**
  * VipController implements the CRUD actions for Vip model.
  */
-class MerchantController extends BaseController
+class MerchantController extends BaseApiController
 {
     /**
      * @inheritdoc

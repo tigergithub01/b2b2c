@@ -13,6 +13,8 @@ use yii\helpers\Json;
 
 class BaseController extends Controller
 {
+	public $layout="main-blank";
+	
 	/* 公用action 
 	 注意：ErrorAction的优先级要高于actionError的优先级 */
 	

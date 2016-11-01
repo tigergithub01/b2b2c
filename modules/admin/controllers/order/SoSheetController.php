@@ -251,7 +251,6 @@ class SoSheetController extends BaseAuthController
     			SoSheetVip::deleteAll(['order_id'=>$order_id]);
     			//insert last
     			foreach ($vip_ids as $vip_id) {
-    				var_dump($vip_id);
     				$soSheetVip = new SoSheetVip();
     				$soSheetVip->vip_id = $vip_id;
     				$soSheetVip->order_id = $order_id;

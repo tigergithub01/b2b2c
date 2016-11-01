@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\blog;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseApiController;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
 use app\common\utils\UrlUtils;
@@ -18,7 +18,7 @@ use app\models\b2b2c\VipBlogType;
 /**
  * VipBlogTypeController implements the CRUD actions for VipBlogType model.
  */
-class VipBlogTypeController extends BaseController
+class VipBlogTypeController extends BaseApiController
 {
     /**
      * @inheritdoc

@@ -28,6 +28,8 @@ class BaseAuthController extends BaseController
 		];
 	} */
 	
+	public $layout="main";
+	
 	public function behaviors()
 	{
 		return array_merge(parent::behaviors(),[VipAuthFilter::className(),

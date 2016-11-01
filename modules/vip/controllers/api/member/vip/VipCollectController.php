@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\member\vip;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseAuthController;
+use app\modules\vip\common\controllers\BaseAuthApiController;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
 use app\common\utils\UrlUtils;
@@ -19,7 +19,7 @@ use app\modules\vip\models\VipConst;
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.
  */
-class VipCollectController extends BaseAuthController
+class VipCollectController extends BaseAuthApiController
 {
     /**
      * @inheritdoc

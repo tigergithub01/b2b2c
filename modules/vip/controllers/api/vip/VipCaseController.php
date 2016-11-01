@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\vip;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseApiController;
 use app\models\b2b2c\SysAdInfo;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
  */
-class VipCaseController extends BaseController
+class VipCaseController extends BaseApiController
 {
     /**
      * @inheritdoc

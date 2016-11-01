@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\member\order;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseAuthController;
+use app\modules\vip\common\controllers\BaseAuthApiController;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
 use app\common\utils\UrlUtils;
@@ -18,7 +18,7 @@ use app\models\b2b2c\SoSheet;
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
  */
-class SoSheetController extends BaseAuthController
+class SoSheetController extends BaseAuthApiController
 {
     /**
      * @inheritdoc

@@ -48,12 +48,14 @@ use Yii;
  * @property string $related_service
  * @property string $service_style
  * @property string $related_case_id
+ * @property string $merchant_id
  *
  * @property OutStockSheet[] $outStockSheets
  * @property RefundSheet[] $refundSheets
  * @property RefundSheetApply[] $refundSheetApplies
  * @property ReturnApply[] $returnApplies
  * @property ReturnSheet[] $returnSheets
+ * @property Vip $merchant
  * @property Vip $vip
  * @property SysRegion $city
  * @property SysRegion $country
@@ -171,10 +173,11 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     {
         return [
             [['sheet_type_id', 'code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
-            [['sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id'], 'integer'],
+            [['sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id', 'merchant_id'], 'integer'],
             [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'budget_amount'], 'number'],
             [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
+        	[['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['merchant_id' => 'id']],
             [['delivery_no', 'invoice_header', 'related_service', 'service_style'], 'string', 'max' => 60],
             [['memo'], 'string', 'max' => 400],
             [['message'], 'string', 'max' => 300],
@@ -245,6 +248,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'related_service' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
             'service_style' => Yii::t('app', '婚礼类型（单选）（室内，室外）'),
             'related_case_id' => Yii::t('app', '关联案例编号'),
+        	'merchant_id' => Yii::t('app', '关联商户编号（订单咨询时可用）'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         	'vip.vip_name' =>  Yii::t('app', '会员'),
         		'city.name' =>  Yii::t('app', '城市'),
@@ -307,6 +311,14 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getReturnSheets()
     {
         return $this->hasMany(ReturnSheet::className(), ['order_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMerchant()
+    {
+    	return $this->hasOne(Vip::className(), ['id' => 'merchant_id']);
     }
 
     /**

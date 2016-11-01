@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\vip;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseApiController;
 use app\models\b2b2c\SysAdInfo;
 use app\models\b2b2c\common\JsonObj;
 use yii\helpers\Json;
@@ -24,7 +24,7 @@ use app\models\b2b2c\ProductComment;
 /**
  * ProductCommentController implements the CRUD actions for ProductComment model.
  */
-class ProductCommentController extends BaseController
+class ProductCommentController extends BaseApiController
 {
     /**
      * @inheritdoc

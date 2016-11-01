@@ -12,6 +12,7 @@ class WebVip extends \yii\base\Object
 	public $img_url;
 	public $thumb_url;
 	public $vip_type_id;
+	public $service_date;
 	
 	
 }

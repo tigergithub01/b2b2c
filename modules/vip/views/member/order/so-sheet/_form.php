@@ -40,34 +40,34 @@ use app\models\b2b2c\common\Constant;
 	    <div class="box-body">
 	    <?php //echo $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
 	    
-	    <?= $form->field($model, 'sheet_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($sheetTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	    <?php // echo $form->field($model, 'sheet_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($sheetTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php //echo $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'order_amt')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'order_amt')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'order_quantity')->textInput() ?>
 
-    <?= $form->field($model, 'goods_amt')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'goods_amt')->textInput(['maxlength' => true, 'readonly' => true]) ?>
 
     <?php // echo $form->field($model, 'deliver_fee')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'order_date')->textInput() ?>
     
-    <?= $form->field($model, 'order_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* $form->field($model, 'order_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
-    <?php  $form->field($model, 'delivery_date')->textInput() ?>
+    <?php // echo $form->field($model, 'delivery_date')->textInput() ?>
 
     <?php // echo $form->field($model, 'delivery_type')->textInput(['maxlength' => true]) ?>
     
@@ -75,18 +75,18 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'pay_type_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'pay_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($payTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'pay_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($payTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'pay_date')->textInput() ?>
     
-    <?= $form->field($model, 'pay_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* $form->field($model, 'pay_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
     <?php // echo $form->field($model, 'delivery_no')->textInput(['maxlength' => true]) ?>
 
@@ -94,7 +94,7 @@ use app\models\b2b2c\common\Constant;
     
     <?php // echo $form->field($model, 'pick_point_id')->dropDownList(\yii\helpers\ArrayHelper::map($pickUpPointList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'paid_amt')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'paid_amt')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'integral')->textInput(['maxlength' => true]) ?>
 
@@ -104,26 +104,26 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'discount')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'return_amt')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'return_amt')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'return_date')->textInput() ?>
     
-    <?= $form->field($model, 'return_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* $form->field($model, 'return_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
-    <?= $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
+    <?php // echo $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
+    
 
     <?php // echo $form->field($model, 'order_status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'order_status')->dropDownList(\yii\helpers\ArrayHelper::map($orderStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'order_status')->dropDownList(\yii\helpers\ArrayHelper::map($orderStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'delivery_status')->textInput(['maxlength' => true]) ?>
     
@@ -131,7 +131,7 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'pay_status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'pay_status')->dropDownList(\yii\helpers\ArrayHelper::map($payStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'pay_status')->dropDownList(\yii\helpers\ArrayHelper::map($payStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'consignee')->textInput(['maxlength' => true]) ?>
 
@@ -153,7 +153,7 @@ use app\models\b2b2c\common\Constant;
 
     <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'detail_address')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'detail_address')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'invoice_type')->textInput(['maxlength' => true]) ?>
     
@@ -180,14 +180,17 @@ use app\models\b2b2c\common\Constant;
     <?php // echo $form->field($model, 'service_style')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'service_style')->dropDownList(\yii\helpers\ArrayHelper::map($serviceStyleList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+	
+	<?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
+	
     <?php //echo $form->field($model, 'related_case_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	
 	    <div class="box-footer form-group">
-	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-	        <?php if (!($model->isNewRecord)) {echo Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);}?>
+	        <?php // echo Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	        <?php //echo if (!($model->isNewRecord)) {echo Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);}?>
+	        <?php echo Html::submitButton('提交订单', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	    </div>
 
     	<?php ActiveForm::end(); ?>

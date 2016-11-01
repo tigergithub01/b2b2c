@@ -3,7 +3,7 @@
 namespace app\modules\vip\controllers\api\system;
 
 use Yii;
-use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseApiController;
 use app\models\b2b2c\SysAppInfo;
 use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\SysAppRelease;
@@ -15,7 +15,7 @@ use app\common\utils\CommonUtils;
  app下载
  http://localhost:8089/vip/api/system/sys-app-release/index?code=wedding_android
  */
-class SysAppReleaseController extends BaseController
+class SysAppReleaseController extends BaseApiController
 {
 	
     public function actionIndex()
