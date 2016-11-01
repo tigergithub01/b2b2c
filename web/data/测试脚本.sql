@@ -441,5 +441,103 @@ CREATE TABLE `t_act_package_product` (
 
 alter table t_act_package_product drop foreign key fk_pkg_prod_ref_prod;
 
+alter table t_act_package_product modify sale_price           decimal(20,6) null comment '原价';
+
+
+SELECT `actProd`.* FROM `t_act_package_product` `actProd` 
+LEFT JOIN `t_activity` `act` ON `actProd`.`act_id` = `act`.`id` 
+LEFT JOIN `t_product` `product` ON `actProd`.`product_id` = `product`.`id` 
+LEFT JOIN `t_product` ON `actProd`.`product_id` = `t_product`.`id` 
+LEFT JOIN `t_vip` `vip` ON `t_product`.`vip_id` = `vip`.`id` WHERE `actProd`.`act_id`='2'
+
+SELECT `actProd`.* FROM `t_act_package_product` `actProd` 
+LEFT JOIN `t_activity` `act` ON `actProd`.`act_id` = `act`.`id` 
+LEFT JOIN `t_product` ON `actProd`.`product_id` = `t_product`.`id` 
+LEFT JOIN `t_vip` `vip` ON `t_product`.`vip_id` = `vip`.`id` WHERE `actProd`.`act_id`='2'
+
+alter table t_product modify service_flag         bigint(20) not  null comment '是否个人服务？1：是；0：否（每个商户只有一个个人服务）';
+
+alter table t_product add constraint fk_prod_service_flag_ref_param foreign key (service_flag)
+      references t_sys_parameter (id);
+
+update t_product set service_flag = 1;
+
+
+SELECT `p`.*, `vip`.`vip_name` FROM `t_product` `p` LEFT JOIN `t_vip` `vip` ON `p`.`vip_id` = `vip`.`id` WHERE `p`.`serivce_flag`=1
+
+
+select * from t_vip;
+
+update t_sys_parameter set param_val = '待审核' where id = '3001'
+
+alter table t_so_sheet_detail  modify product_id           bigint(20) comment '关联产品编号';
+
+alter table t_refund_sheet  modify merchant_id          bigint(20) comment '关联商户编号';
+
+select * from t_sys_region;
+
+update t_sys_parameter set param_val = '待提交' where id = '3001';
+update t_sys_parameter set param_val = '待审核' where id = '3004';
+
+
+
+create table t_so_sheet_vip
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   order_id             bigint(20) not null comment '关联订单编号',
+   vip_id               bigint(20) not null comment '关联商户编号',
+   primary key (id)
+);
+
+alter table t_so_sheet_vip comment '订单与商户对应关系（便于查询）';
+
+alter table t_so_sheet_vip add constraint fk_so_sheet_vip_ref_so_sheet foreign key (order_id)
+      references t_so_sheet (id);
+
+alter table t_so_sheet_vip add constraint fk_so_sheet_vip_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
+select distinct product_id from t_so_sheet_detail;
+
+select * from t_so_sheet_detail;
+
+select * from t_so_sheet_vip;
+
+SELECT DISTINCT `vip`.`id` FROM `t_so_sheet_detail` `so_detail` LEFT JOIN `t_activity` ON `so_detail`.`package_id` = `t_activity`.`id` LEFT JOIN `t_vip` `vip` ON `t_activity`.`vip_id` = `vip`.`id` WHERE `so_detail`.`order_id`=1
+
+(SELECT DISTINCT `vip`.`id` FROM `t_so_sheet_detail` `so_detail` LEFT JOIN `t_product` ON `so_detail`.`product_id` = `t_product`.`id` LEFT JOIN `t_vip` `vip` ON `t_product`.`vip_id` = `vip`.`id` WHERE `so_detail`.`order_id`='1') 
+
+UNION 
+
+select count(1) from 
+( SELECT *
+FROM `t_so_sheet_detail` `so_detail` 
+LEFT JOIN `t_activity` ON `so_detail`.`package_id` = `t_activity`.`id` 
+LEFT JOIN `t_vip` `vip` ON `t_activity`.`vip_id` = `vip`.`id` 
+WHERE `so_detail`.`order_id`='1' and so_detail.package_id is not null ) a
+
+SELECT `so`.* FROM `t_so_sheet_vip` `sovip` LEFT JOIN `t_so_sheet` `so` ON `sovip`.`order_id` = `so`.`id` LEFT JOIN `t_so_sheet` ON `sovip`.`order_id` = `t_so_sheet`.`id` LEFT JOIN `t_vip` `vip` ON `t_so_sheet`.`vip_id` = `vip`.`id` LEFT JOIN `t_sys_region` `city` ON `t_so_sheet`.`city_id` = `city`.`id` LEFT JOIN `t_sys_region` `country` ON `t_so_sheet`.`country_id` = `country`.`id` LEFT JOIN `t_sys_parameter` `deliveryStatus` ON `t_so_sheet`.`delivery_status` = `deliveryStatus`.`id` LEFT JOIN `t_sys_region` `district` ON `t_so_sheet`.`district_id` = `district`.`id` LEFT JOIN `t_sys_parameter` `invoiceType` ON `t_so_sheet`.`invoice_type` = `invoiceType`.`id` LEFT JOIN `t_sys_parameter` `orderStatus` ON `t_so_sheet`.`order_status` = `orderStatus`.`id` LEFT JOIN `t_sys_parameter` `payStatus` ON `t_so_sheet`.`pay_status` = `payStatus`.`id` LEFT JOIN `t_sys_region` `province` ON `t_so_sheet`.`province_id` = `province`.`id` LEFT JOIN `t_delivery_type_tpl` `deliveryType` ON `t_so_sheet`.`delivery_type` = `deliveryType`.`id` LEFT JOIN `t_pay_type` `payType` ON `t_so_sheet`.`pay_type_id` = `payType`.`id` LEFT JOIN `t_pick_up_point` `pickPoint` ON `t_so_sheet`.`pick_point_id` = `pickPoint`.`id` LEFT JOIN `t_sheet_type` `sheetType` ON `t_so_sheet`.`sheet_type_id` = `sheetType`.`id` LEFT JOIN `t_sys_parameter` `serviceStyle` ON `t_so_sheet`.`service_style` = `serviceStyle`.`id` LIMIT 20
+
+SELECT  distinct `so`.* FROM `t_so_sheet_vip` `sovip` INNER JOIN `t_so_sheet` `so` ON `sovip`.`order_id` = `so`.`id` LEFT JOIN `t_so_sheet` ON `sovip`.`order_id` = `t_so_sheet`.`id` LEFT JOIN `t_vip` `vip` ON `t_so_sheet`.`vip_id` = `vip`.`id` LEFT JOIN `t_sys_region` `city` ON `t_so_sheet`.`city_id` = `city`.`id` LEFT JOIN `t_sys_region` `country` ON `t_so_sheet`.`country_id` = `country`.`id` LEFT JOIN `t_sys_parameter` `deliveryStatus` ON `t_so_sheet`.`delivery_status` = `deliveryStatus`.`id` LEFT JOIN `t_sys_region` `district` ON `t_so_sheet`.`district_id` = `district`.`id` LEFT JOIN `t_sys_parameter` `invoiceType` ON `t_so_sheet`.`invoice_type` = `invoiceType`.`id` LEFT JOIN `t_sys_parameter` `orderStatus` ON `t_so_sheet`.`order_status` = `orderStatus`.`id` LEFT JOIN `t_sys_parameter` `payStatus` ON `t_so_sheet`.`pay_status` = `payStatus`.`id` LEFT JOIN `t_sys_region` `province` ON `t_so_sheet`.`province_id` = `province`.`id` LEFT JOIN `t_delivery_type_tpl` `deliveryType` ON `t_so_sheet`.`delivery_type` = `deliveryType`.`id` LEFT JOIN `t_pay_type` `payType` ON `t_so_sheet`.`pay_type_id` = `payType`.`id` LEFT JOIN `t_pick_up_point` `pickPoint` ON `t_so_sheet`.`pick_point_id` = `pickPoint`.`id` LEFT JOIN `t_sheet_type` `sheetType` ON `t_so_sheet`.`sheet_type_id` = `sheetType`.`id` LEFT JOIN `t_sys_parameter` `serviceStyle` ON `t_so_sheet`.`service_style` = `serviceStyle`.`id` LIMIT 20
+
+select * from t_so_sheet a where exists(select * from t_so_sheet_vip b where b.order_id = a.id )
+
+select * from t_so_sheet_vip;
+
+select * from t_activity
+select * from t_product;
+select * from t_so_sheet_detail;
+
+SELECT `so`.* FROM `t_so_sheet` `so` LEFT JOIN `t_vip` `vip` ON `so`.`vip_id` = `vip`.`id` LEFT JOIN `t_sys_region` `city` ON `so`.`city_id` = `city`.`id` LEFT JOIN `t_sys_region` `country` ON `so`.`country_id` = `country`.`id` LEFT JOIN `t_sys_parameter` `deliveryStatus` ON `so`.`delivery_status` = `deliveryStatus`.`id` LEFT JOIN `t_sys_region` `district` ON `so`.`district_id` = `district`.`id` LEFT JOIN `t_sys_parameter` `invoiceType` ON `so`.`invoice_type` = `invoiceType`.`id` LEFT JOIN `t_sys_parameter` `orderStatus` ON `so`.`order_status` = `orderStatus`.`id` LEFT JOIN `t_sys_parameter` `payStatus` ON `so`.`pay_status` = `payStatus`.`id` LEFT JOIN `t_sys_region` `province` ON `so`.`province_id` = `province`.`id` LEFT JOIN `t_delivery_type_tpl` `deliveryType` ON `so`.`delivery_type` = `deliveryType`.`id` LEFT JOIN `t_pay_type` `payType` ON `so`.`pay_type_id` = `payType`.`id` LEFT JOIN `t_pick_up_point` `pickPoint` ON `so`.`pick_point_id` = `pickPoint`.`id` LEFT JOIN `t_sheet_type` `sheetType` ON `so`.`sheet_type_id` = `sheetType`.`id` LEFT JOIN `t_sys_parameter` `serviceStyle` ON `so`.`service_style` = `serviceStyle`.`id` 
+
+
+
+WHERE `so`.`id` IN (SELECT `order_id` FROM `t_so_sheet_vip` WHERE `vip_id`=2) LIMIT 20
+
+select * from t_sys_region where id in (select id from t_sys_region);
+
+select * from t_refund_sheet_apply;
+
+select * from t_so_sheet
 
 */
