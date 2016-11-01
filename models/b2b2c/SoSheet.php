@@ -119,8 +119,8 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	/* 服务类别，用来显示数据 */
 	public $related_service_names;
 	
-	/* 商户编号  */
-	public $merchant_id;
+	/* 商户编号-查询用（查询普通订单，查询用的商户编号)  */
+	public $query_merchant_id;
 	
 	
     /**

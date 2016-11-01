@@ -16,6 +16,8 @@ use app\models\b2b2c\VipCase;
 use yii\helpers\ArrayHelper;
 use app\models\b2b2c\search\MerchantSearch;
 use app\models\b2b2c\Vip;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\SysParameter;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -68,7 +70,13 @@ class MerchantController extends BaseApiController
     	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
     	$model = $this->findModel($id);
     	
-    	return CommonUtils::json_success($model);
+    	//根据商户编号查询此商户对应的个人服务
+    	$product = $this->findProduct($model->id);
+    	
+    	return CommonUtils::json_success([
+    			"model"=>$model,
+    			'product'=>$product
+    	]);
     }
 	
     /**
@@ -98,6 +106,18 @@ class MerchantController extends BaseApiController
     	$model->img_original = UrlUtils::formatUrl($model->img_original);
     	
     	
+    	return $model;
+    }
+    
+    /**
+     * findProduct
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findProduct($vip_id)
+    {
+    	$model = Product::find()
+    	->where(['vip_id'=>$vip_id, 'service_flag'=>SysParameter::yes])->one();
     	return $model;
     }
     

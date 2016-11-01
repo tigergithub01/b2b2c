@@ -596,7 +596,7 @@ class Vip extends \app\models\b2b2c\BasicModel
     	$webVip->img_url = $this->img_url;
     	$webVip->thumb_url = $this->thumb_url;
     	$webVip->vip_type_id = $this->vip_type_id;
-    	$webVip->wedding_date = $this->wedding_date;
+    	$webVip->service_date = $this->wedding_date;
     	return $webVip;
     }
     

@@ -10,8 +10,6 @@ use app\common\utils\UrlUtils;
 use app\common\utils\CommonUtils;
 use app\models\b2b2c\common\PaginationObj;
 use yii\helpers\ArrayHelper;
-use app\models\b2b2c\search\VipConcernSearch;
-use app\models\b2b2c\VipConcern;
 use app\models\b2b2c\search\VipCollectSearch;
 use app\models\b2b2c\VipCollect;
 use app\modules\vip\models\VipConst;

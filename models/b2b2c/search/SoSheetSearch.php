@@ -160,9 +160,9 @@ class SoSheetSearch extends SoSheet
         }
         
         
-        //根据商户编号进行过滤
-        if($this->merchant_id){
-        	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$this->merchant_id])->column();
+        //普通订单根据商户编号进行过滤
+        if($this->query_merchant_id){
+        	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$this->query_merchant_id])->column();
         	$query->andFilterWhere(['so.id' => $subquery]);
         }
         

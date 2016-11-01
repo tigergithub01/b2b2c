@@ -80,8 +80,9 @@ use yii\helpers\Url;
 			<div class="form-group">
 				<?php echo Html::button('我的订单列表',['id'=>'btn_so_sheet_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/index'])]);?>
 				<?php echo Html::button('订单详情',['id'=>'btn_so_sheet_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/view'])]);?>
-				<?php echo Html::button('服务咨询',['id'=>'btn_andorid_download','class' => 'btn btn-primary','url'=>Url::to(['/vip/system/sys-app-info/index','code'=>'wedding_android'])]);?>
-				<?php echo Html::button('订单提交',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
+				<?php echo Html::button('服务咨询-定制订单',['id'=>'btn_order_submit_consult','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-consult'])]);?>
+				<?php echo Html::button('订单提交-个人服务',['id'=>'btn_order_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
+				<?php echo Html::button('订单提交-团体服务',['id'=>'btn_order_submit_package','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-package'])]);?>
 			</div>
 			
 			<div class="form-group">
