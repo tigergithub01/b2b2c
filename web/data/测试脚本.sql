@@ -24,6 +24,7 @@ select * from t_vip;
 
 select * from t_vip_organization;
 
+select * from t_activity;
 
 select * from t_vip_extend;
 
@@ -539,5 +540,11 @@ select * from t_sys_region where id in (select id from t_sys_region);
 select * from t_refund_sheet_apply;
 
 select * from t_so_sheet
+
+alter table t_so_sheet add merchant_id          bigint(20) comment '关联商户编号（订单咨询时可用）';
+
+
+alter table t_so_sheet add constraint fk_so_sheet_merchant_id_ref_vip foreign key (merchant_id)
+      references t_vip (id);
 
 */
