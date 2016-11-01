@@ -33,6 +33,11 @@ class CommonUtils{
 	public static function json_failed($message,$value=null,$attributeErrors=[], $err_code=null){
 		return Json::encode(new JsonObj(false, $value, $message, $attributeErrors, $err_code)) ;
 	}
+	
+	public static function jsonMsgObj_failed($message,$model = null){
+		$jsonObj = new JsonObj(false, null, $message, null, null);
+		return self::jsonObj_failed($jsonObj, $model);
+	}
 
 	public static function json_success($value, $message='操作成功!'){
 		return Json::encode(new JsonObj(true, $value, $message));
