@@ -15,6 +15,9 @@ class BaseController extends Controller
 {
 	public $layout="main-blank";
 	
+	//不啓用csrf
+	public $enableCsrfValidation = false;
+	
 	/* 公用action 
 	 注意：ErrorAction的优先级要高于actionError的优先级 */
 	
@@ -58,6 +61,7 @@ class BaseController extends Controller
 	public function beforeAction($action) {
 // 		Yii::info("BaseController beforeAction ". Yii::$app->request->absoluteUrl );
 // 		var_dump($action);
+		header("Access-Control-Allow-Origin: *");//允許跨域訪問
 		return parent::beforeAction($action);
 	}
 	

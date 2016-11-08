@@ -2,16 +2,14 @@
 
 namespace app\modules\vip\controllers\api\member\system;
 
-use Yii;
-use app\models\b2b2c\Vip;
-use yii\helpers\Url;
-use app\modules\vip\common\controllers\BaseController;
-use app\modules\vip\service\vip\VipService;
-use app\modules\vip\models\VipConst;
 use app\common\utils\CommonUtils;
 use app\models\b2b2c\common\JsonObj;
+use app\models\b2b2c\Vip;
+use app\modules\vip\common\controllers\BaseApiController;
+use app\modules\vip\service\vip\VipService;
+use Yii;
 
-class RegisterController extends BaseController
+class RegisterController extends BaseApiController
 {
 	
     /**

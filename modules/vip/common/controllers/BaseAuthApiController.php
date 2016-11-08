@@ -1,10 +1,7 @@
 <?php
 namespace app\modules\vip\common\controllers;
 
-use Yii;
-use yii\web\Controller;
-use app\modules\vip\common\filters\VipAuthBehavior;
-use app\modules\vip\common\filters\VipAuthFilter;
+
 
 
 /**

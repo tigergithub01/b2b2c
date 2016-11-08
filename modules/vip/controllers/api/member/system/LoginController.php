@@ -5,8 +5,7 @@ namespace app\modules\vip\controllers\api\member\system;
 use Yii;
 use yii\web\Controller;
 use app\models\b2b2c\Vip;
-use yii\helpers\Url;
-use app\modules\vip\common\controllers\BaseController;
+use app\modules\vip\common\controllers\BaseApiController;
 use app\modules\vip\service\vip\VipService;
 use app\modules\vip\models\VipConst;
 use app\models\b2b2c\common\JsonObj;
@@ -18,7 +17,7 @@ use yii\helpers\Json;
  * @author Tiger-guo
  *
  */
-class LoginController extends BaseController
+class LoginController extends BaseApiController
 {
 	
 	/**
