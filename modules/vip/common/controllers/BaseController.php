@@ -62,7 +62,9 @@ class BaseController extends Controller
 // 		Yii::info("BaseController beforeAction ". Yii::$app->request->absoluteUrl );
 // 		var_dump($action);
 		header("Access-Control-Allow-Origin: *");//允許跨域訪問
-		header("Access-Control-Allow-Methods: POST");//允許跨域訪問
+		header("Access-Control-Allow-Methods: POST, GET, OPTIONS");//允許跨域訪問
+		header("Access-Control-Allow-Headers: X-PINGOTHER");//允許跨域訪問
+		
 		return parent::beforeAction($action);
 	}
 	
