@@ -2,17 +2,13 @@
 
 namespace app\modules\vip\controllers\api\vip;
 
-use Yii;
-use app\modules\vip\common\controllers\BaseApiController;
-use app\models\b2b2c\SysAdInfo;
-use app\models\b2b2c\common\JsonObj;
-use yii\helpers\Json;
-use app\common\utils\UrlUtils;
-use app\models\b2b2c\app\models\b2b2c;
 use app\common\utils\CommonUtils;
-use app\models\b2b2c\search\VipCaseSearch;
+use app\common\utils\UrlUtils;
 use app\models\b2b2c\common\PaginationObj;
+use app\models\b2b2c\search\VipCaseSearch;
 use app\models\b2b2c\VipCase;
+use app\modules\vip\common\controllers\BaseApiController;
+use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -60,16 +56,24 @@ class VipCaseController extends BaseApiController
      * @param string $id
      * @return mixed
      */
-    public function actionView()
-    {
-    	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
-    	$model = $this->findModel($id);
-    	return CommonUtils::json_success([
-    			"model"=>$model,
-    			'vipCasePhotos'=>ArrayHelper::toArray($model->vipCasePhotos)
-    			
-    	]);
-    }
+    public function actionView() {
+		$id = isset ( $_REQUEST ['id'] ) ? $_REQUEST ['id'] : null;
+		$model = $this->findModel ( $id );
+		
+		$data = ArrayHelper::toArray ($model, [ 
+				VipCase::className() => array_merge(CommonUtils::getModelFields($model),[
+						'case_type_name' => function($value){
+							return $value->type->name;
+						},
+						
+				])
+		] );
+		return CommonUtils::json_success ( [ 
+				"model" => $data,
+				'vipCasePhotos' => ArrayHelper::toArray ( $model->vipCasePhotos ) 
+		]
+		 );
+	}
 
 
     /**
