@@ -1,10 +1,8 @@
 <?php
 namespace app\modules\admin\common\controllers;
 
-use Yii;
-use yii\web\Controller;
-use app\modules\admin\common\filters\AdminAuthBehavior;
 use app\modules\admin\common\filters\AdminAuthFilter;
+use Yii;
 
 class BaseAuthController extends BaseController
 {

@@ -1,14 +1,13 @@
 <?php
 namespace app\modules\admin\common\controllers;
 
-use Yii;
-use yii\web\Controller;
-use yii\filters\AccessControl;
-use app\modules\admin\common\filters\AdminLogFilter;
 use app\models\b2b2c\common\JsonObj;
-use yii\helpers\Json;
+use app\modules\admin\common\filters\AdminLogFilter;
+use Yii;
 use yii\base\Exception;
 use yii\base\UserException;
+use yii\helpers\Json;
+use yii\web\Controller;
 use yii\web\HttpException;
 
 class BaseController extends Controller
