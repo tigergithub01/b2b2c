@@ -181,7 +181,7 @@ class VipService{
 	
 	
 	/**
-	 * 商户修改密码
+	 * 会员修改密码
 	 * @param unknown $model
 	 */
 	public function forgot_pwd($model){
@@ -211,7 +211,7 @@ class VipService{
 		$vip_db->password = md5($model->password);
 // 		$vip_db->update(true,['password']);
 		
-		if(!($vip_db->update(true,['password']))){
+		if(!($vip_db->save(true,['password']))){
 			Yii::info($model->errors);
 			$model->addError("vip_id",Yii::t('app', '修改密码不成功。'));
 			return false;
