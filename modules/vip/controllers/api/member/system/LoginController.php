@@ -11,6 +11,7 @@ use app\modules\vip\models\VipConst;
 use app\models\b2b2c\common\JsonObj;
 use app\common\utils\CommonUtils;
 use yii\helpers\Json;
+use app\common\utils\AuthUtils;
 
 /**
  * login controller
@@ -44,7 +45,21 @@ class LoginController extends BaseApiController
 // 				Yii::$app->response->redirect("/vip/member/default/index");
 			}
 			
-			$json->value = ['last_access_url'=>$last_access_url,'PHPSESSID'=>Yii::$app->session->id,'vip'=>$vip_db];
+			//产生加密字符
+			$uid = $vip_db->id;
+			$time = time();
+			$key = md5($uid + $time+"secret_key_hl");
+			
+			$authUtils =  new AuthUtils(); 
+			$auth = $authUtils->getAuthKey($vip_db->id);
+			
+			$json->value = ['last_access_url'=>$last_access_url,
+					'PHPSESSID'=>Yii::$app->session->id,
+					'vip'=>$vip_db, 
+					'app_uid'=> $auth['uid'],
+					'app_time'=> $auth['time'],
+					'app_key' => $auth['key'],
+			];
 			
 			return CommonUtils::jsonObj_success($json);
 		}

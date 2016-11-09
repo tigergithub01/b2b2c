@@ -1,9 +1,6 @@
 <?php
 namespace app\modules\vip\common\controllers;
 
-use Yii;
-use yii\web\Controller;
-use app\modules\vip\common\filters\VipAuthBehavior;
 use app\modules\vip\common\filters\VipAuthFilter;
 
 
@@ -50,7 +47,7 @@ class BaseAuthController extends BaseController
 		return parent::afterAction($action, $result);
 	}
 	
-	public function actionError()
+	/* public function actionError()
 	{
 		$exception = Yii::$app->errorHandler->exception;
 		if ($exception instanceof \yii\base\UserException) {
@@ -61,6 +58,6 @@ class BaseAuthController extends BaseController
 		if ($exception !== null) {
 			return $this->render('error', ['exception' => $exception,'message' => $message,]);
 		}
-	}
+	} */
 	
 }

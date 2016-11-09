@@ -12,7 +12,7 @@ class ApiTestController extends \app\modules\admin\common\controllers\BaseAuthCo
 {
     public function actionIndex()
     {
-        return $this->render('index');
+    	return $this->render('index');
     }
 
 }

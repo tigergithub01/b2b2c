@@ -35,6 +35,8 @@ class VipLogFilter extends ActionFilter{
 		$sys_log = new VipOperationLog();
 		$session = Yii::$app->session;
 		$login_user = $session->get(VipConst::LOGIN_VIP_USER);
+		
+		//TODO:客户端请求的时候，不能先到这个
 		if($login_user){
 			$sys_log->vip_id = $login_user->id;
 		}

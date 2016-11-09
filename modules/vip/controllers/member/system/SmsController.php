@@ -2,17 +2,15 @@
 
 namespace app\modules\vip\controllers\member\system;
 
-use Yii;
-use yii\filters\AccessControl;
+use app\common\utils\CommonUtils;
+use app\common\utils\sms\SmsUtils;
+use app\models\b2b2c\common\JsonObj;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysVerifyCode;
 use app\modules\vip\common\controllers\BaseController;
 use app\modules\vip\models\VipConst;
+use Yii;
 use yii\helpers\Json;
-use app\models\b2b2c\SysParameter;
-use yii\helpers\ArrayHelper;
-use app\models\b2b2c\common\JsonObj;
-use app\models\b2b2c\SysVerifyCode;
-use app\common\utils\sms\SmsUtils;
-use app\common\utils\CommonUtils;
 
 /**
  * 获取短信验证码

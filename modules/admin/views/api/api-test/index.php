@@ -42,8 +42,8 @@ use yii\helpers\Url;
 				<?php echo Html::button('会员注册',['id'=>'btn_vip_register','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/register/index'])]);?>	
 				<?php echo Html::button('找回密码',['id'=>'btn_vip_forgot_pwd','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/login/forgot-pwd'])]);?>
 				<?php echo Html::button('注销登陆',['id'=>'btn_vip_login_out','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/login-out/index'])]);?>
-				<?php echo Html::button('更新会员信息',['id'=>'btn_vip_update','class' => 'btn btn-primary','url'=>Url::to(['/debug'])]);?>
-				<?php echo Html::button('获取会员信息',['id'=>'btn_vip_update','class' => 'btn btn-primary','url'=>Url::to(['/debug'])]);?>
+				<?php echo Html::button('更新会员信息',['id'=>'btn_vip_update','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip/update'])]);?>
+				<?php echo Html::button('获取会员信息',['id'=>'btn_vip_info','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip/view'])]);?>
 			</div>
 			
 			
