@@ -98,7 +98,7 @@ class VipCaseController extends BaseAuthController
         	//处理图片
         	$imageUtils = new ImageUtils();
         	$image_type = 'vip_case';
-        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	 
         	if($files = ($imageUtils->uploadImage($model->imageFile, "uploads/$image_type", $image_type,null, $width, $height))){
@@ -228,7 +228,7 @@ class VipCaseController extends BaseAuthController
         	
         	$imageUtils = new ImageUtils();
         	$image_type = 'vip_case';
-        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	
         	//旧图片地址

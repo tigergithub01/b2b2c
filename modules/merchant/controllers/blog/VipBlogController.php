@@ -97,7 +97,7 @@ class VipBlogController extends BaseAuthController
         	//处理帖子相册
         	$imageUtils = new ImageUtils();
         	$image_type = 'vip_blog';
-        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
         	$vipBlogPhotos = [];
@@ -178,7 +178,7 @@ class VipBlogController extends BaseAuthController
         	//处理帖子相册
         	$imageUtils = new ImageUtils();
         	$image_type = 'vip_blog';
-        	$width = 0 /* SysConfig::getInstance()->getConfigVal("thumb_width") */;
+        	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
         	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
         	$vipBlogPhotos = [];
