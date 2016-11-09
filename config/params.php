@@ -1,6 +1,6 @@
 <?php
 return [ 
-		'adminEmail' => 'admin@example.com',
+	'adminEmail' => 'admin@example.com',
 
 	/* 阿里云短信发送 */
 	'ali_sms' => [
@@ -16,4 +16,9 @@ return [
 				'sms_template_code' => 'SMS_15195053',
 				
 		], 
+		
+	/* api 密钥 */
+	'api_secret'=> [
+			'appkey' => 'weryjnj7',
+	],
 ];
