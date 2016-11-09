@@ -68,4 +68,12 @@ class CommonUtils{
 		}
 		return $hash;
 	}
+	
+	public static function getModelFields($model){
+		$fields = [];
+		foreach ( $model->getAttributes () as $key => $value ) {
+			$fields [] = $key;
+		}
+		return $fields;
+	}
 }
