@@ -98,7 +98,6 @@ $(function() {
 			'Vip[password]':'111111',//原始密码
 			'Vip[new_pwd]' : '111111', //新密码
 			'Vip[confirm_pwd]' : '111111', //确认新密码
-			'PHPSESSID': 'etv3lt04chbqmh4rid66f0bd80',//session编号
 			}
 		);		
 	});
@@ -109,6 +108,8 @@ $(function() {
 		test_api($(this).attr('url'),{'PHPSESSID': 'etv3lt04chbqmh4rid66f0bd80'});		
 	});
 	
+	
+	
 	//找回密码
 	//http://localhost:8089/vip/api/member/system/login/forgot-pwd
 	$("#btn_vip_forgot_pwd").click(function() {
@@ -117,7 +118,7 @@ $(function() {
 			'Vip[vip_id]':'13724346621',//原始密码
 			'Vip[password]' : '111111', //新密码
 			'Vip[confirm_pwd]' : '111111', //确认新密码
-			'Vip[sms_code]' : '915393', //手机验证码
+			'Vip[sms_code]' : 'wl1234', //手机验证码
 			}
 		);		
 	});
@@ -135,6 +136,31 @@ $(function() {
 			}
 		);		
 	});
+	
+	//获取会员信息
+	//http://localhost:8089/vip/api/member/vip/vip/view
+	$("#btn_vip_info").click(function() {
+		test_api($(this).attr('url'),
+			{
+			}
+		);		
+	});
+	
+	
+	//更新会员信息
+	//http://localhost:8089/vip/api/member/vip/vip/update
+	$("#btn_vip_update").click(function() {
+		test_api($(this).attr('url'),
+			{
+			'Vip[vip_name]' : '昵称-修改', //昵称
+			'Vip[sex]' : '23001', //性别：{23001：男，23002：女}
+			'Vip[wedding_date]' : '2016-12-12', //婚期
+			'Vip[birthday]' : '2010-12-12', //生日
+			}
+		);		
+	});
+	
+	
 	
 	/*
 	 	android客户端下载
@@ -503,6 +529,14 @@ $(function() {
  */
 function test_api(req_url,params){
 	$("#txt_api_return").val('');
+	
+	//combine
+	$.extend(params,{
+		'app_uid' : '1',
+		'app_time' : '1478671676',
+		'app_key' : 'ee6c68709728da6b5be65769793716a8', 
+	});
+	
 	$.ajax({     
 	    url: req_url,     
 	    type:'post',  
