@@ -453,6 +453,17 @@ E:\\source\\workplace-php\\b2b2c\\vendor\\yiisoft\\yii2\\web\\Session.php on lin
 
 
 
+如何让app保持登录状态：
+http://www.cnblogs.com/permanent2012moira/p/4999030.html
+
+condova 自动升级app:
+https://my.oschina.net/crazymus/blog/465960
+
+发布新版本
+http://localhost:8089/admin/system/sys-app-release/index
+
+版本信息：
+http://localhost:8089/admin/system/sys-app-info/index
 
 
 
