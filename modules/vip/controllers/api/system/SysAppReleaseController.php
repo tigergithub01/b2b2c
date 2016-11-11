@@ -35,13 +35,9 @@ class SysAppReleaseController extends BaseApiController
     	if(empty($sysAppInfo)){
     		return CommonUtils::json_failed(Yii::t('app', '版本编码不能为空！'));
     	}   
-		
-    	if(empty($sysAppInfo->release_id)){
-    		return CommonUtils::json_failed(Yii::t('app', '版本信息不存在！'));
-    		
-    	}
     	
-    	$appRelease = SysAppRelease::findOne($sysAppInfo->release_id);
+    	//最新版本
+    	$appRelease = SysAppRelease::find()->where(['app_info_id' => $sysAppInfo->id,])->orderBy(['ver_no' => SORT_DESC])->one();
     	
     	//格式化下载地址
     	$appRelease->app_path = UrlUtils::formatUrl($appRelease->app_path);

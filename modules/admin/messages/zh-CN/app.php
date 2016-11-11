@@ -217,5 +217,12 @@ return [
 		'Create Sys Notify Log'=>'新增通知',
 		'Update Sys Notify Log'=>'编辑通知',
 		
+		//APP版本
+		'Sys App Release'=>'APP版本',
+		'Sys App Releases'=>'APP版本列表',
+		'Create Sys App Release'=>'发布新版本',
+		'Update Sys App Release'=>'编辑APP版本',
+		
+		
 		
 ];

@@ -2,12 +2,11 @@
 
 namespace app\modules\vip\controllers\system;
 
-use Yii;
-use app\modules\vip\common\controllers\BaseController;
-use app\models\b2b2c\SysAppInfo;
-use app\models\b2b2c\common\JsonObj;
-use app\models\b2b2c\SysAppRelease;
 use app\common\utils\CommonUtils;
+use app\models\b2b2c\SysAppInfo;
+use app\models\b2b2c\SysAppRelease;
+use app\modules\vip\common\controllers\BaseController;
+use Yii;
 
 
 /* 
@@ -35,13 +34,8 @@ class SysAppInfoController extends BaseController
     		CommonUtils::response_failed(Yii::t('app', '您要下载的文件不存在。'));
     		return;
     	}   
-		
-    	if(empty($sysAppInfo->release_id)){
-    		CommonUtils::response_failed(Yii::t('app', '您要下载的文件不存在。'));
-    		return;
-    	}
     	
-    	$appRelease = SysAppRelease::findOne($sysAppInfo->release_id);
+    	$appRelease = SysAppRelease::find()->where(['app_info_id' => $sysAppInfo->id,])->orderBy(['ver_no' => SORT_DESC])->one();
     	$file_path = Yii::getAlias("@webroot").'/'.$appRelease->app_path;
     	$file_name  = $sysAppInfo->name . $appRelease->name . '.apk';
     	header ( "Content-type:text/html;charset=utf-8" );
