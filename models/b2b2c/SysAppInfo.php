@@ -11,9 +11,7 @@ use Yii;
  * @property string $name
  * @property string $code
  * @property string $description
- * @property string $release_id
  *
- * @property SysAppRelease $release
  * @property SysAppRelease[] $sysAppReleases
  */
 class SysAppInfo extends \app\models\b2b2c\BasicModel
@@ -33,11 +31,9 @@ class SysAppInfo extends \app\models\b2b2c\BasicModel
     {
         return [
             [['name'], 'required'],
-            [['release_id'], 'integer'],
             [['name'], 'string', 'max' => 60],
             [['code'], 'string', 'max' => 20],
             [['description'], 'string', 'max' => 400],
-            [['release_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysAppRelease::className(), 'targetAttribute' => ['release_id' => 'id']],
         ];
     }
 
@@ -48,19 +44,10 @@ class SysAppInfo extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'name' => Yii::t('app', '产品名称（1:XX-andorid版 2:XX-ios版）'),
+            'name' => Yii::t('app', '产品名称（andorid版、ios版）'),
             'code' => Yii::t('app', 'app编码，便于根据code查找'),
             'description' => Yii::t('app', '产品描述'),
-            'release_id' => Yii::t('app', '关联最新发布编号'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRelease()
-    {
-        return $this->hasOne(SysAppRelease::className(), ['id' => 'release_id']);
     }
 
     /**

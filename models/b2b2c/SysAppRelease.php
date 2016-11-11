@@ -17,13 +17,15 @@ use Yii;
  * @property string $app_path
  * @property string $app_info_id
  *
- * @property SysAppInfo[] $sysAppInfos
  * @property SysParameter $forceUpgrade
  * @property SysAppInfo $appInfo
  * @property SysUser $issueUser
  */
 class SysAppRelease extends \app\models\b2b2c\BasicModel
 {
+	//上传文件
+	public $uploadFile;
+    
     /**
      * @inheritdoc
      */
@@ -38,7 +40,7 @@ class SysAppRelease extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'ver_no', 'force_upgrade', 'app_path', 'app_info_id'], 'required'],
+            [['name', 'ver_no', 'force_upgrade', 'app_info_id'], 'required'],
             [['ver_no', 'force_upgrade', 'issue_user_id', 'app_info_id'], 'integer'],
             [['issue_date'], 'safe'],
             [['name'], 'string', 'max' => 60],
@@ -47,6 +49,7 @@ class SysAppRelease extends \app\models\b2b2c\BasicModel
             [['force_upgrade'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['force_upgrade' => 'id']],
             [['app_info_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysAppInfo::className(), 'targetAttribute' => ['app_info_id' => 'id']],
             [['issue_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['issue_user_id' => 'id']],
+        	[['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'apk, ipa','maxSize'=>50*1024*1024, 'checkExtensionByMimeType' => false, 'maxFiles' => 1],
         ];
     }
 
@@ -57,23 +60,18 @@ class SysAppRelease extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'name' => Yii::t('app', '版本名称(1.1.1，字符串型)、'),
-            'ver_no' => Yii::t('app', '版本编号(1.0，数字型用来与app进行版本比较)'),
+            'name' => Yii::t('app', '版本名称(1.1.1，字符串型)'),
+            'ver_no' => Yii::t('app', '版本编号(数字型)'),
             'upgrade_desc' => Yii::t('app', '版本升级描述'),
-            'force_upgrade' => Yii::t('app', '是否必须升级(1:是；0:否）'),
+            'force_upgrade' => Yii::t('app', '是否必须升级'),
             'issue_date' => Yii::t('app', '发布日期'),
             'issue_user_id' => Yii::t('app', '发布人'),
             'app_path' => Yii::t('app', '应用下载地址'),
-            'app_info_id' => Yii::t('app', 'app信息：1:XX-andorid版 2:XX-ios版'),
+            'app_info_id' => Yii::t('app', '产品名称（andorid版 ；ios版）'),
+        	'forceUpgrade.param_val' => Yii::t('app', '是否必须升级'),
+        	'issueUser.user_id' => Yii::t('app', '发布人'),
+        	'uploadFile' => Yii::t('app', '文件'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSysAppInfos()
-    {
-        return $this->hasMany(SysAppInfo::className(), ['release_id' => 'id']);
     }
 
     /**
