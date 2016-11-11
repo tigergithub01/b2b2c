@@ -8,6 +8,7 @@ use app\models\b2b2c\SysAppInfo;
 use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\SysAppRelease;
 use app\common\utils\CommonUtils;
+use app\common\utils\UrlUtils;
 
 
 /* 
@@ -41,6 +42,10 @@ class SysAppReleaseController extends BaseApiController
     	}
     	
     	$appRelease = SysAppRelease::findOne($sysAppInfo->release_id);
+    	
+    	//格式化下载地址
+    	$appRelease->app_path = UrlUtils::formatUrl($appRelease->app_path);
+    	
     	
     	return CommonUtils::json_success($appRelease);
     	
