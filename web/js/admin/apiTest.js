@@ -216,11 +216,12 @@ $(function() {
 	$("#btn_merchant_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'page':'2',//页码
-				'per-page' : '3', //每页行数
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
 				'sort' : 'vip_name', //排序
 				//'MerchantSearch[vip_id]' : '137', //手机号码
-				'MerchantSearch[vip_name]' : '1', //商户名（昵称）
+				//'MerchantSearch[vip_name]' : '1', //商户名（昵称）
+				'MerchantSearch[vip_type_id]' : '1', //商户类型
 				}
 			);
 	});
