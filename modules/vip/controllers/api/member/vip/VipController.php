@@ -4,6 +4,7 @@ namespace app\modules\vip\controllers\api\member\vip;
 
 use app\common\utils\CommonUtils;
 use app\common\utils\image\ImageUtils;
+use app\common\utils\UrlUtils;
 use app\models\b2b2c\SysConfig;
 use app\models\b2b2c\Vip;
 use app\models\b2b2c\VipType;
@@ -45,6 +46,9 @@ class VipController extends BaseAuthApiController
     {
         $id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         $model = $this->findModel($id);
+        $model->img_url = UrlUtils::formatUrl($model->img_url);
+        $model->thumb_url = UrlUtils::formatUrl($model->thumb_url);
+        $model->img_original = UrlUtils::formatUrl($model->img_original);
         
         return CommonUtils::json_success($model);
     }
@@ -61,11 +65,15 @@ class VipController extends BaseAuthApiController
     	$id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         
     	$model = $this->findModel($id);
-		
-        if ($model->load(Yii::$app->request->post()) ) {
+    	
+    	//获取图片信息
+    	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+    	
+    	/* 支持单独上传文件  */
+        if ($model->load(Yii::$app->request->post()) ||  $model->imageFile ) {
         	
         	//获取图片信息
-        	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+//         	$model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         	 
         	$imageUtils = new ImageUtils();
         	$image_type = 'vip';
