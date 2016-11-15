@@ -189,7 +189,7 @@ class ImageUtils{
 		
 		//主文件名
 		if(empty($filename)){
-			$filename = $imageFile->baseName;
+			$filename = str_replace("?","",$imageFile->baseName); //处理掉后缀名带?等特殊字符的情况
 		}
 		 
 		//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
