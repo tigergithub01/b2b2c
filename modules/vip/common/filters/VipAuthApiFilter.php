@@ -43,9 +43,14 @@ class VipAuthApiFilter extends ActionFilter{
 		$session = Yii::$app->session;		
 		
 		//获取客户端传过来的值
-		$app_uid = Yii::$app->request->post("app_uid");
-		$app_time = Yii::$app->request->post("app_time");
-		$app_key = Yii::$app->request->post("app_key");
+// 		$app_uid = Yii::$app->request->post("app_uid");
+// 		$app_time = Yii::$app->request->post("app_time");
+// 		$app_key = Yii::$app->request->post("app_key");
+		
+		$app_uid = isset($_REQUEST['app_uid'])?$_REQUEST['app_uid']:null;
+		$app_time = isset($_REQUEST['app_time'])?$_REQUEST['app_time']:null;
+		$app_key = isset($_REQUEST['app_key'])?$_REQUEST['app_key']:null;
+		
 		
 		if(empty($app_uid)){
 			CommonUtils::response_failed("app_uid不能为空！");
