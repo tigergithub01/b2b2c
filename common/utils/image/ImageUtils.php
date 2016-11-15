@@ -191,17 +191,20 @@ class ImageUtils{
 		if(empty($filename)){
 			$filename = str_replace("?","",$imageFile->baseName); //处理掉后缀名带?等特殊字符的情况
 		}
+		
+		//扩展名
+		$extension = str_replace("?","",$imageFile->extension);
 		 
 		//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
-		$img_original = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $imageFile->extension;
+		$img_original = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $extension;
 		$file_path = $img_original;
 		 
 		//上传图片
 		$imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
 		 
 		//处理图片
-		$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $imageFile->extension;;
-		$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $imageFile->extension;;
+		$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $extension;
+		$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $extension;
 		 
 		//拷贝文件
 		copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
