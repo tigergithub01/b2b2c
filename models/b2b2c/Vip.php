@@ -185,7 +185,7 @@ class Vip extends \app\models\b2b2c\BasicModel
 			[['new_pwd'], 'required','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['confirm_pwd'], 'compare','compareAttribute'=>'new_pwd','message'=>'两次密码输入不一致','on' => [self::SCENARIO_CHANGE_PWD]],
         	[['vip_type_id'], 'required','on' => [self::SCENARIO_MERCHANT_REGISTER]],
-        	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+        	[['imageFile'], 'file', 'skipOnEmpty' => true/* , 'extensions' => 'png, jpg' */,'maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1], //客户端上传的文件扩展名很特殊，去掉扩展名验证
         	[['vip_name'], 'required','on' => [self::SCENARIO_MERCHANT_REGISTER, self::SCENARIO_REGISTER, self::SCENARIO_REGISTER_NO_VERIFY]],
         ];
     }
