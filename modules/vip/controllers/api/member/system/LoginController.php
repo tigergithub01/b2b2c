@@ -12,6 +12,7 @@ use app\models\b2b2c\common\JsonObj;
 use app\common\utils\CommonUtils;
 use yii\helpers\Json;
 use app\common\utils\AuthUtils;
+use app\common\utils\UrlUtils;
 
 /**
  * login controller
@@ -52,6 +53,11 @@ class LoginController extends BaseApiController
 			
 			$authUtils =  new AuthUtils(); 
 			$auth = $authUtils->getAuthKey($vip_db->id);
+			
+			//format urls
+			$vip_db->img_url = UrlUtils::formatUrl($vip_db->img_url);
+			$vip_db->thumb_url = UrlUtils::formatUrl($vip_db->thumb_url);
+			$vip_db->img_original = UrlUtils::formatUrl($vip_db->img_original);
 			
 			$json->value = ['last_access_url'=>$last_access_url,
 					'PHPSESSID'=>Yii::$app->session->id,
