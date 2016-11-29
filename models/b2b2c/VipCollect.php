@@ -14,11 +14,15 @@ use Yii;
  * @property string $case_id
  * @property string $blog_id
  * @property string $collect_date
+ * @property string $collect_type
+ * @property string $ref_vip_id
  *
- * @property Vip $vip
+ * @property SysParameter $collectType
+ * @property Vip $refVip
  * @property Activity $package
  * @property VipCase $case
  * @property Product $product
+ * @property Vip $vip
  */
 class VipCollect extends \app\models\b2b2c\BasicModel
 {
@@ -33,6 +37,18 @@ class VipCollect extends \app\models\b2b2c\BasicModel
 	
 	/* 案例名称 （查询用） */
 	public $case_name;
+	
+	/* 商户名称 （查询用） */
+	public $ref_vip_name;
+	
+	
+	/* 收藏类型 */
+	const collect_case = 28001; //案例
+	const collect_vip = 28002; //商家
+	const collect_prod = 28003; //产品
+	const collect_act = 28004; //团体服务
+	const collect_blog = 28005; //话题
+	
     
     /**
      * @inheritdoc
@@ -53,6 +69,7 @@ class VipCollect extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'package_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'case_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'ref_vip_name';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -60,17 +77,19 @@ class VipCollect extends \app\models\b2b2c\BasicModel
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules() 
     {
-        return [
-            [['vip_id', 'collect_date'], 'required'],
-            [['vip_id', 'product_id', 'package_id', 'case_id', 'blog_id'], 'integer'],
-            [['collect_date'], 'safe'],
-            [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
-            [['package_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['package_id' => 'id']],
-            [['case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['case_id' => 'id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
-        ];
+    	return [
+    			[['vip_id', 'collect_date', 'collect_type'], 'required'],
+    			[['vip_id', 'product_id', 'package_id', 'case_id', 'blog_id', 'collect_type', 'ref_vip_id'], 'integer'],
+    			[['collect_date'], 'safe'],
+    			[['collect_type'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['collect_type' => 'id']],
+    			[['ref_vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['ref_vip_id' => 'id']],
+    			[['package_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['package_id' => 'id']],
+    			[['case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['case_id' => 'id']],
+    			[['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+    			[['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
+    	];
     }
 
     /**
@@ -86,17 +105,41 @@ class VipCollect extends \app\models\b2b2c\BasicModel
             'case_id' => Yii::t('app', '关联案例'),
             'blog_id' => Yii::t('app', '关联话题'),
             'collect_date' => Yii::t('app', '收藏时间'),
+            'collect_type' => Yii::t('app', '收藏类型'/* '收藏类型（话题，商家，产品，团体服务，案例）' */),
+            'ref_vip_id' => Yii::t('app', '关注商家'),
+        		
         	'vip.vip_id' => Yii::t('app', '会员编号'),
         	'product.name' => Yii::t('app', '关联产品'),
-        	'package.name' => Yii::t('app', '关联套餐'),
+        	'package.name' => Yii::t('app', '关联团体服务'),
         	'case.name' => Yii::t('app', '关联案例'),
+        	'refVip.vip_name' => Yii::t('app', '关注商家'),
+        	'collectType.param_val' => Yii::t('app', '收藏类型'),
+        		
         	'vip_no' => Yii::t('app', '会员编号'),
         	'product_name' => Yii::t('app', '关联产品'),
-        	'package_name' => Yii::t('app', '关联套餐'),
+        	'package_name' => Yii::t('app', '关联团体服务'),
         	'case_name' => Yii::t('app', '关联案例'),
+        	'ref_vip_name' => Yii::t('app', '关联商户'),
         ];
     }
 
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollectType()
+    {
+    	return $this->hasOne(SysParameter::className(), ['id' => 'collect_type']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRefVip()
+    {
+    	return $this->hasOne(Vip::className(), ['id' => 'ref_vip_id']);
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

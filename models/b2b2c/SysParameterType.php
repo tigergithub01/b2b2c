@@ -88,6 +88,9 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 公告发送范围 */
 	const NOTIFY_EXTEND = 21;
 	
+	/* 会员收藏类型 */
+	const VIP_COLLECT_TYPE = 28;
+	
 	
     /**
      * @inheritdoc

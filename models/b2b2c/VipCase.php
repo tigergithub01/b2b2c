@@ -26,6 +26,8 @@ use Yii;
  * @property string $case_flag
  * @property string $market_price
  * @property string $sale_price
+ * @property string $service_date
+ * @property string $address
  *
  * @property SoSheet[] $soSheets
  * @property SysParameter $isHot
@@ -74,14 +76,14 @@ class VipCase extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'is_hot'], 'required'],
+            [['name', 'type_id', 'vip_id', 'content', 'create_date', 'update_date', 'status', 'audit_status', 'is_hot', 'sale_price', 'address', 'service_date'], 'required'],
             [['type_id', 'vip_id', 'status', 'audit_status', 'audit_user_id', 'is_hot', 'case_flag'], 'integer'],
             [['content'], 'string'],
-            [['create_date', 'update_date', 'audit_date'], 'safe'],
+            [['create_date', 'update_date', 'audit_date', 'service_date'], 'safe'],
             [['market_price', 'sale_price'], 'number'],
             [['name'], 'string', 'max' => 50],
             [['audit_memo'], 'string', 'max' => 200],
-            [['cover_img_url', 'cover_thumb_url', 'cover_img_original'], 'string', 'max' => 255],
+            [['cover_img_url', 'cover_thumb_url', 'cover_img_original','address'], 'string', 'max' => 255],
         	[['is_hot'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_hot' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCaseType::className(), 'targetAttribute' => ['type_id' => 'id']],
@@ -119,6 +121,8 @@ class VipCase extends \app\models\b2b2c\BasicModel
             'case_flag' => Yii::t('app', '案例类别(个人案例，团体案例)'/* '案例类别？个人案例，团体案例（团体案例可以通过订单来生成，也可以手动创建）' */),
             'market_price' => Yii::t('app', '市场价'),
             'sale_price' => Yii::t('app', '销售价'),
+        	'service_date' => Yii::t('app', '婚礼时间'),
+        	'address' => Yii::t('app', '地址'),
         	'auditUser.user_id' => Yii::t('app', '审核人'),
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
         	'type.name' => Yii::t('app', '案例类型'),
@@ -126,6 +130,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
         	'status0.param_val' => Yii::t('app', '是否显示'),
         	'isHot.param_val' => Yii::t('app', '是否经典案例'),
         	'vip.vip_id' => Yii::t('app', '商户编号'),
+        	'vip.vip_name' => Yii::t('app', '商户名称'),
         	'vip_no' => Yii::t('app', '商户编号'),
         	'imageFile' => Yii::t('app', '案例封面'),
         	'imageFiles' => Yii::t('app', '案例相册'),	

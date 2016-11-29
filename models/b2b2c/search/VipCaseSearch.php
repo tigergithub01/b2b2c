@@ -74,6 +74,10 @@ class VipCaseSearch extends VipCase
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'auditStatus.param_val' => [
         						'asc'  => ['auditStatus.param_val' => SORT_ASC],
         						'desc' => ['auditStatus.param_val' => SORT_DESC],
