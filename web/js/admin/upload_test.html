@@ -49,7 +49,7 @@ $(function () {
 	var progress = $(".progress");
 	var files = $(".files");
 	var btn = $(".btn span");
-	$(".demo").wrap("<form id='myupload' action='http://localhost:8089/vip/api/member/vip/vip/update' method='post' enctype='multipart/form-data'></form>");
+	$(".demo").wrap("<form id='myupload' action='http://admin.hunlitu.com/vip/api/member/vip/vip/update' method='post' enctype='multipart/form-data'></form>");
     $("#fileupload").change(function(){
 		$("#myupload").ajaxSubmit({
 			dataType:  'json',
@@ -62,10 +62,15 @@ $(function () {
 				btn.html("上传中...");
     		},
     		data: {
-    			'app_uid' : '1',
-    			'app_time' : '1478671676',
-    			'app_key' : 'ee6c68709728da6b5be65769793716a8', 
-    			'Vip[vip_name]' : '昵称-修改1', //昵称
+    			//'app_uid' : '1',
+    			//'app_time' : '1478671676',
+    			//'app_key' : 'ee6c68709728da6b5be65769793716a8', 
+    			//'Vip[vip_name]' : '昵称-修改1', //昵称
+    			
+    			//'PHPSESSID' => 'uqtbrlccfgkb64lsh8097a3206'
+    	    'app_key':'691eee91e5b598bf2de5d41c5d993237',
+    	    'app_time' : '1479115469',
+    	    'app_uid' : '3',
     		},
     		uploadProgress: function(event, position, total, percentComplete) {
         		var percentVal = percentComplete + '%';

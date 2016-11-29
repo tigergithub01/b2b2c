@@ -56,12 +56,29 @@ $(function() {
 		test_api($(this).attr('url'),null);		
 	});
 	
+	/*
+	 	案例列表
+		http://localhost:8089/vip/api/vip/vip-case/index
+	*/
+	$("#btn_home_vip_case_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				'VipCaseSearch[is_hot]' : '1', //是否经典案例？1：是；0：否
+				},
+				'get'
+			);
+	});
+
+	
 	//获取验证码
 	//http://localhost:8089/vip/member/system/sms/index
 	$("#btn_get_sms_code").click(function() {
 		test_api($(this).attr('url'),
 			{
-			vip_id:'13724346625',//电话号码
+			vip_id:'13724346621',//电话号码
 			img_verify :0, //不需要图形验证码
 			}
 		);		
@@ -184,31 +201,82 @@ $(function() {
 	
 	/*
 	 	案例列表
-		http://localhost:8089/vip/api/vip/vip-case/index?page=2&per-page=3&sort=name&VipCaseSearch[name]=test
+		http://localhost:8089/vip/api/vip/vip-case/index
 	*/
 	$("#btn_vip_case_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'page':'2',//页码
-				'per-page' : '3', //每页行数
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
 				'sort' : 'name', //排序（降序为sort=-name)
-				'VipCaseSearch[name]' : 'test', //参数（案例名称)
-				}
+				//'VipCaseSearch[name]' : 'test', //参数（案例名称)
+				},
+				'get'
 			);
 	});
 	
 	/*
 	 	案例详情
-		http://localhost:8089/vip/api/vip/vip-case/view?id=1
+		http://localhost:8089/vip/api/vip/vip-case/view
 	*/
 	$("#btn_vip_case_detail").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'id':'1',//案例编号
-				}
+				},
+				'get'
 			);
 	});
 	
+	/*
+	 	案例收藏
+		http://localhost:8089/vip/api/vip/vip-case/create
+		
+	const collect_case = 28001; //案例
+	const collect_vip = 28002; //商家
+	const collect_prod = 28003; //产品
+	const collect_act = 28004; //团体服务
+	const collect_blog = 28005; //话题
+		
+	*/
+	$("#btn_vip_case_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'VipCollect[case_id]':'2',//案例编号
+				'VipCollect[ref_vip_id]':'1',//商家编号
+				'VipCollect[package_id]':'1',//团体服务编号
+				'VipCollect[blog_id]':'1',//话题编号
+				'VipCollect[collect_type]':'28001',//收藏类型
+				},
+				'post'
+			);
+	});
+	
+	/*
+	 	取消案例收藏
+		http://localhost:8089/vip/api/vip/vip-case/delete
+	*/
+	$("#btn_vip_case_delete").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'case_id':'1',//案例编号
+				},
+				'post'
+			);
+	});
+	
+	/*
+	 	商户分类
+		http://localhost:8089/vip/api/vip/vip-type/index
+	*/
+	$("#btn_merchant_type_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+					'VipTypeSearch[merchant_flag]' : '1', //会员类别（0：会员；1：商户）
+				},
+				'get'
+			);
+	});
 	/*
 	 	商户列表
 		http://localhost:8089/vip/api/vip/merchant/index?page=2&per-page=3&sort=vip_id&MerchantSearch[vip_name]=1
@@ -221,8 +289,8 @@ $(function() {
 				'sort' : 'vip_name', //排序
 				//'MerchantSearch[vip_id]' : '137', //手机号码
 				//'MerchantSearch[vip_name]' : '1', //商户名（昵称）
-				'MerchantSearch[vip_type_id]' : '1', //商户类型
-				}
+				},
+				'get'
 			);
 	});
 	
@@ -528,8 +596,12 @@ $(function() {
  * @param req_url
  * @param params
  */
-function test_api(req_url,params){
+function test_api(req_url,params,req_type){
 	$("#txt_api_return").val('');
+	
+	if(req_type==null){
+		req_type='post';
+	}
 	
 	//combine
 	$.extend(params,{
@@ -540,7 +612,7 @@ function test_api(req_url,params){
 	
 	$.ajax({     
 	    url: req_url,     
-	    type:'post',  
+	    type: req_type,  
 	    dataType:'json', 
 	    data: params,     
 	    async: true, 
