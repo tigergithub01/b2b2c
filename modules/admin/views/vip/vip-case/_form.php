@@ -123,7 +123,17 @@ use app\models\b2b2c\common\Constant;
     <?php //echo $form->field($model, 'case_flag')->textInput(['maxlength' => true]) ?>
     
     <?php //echo $form->field($model, 'case_flag')->dropDownList(\yii\helpers\ArrayHelper::map($caseFlagList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+    
+    <?= $form->field($model, 'service_date')->widget(dosamigos\datepicker\DatePicker::className(), [
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_PICKER_FORMAT,
+    			]
+          ]) ?>
+          
+    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'sale_price')->textInput(['maxlength' => true]) ?>

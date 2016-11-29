@@ -10,6 +10,8 @@ use app\models\b2b2c\VipCase;
 use app\modules\vip\common\controllers\BaseApiController;
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\models\b2b2c\common\Constant;
+use app\models\b2b2c\SysParameter;
 
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
@@ -40,14 +42,22 @@ class VipCaseController extends BaseApiController
     public function actionIndex()
     {
         $searchModel = new VipCaseSearch();
+        $searchModel->audit_status = SysParameter::audit_approved;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $models = $dataProvider->getModels();
         foreach ($models as $model) {
-        	$model->cover_img_url = UrlUtils::formatUrl($model->cover_img_url);
-    		$model->cover_thumb_url = UrlUtils::formatUrl($model->cover_thumb_url);
-    		$model->cover_img_original = UrlUtils::formatUrl($model->cover_img_original);
-        }
-        $pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+        	$model->cover_img_url = UrlUtils::formatUrl ( $model->cover_img_url );
+			$model->cover_thumb_url = UrlUtils::formatUrl ( $model->cover_thumb_url );
+			$model->cover_img_original = UrlUtils::formatUrl ( $model->cover_img_original );
+		}
+		$data = ArrayHelper::toArray ($models, [
+        		VipCase::className() => array_merge(CommonUtils::getModelFields($model),[
+        				'case_type_name' => function($value){
+	        					return $value->type->name;
+	        				},
+        			])
+        	]);
+        $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
         return CommonUtils::json_success($pagionationObj);
     }
 
@@ -65,7 +75,6 @@ class VipCaseController extends BaseApiController
 						'case_type_name' => function($value){
 							return $value->type->name;
 						},
-						
 				])
 		] );
 		return CommonUtils::json_success ( [ 

@@ -54,8 +54,14 @@ use app\modules\admin\Module;
     <?= $form->field($model, 'package_name') ?>
 
     <?= $form->field($model, 'case_name') ?>
-
+    
     <?php // echo $form->field($model, 'blog_id') ?>
+    
+    <?php // echo $form->field($model, 'ref_vip_id') ?>
+
+    <?php // echo $form->field($model, 'collect_type') ?>
+    
+    <?= $form->field($model, 'collect_type')->dropDownList(\yii\helpers\ArrayHelper::map($collectTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'collect_date') ?>
 

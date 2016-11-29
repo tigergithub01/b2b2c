@@ -40,8 +40,12 @@ use app\models\b2b2c\common\Constant;
 	    <div class="box-body">
 	    <?php //echo  $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
 	    
-	    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+	    
+	    
+	    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+		
+	<?= $form->field($model, 'collect_type')->dropDownList(\yii\helpers\ArrayHelper::map($collectTypeList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	
     <?php //echo $form->field($model, 'product_id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
@@ -54,6 +58,8 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'case_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipCaseList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
+	<?= $form->field($model, 'ref_vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	
     <?php //echo $form->field($model, 'blog_id')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'collect_date')->textInput() ?>

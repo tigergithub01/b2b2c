@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'type_id',
             'type.name',
             //'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             'content:ntext',
             // 'create_date',
             // 'update_date',

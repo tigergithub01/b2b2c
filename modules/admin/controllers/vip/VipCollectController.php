@@ -2,18 +2,18 @@
 
 namespace app\modules\admin\controllers\vip;
 
-use Yii;
-use app\models\b2b2c\VipCollect;
-use app\models\b2b2c\search\VipCollectSearch;
-use app\modules\admin\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\Activity;
 use app\models\b2b2c\Product;
+use app\models\b2b2c\search\VipCollectSearch;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\Vip;
-use app\models\b2b2c\Activity;
 use app\models\b2b2c\VipCase;
+use app\models\b2b2c\VipCollect;
+use app\modules\admin\common\controllers\BaseAuthController;
+use Yii;
+use yii\web\NotFoundHttpException;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.
@@ -54,6 +54,7 @@ class VipCollectController extends BaseAuthController
         		'productList' => $this->findProductList(),
         		'vipCaseList' => $this->findVipCaseList(),
         		'activityList' => $this->findActivityList(),
+        		'collectTypeList' => SysParameterType::getSysParametersById(SysParameterType::VIP_COLLECT_TYPE),
         ]);
     }
 
@@ -89,6 +90,7 @@ class VipCollectController extends BaseAuthController
             		'productList' => $this->findProductList(),
             		'vipCaseList' => $this->findVipCaseList(),
             		'activityList' => $this->findActivityList(),
+            		'collectTypeList' => SysParameterType::getSysParametersById(SysParameterType::VIP_COLLECT_TYPE),
             ]);
         }
     }
@@ -114,6 +116,7 @@ class VipCollectController extends BaseAuthController
             	'productList' => $this->findProductList(),
             	'vipCaseList' => $this->findVipCaseList(),
             	'activityList' => $this->findActivityList(),
+            	'collectTypeList' => SysParameterType::getSysParametersById(SysParameterType::VIP_COLLECT_TYPE),
             ]);
         }
     }
@@ -145,6 +148,8 @@ class VipCollectController extends BaseAuthController
     	->joinWith('package package')
     	->joinWith('case case')
     	->joinWith('product product')
+    	->joinWith('collectType collectType')
+    	->joinWith('refVip refVip')
     	->where(['vipCollect.id' => $id])->one();
     	if($model !==null){
 //     	if (($model = VipCollect::findOne($id)) !== null) {

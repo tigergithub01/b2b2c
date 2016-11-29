@@ -2,19 +2,16 @@
 
 namespace app\modules\admin\controllers\system;
 
-use Yii;
-use app\models\b2b2c\SysUser;
-use app\models\b2b2c\search\SysUserSearch;
-use app\modules\admin\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\SysParameter;
-use yii\helpers\Json;
-use app\modules\admin\Module;
-use yii\base\UserException;
-use yii\base\yii\base;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\search\SysUserSearch;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\SysUser;
+use app\modules\admin\common\controllers\BaseAuthController;
+use app\modules\admin\Module;
+use Yii;
+use yii\base\UserException;
+use yii\web\NotFoundHttpException;
 
 /**
  * SysUserController implements the CRUD actions for SysUser model.

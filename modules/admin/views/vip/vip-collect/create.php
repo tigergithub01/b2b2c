@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use app\modules\admin\Module;
 
 
@@ -20,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     		'productList' => $productList,
     		'vipCaseList' => $vipCaseList,
     		'activityList' => $activityList,
+    		'collectTypeList' => $collectTypeList,
     ]) ?>
 
 </div>

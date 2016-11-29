@@ -2,22 +2,15 @@
 
 namespace app\modules\vip\controllers\api\vip;
 
-use Yii;
-use app\modules\vip\common\controllers\BaseApiController;
-use app\models\b2b2c\SysAdInfo;
-use app\models\b2b2c\common\JsonObj;
-use yii\helpers\Json;
-use app\common\utils\UrlUtils;
-use app\models\b2b2c\app\models\b2b2c;
 use app\common\utils\CommonUtils;
-use app\models\b2b2c\search\VipCaseSearch;
+use app\common\utils\UrlUtils;
 use app\models\b2b2c\common\PaginationObj;
-use app\models\b2b2c\VipCase;
-use yii\helpers\ArrayHelper;
-use app\models\b2b2c\search\MerchantSearch;
-use app\models\b2b2c\Vip;
 use app\models\b2b2c\Product;
+use app\models\b2b2c\search\MerchantSearch;
 use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\Vip;
+use app\modules\vip\common\controllers\BaseApiController;
+use Yii;
 
 /**
  * VipController implements the CRUD actions for Vip model.

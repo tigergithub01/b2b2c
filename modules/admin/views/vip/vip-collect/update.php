@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
@@ -22,6 +21,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     		'productList' => $productList,
     		'vipCaseList' => $vipCaseList,
     		'activityList' => $activityList,
+    		'collectTypeList' => $collectTypeList,
     ]) ?>
 
 </div>

@@ -2,33 +2,27 @@
 
 namespace app\modules\vip\controllers\api\member\order;
 
-use Yii;
-use app\models\b2b2c\SoSheet;
-use app\models\b2b2c\search\SoSheetSearch;
-use app\modules\vip\common\controllers\BaseAuthApiController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use app\common\utils\MsgUtils;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\SysRegion;
+use app\common\utils\CommonUtils;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\common\PaginationObj;
+use app\models\b2b2c\DeliveryTypeTpl;
 use app\models\b2b2c\PayType;
 use app\models\b2b2c\PickUpPoint;
-use app\models\b2b2c\SheetType;
-use app\models\b2b2c\SysParameter;
-use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\DeliveryTypeTpl;
-use app\models\b2b2c\SoSheetDetail;
-use app\models\b2b2c\Activity;
 use app\models\b2b2c\Product;
-use app\modules\vip\models\VipConst;
+use app\models\b2b2c\search\SoSheetSearch;
+use app\models\b2b2c\SheetType;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SoSheetDetail;
 use app\models\b2b2c\SoSheetVip;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\Vip;
+use app\modules\vip\common\controllers\BaseAuthApiController;
+use app\modules\vip\models\VipConst;
+use Yii;
 use yii\db\Query;
-use app\models\b2b2c\common\JsonObj;
-use yii\helpers\Json;
-use app\common\utils\UrlUtils;
-use app\common\utils\CommonUtils;
-use app\models\b2b2c\common\PaginationObj;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.

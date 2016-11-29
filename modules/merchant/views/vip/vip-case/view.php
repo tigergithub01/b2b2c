@@ -58,6 +58,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'isHot.param_val',
             //'case_flag',
             //'caseFlag.param_val',
+		    'service_date',
+		    'address',
             'market_price',
             'sale_price',
 		        ],

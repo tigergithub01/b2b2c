@@ -24,11 +24,11 @@ use yii\helpers\Url;
 			
 			</div>
 		
-			<div class="form-group">
-				
+			<div class="form-group" style="border: 1px solid gray;padding:10px;">
 				<?php echo Html::button('广告图',['id'=>'btn_sys_ad_info','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-ad-info/index'])]);?>
 				<?php echo Html::button('地区信息',['id'=>'btn_sys_region','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-region/index'])]);?>
 				<?php echo Html::button('地区信息（根据商家获取）',['id'=>'btn_sys_region_merchant','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-region/merchant-regions'])]);?>
+				<?php echo Html::button('首页案例列表',['id'=>'btn_home_vip_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/index'])]);?>
 			</div>
 			
 			<div class="form-group">
@@ -55,9 +55,12 @@ use yii\helpers\Url;
 			<div class="form-group">
 				<?php echo Html::button('案例列表',['id'=>'btn_vip_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/index'])]);?>
 				<?php echo Html::button('案例详情',['id'=>'btn_vip_case_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/view'])]);?>
+				<?php echo Html::button('收藏案例',['id'=>'btn_vip_case_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/create'])]);?>
+				<?php echo Html::button('取消收藏案例',['id'=>'btn_vip_case_delete','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect//delete'])]);?>
 			</div>
 			
 			<div class="form-group">
+				<?php echo Html::button('商户类别',['id'=>'btn_merchant_type_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-type/index'])]);?>
 				<?php echo Html::button('商户列表',['id'=>'btn_merchant_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/index'])]);?>
 				<?php echo Html::button('商户详情',['id'=>'btn_merchant_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/view'])]);?>
 				<?php echo Html::button('商户案例列表',['id'=>'btn_merchant_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/index'])]);?>

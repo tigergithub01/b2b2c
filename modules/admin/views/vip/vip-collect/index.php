@@ -1,9 +1,8 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
 use app\modules\admin\Module;
+use yii\helpers\Html;
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipCollectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -18,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     		'productList' => $productList,
     		'vipCaseList' => $vipCaseList,
     		'activityList' => $activityList,
+    		'collectTypeList' => $collectTypeList,
     ]); ?>
 
 		<div class="box box-primary">
@@ -39,8 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'package.name',
             //'case_id',
             'case.name',
+        	//ref_vip_id
+        	'refVip.vip_name',
+        	//collect_type
+        	'collectType.param_val',
             // 'blog_id',
-            // 'collect_date',
+             'collect_date',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
