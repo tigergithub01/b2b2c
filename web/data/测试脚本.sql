@@ -541,10 +541,87 @@ select * from t_refund_sheet_apply;
 
 select * from t_so_sheet
 
+select * from t_vip;
+
+select * from t_product;
+
 alter table t_so_sheet add merchant_id          bigint(20) comment '关联商户编号（订单咨询时可用）';
 
+select * from t_activity
 
 alter table t_so_sheet add constraint fk_so_sheet_merchant_id_ref_vip foreign key (merchant_id)
       references t_vip (id);
+
+select * from t_so_sheet_vip;
+
+select * from t_vip where id = 2;
+
+select * from t_sys_config;
+
+update t_sys_config set value = 
+
+select * from t_sys_app_info;
+
+select * from t_sys_app_release;
+
+alter table t_sys_app_info drop foreign key fk_app_info_ref_app_release;
+
+alter table t_sys_app_info drop column release_id;
+
+alter table t_sys_app_release modify column app_path  varchar(200) comment '应用下载地址';
+
+select * from t_vip;
+
+
+
+select * from t_vip_case;
+
+update t_vip_case set sale_price = 100;
+
+update t_vip_case set sale_price = 100 where sale_price is null;
+alter table t_vip_case modify sale_price           decimal(20,6) not null comment '销售价';
+alter table t_vip_case add   address              varchar(255) not null comment '地址' default '';
+alter table t_vip_case add service_date         datetime comment '婚礼时间';
+
+delete from t_vip_collect;
+
+
+drop table t_vip_collect;
+
+create table t_vip_collect
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   vip_id               bigint(20) not null comment '会员编号',
+   product_id           bigint(20) comment '关联产品',
+   package_id           bigint(20) comment '关联套餐',
+   case_id              bigint(20) comment '关联案例',
+   blog_id              bigint(20) comment '关联话题',
+   collect_date         datetime not null comment '收藏时间',
+   collect_type         bigint(20) not null comment '收藏类型（话题，商家，产品，团体服务，案例）',
+   ref_vip_id           bigint(20) comment '关注商家',
+   primary key (id)
+);
+
+alter table t_vip_collect comment '会员收藏';
+
+alter table t_vip_collect add constraint fk_vip_collect_ref_activity foreign key (package_id)
+      references t_activity (id);
+
+alter table t_vip_collect add constraint fk_vip_collect_ref_case foreign key (case_id)
+      references t_vip_case (id);
+
+alter table t_vip_collect add constraint fk_vip_collect_ref_product foreign key (product_id)
+      references t_product (id);
+
+alter table t_vip_collect add constraint fk_vip_collect_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
+alter table t_vip_collect add constraint fk_vip_collect_refvip_ref_vip foreign key (ref_vip_id)
+      references t_vip (id);
+
+alter table t_vip_collect add constraint fk_vip_collect_type_ref_param foreign key (collect_type)
+      references t_sys_parameter (id);
+
+
 
 */

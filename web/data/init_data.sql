@@ -154,6 +154,13 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2700
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27004,27,'化妆师',null,4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27005,27,'摄像师',null,5);
 
+insert into t_sys_parameter_type(id,name,description) values(28,'会员收藏类型',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28001,28,'案例',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28002,28,'商家',null,2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28003,28,'产品',null,3);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28004,28,'团体服务',null,4);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28005,28,'话题',null,5);
+
 
 /*
 select * from t_sys_parameter_type;
@@ -294,11 +301,25 @@ values('商家注册协议','register_agreement',now(),1,1,'注册协议，完�
 
 select * from t_sys_config;
 
+update t_sys_config set value = '500' where code = 'thumb_width';
+update t_sys_config set value = '0' where code = 'thumb_height';
+
+update t_sys_config set value = '220' where code = 'cover_thumb_width';
+update t_sys_config set value = '220' where code = 'cover_thumb_height';
+
+update t_sys_config set code = 'person_thumb_width' where code = 'cover_thumb_width';
+update t_sys_config set code = 'person_thumb_height' where code = 'cover_thumb_height';
+
 
 */
 
-insert into t_sys_config(code,value,description)values('thumb_width','220','缩略图宽度');
-insert into t_sys_config(code,value,description)values('thumb_height','220','缩略图高度');
+
+
+insert into t_sys_config(code,value,description)values('thumb_width','500','缩略图宽度');
+insert into t_sys_config(code,value,description)values('thumb_height','0','缩略图高度');
+
+insert into t_sys_config(code,value,description)values('cover_thumb_width','220','个人图像缩略图宽度');
+insert into t_sys_config(code,value,description)values('cover_thumb_height','220','个人图像缩略图高度');
 
 /***
 	select * from t_activity_type;
