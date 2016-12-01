@@ -650,43 +650,101 @@ $(function() {
 	
 	/*
  		帖子列表
-		http://localhost:8089/vip/api/blog/vip-blog/index?page=1&per-page=3&sort=-create_date
+		http://localhost:8089/vip/api/blog/vip-blog/index
+		
+		获取帖子里面的图片请调用 http://localhost:8089/vip/api/blog/vip-blog/view?id=$id
 	*/
 	$("#btn_blog_list").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
-				'per-page' : '3', //每页行数
+				'per-page' : '10', //每页行数
 				'sort' : '-create_date', //排序
-				}
+				'VipBlogSearch[blog_type]' : '1', //论坛板块
+				'VipBlogSearch[blog_flag]' : '16001', //会员论坛
+				},
+				'get'
 			);
 	});
 	
 	/*
 			帖子详情
-		http://localhost:8089/vip/api/blog/vip-blog/view?id=1
+		http://localhost:8089/vip/api/blog/vip-blog/view
 	*/
 	$("#btn_blog_detail").click(function() {
 		test_api($(this).attr('url'),
 				{
-			'id':'1',//编号
-				}
+				'id':'6',  //编号
+				},
+				'get'
 			);
 	});
 	
 	
 	/*
-		论坛评论
-		http://localhost:8089/vip/api/blog/vip-blog-cmt/index?page=1&per-page=3&sort=-reply_date&VipBlogCmtSearch[blog_id]=1
+		论坛评论列表
+		http://localhost:8089/vip/api/blog/vip-blog-cmt/index
 	*/
 	$("#btn_blog_cmt_list").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
-				'per-page' : '3', //每页行数
+				'per-page' : '10', //每页行数
 				'sort' : '-reply_date', //排序
-				'VipBlogCmtSearch[blog_id]' : 1, //帖子编号
-				}
+				'VipBlogCmtSearch[blog_id]' : 6, //帖子编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+		论坛评论列表
+		http://localhost:8089/vip/api/blog/vip-blog-cmt/index
+	*/
+	$("#btn_blog_cmt_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-reply_date', //排序
+				'VipBlogCmtSearch[blog_id]' : 6, //帖子编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+		论坛评论列表 - 作者回复
+		http://localhost:8089/vip/api/blog/vip-blog-cmt/index
+	*/
+	$("#btn_blog_cmt_reply_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-reply_date', //排序
+				'VipBlogCmtSearch[blog_id]' : 6, //帖子编号
+				'VipBlogCmtSearch[parent_id]' : 3, //评论编号
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+		发帖
+		http://localhost:8089/vip/api/member/blog/vip-blog/create
+	*/
+	$("#btn_blog_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'VipBlog[blog_type]' : '1', //帖子板块
+				'VipBlog[blog_flag]' : '16001', //标志是会员博客
+				'VipBlog[name]' : '发帖test', //标题
+				'VipBlog[content]' : '内容内容，内容内容，内容内容', //帖子内容
+				//'VipBlog[imageFiles][]' : '' //图片（多个）
+				},
+				'post'
 			);
 	});
 	
