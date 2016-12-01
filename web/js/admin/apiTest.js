@@ -229,39 +229,51 @@ $(function() {
 	});
 	
 	/*
-	 	案例收藏
-		http://localhost:8089/vip/api/vip/vip-case/create
+	 	收藏
+		http://localhost:8089/vip/api/member/vip/vip-collect/create
 		
-	const collect_case = 28001; //案例
-	const collect_vip = 28002; //商家
-	const collect_prod = 28003; //产品
-	const collect_act = 28004; //团体服务
-	const collect_blog = 28005; //话题
-		
+		const collect_case = 28001; //案例
+		const collect_vip = 28002; //商家
+		const collect_prod = 28003; //产品
+		const collect_act = 28004; //团体服务
+		const collect_blog = 28005; //话题
 	*/
-	$("#btn_vip_case_create").click(function() {
+	$("#btn_vip_collect_create").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'VipCollect[case_id]':'2',//案例编号
-				'VipCollect[ref_vip_id]':'1',//商家编号
-				'VipCollect[package_id]':'1',//团体服务编号
-				'VipCollect[blog_id]':'1',//话题编号
-				'VipCollect[collect_type]':'28001',//收藏类型
+				'ref_id':'1',//案例编号
+				'VipCollect[collect_type]':'28001',//收藏类型(案例)
+				//'VipCollect[collect_type]':'28002',//收藏类型(商家)
 				},
 				'post'
 			);
 	});
 	
 	/*
-	 	取消案例收藏
-		http://localhost:8089/vip/api/vip/vip-case/delete
+	 	取消收藏
+		http://localhost:8089/vip/api/member/vip/vip-collect/delete
 	*/
-	$("#btn_vip_case_delete").click(function() {
+	$("#btn_vip_collect_delete").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'case_id':'1',//案例编号
+				'ref_id':'1',//关联编号
+				'collect_type':'28001',//收藏类型
 				},
 				'post'
+			);
+	});
+	
+	/*
+	 	收藏数量统计
+		http://localhost:8089/vip/api/member/vip/vip-collect/count
+	*/
+	$("#btn_vip_collect_count").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'ref_id':'1',//关联编号
+				'collect_type':'28001',//收藏类型
+				},
+				'get'
 			);
 	});
 	
@@ -279,7 +291,15 @@ $(function() {
 	});
 	/*
 	 	商户列表
-		http://localhost:8089/vip/api/vip/merchant/index?page=2&per-page=3&sort=vip_id&MerchantSearch[vip_name]=1
+		http://localhost:8089/vip/api/vip/merchant/index
+		
+		商家类型：
+		1	策划师
+		2	主持人
+		3	摄影师
+		4	化妆师
+		5	摄像师
+	    
 	*/
 	$("#btn_merchant_list").click(function() {
 		test_api($(this).attr('url'),
@@ -287,8 +307,8 @@ $(function() {
 				'page':'1',//页码
 				'per-page' : '10', //每页行数
 				'sort' : 'vip_name', //排序
-				//'MerchantSearch[vip_id]' : '137', //手机号码
-				//'MerchantSearch[vip_name]' : '1', //商户名（昵称）
+				'MerchantSearch[vip_type_id]' : '1', //商家类型
+				'MerchantSearch[vip_name]' : '', //商户名（昵称）
 				},
 				'get'
 			);
@@ -301,54 +321,127 @@ $(function() {
 	$("#btn_merchant_detail").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'id':'1',//商户编号
-				}
+				'id':'2',//商户编号
+				},
+				'get'
 			);
 	});
 	
 	/*
 	 	商户案例列表
-		http://localhost:8089/vip/api/vip/vip-case/index?page=2&per-page=3&sort=name&VipCaseSearch[vip_id]=1
+		http://localhost:8089/vip/api/vip/vip-case/index
 	*/
 	$("#btn_merchant_case_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'page':'2',//页码
-				'per-page' : '3', //每页行数
-				'sort' : 'name', //排序（降序为sort=-name)
-				'VipCaseSearch[vip_id]' : 1, //商户编号
-				}
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-create_date', //排序（降序为sort=-name)(sort=-create_date)
+				'VipCaseSearch[vip_id]' : 2, //商户编号
+				},
+				'get'
 			);
 	});
 	
 	/*
 	 	商户团体服务列表
 	 	http://localhost:8089/vip/api/basic/activity/index
-		http://localhost:8089/vip/api/basic/activity/index?page=2&per-page=3&sort=name&ActivitySearch[vip_id]=2
 	*/
 	$("#btn_merchant_package_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'page':'2',//页码
-				'per-page' : '3', //每页行数
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
 				'sort' : 'name', //排序（降序为sort=-name)
 				'ActivitySearch[vip_id]' : 2, //商户编号
-				}
+				},
+				'get'
 			);
 	});
 	
 	/*
 	 	商户评价列表
-		http://localhost:8089/vip/api/vip/product-comment/index?page=2&per-page=3&sort=-comment_date&ProductCommentSearch[merchant_id]=1
+		http://localhost:8089/vip/api/vip/product-comment/index
 	*/
 	$("#btn_merchant_cmt_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'page':'2',//页码
-				'per-page' : '3', //每页行数
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
 				'sort' : '-comment_date', //排序（降序为sort=-comment_date)
-				'ProductCommentSearch[merchant_id]' : 1, //商户编号
-				}
+				'ProductCommentSearch[merchant_id]' : 2, //商户编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+	 	商户案例数量
+		http://localhost:8089/vip/api/vip/merchant/vip-case-count
+	*/
+	$("#btn_merchant_VipCaseCount").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//商户编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+	 	商户动态数量
+		http://localhost:8089/vip/api/vip/merchant/vip-blog-count
+	*/
+	$("#btn_merchant_VipBlogCount").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//商户编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+	 	商户团体数量
+		http://localhost:8089/vip/api/vip/merchant/activity-count
+	*/
+	$("#btn_merchant_ActivityCount").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//商户编号
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	商户服务评价数量
+		http://localhost:8089/vip/api/vip/merchant/product-comment-count
+	*/
+	$("#btn_merchant_ProductCommentCount").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'1',//商户编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+		商户动态
+		http://localhost:8089/vip/api/blog/vip-blog/index
+	*/
+	$("#btn_merchant_blog_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-create_date', //排序
+				'VipBlogSearch[vip_id]':2, //商户编号
+				'VipBlogSearch[blog_flag]' : '16002', //商户博客标志
+				},
+				'get'
 			);
 	});
 	
@@ -376,52 +469,72 @@ $(function() {
 		test_api($(this).attr('url'),
 				{
 				'id':'1',//团体服务编号
-				}
+				},
+				'get'
 			);
 	});
 	
 	
 	/*
 	 	我的消息
-		http://localhost:8089/vip/api/member/system/sys-notify-log/index?page=1&per-page=3&sort=-create_date
+		http://localhost:8089/vip/api/member/system/sys-notify-log/index
 	*/
 	$("#btn_sys_notify_log_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'page':'2',//页码
-				'per-page' : '3', //每页行数
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
 				'sort' : '-create_date', //排序
-				}
+				},
+				'get'
 			);
 	});
+	
+	
+	/*
+	 	查看消息
+		http://localhost:8089/vip/api/member/system/sys-notify-log/view
+	*/
+	$("#btn_sys_notify_log_view").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'29',//消息编号
+				},
+				'get'
+			);
+	});
+	
 
 	/*
-	 	我的关注
-		http://localhost:8089/vip/api/member/vip/vip-concern/index?page=1&per-page=3&sort=-concern_date
-		http://localhost:8089/vip/api/member/vip/vip-concern/view?id=1
+	 	我的收藏商户
+		http://localhost:8089/vip/api/member/vip/vip-collect/index
+		http://localhost:8089/vip/api/member/vip/vip-collect/view
 	*/
-	$("#btn_vip_concern_list").click(function() {
+	$("#btn_vip_collect_vip_list").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
-				'per-page' : '3', //每页行数
-				'sort' : '-concern_date', //排序
-				}
+				'per-page' : '10', //每页行数
+				'sort' : '-collect_date', //排序
+				'VipCollectSearch[collect_type]' : '28002', //收藏商户标识
+				},
+				'get'
 			);
 	});
 	
 	/*
-	 	我的收藏
-		http://localhost:8089/vip/api/member/vip/vip-collect/index?page=1&per-page=3&sort=-collect_date
-		http://localhost:8089/vip/api/member/vip/vip-collect/view?id=1
+	 	我的收藏案例
+		http://localhost:8089/vip/api/member/vip/vip-collect/index
 	*/
-	$("#btn_vip_collect_list").click(function() {
+	$("#btn_vip_collect_case_list").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
-				'per-page' : '3', //每页行数
+				'per-page' : '10', //每页行数
 				'sort' : '-collect_date', //排序
-				}
+				'VipCollectSearch[collect_type]' : '28001', //收藏案例标识
+				},
+				'get'
 			);
 	});
 	
@@ -521,15 +634,16 @@ $(function() {
 	
 	/*
 	 	论坛板块
-		http://localhost:8089/vip/api/blog/vip-blog-type/index?page=1&per-page=3&sort=name
+		http://localhost:8089/vip/api/blog/vip-blog-type/index
 	*/
 	$("#btn_blog_type_list").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
-				'per-page' : '3', //每页行数
+				'per-page' : '10', //每页行数
 				'sort' : 'name', //排序
-				}
+				},
+				'get'
 			);
 	});
 	
