@@ -25,6 +25,7 @@ use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\SoSheetDetail;
 use app\models\b2b2c\ActPackageProduct;
 use app\models\b2b2c\VipOrganization;
+use yii\web\NotFoundHttpException;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -159,6 +160,10 @@ class ActivityController extends BaseApiController
     	->joinWith('auditUser auditUser')
     	->joinWith('actScopes actScopes')
     	->where(['act.id' => $id])->one();
+    	
+    	if(empty($model)){
+    		throw new NotFoundHttpException('你查找的数据不存在！.');
+    	}
     	
     	$model->img_url = UrlUtils::formatUrl($model->img_url);
     	$model->thumb_url = UrlUtils::formatUrl($model->thumb_url);
