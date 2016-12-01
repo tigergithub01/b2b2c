@@ -3,16 +3,17 @@
 namespace app\modules\vip\controllers\api\blog;
 
 use app\common\utils\CommonUtils;
+use app\common\utils\UrlUtils;
 use app\models\b2b2c\common\PaginationObj;
 use app\models\b2b2c\search\VipBlogSearch;
-use app\models\b2b2c\VipBlog;
-use app\modules\vip\common\controllers\BaseApiController;
-use Yii;
 use app\models\b2b2c\SysParameter;
-use app\modules\vip\service\vip\VipCollectService;
-use app\models\b2b2c\VipCollect;
-use yii\helpers\ArrayHelper;
+use app\models\b2b2c\VipBlog;
 use app\models\b2b2c\VipBlogCmt;
+use app\models\b2b2c\VipCollect;
+use app\modules\vip\common\controllers\BaseApiController;
+use app\modules\vip\service\vip\VipCollectService;
+use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
@@ -45,8 +46,6 @@ class VipBlogController extends BaseApiController
         $searchModel = new VipBlogSearch();
         $searchModel->audit_status = SysParameter::audit_approved;//审核通过
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-
         $models = $dataProvider->getModels();
         
         //格式化输出
@@ -61,9 +60,17 @@ class VipBlogController extends BaseApiController
         				$count = VipBlogCmt::find()->where(['blog_id'=>$value->id,'status'=>SysParameter::yes])->count();
 	        			return $count;
         			},
-        		])
-        	]);
-        
+        			'vip_name' => function($value){
+        				return (empty($value->vip)?'':$value->vip->vip_name);
+        			},
+        			'thumb_url' => function($value){
+        				return (empty($value->vip)?'':UrlUtils::formatUrl($value->vip->thumb_url));
+        			},
+        			'blog_type_name' => function($value){
+        				return (empty($value->blogType)?'':$value->blogType->name);
+        			},
+        		]),
+        	]);        
         
         $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
         
@@ -80,10 +87,48 @@ class VipBlogController extends BaseApiController
     public function actionView()
     {
         $id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
-    	$model = $this->findModel($id);
+    	$model = $this->findModel($id);    	
+    	$vipBlogPhotos = $model->vipBlogPhotos;
     	
-    	return CommonUtils::json_success($model);
+    	//格式化图片
+    	foreach ($vipBlogPhotos as $key => $value) {
+    		$value->img_url = UrlUtils::formatUrl($value['img_url']);
+    		$value->img_original = UrlUtils::formatUrl($value['img_original']);
+    		$value->thumb_url = UrlUtils::formatUrl($value['thumb_url']);
+    	}    	
+    	
+    	//格式化输出
+    	$data = ArrayHelper::toArray ($model, [
+    			VipBlog::className() => array_merge(CommonUtils::getModelFields($model),[
+    				'collect_count' => function($value){
+    					$vipCollectService = new VipCollectService();
+    					$count = $vipCollectService->getVipCollectCount(VipCollect::collect_blog,$value->id);
+    					return $count;
+    				},
+    				'reply_count' => function($value){
+    					$count = VipBlogCmt::find()->where(['blog_id'=>$value->id,'status'=>SysParameter::yes])->count();
+    					return $count;
+    				},
+    				'vip_name' => function($value){
+    					return (empty($value->vip)?'':$value->vip->vip_name);
+    				},
+    				'thumb_url' => function($value){
+    					return (empty($value->vip)?'':UrlUtils::formatUrl($value->vip->thumb_url));
+    				},
+    				'blog_type_name' => function($value){
+    					return (empty($value->blogType)?'':$value->blogType->name);
+    				},
+    			]),
+    		]);
+    	
+    	return CommonUtils::json_success([
+    			"model"=>$data,
+    			'vipBlogPhotos'=>$vipBlogPhotos,
+    	]);
     }
+    
+    
+    
 
 
     /**
@@ -103,6 +148,10 @@ class VipBlogController extends BaseApiController
     	->joinWith('auditStatus auditStatus')
     	->joinWith('auditUser auditUser')
     	->where(['vipBlog.id'=>$id])->one();
+    	
+    	if(empty($model)){
+    		throw new \yii\web\NotFoundHttpException('您查找的数据不存在！');
+    	}
     	
     	return $model;
     	

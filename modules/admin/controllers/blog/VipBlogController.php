@@ -2,24 +2,23 @@
 
 namespace app\modules\admin\controllers\blog;
 
-use Yii;
-use app\models\b2b2c\VipBlog;
-use app\models\b2b2c\search\VipBlogSearch;
-use app\modules\admin\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use app\common\utils\CommonUtils;
+use app\common\utils\image\ImageUtils;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\VipBlogType;
+use app\models\b2b2c\search\VipBlogSearch;
+use app\models\b2b2c\SysConfig;
+use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysUser;
-use app\models\b2b2c\SysParameter;
-use app\modules\admin\models\AdminConst;
-use app\common\utils\image\ImageUtils;
-use yii\web\UploadedFile;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\VipBlog;
 use app\models\b2b2c\VipBlogPhoto;
-use app\models\b2b2c\SysConfig;
-use app\common\utils\CommonUtils;
+use app\models\b2b2c\VipBlogType;
+use app\modules\admin\common\controllers\BaseAuthController;
+use app\modules\admin\models\AdminConst;
+use Yii;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.

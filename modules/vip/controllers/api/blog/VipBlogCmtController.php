@@ -2,18 +2,15 @@
 
 namespace app\modules\vip\controllers\api\blog;
 
-use Yii;
-use app\modules\vip\common\controllers\BaseApiController;
-use app\models\b2b2c\common\JsonObj;
-use yii\helpers\Json;
-use app\common\utils\UrlUtils;
 use app\common\utils\CommonUtils;
 use app\models\b2b2c\common\PaginationObj;
-use yii\helpers\ArrayHelper;
-use app\models\b2b2c\search\VipConcernSearch;
-use app\models\b2b2c\VipConcern;
 use app\models\b2b2c\search\VipBlogCmtSearch;
 use app\models\b2b2c\VipBlogCmt;
+use app\modules\vip\common\controllers\BaseApiController;
+use Yii;
+use app\models\b2b2c\SysParameter;
+use yii\helpers\ArrayHelper;
+use app\common\utils\UrlUtils;
 
 /**
  * VipBlogCmtController implements the CRUD actions for VipBlogCmt model.
@@ -44,10 +41,23 @@ class VipBlogCmtController extends BaseApiController
     public function actionIndex()
     {
         $searchModel = new VipBlogCmtSearch();
+        $searchModel->status = SysParameter::yes;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $models = $dataProvider->getModels();
-        $pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+        //格式化输出
+        $data = ArrayHelper::toArray ($models, [
+        		VipBlogCmt::className() => array_merge(CommonUtils::getModelFields(new VipBlogCmt()),[
+        			'vip_name' => function($value){
+        				return (empty($value->vip)?'':$value->vip->vip_name);
+        			},
+        			'thumb_url' => function($value){
+        				return (empty($value->vip)?'':UrlUtils::formatUrl($value->vip->thumb_url));
+        			},
+        		]),
+        	]);
+        
+        $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
         return CommonUtils::json_success($pagionationObj);
     }
 

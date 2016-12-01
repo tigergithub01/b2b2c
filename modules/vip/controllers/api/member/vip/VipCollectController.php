@@ -3,20 +3,19 @@
 namespace app\modules\vip\controllers\api\member\vip;
 
 use app\common\utils\CommonUtils;
+use app\common\utils\UrlUtils;
 use app\models\b2b2c\common\PaginationObj;
+use app\models\b2b2c\ProductComment;
 use app\models\b2b2c\search\VipCollectSearch;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\VipCase;
 use app\models\b2b2c\VipCollect;
 use app\modules\vip\common\controllers\BaseAuthApiController;
 use app\modules\vip\models\VipConst;
-use Yii;
 use app\modules\vip\service\vip\VipCollectService;
-use app\common\utils\UrlUtils;
+use Yii;
 use yii\helpers\ArrayHelper;
-use app\models\b2b2c\Activity;
-use app\models\b2b2c\SysParameter;
-use app\models\b2b2c\VipCase;
-use app\models\b2b2c\SoSheet;
-use app\models\b2b2c\ProductComment;
 
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.

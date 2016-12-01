@@ -162,7 +162,7 @@ class ActivityController extends BaseApiController
     	->where(['act.id' => $id])->one();
     	
     	if(empty($model)){
-    		throw new NotFoundHttpException('你查找的数据不存在！.');
+    		throw new \yii\web\NotFoundHttpException('您查找的数据不存在！');
     	}
     	
     	$model->img_url = UrlUtils::formatUrl($model->img_url);
