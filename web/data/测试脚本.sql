@@ -572,7 +572,14 @@ alter table t_sys_app_release modify column app_path  varchar(200) comment '应�
 
 select * from t_vip;
 
+select * from t_vip_case;
 
+update t_vip_case set audit_status = 3003 where id in (1,2,3)
+
+
+select * from t_vip_collect;
+
+delete from t_vip_collect;
 
 select * from t_vip_case;
 
@@ -585,8 +592,33 @@ alter table t_vip_case add service_date         datetime comment '婚礼时间';
 
 delete from t_vip_collect;
 
+select * from t_activity;
+
+select * from t_vip_case;
+
+SELECT COUNT(*) FROM `t_vip_case` WHERE (`vip_id`='2') AND (`audit_status`=3003)
+
+select * from t_vip_blog;
+
+update t_vip_blog set audit_status = 3003 where id = 1;
+
+SELECT `vipBlog`.* FROM `t_vip_blog` `vipBlog` LEFT JOIN `t_vip` `vip` ON `vipBlog`.`vip_id` = `vip`.`id` LEFT JOIN `t_sys_parameter` `stat` ON `vipBlog`.`status` = `stat`.`id` LEFT JOIN `t_sys_parameter` `blogFlag` ON `vipBlog`.`blog_flag` = `blogFlag`.`id` LEFT JOIN `t_sys_parameter` `auditStatus` ON `vipBlog`.`audit_status` = `auditStatus`.`id` LEFT JOIN `t_sys_user` `auditUser` ON `vipBlog`.`audit_user_id` = `auditUser`.`id` LEFT JOIN `t_vip_blog_type` `blogType` ON `vipBlog`.`blog_type` = `blogType`.`id` 
+WHERE (`vipBlog`.`blog_flag`='16002') AND (`vipBlog`.`audit_status`='3003') ORDER BY `create_date` DESC LIMIT 10
+
+SELECT `case`.* FROM `t_vip_case` `case` LEFT JOIN `t_sys_user` `auditUser` ON `case`.`audit_user_id` = `auditUser`.`id` LEFT JOIN `t_sys_parameter` `auditStatus` ON `case`.`audit_status` = `auditStatus`.`id` LEFT JOIN `t_vip_case_type` `type` ON `case`.`type_id` = `type`.`id` LEFT JOIN `t_sys_parameter` `caseFlag` ON `case`.`case_flag` = `caseFlag`.`id` LEFT JOIN `t_sys_parameter` `stat` ON `case`.`status` = `stat`.`id` LEFT JOIN `t_sys_parameter` `isHot` ON `case`.`is_hot` = `isHot`.`id` LEFT JOIN `t_vip` `vip` ON `case`.`vip_id` = `vip`.`id` 
+WHERE (`case`.`vip_id`='1') AND (`case`.`audit_status`=3003) ORDER BY `create_date` DESC LIMIT 10
+
+select * from t_product_comment;
 
 drop table t_vip_collect;
+
+select * from t_vip where merchant_flag = 1;
+
+SELECT `vip`.* FROM `t_vip` `vip` LEFT JOIN `t_sys_parameter` `stat` ON `vip`.`status` = `stat`.`id` LEFT JOIN `t_sys_parameter` `auditStat` ON `vip`.`audit_status` = `auditStat`.`id` LEFT JOIN `t_sys_user` `auditStatUsr` ON `vip`.`audit_user_id` = `auditStatUsr`.`id` LEFT JOIN `t_sys_parameter` `emailVerify` ON `vip`.`email_verify_flag` = `emailVerify`.`id` LEFT JOIN `t_vip` `parent` ON `vip`.`parent_id` = `parent`.`id` LEFT JOIN `t_sys_parameter` `mercFlag` ON `vip`.`merchant_flag` = `mercFlag`.`id` 
+LEFT JOIN `t_vip_type` `vType` ON `vip`.`vip_type_id` = `vType`.`id` LEFT JOIN `t_sys_parameter` `mobileVerify` ON `vip`.`mobile_verify_flag` = `mobileVerify`.`id` LEFT JOIN `t_vip_rank` `rank` ON `vip`.`rank_id` = `rank`.`id` LEFT JOIN `t_sys_parameter` `sex` ON `vip`.`sex` = `sex`.`id` 
+WHERE (`vip`.`merchant_flag`=1) AND (`vip`.`audit_status`=3003) ORDER BY `vip_name` LIMIT 10
+
+update t_vip set `audit_status`=3003 where id in (6,7,9);
 
 create table t_vip_collect
 (
@@ -621,6 +653,15 @@ alter table t_vip_collect add constraint fk_vip_collect_refvip_ref_vip foreign k
 
 alter table t_vip_collect add constraint fk_vip_collect_type_ref_param foreign key (collect_type)
       references t_sys_parameter (id);
+
+
+alter table t_activity add market_price         decimal(20,6) comment '市场价';
+
+alter table t_act_package_product drop column sale_price;
+
+select * from t_sys_notify;
+
+select * from t_vip_type;
 
 
 

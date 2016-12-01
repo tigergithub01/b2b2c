@@ -147,12 +147,13 @@ insert into t_sys_parameter_type(id,name,description) values(26,'婚礼类型',n
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(26001,26,'室内',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(26002,26,'室外',null,2);
 
-insert into t_sys_parameter_type(id,name,description) values(27,'婚礼类型',null);
+insert into t_sys_parameter_type(id,name,description) values(27,'婚礼人类型（订单咨询）',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27001,27,'策划师',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27002,27,'主持人',null,2);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27003,27,'摄影师',null,3);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27004,27,'化妆师',null,4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(27005,27,'摄像师',null,5);
+
 
 insert into t_sys_parameter_type(id,name,description) values(28,'会员收藏类型',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28001,28,'案例',null,1);
@@ -163,6 +164,9 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2800
 
 
 /*
+
+
+
 select * from t_sys_parameter_type;
 select * from t_sys_parameter where type_id = 23;
 
@@ -238,7 +242,7 @@ update t_sys_app_info set release_id =1 where code = 'wedding_android';
 
 
 /**
-select * from t_vip_type;
+select id,name from t_vip_type;
 */
 /**插入会员（商户）类型*/
 insert into t_vip_type(name,seq_id,merchant_flag)values('策划师',1,1);
