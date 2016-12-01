@@ -112,21 +112,6 @@ class SysParameter extends \app\models\b2b2c\BasicModel
     const audit_need_approve = 3004; //待审核
     
     
-    /* 商户类型（婚礼）：策划师 */
-    const role_plan = 23001;
-    
-    /* 商户类型（婚礼）：主持人 */
-    const role_host = 23002;
-    
-    /* 商户类型（婚礼）：摄影师 */
-    const role_photographer = 23003;
-    
-    /* 商户类型（婚礼）：化妆师 */
-    const role_dresser = 23004;
-    
-    /* 商户类型（婚礼）：摄像师 */
-    const role_cameraman = 23005;
-    
     /**
      * @inheritdoc
      */

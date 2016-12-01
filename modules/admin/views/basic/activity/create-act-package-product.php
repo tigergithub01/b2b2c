@@ -51,8 +51,6 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?= $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?php // echo $form->field($model, 'sale_price')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'quantity')->textInput() ?>

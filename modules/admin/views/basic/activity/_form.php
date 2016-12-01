@@ -71,6 +71,8 @@ use yii\widgets\ActiveForm;
 
     
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
 
@@ -80,7 +82,7 @@ use yii\widgets\ActiveForm;
 
     <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
 	

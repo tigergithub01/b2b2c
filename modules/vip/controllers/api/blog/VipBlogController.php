@@ -8,6 +8,11 @@ use app\models\b2b2c\search\VipBlogSearch;
 use app\models\b2b2c\VipBlog;
 use app\modules\vip\common\controllers\BaseApiController;
 use Yii;
+use app\models\b2b2c\SysParameter;
+use app\modules\vip\service\vip\VipCollectService;
+use app\models\b2b2c\VipCollect;
+use yii\helpers\ArrayHelper;
+use app\models\b2b2c\VipBlogCmt;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
@@ -38,10 +43,32 @@ class VipBlogController extends BaseApiController
     public function actionIndex()
     {
         $searchModel = new VipBlogSearch();
+        $searchModel->audit_status = SysParameter::audit_approved;//审核通过
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
 
         $models = $dataProvider->getModels();
-        $pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+        
+        //格式化输出
+        $data = ArrayHelper::toArray ($models, [
+        		VipBlog::className() => array_merge(CommonUtils::getModelFields(new VipBlog()),[
+        			'collect_count' => function($value){
+        				$vipCollectService = new VipCollectService();
+        				$count = $vipCollectService->getVipCollectCount(VipCollect::collect_blog,$value->id);
+        				return $count;
+        			},
+        			'reply_count' => function($value){
+        				$count = VipBlogCmt::find()->where(['blog_id'=>$value->id,'status'=>SysParameter::yes])->count();
+	        			return $count;
+        			},
+        		])
+        	]);
+        
+        
+        $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
+        
+        
+        
         return CommonUtils::json_success($pagionationObj);
     }
 

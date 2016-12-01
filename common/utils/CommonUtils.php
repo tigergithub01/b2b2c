@@ -48,6 +48,10 @@ class CommonUtils{
 		return Json::encode(new JsonObj(true, $value, $message));
 	}
 	
+	public static function json_successWithMsg( $message='操作成功!'){
+		return self::json_success(null,$message);
+	}
+	
 	public static function response_failed($message, $err_code=null){
 		header("Content-type: text/html; charset=utf-8");
 		if (Yii::$app->getRequest()->getIsAjax()) {

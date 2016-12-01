@@ -11,6 +11,13 @@ use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\Vip;
 use app\modules\vip\common\controllers\BaseApiController;
 use Yii;
+use yii\helpers\ArrayHelper;
+use app\modules\vip\service\vip\MerchantService;
+use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\VipExtend;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\ProductComment;
+use app\models\b2b2c\VipCase;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -40,16 +47,50 @@ class MerchantController extends BaseApiController
      */
     public function actionIndex()
     {
-        $searchModel = new MerchantSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
+        /* $searchModel = new MerchantSearch();
+        $params = Yii::$app->request->queryParams;
+        $params['MerchantSearch']['audit_status'] = SysParameter::audit_approved; //审核通过
+        $dataProvider = $searchModel->search($params); */   	
+    	$searchModel = new MerchantSearch();
+    	$searchModel->audit_status = SysParameter::audit_approved;
+    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $models = $dataProvider->getModels();
         foreach ($models as $vip) {
         	$vip->img_url = UrlUtils::formatUrl($vip->img_url);
         	$vip->thumb_url = UrlUtils::formatUrl($vip->thumb_url);
         	$vip->img_original = UrlUtils::formatUrl($vip->img_original);
         }
-        $pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+        
+        //格式化输出
+        $data = ArrayHelper::toArray ($models, [
+        		Vip::className() => array_merge(CommonUtils::getModelFields(new Vip()),[
+        			'vip_type_name' => function($value){
+        				return (empty($value->vipType)?'':$value->vipType->name);
+        			},
+        			'description' => function($value){
+		    				$vipOrganization =  VipOrganization::find()->where(['vip_id'=>$value->id])->one();
+			    			return (empty($vipOrganization)?'':$vipOrganization->description);
+			    	},
+			    	'order_count' => function($value){
+			    		$count = SoSheet::find()->where(['merchant_id' =>$value->id, 'order_status' => SoSheet::order_completed ])->count();
+			    		return $count;
+			    	},
+			    	'vip_case_count' => function($value){
+				    	//案例数量
+				    	$count = VipCase::find()->where(['vip_id' =>$value->id, 'audit_status'=>SysParameter::audit_approved ])->count();
+				    	return $count;
+			    	},
+			    	'good_cmt_count' => function($value){
+				    	//好评数量
+				    	$count = ProductComment::find()->alias("cmt")->joinWith("product product")->
+				    	where(['product.vip_id' => $value->id ,'cmt.status'=>SysParameter::yes, 'cmt.cmt_rank_id'=>[ProductComment::cmt_4_star,ProductComment::cmt_5_star]])
+				    	->count();
+				    	return $count;
+			    	},
+        		])
+        	]);
+        
+        $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
         return CommonUtils::json_success($pagionationObj);
     }
 
@@ -66,11 +107,98 @@ class MerchantController extends BaseApiController
     	//根据商户编号查询此商户对应的个人服务
     	$product = $this->findProduct($model->id);
     	
+    	//营业信息
+    	$vipOrganization = $this->findVipOrganization($model->id);
+    	
+    	//身份信息
+    	$vipExtend = $this->findVipExtend($model->id);
+    	
+    	
+    	//格式化输出
+    	$data = ArrayHelper::toArray ($model, [
+    			Vip::className() => array_merge(CommonUtils::getModelFields($model),[
+    				'vip_type_name' => function($value){
+    				return (empty($value->vipType)?'':$value->vipType->name);
+    				},
+    			])
+    	]);
+    	
     	return CommonUtils::json_success([
-    			"model"=>$model,
-    			'product'=>$product
+    			"model"=>$data,
+    			'product'=>$product,
+    			'vipOrganization' => $vipOrganization,
+    			'vipExtend' => $vipExtend, 
     	]);
     }
+    
+    
+    /**
+     * 案例数量
+     * @return string
+     */
+    public function actionVipCaseCount()
+    {
+    	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
+    	if(empty($id)){
+    		return CommonUtils::json_failed("编号不能为空");
+    	}
+    	
+    	$merchantService = new MerchantService();
+    	$count = $merchantService->getVipCaseCount($id);
+    	return CommonUtils::json_success($count);
+    }
+    
+    
+    /**
+     * 动态数量
+     * @return string
+     */
+    public function actionVipBlogCount()
+    {
+    	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
+    	if(empty($id)){
+    		return CommonUtils::json_failed("编号不能为空");
+    	}
+    	 
+    	$merchantService = new MerchantService();
+    	$count = $merchantService->getVipBlogCount($id);
+    	return CommonUtils::json_success($count);
+    }
+    
+    /**
+     * 团体服务数量
+     * @return string
+     */
+    public function actionActivityCount()
+    {
+    	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
+    	if(empty($id)){
+    		return CommonUtils::json_failed("编号不能为空");
+    	}
+    
+    	$merchantService = new MerchantService();
+    	$count = $merchantService->getActivityCount($id);
+    	return CommonUtils::json_success($count);
+    }
+    
+    /**
+     * 评论数量
+     * @return string
+     */
+    public function actionProductCommentCount()
+    {
+    	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
+    	if(empty($id)){
+    		return CommonUtils::json_failed("编号不能为空");
+    	}
+    
+    	$merchantService = new MerchantService();
+    	$count = $merchantService->getProductCommentCount($id);
+    	return CommonUtils::json_success($count);
+    }
+    
+    
+    
 	
     /**
      * Finds the Vip model based on its primary key value.
@@ -113,5 +241,43 @@ class MerchantController extends BaseApiController
     	->where(['vip_id'=>$vip_id, 'service_flag'=>SysParameter::yes])->one();
     	return $model;
     }
+    
+    
+    /**
+     * findVipOrganization
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findVipOrganization($vip_id)
+    {
+    	$model = VipOrganization::find()->alias('vipOrg')
+    	->joinWith('auditUser auditUser')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('district district')
+    	->joinWith('city city')
+    	->joinWith('country country')
+    	->joinWith('province province')
+    	->joinWith('vip vip')
+    	->joinWith('status0 stat')
+    	->where(['vipOrg.vip_id'=>$vip_id])->one();
+    	return $model;
+    }
+    
+    /**
+     * findVipExtend
+     * @param unknown $id
+     * @return unknown
+     */
+    protected function findVipExtend($vip_id)
+    {
+    	$model = VipExtend::find()->alias('vipExtend')
+    	->joinWith('auditUser auditUser')
+    	->joinWith('auditStatus auditStatus')
+    	->joinWith('vip vip')
+    	->where(['vipExtend.vip_id'=>$vip_id])->one();
+    	return $model;
+    }
+    
+    
     
 }

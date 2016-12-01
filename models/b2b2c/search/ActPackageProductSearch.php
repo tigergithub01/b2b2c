@@ -19,7 +19,7 @@ class ActPackageProductSearch extends ActPackageProduct
     {
         return [
             [['id', 'act_id', 'product_id', 'quantity'], 'integer'],
-            [['sale_price', 'package_price'], 'number'],
+            [['package_price'], 'number'],
         ];
     }
 
@@ -66,7 +66,6 @@ class ActPackageProductSearch extends ActPackageProduct
             'actProd.id' => $this->id,
             'actProd.act_id' => $this->act_id,
             'actProd.product_id' => $this->product_id,
-            'actProd.sale_price' => $this->sale_price,
             'actProd.package_price' => $this->package_price,
             'actProd.quantity' => $this->quantity,
         ]);

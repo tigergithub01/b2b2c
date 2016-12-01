@@ -36,6 +36,13 @@ class ProductComment extends \app\models\b2b2c\BasicModel
 	
 	/* 商户主键（查询用） */
 	public $merchant_id;
+	
+	/* 评价等级： */
+	const cmt_1_star = 12001; // 差评-1星
+	const cmt_2_star = 12002; // 中评-2星
+	const cmt_3_star = 12003; // 中评-3星
+	const cmt_4_star = 12004; // 好评-4星
+	const cmt_5_star = 12005; // 好评-5星
     
     /**
      * @inheritdoc

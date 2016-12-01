@@ -2,12 +2,11 @@
 
 namespace app\modules\vip\service\vip;
 
-use Yii;
-use app\models\b2b2c\Vip;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysVerifyCode;
-use yii\base\View;
+use app\models\b2b2c\Vip;
 use app\modules\vip\models\VipConst;
+use Yii;
 
 class VipService{
 	/**

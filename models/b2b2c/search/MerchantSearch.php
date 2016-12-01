@@ -2,11 +2,10 @@
 
 namespace app\models\b2b2c\search;
 
-use Yii;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\Vip;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\SysParameter;
 
 /**
  * VipSearch represents the model behind the search form about `app\models\b2b2c\Vip`.

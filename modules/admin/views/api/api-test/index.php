@@ -1,7 +1,6 @@
 <?php
 /* @var $this yii\web\View */
 
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -55,17 +54,25 @@ use yii\helpers\Url;
 			<div class="form-group">
 				<?php echo Html::button('案例列表',['id'=>'btn_vip_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/index'])]);?>
 				<?php echo Html::button('案例详情',['id'=>'btn_vip_case_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/view'])]);?>
-				<?php echo Html::button('收藏案例',['id'=>'btn_vip_case_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/create'])]);?>
-				<?php echo Html::button('取消收藏案例',['id'=>'btn_vip_case_delete','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect//delete'])]);?>
+				<?php echo Html::button('收藏',['id'=>'btn_vip_collect_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/create'])]);?>
+				<?php echo Html::button('取消收藏',['id'=>'btn_vip_collect_delete','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/delete'])]);?>
+				<?php echo Html::button('收藏数量统计',['id'=>'btn_vip_collect_count','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-collect/count'])]);?>
 			</div>
 			
 			<div class="form-group">
 				<?php echo Html::button('商户类别',['id'=>'btn_merchant_type_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-type/index'])]);?>
 				<?php echo Html::button('商户列表',['id'=>'btn_merchant_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/index'])]);?>
 				<?php echo Html::button('商户详情',['id'=>'btn_merchant_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/view'])]);?>
+				
+				<?php echo Html::button('商户动态列表',['id'=>'btn_merchant_blog_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/blog/vip-blog/index'])]);?>
 				<?php echo Html::button('商户案例列表',['id'=>'btn_merchant_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/vip-case/index'])]);?>
-				<?php echo Html::button('商户组团服务列表',['id'=>'btn_merchant_package_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/index'])]);?>
+				<?php echo Html::button('商户组团服务列表',['id'=>'btn_merchant_package_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/basic/activity/index'])]);?>
 				<?php echo Html::button('商户服务评价列表',['id'=>'btn_merchant_cmt_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/product-comment/index'])]);?>
+				
+				<?php echo Html::button('商户案例数量',['id'=>'btn_merchant_VipCaseCount','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/vip-case-count'])]);?>
+				<?php echo Html::button('商户动态数量',['id'=>'btn_merchant_VipBlogCount','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/vip-blog-count'])]);?>
+				<?php echo Html::button('商户团体数量',['id'=>'btn_merchant_ActivityCount','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/activity-count'])]);?>
+				<?php echo Html::button('商户服务评价数量',['id'=>'btn_merchant_ProductCommentCount','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/vip/merchant/product-comment-count'])]);?>
 			</div>
 			
 			<div class="form-group">
@@ -75,8 +82,9 @@ use yii\helpers\Url;
 			
 			<div class="form-group">
 				<?php echo Html::button('我的消息',['id'=>'btn_sys_notify_log_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/sys-notify-log/index'])]);?>
-				<?php echo Html::button('我的关注',['id'=>'btn_vip_concern_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-concern/index'])]);?>
-				<?php echo Html::button('我的收藏',['id'=>'btn_vip_collect_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/index'])]);?>
+				<?php echo Html::button('查看消息',['id'=>'btn_sys_notify_log_view','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/system/sys-notify-log/view'])]);?>
+				<?php echo Html::button('我的收藏商户',['id'=>'btn_vip_collect_vip_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/index'])]);?>
+				<?php echo Html::button('我的收藏案例',['id'=>'btn_vip_collect_case_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/vip-collect/index'])]);?>
 				<?php echo Html::button('商家用户协议',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
 			</div>
 			

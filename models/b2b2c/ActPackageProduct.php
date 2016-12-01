@@ -10,7 +10,6 @@ use Yii;
  * @property string $id
  * @property string $act_id
  * @property string $product_id
- * @property string $sale_price
  * @property string $package_price
  * @property integer $quantity
  *
@@ -33,9 +32,9 @@ class ActPackageProduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['act_id', 'product_id', /* 'sale_price', */ 'package_price', 'quantity'], 'required'],
+            [['act_id', 'product_id', 'package_price', 'quantity'], 'required'],
             [['act_id', 'product_id', 'quantity'], 'integer'],
-            [['sale_price', 'package_price'], 'number'],
+            [['package_price'], 'number'],
             [['act_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['act_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
@@ -50,7 +49,6 @@ class ActPackageProduct extends \yii\db\ActiveRecord
             'id' => Yii::t('app', '主键'),
             'act_id' => Yii::t('app', /* '关联活动编号' */'关联团体服务'),
             'product_id' => Yii::t('app', /* '关联产品编号' */'关联个人服务'),
-            'sale_price' => Yii::t('app', '原价'),
             'package_price' => Yii::t('app', /* '套装价' */'团体价'),
             'quantity' => Yii::t('app', '数量'),
         	'act.name' => Yii::t('app', /* '关联活动编号' */'关联团体服务'),

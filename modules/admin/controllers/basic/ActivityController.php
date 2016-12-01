@@ -88,7 +88,7 @@ class ActivityController extends BaseAuthController
     public function actionCreate()
     {
         $model = new Activity();
-        $model->activity_type = 1;//优惠套装
+        $model->activity_type = Activity::act_package;//优惠套装
         $model->start_time=date(AdminConst::DATE_FORMAT,time());
         $model->end_date= date(AdminConst::DATE_FORMAT,time());
         

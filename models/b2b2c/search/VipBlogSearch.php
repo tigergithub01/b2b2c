@@ -2,10 +2,9 @@
 
 namespace app\models\b2b2c\search;
 
-use Yii;
+use app\models\b2b2c\VipBlog;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\VipBlog;
 
 /**
  * VipBlogSearch represents the model behind the search form about `app\models\b2b2c\VipBlog`.

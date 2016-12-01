@@ -2,10 +2,9 @@
 
 namespace app\models\b2b2c\search;
 
-use Yii;
+use app\models\b2b2c\SysNotifyLog;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SysNotifyLog;
 
 /**
  * SysNotifyLogSearch represents the model behind the search form about `app\models\b2b2c\SysNotifyLog`.
@@ -43,7 +42,8 @@ class SysNotifyLogSearch extends SysNotifyLog
     {
         $query = SysNotifyLog::find()->alias('notifyLog')
     	->joinWith('vip vip')
-    	->joinWith('notify notify');
+    	->joinWith('notify notify')
+    	->joinWith('notify.notifyType notifyType');
 
         // add conditions that should always apply here
 

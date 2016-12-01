@@ -96,6 +96,11 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	const pay_part_pay = 6002; // 部分支付
 	const pay_completed = 6003; // 已付款 
 	
+	/* 订单类型 */
+	const sheet_type_common = '4001'; //普通订单
+	const sheet_type_custom = '4002'; //定制订单
+	
+	
 	
 	
 	

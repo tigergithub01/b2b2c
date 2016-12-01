@@ -9,6 +9,14 @@ use app\models\b2b2c\VipCollect;
 use app\modules\vip\common\controllers\BaseAuthApiController;
 use app\modules\vip\models\VipConst;
 use Yii;
+use app\modules\vip\service\vip\VipCollectService;
+use app\common\utils\UrlUtils;
+use yii\helpers\ArrayHelper;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\VipCase;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\ProductComment;
 
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.
@@ -43,7 +51,75 @@ class VipCollectController extends BaseAuthApiController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $models = $dataProvider->getModels();
-        $pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+       
+        //格式化输出
+        $data = ArrayHelper::toArray ($models, [
+        		VipCollect::className() => array_merge(CommonUtils::getModelFields(new VipCollect()),[
+        			'vip_name' => function($value){
+    						return (empty($value->vip)?'':$value->vip->vip_name);
+    					},
+        			'thumb_url' => function($value){
+        				return (empty($value->vip)?'':UrlUtils::formatUrl($value->vip->thumb_url));
+        				},
+        			/* 'activity_count' => function($value){
+        				//团体数量
+        				if(empty($value->vip)){
+        					return 0;
+        				}else{
+        					$count = Activity::find()->where(['vip_id' =>$value->vip->id, 'activity_type'=>Activity::act_package, 'audit_status'=>SysParameter::audit_approved ])->count();
+        					return $count;
+        				}
+        			}, */
+        			'order_count' => function($value){
+	        			//成交量
+	        			if(empty($value->vip)){
+	        				return 0;
+	        			}else{
+	        				$count = SoSheet::find()->where(['merchant_id' =>$value->vip->id, 'order_status' => SoSheet::order_completed ])->count();
+	        				return $count;
+	        			}
+        			},
+        			'vip_case_count' => function($value){
+	        			//案例数量
+	        			if(empty($value->vip)){
+	        				return 0;
+	        			}else{
+	        				$count = VipCase::find()->where(['vip_id' =>$value->vip->id, 'audit_status'=>SysParameter::audit_approved ])->count();
+	        				return $count;
+	        			}
+        			},
+        			/* 'collect_count' => function($value){
+        				//收藏数量
+        				if(empty($value->vip)){
+        					return 0;
+        				}else{
+        					$vipCollectService = new VipCollectService();
+        					return $vipCollectService->getVipCollectCount(VipCollect::collect_vip, $value->vip->id);
+        				}        				
+        			}, */
+        			'good_cmt_count' => function($value){
+	        			//好评数量
+	        			if(empty($value->vip)){
+	        				return 0;
+	        			}else{
+	        				$count = ProductComment::find()->alias("cmt")->joinWith("product product")->
+	        				where(['product.vip_id' => $value->vip->id ,'cmt.status'=>SysParameter::yes, 'cmt.cmt_rank_id'=>[ProductComment::cmt_4_star,ProductComment::cmt_5_star]])
+	        				->count();
+	        				return $count;
+	        			}
+        			},
+        			'vip_case_name' => function($value){
+        				//案例名称
+        				return (empty($value->case)?'':$value->case->name);
+        			},
+        			'vip_case_sale_price' => function($value){
+        				//案例价格
+        				return (empty($value->case)?'':$value->case->sale_price);
+        			},
+        		])
+        	]);
+        
+        $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
         return CommonUtils::json_success($pagionationObj);
     }
 
@@ -60,6 +136,31 @@ class VipCollectController extends BaseAuthApiController
     	return CommonUtils::json_success($model);
     }
     
+    
+    /**
+     * 获取收藏的数量
+     * @param string $id
+     * @return mixed
+     */
+    public function actionCount()
+    {
+    	$ref_id = isset($_REQUEST['ref_id'])?$_REQUEST['ref_id']:null; //关联收藏对象编号
+    	$collect_type = isset($_REQUEST['collect_type'])?$_REQUEST['collect_type']:null; //收藏类型
+    	
+    	if(empty($ref_id)){
+    		return CommonUtils::json_failed("编号不能为空");
+    	}
+    	 
+    	if(empty($collect_type)){
+    		return CommonUtils::json_failed("取消收藏类型不能为空");
+    	}
+    	
+    	$vipCollectService = new VipCollectService();
+    	$count = $vipCollectService->getVipCollectCount($collect_type, $ref_id);
+    	 
+    	return CommonUtils::json_success($count);
+    }
+    
     /**
      * Creates a new VipCollect model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -68,41 +169,31 @@ class VipCollectController extends BaseAuthApiController
     public function actionCreate()
     {
     	$model = new VipCollect();
-    	$vip_user = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER);    	
+    	$vip_user = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER);  
+    	$ref_id = isset($_REQUEST['ref_id'])?$_REQUEST['ref_id']:null; //关联收藏对象编号
+    	
     	$model->vip_id = $vip_user->id;
     	$model->collect_date = date(VipConst::DATE_FORMAT, time());
     	
+    	$vipCollectService = new VipCollectService();
+    	
+    	
     	if ($model->load(Yii::$app->request->post()) && $model->validate() /* && $model->save() */) {
-    		
-    		if($model->collect_type==VipCollect::collect_case){
-    			//案例不能为空
-    			if(empty($model->case_id)){
-    				$model->addError("案例不能为空！");
-    				return CommonUtils::jsonModel_failed($model);
-    			}
-    			
-    			//已经收藏的案例不能重复收藏
-    			$count = VipCollect::find()->where(['vip_id'=>$vip_user->id, 'case_id'=>$model->case_id])->count();
-    			if($count>=1){
-    				return CommonUtils::json_failed("您已经收藏该案例!");
-    			}    			
-    		}else if ($model->collect_type==VipCollect::collect_vip){
-    			
-    		}else if ($model->collect_type==VipCollect::collect_prod){
-    			
-    		}else if ($model->collect_type==VipCollect::collect_act){
-    			
-    		}else if ($model->collect_type==VipCollect::collect_blog){
-    			
+    		if(empty($ref_id)){
+    			return CommonUtils::json_failed('收藏对象不能为空！');
     		}
     		
-    		if($model->save()){
+    		$count = $vipCollectService->getVipCollectCount($model->collect_type, $ref_id, $model->vip_id);
+    		if($count>=1){
+    			return CommonUtils::json_failed("不能重复收藏!");
+    		}
+    		
+    		if($vipCollectService->saveVipCollect($model, $ref_id)){
     			return CommonUtils::json_success($model->id);
     		}
-    		
-    	} /* else { */
-    		return CommonUtils::jsonMsgObj_failed('收藏失败！', $model);
-    	/* } */
+    	} 
+    	
+    	return CommonUtils::jsonMsgObj_failed('收藏失败！', $model);
     }
     
     
@@ -112,16 +203,28 @@ class VipCollectController extends BaseAuthApiController
      * @param string $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-    	//TODO：只能取消自己的收藏
-    	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
-    	$model = $this->findModel($id);   	
+    	$vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id; //会员编号
+    	$ref_id = isset($_REQUEST['ref_id'])?$_REQUEST['ref_id']:null; //关联收藏对象编号
+    	$collect_type = isset($_REQUEST['collect_type'])?$_REQUEST['collect_type']:null; //收藏类型
+    	if(empty($ref_id)){
+    		return CommonUtils::json_failed("编号不能为空");
+    	}
     	
+    	if(empty($collect_type)){
+    		return CommonUtils::json_failed("取消收藏类型不能为空");
+    	}
     	
-    	$this->findModel($id)->delete();
-    	MsgUtils::success();
-    	return $this->redirect(['index']);
+    	$vipCollectService = new VipCollectService();
+    	$model = $vipCollectService->getVipCollect($vip_id, $collect_type, $ref_id);
+    	if(empty($model)){
+    		return CommonUtils::json_failed("收藏不存在！");
+    	}
+    	
+    	$model->delete();
+    	
+    	return CommonUtils::json_successWithMsg("取消收藏成功！");
     }
 
 

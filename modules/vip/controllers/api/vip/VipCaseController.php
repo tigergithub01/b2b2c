@@ -6,12 +6,13 @@ use app\common\utils\CommonUtils;
 use app\common\utils\UrlUtils;
 use app\models\b2b2c\common\PaginationObj;
 use app\models\b2b2c\search\VipCaseSearch;
+use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\VipCase;
 use app\modules\vip\common\controllers\BaseApiController;
 use Yii;
 use yii\helpers\ArrayHelper;
-use app\models\b2b2c\common\Constant;
-use app\models\b2b2c\SysParameter;
+use app\modules\vip\service\vip\VipCollectService;
+use app\models\b2b2c\VipCollect;
 
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
@@ -50,11 +51,17 @@ class VipCaseController extends BaseApiController
 			$model->cover_thumb_url = UrlUtils::formatUrl ( $model->cover_thumb_url );
 			$model->cover_img_original = UrlUtils::formatUrl ( $model->cover_img_original );
 		}
+		
+		$vipCollectService = new VipCollectService();
 		$data = ArrayHelper::toArray ($models, [
-        		VipCase::className() => array_merge(CommonUtils::getModelFields($model),[
+        		VipCase::className() => array_merge(CommonUtils::getModelFields(new VipCase()),[
         				'case_type_name' => function($value){
-	        					return $value->type->name;
+	        					return (empty($value->type)?'':$value->type->name);
 	        				},
+	        			'collect_count' => function($value){
+	        				$vipCollectService = new VipCollectService();
+	        				return $vipCollectService->getVipCollectCount(VipCollect::collect_case, $value->id);
+	        			},
         			])
         	]);
         $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
@@ -73,7 +80,7 @@ class VipCaseController extends BaseApiController
 		$data = ArrayHelper::toArray ($model, [ 
 				VipCase::className() => array_merge(CommonUtils::getModelFields($model),[
 						'case_type_name' => function($value){
-							return $value->type->name;
+							return (empty($value->type)?'':$value->type->name);
 						},
 				])
 		] );

@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'start_time',
             // 'end_date',
             // 'description',
+           	 'market_price', 
              'package_price',
             // 'deposit_amount',
             // 'buy_limit_num',

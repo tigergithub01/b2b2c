@@ -20,6 +20,7 @@ use app\models\b2b2c\search\ActivitySearch;
 use app\models\b2b2c\Activity;
 use app\models\b2b2c\search\ProductCommentSearch;
 use app\models\b2b2c\ProductComment;
+use app\models\b2b2c\SysParameter;
 
 /**
  * ProductCommentController implements the CRUD actions for ProductComment model.
@@ -50,10 +51,24 @@ class ProductCommentController extends BaseApiController
     public function actionIndex()
     {
         $searchModel = new ProductCommentSearch();
+        $searchModel->status = SysParameter::yes;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $models = $dataProvider->getModels();
-        $pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+        
+        //格式化输出
+        $data = ArrayHelper::toArray ($models, [
+        		ProductComment::className() => array_merge(CommonUtils::getModelFields(new ProductComment()),[
+        				'vip_name' => function($value){
+	        				return (empty($value->vip)?'':$value->vip->vip_name);
+	        			},
+	        			'thumb_url' => function($value){
+	        				return (empty($value->vip)?'':$value->vip->thumb_url);
+	        			},
+        		])
+        	]);
+        
+        $pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
         return CommonUtils::json_success($pagionationObj);
     }
 

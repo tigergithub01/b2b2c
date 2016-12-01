@@ -14,6 +14,7 @@ use Yii;
  * @property string $start_time
  * @property string $end_date
  * @property string $description
+ * @property string $market_price
  * @property string $package_price
  * @property string $deposit_amount
  * @property integer $buy_limit_num
@@ -46,6 +47,9 @@ class Activity extends \app\models\b2b2c\BasicModel
 	
 	//封面
 	public $imageFile;
+	
+	/* 活动类型 */
+	const act_package = 1; //优惠套装，团体服务
     
     /**
      * @inheritdoc
@@ -73,7 +77,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             [['name', 'activity_type', 'start_time', 'end_date', 'vip_id', 'audit_status'], 'required'],
             [['activity_type', 'activity_scope', 'buy_limit_num', 'vip_id', 'audit_status', 'audit_user_id'], 'integer'],
             [['start_time', 'end_date', 'audit_date'], 'safe'],
-            [['package_price', 'deposit_amount'], 'number'],
+            [['package_price', 'deposit_amount', 'market_price'], 'number'],
             [['name'], 'string', 'max' => 30],
             [['description', 'img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['activity_type'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityType::className(), 'targetAttribute' => ['activity_type' => 'id']],
@@ -98,7 +102,8 @@ class Activity extends \app\models\b2b2c\BasicModel
             'start_time' => Yii::t('app', '开始时间'),
             'end_date' => Yii::t('app', '结束时间'),
             'description' => Yii::t('app', /* '活动描述' */'描述'),
-            'package_price' => Yii::t('app', /* '套装价' */'价格'),
+        	'market_price' => Yii::t('app', /* '套装价' */'市场价'),
+            'package_price' => Yii::t('app', /* '套装价' */'销售价'),
             'deposit_amount' => Yii::t('app', '最少定金金额'),
             'buy_limit_num' => Yii::t('app', '限购数量'),
             'vip_id' => Yii::t('app', '关联商户编号'),
@@ -110,6 +115,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             'audit_date' => Yii::t('app', '审核日期'),
         	'activityType.name' => '活动类型',
         	'vip.vip_id' => '商家编号',
+        	'vip.vip_name' => '商家名称',
         	'auditStatus.param_val' => '审核状态',
         	'auditUser.user_id' => '审核人',
         	'actScopes.param_val' => '是否全场参与活动',

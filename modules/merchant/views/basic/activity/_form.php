@@ -71,6 +71,8 @@ use yii\widgets\ActiveForm;
 
     
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field($model, 'market_price')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
 
