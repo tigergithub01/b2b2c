@@ -465,6 +465,8 @@ http://localhost:8089/admin/system/sys-app-release/index
 版本信息：
 http://localhost:8089/admin/system/sys-app-info/index
 
+关注与收藏的接口没有。
+
 
 
 
