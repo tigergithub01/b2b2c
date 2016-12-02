@@ -63,6 +63,7 @@ use app\models\b2b2c\VipBlog;
                 	],
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
                 			'items' => [
+                					['label' => '订单咨询列表',  'url' => ['order/quotation/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
                 					// ['label' => '订单明细',  'url' => ['order/so-sheet-detail/index'],'icon' => 'fa fa-circle-o',],
                 					['label' => '退款申请单', 'url' => ['order/refund-sheet-apply/index'],'icon' => 'fa fa-circle-o',],

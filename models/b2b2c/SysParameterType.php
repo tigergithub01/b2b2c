@@ -91,6 +91,9 @@ class SysParameterType extends \app\models\b2b2c\BasicModel
 	/* 会员收藏类型 */
 	const VIP_COLLECT_TYPE = 28;
 	
+	/* 报价单状态 */
+	const QUOTATION_STATUS = 29;
+	
 	
     /**
      * @inheritdoc

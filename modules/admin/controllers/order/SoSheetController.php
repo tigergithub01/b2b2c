@@ -389,7 +389,7 @@ class SoSheetController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findVipList($merchant_flag){
-    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag, 'audit_status' => SysParameter::audit_approved])->all();
     }
     
     /**

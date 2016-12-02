@@ -10,6 +10,7 @@ use app\modules\vip\models\VipConst;
 use Yii;
 use yii\base\ActionFilter;
 use yii\helpers\Url;
+use app\common\utils\UrlUtils;
 
 class VipAuthApiFilter extends ActionFilter{
 	
@@ -85,6 +86,11 @@ class VipAuthApiFilter extends ActionFilter{
 			CommonUtils::response_failed("该用户已停用！");
 			return false;
 		}
+		
+		//format urls
+		$vip_db->img_url = UrlUtils::formatUrl($vip_db->img_url);
+		$vip_db->thumb_url = UrlUtils::formatUrl($vip_db->thumb_url);
+		$vip_db->img_original = UrlUtils::formatUrl($vip_db->img_original);
 		
 		//设置当前session
 		$session->set(VipConst::LOGIN_VIP_USER,$vip_db->getWebVip()); //设置当前登录用户		

@@ -25,6 +25,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use app\common\utils\UrlUtils;
 use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\SysParameterType;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -405,36 +406,43 @@ class SoSheetController extends BaseAuthApiController
     	//get request parameter sheet_type_id
     	//         $model->load(Yii::$app->request->get());
     	//get parameters
+    	
+    	
+//     	if($model->load(Yii::$app->request->post())){
     	$merchant_id = isset($_REQUEST['merchant_id'])?$_REQUEST['merchant_id']:null; //订单咨询商户编号
     	$merchant = Vip::find()->where(['id' => $merchant_id, 'merchant_flag' => SysParameter::yes])->one();
     	if(empty($merchant)){
     		return CommonUtils::json_failed('您咨询的商户不存在！');
     	}
-    
-    	$model = new SoSheet();
-    	$model->sheet_type_id = SheetType::sc;
-    	$model->code = SheetType::getCode($model->sheet_type_id);
-    	$model->order_date = date(VipConst::DATE_FORMAT, time());
-    	$model->integral = 0;
-    	$model->integral_money = 0;
-    	$model->coupon = 0;
-    	$model->discount = 0;
-    	$model->order_status = SoSheet::order_need_pay;
-    	$model->pay_status= SoSheet::pay_need_pay;
-    	$model->deliver_fee = 0;
-    	$model->order_quantity = 1;
-    	$model->goods_amt = 0;
-    	$model->order_amt = 0;
-    	$model->merchant_id = $merchant_id;
-    
-    	$vip_user = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER);
-    	$model->vip_id = $vip_user->id;
-    	$model->consignee = $vip_user->vip_name;
-    	$model->mobile = $vip_user->vip_id;
+    	
+    	$merchant->img_url = UrlUtils::formatUrl($merchant->img_url);
+    	$merchant->thumb_url = UrlUtils::formatUrl($merchant->thumb_url);
+    	$merchant->img_original = UrlUtils::formatUrl($merchant->img_original);
     	 
-    
+    	$model = new SoSheet();
+    	
     	if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
-    		 
+    		
+    		$model->sheet_type_id = SheetType::sc;
+    		$model->code = SheetType::getCode($model->sheet_type_id);
+    		$model->order_date = date(VipConst::DATE_FORMAT, time());
+    		$model->integral = 0;
+    		$model->integral_money = 0;
+    		$model->coupon = 0;
+    		$model->discount = 0;
+    		$model->order_status = SoSheet::order_need_pay;
+    		$model->pay_status= SoSheet::pay_need_pay;
+    		$model->deliver_fee = 0;
+    		$model->order_quantity = 1;
+    		$model->goods_amt = 0;
+    		$model->order_amt = 0;
+    		$model->merchant_id = $merchant_id;
+    		
+    		$vip_user = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER);
+    		$model->vip_id = $vip_user->id;
+    		$model->consignee = $vip_user->vip_name;
+    		$model->mobile = $vip_user->vip_id;
+    		
     		$transaction = SoSheet::getDb()->beginTransaction();
     		try {
     			//重新获取订单编号
@@ -468,9 +476,29 @@ class SoSheetController extends BaseAuthApiController
     		}
     		 
     		return CommonUtils::json_success($model->id);
-    	}/*  else { */
-    	return $this->renderCreate($model, 'create-consult');
-    	/* } */
+    	} else {
+    		$data = ArrayHelper::toArray ($merchant, [
+    				Vip::className() => array_merge(CommonUtils::getModelFields($merchant),[
+    					'vip_type_name' => function($value){
+    						return (empty($value->vipType)?'':$value->vipType->name);
+    					},
+    					'password' => function($value){
+    						//密码设置为空
+    						return null;
+    					},
+    				])
+    		]);
+    		
+    		return CommonUtils::json_success([
+    			'merchant'=>$data,
+    			'service_style_list'=>SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
+    			'related_service_list'=>SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+    			'vip'=>\Yii::$app->session->get(VipConst::LOGIN_VIP_USER),
+    		]);
+    		
+    		
+    		return $this->renderCreate($model, 'create-consult');
+    	}
     }
     
     
@@ -627,5 +655,32 @@ class SoSheetController extends BaseAuthApiController
     	$vip_ids = $query->column();
     	return $vip_ids;
     }
+    
+    
+//     /**
+//      * 婚礼类型列表
+//      * @return string
+//      */
+//     public function actionServiceStyle()
+//     {
+//     	$value = SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE);
+//     	return CommonUtils::json_success($value);
+//     }
+    
+    
+//     /**
+//      * 婚礼类型列表
+//      * @return string
+//      */
+//     public function actionRelatedService()
+//     {
+//     	$value = SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE);
+//     	return CommonUtils::json_success($value);
+//     }
+    
+    
+    
+    
+    
     
 }

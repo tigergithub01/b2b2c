@@ -80,7 +80,7 @@ use Yii;
 class SoSheet extends \app\models\b2b2c\BasicModel
 {
 	/* 订单状态： */
-	const order_need_confirm = 5001; // 待确认（定制订单需要此状态，普通订单不需要）
+// 	const order_need_confirm = 5001; // 待确认（定制订单需要此状态，普通订单不需要）
 	const order_need_pay = 5002; // 待付款
 	const order_cancelled = 5003; // 已取消 （用户未付款时直接取消）
 	const order_need_schedule = 5004; // 待接单
@@ -94,11 +94,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	const pay_need_pay = 6001; // 未付款
 	const pay_part_pay = 6002; // 部分支付
 	const pay_completed = 6003; // 已付款 
-	
-	/* 订单类型 */
-	const sheet_type_common = '4001'; //普通订单
-	const sheet_type_custom = '4002'; //定制订单
-	
 	
 	/* 会员编号（查询用） */
 	public $vip_no;
@@ -247,7 +242,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'related_case_id' => Yii::t('app', '关联案例编号'),
         	'merchant_id' => Yii::t('app', '订单咨询商户编号'/* '关联商户编号（订单咨询时可用）' */),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
-        	'vip.vip_name' =>  Yii::t('app', '会员'),
+        	'vip.vip_name' =>  Yii::t('app', '会员名称'),
         		'city.name' =>  Yii::t('app', '城市'),
         		'country.name' =>  Yii::t('app', '国家'),
         		'deliveryStatus.param_val' =>  Yii::t('app', '配送状态'),

@@ -229,6 +229,10 @@ return [
 		'Create Sys Config'=>'新增系统配置',
 		'Update Sys Config'=>'编辑系统配置',
 		
-		
+		//订单咨询
+		'Quotation'=>'订单咨询',
+		'Quotations'=>'订单咨询列表',
+		'Create Quotation'=>'新增订单咨询',
+		'Update Quotation'=>'编辑订单咨询',
 		
 ];

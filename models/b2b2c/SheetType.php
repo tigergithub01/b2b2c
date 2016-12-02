@@ -22,7 +22,7 @@ use app\common\utils\CommonUtils;
 class SheetType extends \app\models\b2b2c\BasicModel
 {
 	const so = 1; //普通订单
-	const sc = 2; //定制订单
+	const qu = 2; //报价单
 	const ra = 3; //退款申请单
 	const rd = 4; //退款单
 	const ta = 5; //退货申请单

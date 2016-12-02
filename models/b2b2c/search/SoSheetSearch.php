@@ -20,7 +20,7 @@ class SoSheetSearch extends SoSheet
     {
         return [
             [['id', 'sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id', 'merchant_id'], 'integer'],
-            [['code', 'order_date', 'delivery_date', 'pay_date', 'delivery_no', 'return_date', 'memo', 'message', 'consignee', 'mobile', 'detail_address', 'invoice_header', 'service_date', 'related_service', 'service_style'], 'safe'],
+            [['code', 'order_date', 'delivery_date', 'pay_date', 'delivery_no', 'return_date', 'memo', 'consignee', 'mobile', 'detail_address', 'invoice_header', 'service_date', 'related_service', 'service_style'], 'safe'],
             [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'budget_amount'], 'number'],
         ];
     }
