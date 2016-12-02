@@ -657,11 +657,22 @@ alter table t_vip_collect add constraint fk_vip_collect_type_ref_param foreign k
 
 alter table t_activity add market_price         decimal(20,6) comment '市场价';
 
+select * from t_vip_blog_cmt;
+
 alter table t_act_package_product drop column sale_price;
 
 select * from t_sys_notify;
 
 select * from t_vip_type;
+
+select * from t_vip_blog_cmt;
+
+
+
+
+
+
+update t_vip_blog_cmt set blog_id = 6 ,parent_id = 3 , status = 1 where id = 1;
 
 
 
