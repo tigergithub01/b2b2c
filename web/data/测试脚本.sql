@@ -667,6 +667,12 @@ select * from t_vip_type;
 
 select * from t_vip_blog_cmt;
 
+select b.order_status,b.*,a.* from t_so_sheet_vip a,t_so_sheet b where a.order_id = b.id and  a.vip_id = 2;
+
+update t_so_sheet set order_status = 5008 where id = 22 
+
+select * from t_vip_collect;
+
 
 
 SELECT vipBlogCmt.*
@@ -678,4 +684,104 @@ select * from t_vip_blog_cmt
 update t_vip_blog_cmt set blog_id = 6 ,parent_id = 3 , status = 1 where id = 1;
 
 select * from t_so_sheet_vip where order_id = 1;
+
+alter table t_so_sheet drop column message;
+
+20161203
+
+alter table t_so_sheet  drop foreign key fk_so_sheet_ref_st_type;
+alter table t_so_sheet  drop foreign key fk_so_sheet_case_id_ref_org_case;
+alter table t_so_sheet  drop foreign key fk_so_sheet_merchant_id_ref_vip;
+
+alter table t_so_sheet drop column sheet_type_id;
+alter table t_so_sheet drop column budget_amount;
+alter table t_so_sheet drop column related_service;
+alter table t_so_sheet drop column service_style;
+alter table t_so_sheet drop column related_case_id;
+alter table t_so_sheet drop column merchant_id;
+
+
+create table t_quotation
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   code                 varchar(30) not null comment '咨询编号',
+   vip_id               bigint(20) not null comment '会员编号',
+   order_amt            decimal(20,6) comment '报价金额',
+   deposit_amount       decimal(20,6) comment '最少定金金额',
+   create_date          datetime not null comment '提交日期',
+   update_date          datetime not null comment '修改日期',
+   memo                 varchar(400) comment '备注',
+   status               bigint(20) not null comment '咨询状态：待回复（用户提交咨询，商户待回复），已回复（商户已回复），已完成（用户已生成订单)',
+   consignee            varchar(30) not null comment '联系人',
+   mobile               varchar(20) not null comment '联系手机号码',
+   service_date         datetime not null comment '服务时间',
+   budget_amount        decimal(20,6) comment '婚礼预算',
+   related_service      varchar(60) comment '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）',
+   service_style        varchar(60) comment '婚礼类型（单选）（室内，室外）',
+   merchant_id          bigint(20) not null comment '关联商户编号',
+   primary key (id)
+);
+
+alter table t_quotation comment '订单咨询（报价单）';
+
+create unique index Index_quotation_code on t_quotation
+(
+   code
+);
+
+alter table t_quotation add constraint fk_quotation_merchant_id_ref_merch foreign key (merchant_id)
+      references t_vip (id);
+
+alter table t_quotation add constraint fk_quotation_service_style_ref_param foreign key (service_style)
+      references t_sys_parameter (id);
+
+alter table t_quotation add constraint fk_quotation_stat_ref_param foreign key (status)
+      references t_sys_parameter (id);
+
+alter table t_quotation add constraint fk_quotation_vip_id_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
+
+create table t_quotation_detail
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   quotation_id         bigint(20) comment '关联报价单编号',
+   product_id           bigint(20) comment '关联产品编号',
+   quantity             int not null comment '购买数量',
+   price                decimal(20,6) comment '单价',
+   amount               decimal(20,6) comment '金额',
+   primary key (id)
+);
+
+alter table t_quotation_detail comment '订单咨询明细（报价单明细）';
+
+alter table t_quotation_detail add constraint fk_quotatioin_detail_ref_quotation foreign key (quotation_id)
+      references t_quotation (id);
+
+alter table t_quotation_detail add constraint fk_quotation_detail_prod_ref_prod foreign key (product_id)
+      references t_product (id);
+
+
+update t_sheet_type set code = 'qu',prefix = 'qu',name = '报价单' where id = 2;
+
+insert into t_sys_parameter_type(id,name,description) values(29,'报价单状态',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29001,29,'待回复',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29002,29,'已回复',null,2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29003,29,'已执行',null,3);
+
+
+
+select * from t_sheet_type;
+
+Name	Code	Data Type	Length	Precision	Primary	Foreign Key	Mandatory
+budget_amount	budget_amount	decimal(20,6)	20	6	FALSE	FALSE	FALSE
+related_service	related_service	varchar(60)	60		FALSE	FALSE	FALSE
+service_style	service_style	varchar(60)	60		FALSE	FALSE	FALSE
+related_case_id	related_case_id	bigint(20)	20		FALSE	TRUE	FALSE
+merchant_id	merchant_id	bigint(20)	20		FALSE	TRUE	FALSE
+
+
+select * from t_vip where merchant_flag = 0;
+
+
 */

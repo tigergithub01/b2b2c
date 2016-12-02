@@ -162,6 +162,11 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2800
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28004,28,'团体服务',null,4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(28005,28,'话题',null,5);
 
+insert into t_sys_parameter_type(id,name,description) values(29,'报价单状态',null);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29001,29,'待回复',null,1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29002,29,'已回复',null,2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29003,29,'已执行',null,3);
+
 
 /*
 
@@ -325,7 +330,7 @@ insert into t_sys_config(code,value,description)values('thumb_height','0','缩�
 insert into t_sys_config(code,value,description)values('cover_thumb_width','220','个人图像缩略图宽度');
 insert into t_sys_config(code,value,description)values('cover_thumb_height','220','个人图像缩略图高度');
 
-insert into t_sys_config(code,value,description)values('cover_thumb_height','220','个人图像缩略图高度');
+insert into t_sys_config(code,value,description)values('service_tel','13724346621','平台客服电话');
 
 /***
 	select * from t_activity_type;
@@ -342,8 +347,10 @@ insert into t_activity_type(name)values('满金额减金额');
 
 update t_sheet_type set date_format = 'Ymd' where date_format = 'YmdHis';
 */
+
+
 INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (1,'so','普通订单','so','Ymd','',5,1);
-INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (2,'sc','定制订单','sc','Ymd','',5,1);
+INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (2,'qu','报价单','qu','Ymd','',5,1);
 INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (3,'ra','退款申请单','ra','Ymd','',5,1);
 INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (4,'rd','退款单','rd','Ymd','',5,1);
 INSERT INTO `t_sheet_type` (`id`,`code`,`name`,`prefix`,`date_format`,`sep`,`seq_length`,`cur_seq`) VALUES (5,'ta','退货申请单','ta','Ymd','',5,1);
