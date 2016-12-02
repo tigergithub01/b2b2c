@@ -102,8 +102,9 @@ use yii\helpers\Url;
 				<?php echo Html::button('帖子详情',['id'=>'btn_blog_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/blog/vip-blog/view'])]);?>
 				<?php echo Html::button('帖子回复列表',['id'=>'btn_blog_cmt_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/blog/vip-blog-cmt/index'])]);?>
 				<?php echo Html::button('帖子回复列表-作者回复',['id'=>'btn_blog_cmt_reply_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/blog/vip-blog-cmt/index'])]);?>
-				<?php echo Html::button('发帖',['id'=>'btn_blog_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog/create'])]);?>
-				<?php echo Html::button('回帖',['id'=>'btn_register_agreement','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/system/sys-article/view'])]);?>
+				<?php echo Html::button('作者发帖',['id'=>'btn_blog_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog/create'])]);?>
+				<?php echo Html::button('用户回帖',['id'=>'btn_blog_cmt_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog-cmt/create'])]);?>
+				<?php echo Html::button('作者回复评论',['id'=>'btn_blog_cmt_reply_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog-cmt/create'])]);?>
 			</div>
 			
 		</div>
