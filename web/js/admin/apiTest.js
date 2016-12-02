@@ -13,10 +13,30 @@
  */
 
 $(function() {
-	//商家注册协议
-	//http://localhost:8089/vip/api/system/sys-article/view
+	/**
+	 	商家注册协议
+	 	http://localhost:8089/vip/api/system/sys-article/view
+	 */
 	$("#btn_register_agreement").click(function() {
-		test_api($(this).attr('url'),null);		
+		test_api($(this).attr('url'),
+			{
+			
+			},
+			'get'
+		);		
+	});
+	
+	/**
+	 	平台联系电话：
+	 	http://localhost:8089/vip/api/system/sys-config/view-service-tel
+	 */
+	$("#btn_sys_config_service_tel").click(function() {
+		test_api($(this).attr('url'),
+				{
+				
+				},
+				'get'
+			);
 	});
 	
 	//
@@ -540,15 +560,17 @@ $(function() {
 	
 	/*
 	 	订单列表
-		http://localhost:8089/vip/api/member/order/so-sheet/index?page=1&per-page=3&sort=-order_date
+		http://localhost:8089/vip/api/member/order/so-sheet-detail/index
 	*/
 	$("#btn_so_sheet_list").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
-				'per-page' : '3', //每页行数
-				'sort' : '-collect_date', //排序
-				}
+				'per-page' : '10', //每页行数
+				'sort' : '-order_date', //排序
+				'SoSheetSearch[code]' : 'so2', //可选项（客户根据订单编号来进行查询)
+				},
+				'get'
 			);
 	});
 	
