@@ -110,7 +110,7 @@ class SoSheetController extends BaseAuthController
     	//get parameters
     	$product_id = isset($_REQUEST['product_id'])?$_REQUEST['product_id']:null; //购买个人服务编号
     	if(empty($product_id)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	
     	$model = new SoSheet();
@@ -215,7 +215,7 @@ class SoSheetController extends BaseAuthController
     	//get parameters
     	$activity_id = isset($_REQUEST['activity_id'])?$_REQUEST['activity_id']:null; //购买团体服务
     	if(empty($activity_id)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     
     	$model = new SoSheet();
@@ -321,7 +321,7 @@ class SoSheetController extends BaseAuthController
     	$merchant_id = isset($_REQUEST['merchant_id'])?$_REQUEST['merchant_id']:null; //订单咨询商户编号
     	$merchant = Vip::find()->where(['id' => $merchant_id, 'merchant_flag' => SysParameter::yes])->one();
     	if(empty($merchant)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     
     	$model = new SoSheet();
@@ -477,7 +477,7 @@ class SoSheetController extends BaseAuthController
     	//查询订单
     	$soSheet = SoSheet::findOne($order_id);
     	if(empty($soSheet)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	 
     	if ($model->load(Yii::$app->request->post())) {
@@ -512,7 +512,7 @@ class SoSheetController extends BaseAuthController
     {
     	$soSheetDetail = SoSheetDetail::findOne($id);
     	if(empty($soSheetDetail)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	$soSheetDetail->delete();
     	MsgUtils::success();
@@ -557,7 +557,7 @@ class SoSheetController extends BaseAuthController
 //     	if (($model = SoSheet::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

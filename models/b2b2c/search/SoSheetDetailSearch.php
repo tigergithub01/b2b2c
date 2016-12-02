@@ -2,10 +2,10 @@
 
 namespace app\models\b2b2c\search;
 
-use Yii;
+use app\models\b2b2c\SoSheetDetail;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SoSheetDetail;
+use app\models\b2b2c\SoSheetVip;
 
 /**
  * SoSheetDetailSearch represents the model behind the search form about `app\models\b2b2c\SoSheetDetail`.
@@ -29,7 +29,7 @@ class SoSheetDetailSearch extends SoSheetDetail
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -44,7 +44,10 @@ class SoSheetDetailSearch extends SoSheetDetail
         $query = SoSheetDetail::find()->alias('soDetail')
     	->joinWith('order order')
     	->joinWith('package package')
-    	->joinWith('product product');
+    	->joinWith('product product')
+    	->joinWith('order.vip vip')
+    	->joinWith('product.vip prod_merchant')
+    	->joinWith('package.vip pkg_merchant');
 
         // add conditions that should always apply here
 
@@ -72,6 +75,12 @@ class SoSheetDetailSearch extends SoSheetDetail
             'soDetail.amount' => $this->amount,
             'soDetail.package_id' => $this->package_id,
         ]);
+        
+        
+        //根据会员编号进行过滤
+        if($this->query_vip_id){
+        	$query->andFilterWhere(['vip.id'=>$this->query_vip_id]);
+        }
 
         return $dataProvider;
     }

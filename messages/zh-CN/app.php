@@ -15,6 +15,7 @@ return [
 		'select_prompt' => '--请选择--',
 		
 		
+		'The requested page does not exist.' => '您查找的数据不存在！',	
 		'copyrights' => '<strong>© 2005-2016 婚礼兔</strong> 版权所有，并保留所有权利。',
 		'app_name' => '婚礼兔',
 		

@@ -8,7 +8,7 @@ use app\modules\admin\Module;
 /* @var $model app\models\b2b2c\VipCase */
 
 $this->title = Module::t('app', 'Create Vip Case');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Vip Cases'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Vip Cases'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vip-case-create">

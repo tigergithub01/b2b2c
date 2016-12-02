@@ -211,7 +211,7 @@ class SysNotifyController extends BaseAuthController
 //         if (($model = SysNotify::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

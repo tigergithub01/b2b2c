@@ -57,7 +57,24 @@ class SoSheetController extends BaseAuthApiController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $models = $dataProvider->getModels();
-    	$pagionationObj = new PaginationObj($models, $dataProvider->getTotalCount());
+        //格式化输出
+        $data = ArrayHelper::toArray ($models, [
+        		SoSheet::className() => array_merge(CommonUtils::getModelFields(new SoSheet()),[
+        		'order_status_name' => function($value){
+        			return (empty($value->orderStatus)?'':$value->orderStatus->param_val);
+        		},
+        		'pay_status_name' => function($value){
+	        		return (empty($value->payStatus)?'':$value->payStatus->param_val);
+	        	},
+	        	'sheet_type_name' => function($value){
+		        	return (empty($value->sheetType)?'':$value->sheetType->name);
+		        },
+		        'vip_name' => function($value){
+		        	return (empty($value->vip)?'':$value->vip->vip_name);
+		        }, 
+        	])
+        ]);
+    	$pagionationObj = new PaginationObj($data, $dataProvider->getTotalCount());
     	return CommonUtils::json_success($pagionationObj);
     }
 
@@ -81,6 +98,7 @@ class SoSheetController extends BaseAuthApiController
     
     
     /**
+     * 普通订单提交页面
      * Creates a new SoSheet model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -93,7 +111,7 @@ class SoSheetController extends BaseAuthApiController
     	//get parameters
     	$product_id = isset($_REQUEST['product_id'])?$_REQUEST['product_id']:null; //购买个人服务编号
     	if(empty($product_id)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	
     	$model = new SoSheet();
@@ -182,6 +200,7 @@ class SoSheetController extends BaseAuthApiController
     
     
     /**
+     * 定制订单提交页面
      * Creates a new SoSheet model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -194,7 +213,7 @@ class SoSheetController extends BaseAuthApiController
     	//get parameters
     	$activity_id = isset($_REQUEST['activity_id'])?$_REQUEST['activity_id']:null; //购买团体服务
     	if(empty($activity_id)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     
     	$model = new SoSheet();
@@ -284,6 +303,7 @@ class SoSheetController extends BaseAuthApiController
     
     
     /**
+     * 订单咨询页面
      * Creates a new SoSheet model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -410,7 +430,7 @@ class SoSheetController extends BaseAuthApiController
 //     	if (($model = SoSheet::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

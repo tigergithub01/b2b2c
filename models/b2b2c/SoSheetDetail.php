@@ -21,12 +21,27 @@ use Yii;
  */
 class SoSheetDetail extends \app\models\b2b2c\BasicModel
 {
+    
+	/* 会员编号-查询用  */
+	public $query_vip_id;
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_so_sheet_detail';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'query_merchant_id';
+    	return $scenarios;
     }
 
     /**

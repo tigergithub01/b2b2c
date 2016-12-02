@@ -181,8 +181,6 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'service_style')->dropDownList(\yii\helpers\ArrayHelper::map($serviceStyleList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 	
-	<?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
-	
     <?php //echo $form->field($model, 'related_case_id')->textInput(['maxlength' => true]) ?>
 
 		</div>

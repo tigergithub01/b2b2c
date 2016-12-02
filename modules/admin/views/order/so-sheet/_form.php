@@ -119,8 +119,6 @@ use app\models\b2b2c\common\Constant;
 
     <?= $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
-
     <?php // echo $form->field($model, 'order_status')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'order_status')->dropDownList(\yii\helpers\ArrayHelper::map($orderStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>

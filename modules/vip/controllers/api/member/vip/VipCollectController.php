@@ -16,6 +16,7 @@ use app\modules\vip\models\VipConst;
 use app\modules\vip\service\vip\VipCollectService;
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\models\b2b2c\SoSheetVip;
 
 /**
  * VipCollectController implements the CRUD actions for VipCollect model.
@@ -71,19 +72,20 @@ class VipCollectController extends BaseAuthApiController
         			}, */
         			'order_count' => function($value){
 	        			//成交量
-	        			if(empty($value->vip)){
+	        			if(empty($value->refVip)){
 	        				return 0;
 	        			}else{
-	        				$count = SoSheet::find()->where(['merchant_id' =>$value->vip->id, 'order_status' => SoSheet::order_completed ])->count();
+	        				$count = SoSheetVip::find()->alias("soSheetVip")->joinWith("vip vip")->joinWith("order order")
+	        				->where(['vip.id' =>$value->refVip->id, 'order.order_status' => SoSheet::order_completed ])->count();
 	        				return $count;
 	        			}
         			},
         			'vip_case_count' => function($value){
 	        			//案例数量
-	        			if(empty($value->vip)){
+	        			if(empty($value->refVip)){
 	        				return 0;
 	        			}else{
-	        				$count = VipCase::find()->where(['vip_id' =>$value->vip->id, 'audit_status'=>SysParameter::audit_approved ])->count();
+	        				$count = VipCase::find()->where(['vip_id' =>$value->refVip->id, 'audit_status'=>SysParameter::audit_approved ])->count();
 	        				return $count;
 	        			}
         			},
@@ -98,11 +100,11 @@ class VipCollectController extends BaseAuthApiController
         			}, */
         			'good_cmt_count' => function($value){
 	        			//好评数量
-	        			if(empty($value->vip)){
+	        			if(empty($value->refVip)){
 	        				return 0;
 	        			}else{
 	        				$count = ProductComment::find()->alias("cmt")->joinWith("product product")->
-	        				where(['product.vip_id' => $value->vip->id ,'cmt.status'=>SysParameter::yes, 'cmt.cmt_rank_id'=>[ProductComment::cmt_4_star,ProductComment::cmt_5_star]])
+	        				where(['product.vip_id' => $value->refVip->id ,'cmt.status'=>SysParameter::yes, 'cmt.cmt_rank_id'=>[ProductComment::cmt_4_star,ProductComment::cmt_5_star]])
 	        				->count();
 	        				return $count;
 	        			}

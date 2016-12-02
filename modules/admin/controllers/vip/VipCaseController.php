@@ -378,7 +378,7 @@ class VipCaseController extends BaseAuthController
     public function actionDeleteVipCasePhoto($id){
     	$vipCasePhoto = VipCasePhoto::findOne($id);
     	if(empty($vipCasePhoto)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	$vipCasePhoto->delete();
     	
@@ -421,7 +421,7 @@ class VipCaseController extends BaseAuthController
 //     	if (($model = VipCase::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

@@ -18,6 +18,7 @@ use app\models\b2b2c\VipExtend;
 use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\ProductComment;
 use app\models\b2b2c\VipCase;
+use app\models\b2b2c\SoSheetVip;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -73,7 +74,8 @@ class MerchantController extends BaseApiController
 			    			return (empty($vipOrganization)?'':$vipOrganization->description);
 			    	},
 			    	'order_count' => function($value){
-			    		$count = SoSheet::find()->where(['merchant_id' =>$value->id, 'order_status' => SoSheet::order_completed ])->count();
+				    	$count = SoSheetVip::find()->alias("soSheetVip")->joinWith("vip vip")->joinWith("order order")
+				    	->where(['vip.id' =>$value->id, 'order.order_status' => SoSheet::order_completed ])->count();
 			    		return $count;
 			    	},
 			    	'vip_case_count' => function($value){
@@ -87,6 +89,10 @@ class MerchantController extends BaseApiController
 				    	where(['product.vip_id' => $value->id ,'cmt.status'=>SysParameter::yes, 'cmt.cmt_rank_id'=>[ProductComment::cmt_4_star,ProductComment::cmt_5_star]])
 				    	->count();
 				    	return $count;
+			    	},
+			    	'password' => function($value){
+				    	//密码设置为空
+				    	return null;
 			    	},
         		])
         	]);
@@ -124,7 +130,11 @@ class MerchantController extends BaseApiController
     	$data = ArrayHelper::toArray ($model, [
     			Vip::className() => array_merge(CommonUtils::getModelFields($model),[
     				'vip_type_name' => function($value){
-    				return (empty($value->vipType)?'':$value->vipType->name);
+    					return (empty($value->vipType)?'':$value->vipType->name);
+    				},
+    				'password' => function($value){
+	    				//密码设置为空
+	    				return null;
     				},
     			])
     	]);

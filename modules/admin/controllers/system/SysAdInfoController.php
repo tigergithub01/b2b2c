@@ -223,7 +223,7 @@ class SysAdInfoController extends BaseAuthController
 //         	var_dump(pathinfo($model->img_original));
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

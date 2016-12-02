@@ -77,7 +77,7 @@ class RefundSheetApplyController extends BaseAuthApiController
     {
     	$order_id = isset($_REQUEST['order_id'])?$_REQUEST['order_id']:null;
     	if(empty($order_id)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	
     	//TODO:只能对自己的订单发起退款申请
@@ -187,7 +187,7 @@ class RefundSheetApplyController extends BaseAuthApiController
 //         if (($model = RefundSheetApply::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

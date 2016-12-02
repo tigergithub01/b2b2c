@@ -2,16 +2,15 @@
 
 namespace app\modules\admin\controllers\order;
 
-use Yii;
-use app\models\b2b2c\SoSheetDetail;
-use app\models\b2b2c\search\SoSheetDetailSearch;
-use app\modules\admin\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\Activity;
 use app\models\b2b2c\Product;
+use app\models\b2b2c\search\SoSheetDetailSearch;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SoSheetDetail;
+use app\modules\admin\common\controllers\BaseAuthController;
+use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * SoSheetDetailController implements the CRUD actions for SoSheetDetail model.
@@ -142,7 +141,7 @@ class SoSheetDetailController extends BaseAuthController
 //         if (($model = SoSheetDetail::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

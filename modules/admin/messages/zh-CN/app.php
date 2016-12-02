@@ -223,6 +223,12 @@ return [
 		'Create Sys App Release'=>'发布新版本',
 		'Update Sys App Release'=>'编辑APP版本',
 		
+		//系统配置
+		'Sys Config'=>'系统配置',
+		'Sys Configs'=>'系统配置列表',
+		'Create Sys Config'=>'新增系统配置',
+		'Update Sys Config'=>'编辑系统配置',
+		
 		
 		
 ];

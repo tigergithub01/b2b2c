@@ -230,7 +230,7 @@ class ActivityController extends BaseController
     	//查询活动
     	$activity = Activity::findOne($act_id);
     	if(empty($activity)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	
     	if ($model->load(Yii::$app->request->post())) {
@@ -273,7 +273,7 @@ class ActivityController extends BaseController
     {
     	$actPackageProduct = ActPackageProduct::findOne($id);
     	if(empty($actPackageProduct)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	$actPackageProduct->delete();
     	MsgUtils::success();
@@ -300,7 +300,7 @@ class ActivityController extends BaseController
 //     	if (($model = Activity::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

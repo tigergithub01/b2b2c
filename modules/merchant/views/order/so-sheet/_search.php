@@ -97,8 +97,6 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'memo') ?>
 
-    <?php // echo $form->field($model, 'message') ?>
-
     <?php // echo $form->field($model, 'order_status') ?>
     
     <?= $form->field($model, 'order_status')->dropDownList(\yii\helpers\ArrayHelper::map($orderStatusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>

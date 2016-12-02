@@ -142,7 +142,6 @@ class SoSheetSearch extends SoSheet
         $query->andFilterWhere(['like', 'so.code', $this->code])
             ->andFilterWhere(['like', 'so.delivery_no', $this->delivery_no])
             ->andFilterWhere(['like', 'so.memo', $this->memo])
-            ->andFilterWhere(['like', 'so.message', $this->message])
             ->andFilterWhere(['like', 'so.consignee', $this->consignee])
             ->andFilterWhere(['like', 'so.mobile', $this->mobile])
             ->andFilterWhere(['like', 'so.detail_address', $this->detail_address])
@@ -160,7 +159,7 @@ class SoSheetSearch extends SoSheet
         }
         
         
-        //普通订单根据商户编号进行过滤
+        //根据商户编号进行过滤
         if($this->query_merchant_id){
         	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$this->query_merchant_id])->column();
         	$query->andFilterWhere(['so.id' => $subquery]);

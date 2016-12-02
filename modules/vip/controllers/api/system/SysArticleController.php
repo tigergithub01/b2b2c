@@ -3,14 +3,11 @@
 namespace app\modules\vip\controllers\api\system;
 
 
-use Yii;
-use app\modules\vip\common\controllers\BaseApiController;
-use app\models\b2b2c\common\JsonObj;
-use yii\helpers\Json;
-use app\common\utils\UrlUtils;
-use app\models\b2b2c\app\models\b2b2c;
 use app\common\utils\CommonUtils;
+use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\SysArticle;
+use app\modules\vip\common\controllers\BaseApiController;
+use yii\helpers\Json;
 
 /*
  	http://localhost:8089/vip/api/system/sys-article/view

@@ -30,7 +30,6 @@ use Yii;
  * @property string $return_amt
  * @property string $return_date
  * @property string $memo
- * @property string $message
  * @property string $order_status
  * @property string $delivery_status
  * @property string $pay_status
@@ -101,11 +100,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	const sheet_type_custom = '4002'; //定制订单
 	
 	
-	
-	
-	
-	
-	
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
@@ -124,7 +118,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	/* 服务类别，用来显示数据 */
 	public $related_service_names;
 	
-	/* 商户编号-查询用（查询普通订单，查询用的商户编号)  */
+	/* 商户编号-查询用 */
 	public $query_merchant_id;
 	
 	
@@ -185,7 +179,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         	[['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['merchant_id' => 'id']],
             [['delivery_no', 'invoice_header', 'related_service', 'service_style'], 'string', 'max' => 60],
             [['memo'], 'string', 'max' => 400],
-            [['message'], 'string', 'max' => 300],
             [['mobile'], 'string', 'max' => 20],
             [['detail_address'], 'string', 'max' => 255],
             [['code'], 'unique'],
@@ -234,8 +227,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'discount' => Yii::t('app', '折扣费用'),
             'return_amt' => Yii::t('app', '退款金额'),
             'return_date' => Yii::t('app', '退款日期'),
-            'memo' => Yii::t('app', '备注'),
-            'message' => Yii::t('app', '买家留言'),
+            'memo' => Yii::t('app', '买家留言'),
             'order_status' => Yii::t('app', '订单状态'/* '订单状态（普通订单：待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，已关闭[已经退款给用户，订单关闭],[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价])   定制订单：待确定[用户提交购买申请]，待付款，已取消[用户未付款时直接取消]，待接单，待服务，待退款[用户申请退款，待接单与待服务状态都可以申请退款]，[客户付尾款，商户确认服务完成]交易完成，待评价[交易完成可评价]）' */),
             'delivery_status' => Yii::t('app', '配送状态'),
             'pay_status' => Yii::t('app', '支付状态'),
@@ -253,7 +245,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'related_service' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
             'service_style' => Yii::t('app', '婚礼类型（单选）（室内，室外）'),
             'related_case_id' => Yii::t('app', '关联案例编号'),
-        	'merchant_id' => Yii::t('app', '关联商户编号（订单咨询时可用）'),
+        	'merchant_id' => Yii::t('app', '订单咨询商户编号'/* '关联商户编号（订单咨询时可用）' */),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         	'vip.vip_name' =>  Yii::t('app', '会员'),
         		'city.name' =>  Yii::t('app', '城市'),

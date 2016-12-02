@@ -262,7 +262,7 @@ class VipBlogController extends BaseAuthController
     public function actionDeleteVipBlogPhoto($id){
     	$vipBlogPhoto = VipBlogPhoto::findOne($id);
     	if(empty($vipBlogPhoto)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	$vipBlogPhoto->delete();
     	 
@@ -305,7 +305,7 @@ class VipBlogController extends BaseAuthController
 //         if (($model = VipBlog::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

@@ -228,7 +228,7 @@ class SoSheetController extends BaseAuthController
     	//查询订单
     	$soSheet = SoSheet::findOne($order_id);
     	if(empty($soSheet)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	 
     	if ($model->load(Yii::$app->request->post())) {
@@ -263,7 +263,7 @@ class SoSheetController extends BaseAuthController
     {
     	$soSheetDetail = SoSheetDetail::findOne($id);
     	if(empty($soSheetDetail)){
-    		throw new NotFoundHttpException('The requested page does not exist.');
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     	}
     	$soSheetDetail->delete();
     	MsgUtils::success();
@@ -308,7 +308,7 @@ class SoSheetController extends BaseAuthController
 //     	if (($model = SoSheet::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
     }
     

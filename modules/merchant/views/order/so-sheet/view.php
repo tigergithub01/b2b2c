@@ -57,7 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'return_amt',
             // 'return_date',
             'memo',
-            'message',
             //'order_status',
 		    'orderStatus.param_val',
             //'delivery_status',
