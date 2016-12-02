@@ -24,12 +24,29 @@ use Yii;
  */
 class VipBlogCmt extends \app\models\b2b2c\BasicModel
 {
+	/* 回帖标识（用来区分直接回帖与评论回复） */
+	public $blog_reply_flag;
+    
+    
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_vip_blog_cmt';
+    }
+    
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'blog_reply_flag';
+    	return $scenarios;
+    	// 		return parent::scenarios();
     }
 
     /**

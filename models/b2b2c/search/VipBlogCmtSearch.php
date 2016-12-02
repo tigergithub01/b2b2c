@@ -2,10 +2,9 @@
 
 namespace app\models\b2b2c\search;
 
-use Yii;
+use app\models\b2b2c\VipBlogCmt;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\VipBlogCmt;
 
 /**
  * VipBlogCmtSearch represents the model behind the search form about `app\models\b2b2c\VipBlogCmt`.
@@ -29,7 +28,7 @@ class VipBlogCmtSearch extends VipBlogCmt
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -74,6 +73,11 @@ class VipBlogCmtSearch extends VipBlogCmt
         ]);
 
         $query->andFilterWhere(['like', 'vipBlogCmt.content', $this->content]);
+        
+        if($this->blog_reply_flag){
+//         	$query->andWhere(['IS', 'vipBlogCmt.parent_id', NULL]);
+        	$query->andWhere(['vipBlogCmt.parent_id'=>NULL]);
+        }
 
         return $dataProvider;
     }
