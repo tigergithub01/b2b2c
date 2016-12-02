@@ -669,11 +669,13 @@ select * from t_vip_blog_cmt;
 
 
 
+SELECT vipBlogCmt.*
+FROM `t_vip_blog_cmt` `vipBlogCmt` LEFT JOIN `t_vip_blog` `blog` ON `vipBlogCmt`.`blog_id` = `blog`.`id` LEFT JOIN `t_vip` `vip` ON `vipBlogCmt`.`vip_id` = `vip`.`id` LEFT JOIN `t_sys_parameter` `stat` ON `vipBlogCmt`.`status` = `stat`.`id` LEFT JOIN `t_vip_blog_cmt` `parent` ON `vipBlogCmt`.`parent_id` = `parent`.`id` 
+WHERE (`vipBlogCmt`.`blog_id`='6') AND (`vipBlogCmt`.`status`=1) AND (`vipBlogCmt`.`parent_id`='3')
 
-
+select * from t_vip_blog_cmt
 
 update t_vip_blog_cmt set blog_id = 6 ,parent_id = 3 , status = 1 where id = 1;
 
-
-
+select * from t_so_sheet_vip where order_id = 1;
 */

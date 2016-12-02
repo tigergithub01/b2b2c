@@ -325,6 +325,8 @@ insert into t_sys_config(code,value,description)values('thumb_height','0','缩�
 insert into t_sys_config(code,value,description)values('cover_thumb_width','220','个人图像缩略图宽度');
 insert into t_sys_config(code,value,description)values('cover_thumb_height','220','个人图像缩略图高度');
 
+insert into t_sys_config(code,value,description)values('cover_thumb_height','220','个人图像缩略图高度');
+
 /***
 	select * from t_activity_type;
 */
