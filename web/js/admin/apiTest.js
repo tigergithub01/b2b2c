@@ -33,7 +33,7 @@ $(function() {
 	$("#btn_sys_region").click(function() {
 		test_api($(this).attr('url'),
 			{
-			region_type:'22003',//电话号码，
+			region_type:'22003',//区域类型
 			parent_id : 48543, //不需要图形验证码
 			}
 		);		
@@ -692,22 +692,7 @@ $(function() {
 				'per-page' : '10', //每页行数
 				'sort' : '-reply_date', //排序
 				'VipBlogCmtSearch[blog_id]' : 6, //帖子编号
-				},
-				'get'
-			);
-	});
-	
-	/*
-		论坛评论列表
-		http://localhost:8089/vip/api/blog/vip-blog-cmt/index
-	*/
-	$("#btn_blog_cmt_list").click(function() {
-		test_api($(this).attr('url'),
-				{
-				'page':'1',//页码
-				'per-page' : '10', //每页行数
-				'sort' : '-reply_date', //排序
-				'VipBlogCmtSearch[blog_id]' : 6, //帖子编号
+				'VipBlogCmtSearch[blog_reply_flag]' : 1, //评论回复标识，没有此标识将查询出所有的回复，包括作者回复
 				},
 				'get'
 			);
@@ -749,14 +734,35 @@ $(function() {
 	});
 	
 	
+	/*
+		用户回帖
+		http://localhost:8089/vip/api/member/blog/vip-blog-cmt/create
+	*/
+	$("#btn_blog_cmt_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'VipBlogCmt[blog_id]' : 6, //帖子编号
+				'VipBlogCmt[content]' : '用户回复内容内容，内容内容，内容内容', //回复内容
+				},
+				'post'
+			);
+	});
 	
 	
-	
-	
-	
-	
-	
-	
+	/*
+		作者回复评论
+		http://localhost:8089/vip/api/member/blog/vip-blog-cmt/create
+	*/
+	$("#btn_blog_cmt_reply_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'VipBlogCmt[blog_id]' : 6, //帖子编号
+				'VipBlogCmt[content]' : '作者回复评论---内容内容，内容内容，内容内容', //回复内容
+				'VipBlogCmt[parent_id]' : 3, //用户评论编号
+				},
+				'post'
+			);
+	});
 	
 	
 
