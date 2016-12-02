@@ -583,7 +583,8 @@ $(function() {
 		test_api($(this).attr('url'),
 				{
 				'id':'1',//编号
-				}
+				},
+				'get'
 			);
 	});
 	
