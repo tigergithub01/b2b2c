@@ -133,6 +133,8 @@ class Vip extends \app\models\b2b2c\BasicModel
 		$scenarios[self::SCENARIO_FORGOT_PWD_NO_VERIFY] = ['vip_id', 'password', 'confirm_pwd','sms_code',];
 		$scenarios[self::SCENARIO_AUTO_LOGIN] = ['vip_id', 'password'];
 		$scenarios[self::SCENARIO_CHANGE_PWD] = ['password', 'new_pwd','confirm_pwd'];
+		
+		
 		return $scenarios;
 	
 		/* return [
