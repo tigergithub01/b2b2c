@@ -99,7 +99,10 @@ class SoSheetDetailController extends BaseAuthApiController
     						}
     						return $value->package;
     					 },
-    					
+    					 'product' => function($value){
+	    					 //产品服务
+	    					 return $value->product;
+    					 },
     				])
     			]);
     	

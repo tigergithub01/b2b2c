@@ -23,6 +23,8 @@ use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
+use app\common\utils\UrlUtils;
+use app\models\b2b2c\VipOrganization;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -86,12 +88,101 @@ class SoSheetController extends BaseAuthApiController
     public function actionView()
     {
     	$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
+    	$vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
+    	
     	$model =  $this->findModel($id);
+    	
+    	if($model->vip_id != $vip_id){
+    		return CommonUtils::json_failed("非法查看订单，只能查看自己的订单！");
+    	}
+    	
+    	//格式化输出
+    	$data = ArrayHelper::toArray ($model, [
+    			SoSheet::className() => array_merge(CommonUtils::getModelFields($model),[
+    				'order_status_name' => function($value){
+    					return (empty($value->orderStatus)?'':$value->orderStatus->param_val);
+    				},
+    				'pay_status_name' => function($value){
+    					return (empty($value->payStatus)?'':$value->payStatus->param_val);
+    				},
+    				'sheet_type_name' => function($value){
+    					return (empty($value->sheetType)?'':$value->sheetType->name);
+    				},
+    				'vip_name' => function($value){
+    					return (empty($value->vip)?'':$value->vip->vip_name);
+    				},
+    			])
+    	]);    	
+    	
+    	//订单明细
     	$soSheetDetailList = $this->findSoSheetDetailList($id);
+    	$detailList = ArrayHelper::toArray ($soSheetDetailList, [
+    		SoSheetDetail::className() => array_merge(CommonUtils::getModelFields(new SoSheetDetail()),[
+    			'merchant'=> function($value){
+    					//统一获取商户信息
+    					$merchant = null;
+    					$merchant_tmp = null;
+    					if($value->product_id){
+    						$merchant =  $value->product->vip;
+    					}else if($value->package_id){
+    						$merchant = $value->package->vip;
+    					}
+    	
+    					if($merchant){
+    						$merchant_tmp = new Vip();
+    						$merchant_tmp->id = $merchant->id;
+    						$merchant_tmp->vip_name = $merchant->vip_name;
+    						$merchant_tmp->thumb_url = UrlUtils::formatUrl($merchant->thumb_url);
+    						$merchant_tmp->img_url = UrlUtils::formatUrl($merchant->img_url);
+    						$merchant_tmp->img_original = UrlUtils::formatUrl($merchant->img_original);
+    					}
+    					return $merchant_tmp;
+    			},
+    			'merchant_type_name'=> function($value){
+	    			//商户类型
+	    			$merchant = null;
+	    			if($value->product_id){
+	    				$merchant =  $value->product->vip;
+	    			}else if($value->package_id){
+	    				$merchant = $value->package->vip;
+	    			}
+	    			return (empty($merchant) || empty($merchant->vipType))?'':$merchant->vipType->name;
+    			},
+    			'merchant_service_desc'=> function($value){
+	    			//营业描述
+	    			$merchant = null;
+	    			if($value->product_id){
+	    				$merchant =  $value->product->vip;
+	    			}else if($value->package_id){
+	    				$merchant = $value->package->vip;
+	    			}
+	    			
+	    			if($merchant){
+	    				$vipOrg = VipOrganization::find()->where(['vip_id'=>$merchant->id])->one();
+	    				return empty($vipOrg)?null:$vipOrg->description;
+	    			}else{
+	    				return null;
+	    			}
+    			},
+    			'package' => function($value){
+    					//组合服务信息
+    					if($value->package){
+    						$value->package->thumb_url = UrlUtils::formatUrl($value->package->thumb_url);
+    						$value->package->img_url = UrlUtils::formatUrl($value->package->img_url);
+    						$value->package->img_original = UrlUtils::formatUrl($value->package->img_original);
+    					}
+    					return $value->package;
+    			},
+    			'product' => function($value){
+	    			//产品服务
+	    			return $value->product;
+    			},
+    		])
+    	]);
     	 
     	return CommonUtils::json_success([
-    			"model"=>$model,
-    			'soSheetDetails'=>($model==null?null:ArrayHelper::toArray($model->soSheetDetails))
+    			"model"=>$data,
+    			'soSheetDetails'=>$detailList,
     	]);
     }
 
@@ -401,7 +492,6 @@ class SoSheetController extends BaseAuthApiController
      */
     protected function findModel($id)
     {
-    	
     	$model = SoSheet::find()->alias("so")
     	->joinWith("vip vip")
     	->joinWith("city city")
@@ -419,19 +509,18 @@ class SoSheetController extends BaseAuthApiController
     	->joinWith("serviceStyle serviceStyle")
     	->where(['so.id' => $id])->one();
     	
-    	if($model){
-    		if($model->related_services){
-    			$related_service_names = [];
-    			foreach ($model->related_services as $value) {
-    				$related_service_names[] =  SysParameter::findOne($value)->param_val;
-    			}
-    			$model->related_service_names = implode("，", $related_service_names);
+    	if(empty($model)){
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    	}
+    	
+    	if($model->related_services){
+    		$related_service_names = [];
+    		foreach ($model->related_services as $value) {
+    			$related_service_names[] =  SysParameter::findOne($value)->param_val;
     		}
-//     	if (($model = SoSheet::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-        }
+    		$model->related_service_names = implode("，", $related_service_names);
+    	}
+    	return $model;
     }
     
     /**
@@ -517,6 +606,8 @@ class SoSheetController extends BaseAuthApiController
     	->joinWith('order order')
     	->joinWith('package package')
     	->joinWith('product product')
+    	->joinWith('product.vip prod_merchant')
+    	->joinWith('package.vip pkg_merchant')
     	->where(['soDetail.order_id' => $order_id])->all();
     	return $models;
     }
