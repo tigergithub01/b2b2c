@@ -221,4 +221,10 @@ return [
 		'Sys Notify Logs'=>'消息列表',
 		'Create Sys Notify Log'=>'新增通知',
 		'Update Sys Notify Log'=>'编辑通知',
+		
+		//订单咨询
+		'Quotation'=>'订单咨询',
+		'Quotations'=>'订单咨询列表',
+		'Create Quotation'=>'新增订单咨询',
+		'Update Quotation'=>'编辑订单咨询',
 ];

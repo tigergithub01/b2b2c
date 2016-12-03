@@ -40,15 +40,11 @@ use app\models\b2b2c\common\Constant;
 	
 	    <?php // echo $form->field($model, 'id') ?>
 
-    <?php // echo $form->field($model, 'sheet_type_id') ?>
-    
-    <?= $form->field($model, 'sheet_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($sheetTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
     <?= $form->field($model, 'code') ?>
 
     <?php //echo $form->field($model, 'vip_id') ?>
     
-    <?php // echo $form->field($model, 'vip_no') ?>
+    <?= $form->field($model, 'vip_no') ?>
 
     <?php // echo  $form->field($model, 'order_amt') ?>
 
@@ -127,13 +123,6 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'service_date') ?>
 
-    <?php // echo $form->field($model, 'budget_amount') ?>
-
-    <?php // echo $form->field($model, 'related_service') ?>
-
-    <?php // echo $form->field($model, 'service_style') ?>
-
-    <?php // echo $form->field($model, 'related_case_id') ?>
 
 	    
 	    </div>

@@ -32,6 +32,7 @@ use app\modules\merchant\models\MerchantConst;
                 	['label' => '我的动态', 'icon' => 'fa fa-table','url' => ['blog/vip-blog/index','sort'=>'-create_date'],],
                 	['label' => '订单管理', 'icon' => 'fa fa-table','url' => '#',
                 		'items' => [
+                				['label' => '订单咨询列表',  'url' => ['order/quotation/index'],'icon' => 'fa fa-circle-o',],
                 				['label' => '订单列表',  'url' => ['order/so-sheet/index'],'icon' => 'fa fa-circle-o',],
                 				['label' => '退款申请单', 'url' => ['order/refund-sheet-apply/index'],'icon' => 'fa fa-circle-o',],
                 		],

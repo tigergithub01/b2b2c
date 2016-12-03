@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\admin\Module;
+use app\modules\vip\Module;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SoSheet */
@@ -29,9 +29,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     		'payTypeList' => $payTypeList,
     		'deliveryTypeList' => $deliveryTypeList,
     		'pickUpPointList' => $pickUpPointList,
-    		'sheetTypeList' => $sheetTypeList,
-    		'serviceStyleList' => $serviceStyleList,
-    		'relatedServiceList' => $relatedServiceList,
+    		'quotationList' => $quotationList,
     ]) ?>
 
 </div>

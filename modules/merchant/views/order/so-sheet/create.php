@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\admin\Module;
+use app\modules\merchant\Module;
 
 
 /* @var $this yii\web\View */
@@ -27,9 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     		'payTypeList' => $payTypeList,
     		'deliveryTypeList' => $deliveryTypeList,
     		'pickUpPointList' => $pickUpPointList,
-    		'sheetTypeList' => $sheetTypeList,
-    		'serviceStyleList' => $serviceStyleList,
-    		'relatedServiceList' => $relatedServiceList,
+    		'quotationList' => $quotationList,
     ]) ?>
 
 </div>

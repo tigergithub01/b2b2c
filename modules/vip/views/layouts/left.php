@@ -27,9 +27,10 @@ use app\modules\vip\models\VipConst;
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
                 	['label' => '个人资料', 'icon' => 'fa fa-table','url' => ['member/vip/vip/view'],],
-                	['label' => '我的关注', 'icon' => 'fa fa-table','url' => ['member/vip/vip-concern/index'],],
+                	// ['label' => '我的关注', 'icon' => 'fa fa-table','url' => ['member/vip/vip-concern/index'],],
                 	['label' => '我的收藏', 'icon' => 'fa fa-table','url' => ['member/vip/vip-collect/index'],],
                 	['label' => '我的消息', 'icon' => 'fa fa-table','url' => ['member/system/sys-notify-log/index'],],
+                	['label' => '订单咨询', 'icon' => 'fa fa-table','url' => ['member/order/quotation/index'],],
                 	['label' => '我的订单', 'icon' => 'fa fa-table','url' => ['member/order/so-sheet/index'],],
                 	//['label' => '退款申请', 'icon' => 'fa fa-table','url' => ['member/order/refund-sheet-apply/index'],],
                 	['label' => '密码修改', 'icon' => 'fa fa-table','url' => ['member/system/modify-pwd/index'],],

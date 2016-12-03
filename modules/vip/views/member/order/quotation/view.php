@@ -2,16 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\modules\merchant\Module;
+use app\modules\vip\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\b2b2c\SoSheet */
+/* @var $model app\models\b2b2c\Quotation */
 
-$this->title = $model->code;
-$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'So Sheets'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Quotations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="so-sheet-view">
+<div class="quotation-view">
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -27,65 +27,35 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            // 'id',
+		            'id',
             'code',
             //'vip_id',
-            'vip.vip_name',
-		    'goods_amt',
-		    'paid_amt',
+		    'vip.vip_name',
             'order_amt',
-            // 'order_quantity',
-            
-            // 'deliver_fee',
-            'order_date',
-            // 'delivery_date',
-            //'delivery_type',
-            // 'deliveryType.name',
-            //'pay_type_id',
-		    'payType.name',
-            'pay_date',
-            // 'delivery_no',
-            //'pick_point_id',
-            // 'pickPoint.name',
-            
-            // 'integral',
-            // 'integral_money',
-            // 'coupon',
-            // 'discount',
-            // 'return_amt',
-            // 'return_date',
-            'memo:ntext',
-            //'order_status',
-		    'orderStatus.param_val',
-            //'delivery_status',
-            // 'deliveryStatus.param_val',
-            //'pay_status',
-            'payStatus.param_val',
+            'deposit_amount',
+            'create_date',
+            'update_date',
+            'memo',
+            //'status',
+            'status0.param_val',
             'consignee',
-            //'country_id',
-            // 'country.name',
-            //'province_id',
-            // 'province.name',
-            //'city_id',
-            // 'city.name',
-            //'district_id',
-		    // 'district.name',
             'mobile',
-            // 'detail_address',
-            //'invoice_type',
-            // 'invoiceType.param_val',
-            // 'invoice_header',
             'service_date',
-		    // 'quotation_id',
-		    'quotation.code',
-		        		
+            'budget_amount',
+            //'related_service',
+            'related_service_names',
+            //'service_style',
+            'serviceStyle.param_val',
+            //'merchant_id',
+		   'merchant.vip_name'
 		        ],
 		    ]) ?>
     	</div>
-    
-    </div>
-    
-    <div class="box box-primary">
+    </div>	
+    	
+    	
+    	
+    	<div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">服务明细</h3>
 
@@ -105,19 +75,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <th>服务</th>
                   <th>价格</th>
-                  <!-- <th>操作</th> -->
+                  <th>操作</th>
                 </tr>
-                <?php foreach ($soSheetDetailList as $soSheetDetail) {?>
+                <?php foreach ($quotationDetailList as $quotationDetail) {?>
                 <tr>
-                  <td><?= ($soSheetDetail->package)?$soSheetDetail->package->name.'(团体服务)':$soSheetDetail->product->name?></td>
-                  <td><?= $soSheetDetail->price ?></td>
-                  <!-- <td> --><?php /* echo Html::a(Yii::t('app', 'Delete'), ['delete-so-sheet-detail', 'id' => $soSheetDetail->id], [
+                  <td><?= $quotationDetail->product->name?></td>
+                  <td><?= $quotationDetail->price ?></td>
+                  <td><?= Html::a(Yii::t('app', 'Delete'), ['delete-quotation-detail', 'id' => $quotationDetail->id], [
 	            'class' => '',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
 	                'method' => 'post',
 	            ],
-	        ])*/ ?><!-- </td> -->
+	        ]) ?></td>
                 </tr>
                 <?php }?>
               </table>
@@ -125,19 +95,20 @@ $this->params['breadcrumbs'][] = $this->title;
             <!-- /.box-body -->
     </div>
           <!-- /.box -->
-          
+    
     <div class="box">
-    	<div class="box-footer">
+	    <div class="box-footer">
 	    	<?php // echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	        <?php /*echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+	        <?php /* Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
 	                'method' => 'post',
 	            ],
 	        ])*/ ?>
-	        <?php // echo Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);?>
+	         <?php // echo Html::a('添加订单咨询明细',['create-quotation-detail', 'quotation_id'=>$model->id],['class' => 'btn btn-success']);?>
 	    </div>
-	</div> 
+    
+    </div>
 
 </div>

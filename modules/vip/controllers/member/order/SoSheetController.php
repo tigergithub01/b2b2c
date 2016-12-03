@@ -2,27 +2,27 @@
 
 namespace app\modules\vip\controllers\member\order;
 
-use Yii;
-use app\models\b2b2c\SoSheet;
-use app\models\b2b2c\search\SoSheetSearch;
-use app\modules\vip\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\DeliveryTypeTpl;
 use app\models\b2b2c\PayType;
 use app\models\b2b2c\PickUpPoint;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\search\SoSheetSearch;
 use app\models\b2b2c\SheetType;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SoSheetDetail;
+use app\models\b2b2c\SoSheetVip;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\DeliveryTypeTpl;
-use app\models\b2b2c\SoSheetDetail;
-use app\models\b2b2c\Activity;
-use app\models\b2b2c\Product;
-use app\modules\vip\models\VipConst;
-use app\models\b2b2c\SoSheetVip;
+use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\Vip;
+use app\modules\vip\common\controllers\BaseAuthController;
+use Yii;
 use yii\db\Query;
+use yii\web\NotFoundHttpException;
+use app\models\b2b2c\Quotation;
+use app\modules\vip\models\VipConst;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -72,9 +72,7 @@ class SoSheetController extends BaseAuthController
         		'payTypeList' => $this->findPayTypeList(),
         		'deliveryTypeList' => $this->findDeliveryTypeList(),
         		'pickUpPointList' => $this->findPickUpPointList(),
-        		'sheetTypeList' => $this->findSheetTypeList(),
-        		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-        		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+        		'quotationList' => $this->findQuotationList(),
         ]);
     }
 
@@ -94,9 +92,6 @@ class SoSheetController extends BaseAuthController
     	]);
     }
 
-    
-    
-    
     /**
      * Creates a new SoSheet model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -114,7 +109,6 @@ class SoSheetController extends BaseAuthController
     	}
     	
     	$model = new SoSheet();
-    	$model->sheet_type_id = SheetType::so;
     	$model->code = SheetType::getCode($model->sheet_type_id);
     	$model->order_date = date(VipConst::DATE_FORMAT, time());
     	$model->integral = 0;
@@ -143,7 +137,7 @@ class SoSheetController extends BaseAuthController
     		$transaction = SoSheet::getDb()->beginTransaction();
     		try {
     			//重新获取订单编号
-    			$model->code = SheetType::getCode($model->sheet_type_id, true);
+    			$model->code = SheetType::getCode(SheetType::so, true);
     			$model->order_date = date(VipConst::DATE_FORMAT, time());
     			
     			 
@@ -201,7 +195,6 @@ class SoSheetController extends BaseAuthController
     	/* } */
     }
     
-    
     /**
      * Creates a new SoSheet model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -251,7 +244,7 @@ class SoSheetController extends BaseAuthController
     			$model->code = SheetType::getCode($model->sheet_type_id, true);
     			$model->order_date = date(VipConst::DATE_FORMAT, time());
     
-    			 
+    
     			/* 保存失败处理 */
     			if(!($model->save())){
     				$transaction->rollBack();
@@ -271,26 +264,26 @@ class SoSheetController extends BaseAuthController
     			}
     
     			/* 订单商户对应关系 */
-	    		$vip_ids = $this->findVipIdList($model->id);
-	    		 
-	    		//delete frist
-	    		SoSheetVip::deleteAll(['order_id'=>$model->id]);
-	    		//insert last
-	    		foreach ($vip_ids as $vip_id) {
-	    			$soSheetVip = new SoSheetVip();
-	    			$soSheetVip->vip_id = $vip_id;
-	    			$soSheetVip->order_id = $model->id;
-	    			if(!$soSheetVip->save()){
-	    				MsgUtils::error();
-	    				$transaction->rollBack();
-	    				return $this->renderCreate($model, 'create-package');
-	    			}
-	    		}
-    				
+    			$vip_ids = $this->findVipIdList($model->id);
+    
+    			//delete frist
+    			SoSheetVip::deleteAll(['order_id'=>$model->id]);
+    			//insert last
+    			foreach ($vip_ids as $vip_id) {
+    				$soSheetVip = new SoSheetVip();
+    				$soSheetVip->vip_id = $vip_id;
+    				$soSheetVip->order_id = $model->id;
+    				if(!$soSheetVip->save()){
+    					MsgUtils::error();
+    					$transaction->rollBack();
+    					return $this->renderCreate($model, 'create-package');
+    				}
+    			}
+    
     			$transaction->commit();
     			MsgUtils::success();
     			return $this->redirect(['view', 'id' => $model->id]);
-    			 
+    
     		}catch (\Exception $e) {
     			$transaction->rollBack();
     			//         		$model->addError('code',$e->getMessage());
@@ -325,7 +318,7 @@ class SoSheetController extends BaseAuthController
     	}
     
     	$model = new SoSheet();
-    	$model->sheet_type_id = SheetType::sc;
+    	$model->sheet_type_id = SheetType::so;
     	$model->code = SheetType::getCode($model->sheet_type_id);
     	$model->order_date = date(VipConst::DATE_FORMAT, time());
     	$model->integral = 0;
@@ -344,7 +337,7 @@ class SoSheetController extends BaseAuthController
     	$model->vip_id = $vip_user->id;
     	$model->consignee = $vip_user->vip_name;
     	$model->mobile = $vip_user->vip_id;
-    	 
+    
     
     	if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
     		 
@@ -353,7 +346,7 @@ class SoSheetController extends BaseAuthController
     			//重新获取订单编号
     			$model->code = SheetType::getCode($model->sheet_type_id, true);
     			$model->order_date = date(VipConst::DATE_FORMAT, time());
-    			 
+    
     
     			/* 保存失败处理 */
     			if(!($model->save())){
@@ -362,7 +355,7 @@ class SoSheetController extends BaseAuthController
     			}
     
     			/* 订单商户对应关系 */
-//     			$vip_ids = $this->findVipIdList($model->id);
+    			//     			$vip_ids = $this->findVipIdList($model->id);
     			$soSheetVip = new SoSheetVip();
     			$soSheetVip->vip_id = $merchant_id;
     			$soSheetVip->order_id = $model->id;
@@ -390,13 +383,11 @@ class SoSheetController extends BaseAuthController
     	/* } */
     }
     
-    
-    
     /**
      * @return Ambigous <string, string>
      */
-    protected function renderCreate($model, $action= 'create'){
-    	return $this->render($action, [
+    protected function renderCreate($model){
+    	return $this->render('create', [
                 'model' => $model,
             		'vipList' => $this->findVipList(SysParameter::no),
             		'proviceList' => $this->findSysRegionList(SysRegion::region_type_province),
@@ -410,9 +401,7 @@ class SoSheetController extends BaseAuthController
             		'payTypeList' => $this->findPayTypeList(),
             		'deliveryTypeList' => $this->findDeliveryTypeList(),
             		'pickUpPointList' => $this->findPickUpPointList(),
-            		'sheetTypeList' => $this->findSheetTypeList(),
-            		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-            		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+    				'quotationList' => $this->findQuotationList(),
             ]);
     }
 
@@ -443,9 +432,7 @@ class SoSheetController extends BaseAuthController
             		'payTypeList' => $this->findPayTypeList(),
             		'deliveryTypeList' => $this->findDeliveryTypeList(),
             		'pickUpPointList' => $this->findPickUpPointList(),
-            		'sheetTypeList' => $this->findSheetTypeList(),
-            		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-            		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+            		'quotationList' => $this->findQuotationList(),
             ]);
         }
     }
@@ -465,7 +452,7 @@ class SoSheetController extends BaseAuthController
     
     
     /**
-     * 添加团队成员
+     * 添加订单明细
      * @return \yii\web\Response|Ambigous <string, string>
      */
     public function actionCreateSoSheetDetail($order_id){
@@ -484,22 +471,63 @@ class SoSheetController extends BaseAuthController
     		
     		$model->amount = $model->quantity * $model->price;
     		
-    		//save
-    		if($model->save()){
+    		$transaction = SoSheetDetail::getDb()->beginTransaction();
+    		try {
+    			/* 保存失败处理 */
+    			if(!($model->save())){
+    				$transaction->rollBack();
+    				return $this->renderCreateSoSheetDetail($model, $soSheet);
+    			}
+    			
+    			//更新订单商户记录表
+    			$vip_ids = $this->findVipIdList($order_id);
+    			
+    			//delete frist
+    			SoSheetVip::deleteAll(['order_id'=>$order_id]);
+    			//insert last
+    			foreach ($vip_ids as $vip_id) {
+    				$soSheetVip = new SoSheetVip();
+    				$soSheetVip->vip_id = $vip_id;
+    				$soSheetVip->order_id = $order_id;
+    				if(!$soSheetVip->save()){
+    					MsgUtils::error(/* Json::encode($soSheetVip->getFirstErrors()) */);
+    					$transaction->rollBack();
+    					return $this->renderCreateSoSheetDetail($model, $soSheet);
+    				}
+    			}
+    			 
+    			$transaction->commit();
     			MsgUtils::success();
     			return $this->redirect(['view', 'id' => $order_id]);
+    			 
+    		}catch (\Exception $e) {
+    			$transaction->rollBack();
+    			MsgUtils::error('操作失败: ' . $e->getMessage());
+    			return $this->renderCreateSoSheetDetail($model, $soSheet);
     		}
     	}
 
     	/* else { */
-    	return $this->render('create-so-sheet-detail', [
+    	/* return $this->render('create-so-sheet-detail', [
     			'model' => $model,
     			'soSheet' => $soSheet,
     			'activityList' => $this->findActivityList(),
             	'productList' => $this->findProductList(),
             	'soSheetList' => $this->findSoSheetList(),
-    	]);
+    	]); */
+    	return $this->renderCreateSoSheetDetail($model, $soSheet);
     	/* } */
+    }
+    
+    
+    public function renderCreateSoSheetDetail($model, $soSheet){
+    	return $this->render('create-so-sheet-detail', [
+    			'model' => $model,
+    			'soSheet' => $soSheet,
+    			'activityList' => $this->findActivityList(),
+    			'productList' => $this->findProductList(),
+    			'soSheetList' => $this->findSoSheetList(),
+    	]);
     }
     
     /**
@@ -510,12 +538,42 @@ class SoSheetController extends BaseAuthController
      */
     public function actionDeleteSoSheetDetail($id)
     {
-    	$soSheetDetail = SoSheetDetail::findOne($id);
-    	if(empty($soSheetDetail)){
-    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    	$transaction = SoSheetDetail::getDb()->beginTransaction();
+    	try {
+    		$soSheetDetail = SoSheetDetail::findOne($id);
+	    	if(empty($soSheetDetail)){
+	    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+	    	}
+	    	$soSheetDetail->delete();
+	    	$order_id = $soSheetDetail->order_id;
+    		 
+	    	//更新订单商户记录表
+	    	$vip_ids = $this->findVipIdList($order_id);
+	    	
+    		//delete frist
+    		SoSheetVip::deleteAll(['order_id'=>$order_id]);
+    		 
+    		//insert last
+    		foreach ($vip_ids as $vip_id) {
+    			$soSheetVip = new SoSheetVip();
+    			$soSheetVip->vip_id = $vip_id;
+    			$soSheetVip->order_id = $order_id;
+    			if(!$soSheetVip->save()){
+    				$transaction->rollBack();
+    				MsgUtils::error();
+    				return $this->redirect(['view', 'id' => $order_id]);
+    			}
+    		}
+    	
+    		$transaction->commit();
+    		MsgUtils::success();
+    		return $this->redirect(['view', 'id' => $order_id]);
+    	
+    	}catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error('操作失败: ' . $e->getMessage());
     	}
-    	$soSheetDetail->delete();
-    	MsgUtils::success();
+    	
     	return $this->redirect(['view','id'=>$soSheetDetail->order_id]);
     }
 
@@ -542,19 +600,10 @@ class SoSheetController extends BaseAuthController
     	->joinWith("deliveryType deliveryType")
     	->joinWith("payType payType")
     	->joinWith("pickPoint pickPoint")
-    	->joinWith("sheetType sheetType")
-    	->joinWith("serviceStyle serviceStyle")
+    	->joinWith("quotation quotation")
     	->where(['so.id' => $id])->one();
     	
     	if($model){
-    		if($model->related_services){
-    			$related_service_names = [];
-    			foreach ($model->related_services as $value) {
-    				$related_service_names[] =  SysParameter::findOne($value)->param_val;
-    			}
-    			$model->related_service_names = implode("，", $related_service_names);
-    		}
-//     	if (($model = SoSheet::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
@@ -566,7 +615,7 @@ class SoSheetController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findVipList($merchant_flag){
-    	return Vip::find()->where(['merchant_flag'=>$merchant_flag])->all();
+    	return Vip::find()->where(['merchant_flag'=>$merchant_flag, 'audit_status' => SysParameter::audit_approved])->all();
     }
     
     /**
@@ -605,18 +654,12 @@ class SoSheetController extends BaseAuthController
     
     
     /**
-     *
-     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
-     */
-    protected function findSheetTypeList(){
-    	return SheetType::find()->where(['id' => [SheetType::so, SheetType::sc]])->all();
-    }
-    
-    /**
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected function findActivityList(){
-    	return Activity::find()->all();
+    	return  Activity::find()->alias('act')
+    	->joinWith('vip vip')
+    	->where(['vip.audit_status' => SysParameter::audit_approved])->all();
     }
     
     /**
@@ -632,7 +675,18 @@ class SoSheetController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findProductList(){
-    	return Product::find()->all();
+    	return  Product::find()->alias('p')
+    	->joinWith('vip vip')
+    	->where(['vip.audit_status' => SysParameter::audit_approved])->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findQuotationList(){
+    	return Quotation::find()->where(['status'=>[Quotation::stat_replied,Quotation::stat_effective]])->all();
     }
     
     /**
@@ -654,9 +708,9 @@ class SoSheetController extends BaseAuthController
      * @return unknown
      */
     private function findVipIdList($order_id){
-    	$query = new \yii\db\Query();
+    	$query = new Query();
     	$query = SoSheetDetail::find()->select("vip.id")->alias("so_detail")->joinWith("product.vip vip")->where(['so_detail.order_id' => $order_id])->andWhere(['IS NOT',"so_detail.product_id",NULL])->distinct();
-    	 
+    	
     	$query_package = new Query();
     	$query_package = SoSheetDetail::find()->select("vip.id")->alias("so_detail")->joinWith("package.vip vip")->where(['so_detail.order_id' => $order_id])->andWhere(['IS NOT',"so_detail.package_id",NULL])->distinct();
     	$query->union($query_package);
