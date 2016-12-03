@@ -46,13 +46,9 @@ class SoSheetDetailController extends BaseAuthApiController
     	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     	$models = $dataProvider->getModels();
     	
-    	
     	//格式化输出
     	$data = ArrayHelper::toArray ($models, [
     			SoSheetDetail::className() => array_merge(CommonUtils::getModelFields(new SoSheetDetail()),[
-    					'order' => function($value){
-    						return $value->order;
-    					},
     					'merchant'=> function($value){
     						//统一获取商户信息
     						$merchant = null;
@@ -66,6 +62,7 @@ class SoSheetDetailController extends BaseAuthApiController
     						if($merchant){
     							$merchant_tmp = new Vip();
     							$merchant_tmp->id = $merchant->id;
+    							$merchant_tmp->vip_id = $merchant->vip_id;
     							$merchant_tmp->vip_name = $merchant->vip_name;
     							$merchant_tmp->thumb_url = UrlUtils::formatUrl($merchant->thumb_url);
     							$merchant_tmp->img_url = UrlUtils::formatUrl($merchant->img_url);
@@ -76,20 +73,17 @@ class SoSheetDetailController extends BaseAuthApiController
     					},
     					'order' => function($value){
     						//订单信息
-    						return $value->order;
+    						$order_status_name = (empty($value->order) || empty($value->order->orderStatus))?'':$value->order->orderStatus->param_val;
+    						$pay_status_name = (empty($value->order) || empty($value->order->payStatus))?'':$value->order->payStatus->param_val;
+    						$vip_name = (empty($value->order) || empty($value->order->vip))?'':$value->order->vip->vip_name;
+    						
+    						return [
+    								'model'=>$value->order,
+    								'order_status_name'=>$order_status_name,
+    								'pay_status_name' => $pay_status_name,
+    								'vip_name' => $vip_name,
+    						];
     					},
-    					'order_status_name' => function($value){
-		        			return ((empty($value->order) || empty($value->order->orderStatus))?'':$value->order->orderStatus->param_val);
-		        		},
-		        		'pay_status_name' => function($value){
-		        			return ((empty($value->order) || empty($value->order->payStatus))?'':$value->order->payStatus->param_val);
-			        	},
-			        	'sheet_type_name' => function($value){
-			        		return ((empty($value->order) || empty($value->order->sheetType))?'':$value->order->sheetType->name);
-				        },
-				        'vip_name' => function($value){
-				        	return ((empty($value->order) || empty($value->order->vip))?'':$value->order->vip->vip_name);
-				        }, 
     					'package' => function($value){
     						//组合服务信息
     						if($value->package){

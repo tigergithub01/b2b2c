@@ -69,9 +69,6 @@ class SoSheetController extends BaseAuthApiController
         		'pay_status_name' => function($value){
 	        		return (empty($value->payStatus)?'':$value->payStatus->param_val);
 	        	},
-	        	'sheet_type_name' => function($value){
-		        	return (empty($value->sheetType)?'':$value->sheetType->name);
-		        },
 		        'vip_name' => function($value){
 		        	return (empty($value->vip)?'':$value->vip->vip_name);
 		        }, 
@@ -106,9 +103,6 @@ class SoSheetController extends BaseAuthApiController
     				'pay_status_name' => function($value){
     					return (empty($value->payStatus)?'':$value->payStatus->param_val);
     				},
-    				'sheet_type_name' => function($value){
-    					return (empty($value->sheetType)?'':$value->sheetType->name);
-    				},
     				'vip_name' => function($value){
     					return (empty($value->vip)?'':$value->vip->vip_name);
     				},
@@ -132,38 +126,28 @@ class SoSheetController extends BaseAuthApiController
     					if($merchant){
     						$merchant_tmp = new Vip();
     						$merchant_tmp->id = $merchant->id;
+    						$merchant_tmp->vip_id = $merchant->vip_id;
     						$merchant_tmp->vip_name = $merchant->vip_name;
     						$merchant_tmp->thumb_url = UrlUtils::formatUrl($merchant->thumb_url);
     						$merchant_tmp->img_url = UrlUtils::formatUrl($merchant->img_url);
     						$merchant_tmp->img_original = UrlUtils::formatUrl($merchant->img_original);
     					}
-    					return $merchant_tmp;
-    			},
-    			'merchant_type_name'=> function($value){
-	    			//商户类型
-	    			$merchant = null;
-	    			if($value->product_id){
-	    				$merchant =  $value->product->vip;
-	    			}else if($value->package_id){
-	    				$merchant = $value->package->vip;
-	    			}
-	    			return (empty($merchant) || empty($merchant->vipType))?'':$merchant->vipType->name;
-    			},
-    			'merchant_service_desc'=> function($value){
-	    			//营业描述
-	    			$merchant = null;
-	    			if($value->product_id){
-	    				$merchant =  $value->product->vip;
-	    			}else if($value->package_id){
-	    				$merchant = $value->package->vip;
-	    			}
-	    			
-	    			if($merchant){
-	    				$vipOrg = VipOrganization::find()->where(['vip_id'=>$merchant->id])->one();
-	    				return empty($vipOrg)?null:$vipOrg->description;
-	    			}else{
-	    				return null;
-	    			}
+    					
+    					//商户类型
+    					$vip_type_name = (empty($merchant) || empty($merchant->vipType))?'':$merchant->vipType->name;
+    					
+    					//营业描述
+    					$vip_org_desc = null;
+    					if($merchant){
+	    					$vipOrg = VipOrganization::find()->where(['vip_id'=>$merchant->id])->one();
+	    					$vip_org_desc =  empty($vipOrg)?null:$vipOrg->description;
+    					}
+    					
+    					return [
+    							'model'=>$merchant_tmp,
+    							'vip_type_name'=>$vip_type_name,
+    							'vip_org_desc' => $vip_org_desc,
+    					];
     			},
     			'package' => function($value){
     					//组合服务信息
@@ -495,9 +479,6 @@ class SoSheetController extends BaseAuthApiController
     			'related_service_list'=>SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
     			'vip'=>\Yii::$app->session->get(VipConst::LOGIN_VIP_USER),
     		]);
-    		
-    		
-    		return $this->renderCreate($model, 'create-consult');
     	}
     }
     
@@ -533,8 +514,6 @@ class SoSheetController extends BaseAuthApiController
     	->joinWith("deliveryType deliveryType")
     	->joinWith("payType payType")
     	->joinWith("pickPoint pickPoint")
-    	->joinWith("sheetType sheetType")
-    	->joinWith("serviceStyle serviceStyle")
     	->where(['so.id' => $id])->one();
     	
     	if(empty($model)){

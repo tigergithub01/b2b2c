@@ -106,8 +106,10 @@ use yii\helpers\Url;
 			</div>
 			
 			<div class="form-group">
-				<?php echo Html::button('订单咨询',['id'=>'btn_order_consult','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-consult'])]);?>
-				<?php echo Html::button('订单咨询-提交',['id'=>'btn_order_consult_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-consult'])]);?>
+				<?php echo Html::button('订单咨询列表',['id'=>'btn_quotation_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/quotation/index'])]);?>
+				<?php echo Html::button('订单咨询详情',['id'=>'btn_quotation_view','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/quotation/view'])]);?>
+				<?php echo Html::button('订单咨询',['id'=>'btn_quotation_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/quotation/create'])]);?>
+				<?php echo Html::button('订单咨询-提交',['id'=>'btn_quotation_create_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/quotation/create'])]);?>
 			</div>
 			
 			<div class="form-group">

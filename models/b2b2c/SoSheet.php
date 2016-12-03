@@ -108,6 +108,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	/* 商户编号-查询用 */
 	public $query_merchant_id;
 	
+	/* 订单状态（显示）  */
+// 	public $order_status_name;
+	
 	
     /**
      * @inheritdoc
@@ -130,7 +133,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_code';
-    	$scenarios[self::SCENARIO_DEFAULT][]  = 'related_services';
+//     	$scenarios[self::SCENARIO_DEFAULT][]  = 'related_services';
+//     	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_status_name';
+    	
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -421,5 +426,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getVipCouponLogs()
     {
         return $this->hasMany(VipCouponLog::className(), ['order_id' => 'id']);
+    }
+    
+    public function getOrderStatusName(){
+    	return "xxx";
     }
 }
