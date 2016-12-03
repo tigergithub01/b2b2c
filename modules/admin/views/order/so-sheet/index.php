@@ -25,9 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     		'payTypeList' => $payTypeList,
     		'deliveryTypeList' => $deliveryTypeList,
     		'pickUpPointList' => $pickUpPointList,
-    		'sheetTypeList' => $sheetTypeList,
-    		'serviceStyleList' => $serviceStyleList,
-    		'relatedServiceList' => $relatedServiceList,
+    		'quotationList' => $quotationList,
     ]); ?>
 
 		<div class="box box-primary">
@@ -41,8 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             // 'id',
-            // 'sheet_type_id',
-            'sheetType.name',
             'code',
             // 'vip_id',
             // 'vip.vip_id',
@@ -83,10 +79,6 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'invoice_type',
             // 'invoice_header',
             // 'service_date',
-            // 'budget_amount',
-            // 'related_service',
-            // 'service_style',
-            // 'related_case_id',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
             'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',

@@ -13,6 +13,9 @@ use app\models\b2b2c\SheetType;
 use app\models\b2b2c\Vip;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysParameter;
+use app\modules\admin\models\AdminConst;
+use app\models\b2b2c\QuotationDetail;
+use app\models\b2b2c\Product;
 
 /**
  * QuotationController implements the CRUD actions for Quotation model.
@@ -63,9 +66,13 @@ class QuotationController extends BaseAuthController
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+    	$model =  $this->findModel($id);
+    	$quotationDetailList = $this->findQuotationDetailList($id);
+    	
+    	return $this->render('view', [
+    			'model' => $model,
+    			'quotationDetailList' => $quotationDetailList,
+    	]);
     }
 
     /**
@@ -78,8 +85,34 @@ class QuotationController extends BaseAuthController
         $model = new Quotation();
         
         $model->code = SheetType::getCode(SheetType::qu);
+        $model->create_date = date(AdminConst::DATE_FORMAT, time());
+        $model->update_date = date(AdminConst::DATE_FORMAT, time());
+        $model->service_date = date(AdminConst::DATE_FORMAT, time());
+        $model->status = Quotation::stat_need_reply;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
+        	
+        	$transaction = Quotation::getDb()->beginTransaction();
+        	try {
+        		//重新获取订单编号
+        		$model->code = SheetType::getCode(SheetType::qu, true);
+        		 
+        		/* 保存失败处理 */
+        		if(!($model->save())){
+        			$transaction->rollBack();
+        			return $this->renderCreate($model);
+        		}
+        		 
+        		$transaction->commit();
+        		MsgUtils::success();
+        		return $this->redirect(['view', 'id' => $model->id]);
+        		 
+        	}catch (\Exception $e) {
+        		$transaction->rollBack();
+        		$model->addError('code',$e->getMessage());
+        		return $this->renderCreate($model);
+        	}
+        	
             MsgUtils::success();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -147,6 +180,87 @@ class QuotationController extends BaseAuthController
 		MsgUtils::success();
         return $this->redirect(['index']);
     }
+    
+    
+    /**
+     * 添加咨询明细
+     * @return \yii\web\Response|Ambigous <string, string>
+     */
+    public function actionCreateQuotationDetail($quotation_id){
+    	$model = new QuotationDetail();
+    	$model->quotation_id = $quotation_id;
+    	$model->quantity = 1;
+    	$model->amount = 0;
+    
+    	//查询订单
+    	$quotation = Quotation::findOne($quotation_id);
+    	if(empty($quotation)){
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    	}
+    
+    	if ($model->load(Yii::$app->request->post())) {
+    
+    		$model->amount = $model->quantity * $model->price;
+    
+    		$transaction = QuotationDetail::getDb()->beginTransaction();
+    		try {
+    			/* 保存失败处理 */
+    			if(!($model->save())){
+    				$transaction->rollBack();
+    				return $this->renderCreateQuotationDetail($model, $quotation);
+    			}
+    			 
+    			$transaction->commit();
+    			MsgUtils::success();
+    			return $this->redirect(['view', 'id' => $quotation_id]);
+    
+    		}catch (\Exception $e) {
+    			$transaction->rollBack();
+    			MsgUtils::error('操作失败: ' . $e->getMessage());
+    			return $this->renderCreateQuotationDetail($model, $quotation);
+    		}
+    	}
+    
+    	return $this->renderCreateQuotationDetail($model, $quotation);
+    }
+    
+    
+    public function renderCreateQuotationDetail($model, $quotation){
+    	return $this->render('create-quotation-detail', [
+    			'model' => $model,
+    			'quotation' => $quotation,
+    			'productList' => $this->findProductList(),
+    	]);
+    }
+    
+    /**
+     * Deletes an existing Activity model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDeleteQuotationDetail($id)
+    {
+    	$transaction = QuotationDetail::getDb()->beginTransaction();
+    	try {
+    		$quotationDetail = QuotationDetail::findOne($id);
+    		if(empty($quotationDetail)){
+    			throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    		}
+    		$quotationDetail->delete();
+    		$quotation_id = $quotationDetail->quotation_id;
+    		 
+    		$transaction->commit();
+    		MsgUtils::success();
+    		return $this->redirect(['view', 'id' => $quotation_id]);
+    		 
+    	}catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error('操作失败: ' . $e->getMessage());
+    	}
+    	 
+    	return $this->redirect(['view','id'=>$quotationDetail->quotation_id]);
+    }
 
     /**
      * Finds the Quotation model based on its primary key value.
@@ -184,6 +298,28 @@ class QuotationController extends BaseAuthController
      */
     protected  function findVipList($merchant_flag){
     	return Vip::find()->where(['merchant_flag'=>$merchant_flag, 'audit_status' => SysParameter::audit_approved])->all();
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    function findQuotationDetailList($quotation_id){
+    	$models = QuotationDetail::find()->alias('quotDetail')
+    	->joinWith('quotation quotation')
+    	->joinWith('product product')
+    	->where(['quotDetail.quotation_id' => $quotation_id])->all();
+    	return $models;
+    }
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected  function findProductList(){
+    	return  Product::find()->alias('p')
+    	->joinWith('vip vip')
+    	->where(['vip.audit_status' => SysParameter::audit_approved])->all();
     }
     
     

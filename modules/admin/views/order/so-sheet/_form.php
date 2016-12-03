@@ -38,9 +38,6 @@ use app\models\b2b2c\common\Constant;
     	<?php echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?php //echo $form->field($model, 'sheet_type_id')->textInput(['maxlength' => true]) ?>
-	    
-	    <?= $form->field($model, 'sheet_type_id')->dropDownList(\yii\helpers\ArrayHelper::map($sheetTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
@@ -168,18 +165,10 @@ use app\models\b2b2c\common\Constant;
     				'format' => Constant::DATE_PICKER_FORMAT,
     			]
           ]) ?>
-
-    <?= $form->field($model, 'budget_amount')->textInput(['maxlength' => true]) ?>
-
-    <?php //echo $form->field($model, 'related_service')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'related_services')->checkboxList(\yii\helpers\ArrayHelper::map($relatedServiceList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php // echo $form->field($model, 'service_style')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'service_style')->dropDownList(\yii\helpers\ArrayHelper::map($serviceStyleList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
-    <?php //echo $form->field($model, 'related_case_id')->textInput(['maxlength' => true]) ?>
+     
+     <?php // echo $form->field($model, 'quotation_id')->textInput() ?>
+          
+    <?= $form->field($model, 'quotation_id')->dropDownList(\yii\helpers\ArrayHelper::map($quotationList, "id", "code"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>      
 
 		</div>
 	

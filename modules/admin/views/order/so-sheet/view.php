@@ -28,8 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            // 'id',
-            //'sheet_type_id',
-            'sheetType.name',
             'code',
             //'vip_id',
             'vip.vip_name',
@@ -78,12 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'invoiceType.param_val',
             // 'invoice_header',
             'service_date',
-            'budget_amount',
-            //'related_service',
-            'related_service_names',
-            //'service_style',
-            'serviceStyle.param_val',
-            // 'related_case_id',
+		    // 'quotation_id',
+		    'quotation.code',
+		        		
 		        ],
 		    ]) ?>
     	</div>
@@ -131,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
           <!-- /.box -->
           
-          <div class="box">
+    <div class="box">
     	<div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [

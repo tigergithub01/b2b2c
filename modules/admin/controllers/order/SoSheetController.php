@@ -2,28 +2,27 @@
 
 namespace app\modules\admin\controllers\order;
 
-use Yii;
-use app\models\b2b2c\SoSheet;
-use app\models\b2b2c\search\SoSheetSearch;
-use app\modules\admin\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\DeliveryTypeTpl;
 use app\models\b2b2c\PayType;
 use app\models\b2b2c\PickUpPoint;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\search\SoSheetSearch;
 use app\models\b2b2c\SheetType;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SoSheetDetail;
+use app\models\b2b2c\SoSheetVip;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\DeliveryTypeTpl;
+use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\Vip;
+use app\modules\admin\common\controllers\BaseAuthController;
 use app\modules\admin\models\AdminConst;
-use app\models\b2b2c\SoSheetDetail;
-use app\models\b2b2c\Activity;
-use app\models\b2b2c\Product;
+use Yii;
 use yii\db\Query;
-use app\models\b2b2c\SoSheetVip;
-use yii\helpers\Json;
+use yii\web\NotFoundHttpException;
+use app\models\b2b2c\Quotation;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -71,9 +70,7 @@ class SoSheetController extends BaseAuthController
         		'payTypeList' => $this->findPayTypeList(),
         		'deliveryTypeList' => $this->findDeliveryTypeList(),
         		'pickUpPointList' => $this->findPickUpPointList(),
-        		'sheetTypeList' => $this->findSheetTypeList(),
-        		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-        		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+        		'quotationList' => $this->findQuotationList(),
         ]);
     }
 
@@ -101,8 +98,7 @@ class SoSheetController extends BaseAuthController
     public function actionCreate()
     {
         $model = new SoSheet();
-        $model->sheet_type_id = SheetType::so;
-        $model->code = SheetType::getCode($model->sheet_type_id); 
+        $model->code = SheetType::getCode(SheetType::so); 
         $model->order_date = date(AdminConst::DATE_FORMAT, time());
         $model->integral = 0;
         $model->integral_money = 0;
@@ -119,7 +115,7 @@ class SoSheetController extends BaseAuthController
         	$transaction = SoSheet::getDb()->beginTransaction();
         	try {
         		//重新获取订单编号
-        		$model->code = SheetType::getCode($model->sheet_type_id, true);
+        		$model->code = SheetType::getCode(SheetType::so, true);
         		 
         		/* 保存失败处理 */
         		if(!($model->save())){
@@ -162,9 +158,7 @@ class SoSheetController extends BaseAuthController
             		'payTypeList' => $this->findPayTypeList(),
             		'deliveryTypeList' => $this->findDeliveryTypeList(),
             		'pickUpPointList' => $this->findPickUpPointList(),
-            		'sheetTypeList' => $this->findSheetTypeList(),
-            		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-            		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+    				'quotationList' => $this->findQuotationList(),
             ]);
     }
 
@@ -195,9 +189,7 @@ class SoSheetController extends BaseAuthController
             		'payTypeList' => $this->findPayTypeList(),
             		'deliveryTypeList' => $this->findDeliveryTypeList(),
             		'pickUpPointList' => $this->findPickUpPointList(),
-            		'sheetTypeList' => $this->findSheetTypeList(),
-            		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-            		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+            		'quotationList' => $this->findQuotationList(),
             ]);
         }
     }
@@ -365,19 +357,10 @@ class SoSheetController extends BaseAuthController
     	->joinWith("deliveryType deliveryType")
     	->joinWith("payType payType")
     	->joinWith("pickPoint pickPoint")
-    	->joinWith("sheetType sheetType")
-    	->joinWith("serviceStyle serviceStyle")
+    	->joinWith("quotation quotation")
     	->where(['so.id' => $id])->one();
     	
     	if($model){
-    		if($model->related_services){
-    			$related_service_names = [];
-    			foreach ($model->related_services as $value) {
-    				$related_service_names[] =  SysParameter::findOne($value)->param_val;
-    			}
-    			$model->related_service_names = implode("，", $related_service_names);
-    		}
-//     	if (($model = SoSheet::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
@@ -428,18 +411,12 @@ class SoSheetController extends BaseAuthController
     
     
     /**
-     *
-     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
-     */
-    protected function findSheetTypeList(){
-    	return SheetType::find()->where(['id' => [SheetType::so, SheetType::sc]])->all();
-    }
-    
-    /**
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected function findActivityList(){
-    	return Activity::find()->all();
+    	return  Activity::find()->alias('act')
+    	->joinWith('vip vip')
+    	->where(['vip.audit_status' => SysParameter::audit_approved])->all();
     }
     
     /**
@@ -455,7 +432,18 @@ class SoSheetController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findProductList(){
-    	return Product::find()->all();
+    	return  Product::find()->alias('p')
+    	->joinWith('vip vip')
+    	->where(['vip.audit_status' => SysParameter::audit_approved])->all();
+    }
+    
+    
+    /**
+     *
+     * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
+     */
+    protected function findQuotationList(){
+    	return Quotation::find()->where(['status'=>[Quotation::stat_replied,Quotation::stat_effective]])->all();
     }
     
     /**

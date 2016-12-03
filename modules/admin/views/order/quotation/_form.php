@@ -108,6 +108,8 @@ use app\models\b2b2c\common\Constant;
 	
 	    <div class="box-footer form-group">
 	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create_Save') : Yii::t('app', 'Update_Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	        
+	        <?php if (!($model->isNewRecord)) {echo Html::a('添加订单明细',['create-quotation-detail', 'quotation_id'=>$model->id],['class' => 'btn btn-success']);}?>
 	    </div>
 
     	<?php ActiveForm::end(); ?>

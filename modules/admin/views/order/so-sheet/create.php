@@ -27,9 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     		'payTypeList' => $payTypeList,
     		'deliveryTypeList' => $deliveryTypeList,
     		'pickUpPointList' => $pickUpPointList,
-    		'sheetTypeList' => $sheetTypeList,
-    		'serviceStyleList' => $serviceStyleList,
-    		'relatedServiceList' => $relatedServiceList,
+    		'quotationList' => $quotationList,
     ]) ?>
 
 </div>
