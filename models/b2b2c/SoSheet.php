@@ -8,7 +8,6 @@ use Yii;
  * This is the model class for table "t_so_sheet".
  *
  * @property string $id
- * @property string $sheet_type_id
  * @property string $code
  * @property string $vip_id
  * @property string $order_amt
@@ -43,18 +42,14 @@ use Yii;
  * @property string $invoice_type
  * @property string $invoice_header
  * @property string $service_date
- * @property string $budget_amount
- * @property string $related_service
- * @property string $service_style
- * @property string $related_case_id
- * @property string $merchant_id
+ * @property string $quotation_id
  *
  * @property OutStockSheet[] $outStockSheets
  * @property RefundSheet[] $refundSheets
  * @property RefundSheetApply[] $refundSheetApplies
  * @property ReturnApply[] $returnApplies
  * @property ReturnSheet[] $returnSheets
- * @property Vip $merchant
+ * @property Quotation $quotation
  * @property Vip $vip
  * @property SysRegion $city
  * @property SysRegion $country
@@ -65,17 +60,14 @@ use Yii;
  * @property SysParameter $payStatus
  * @property SysRegion $province
  * @property DeliveryTypeTpl $deliveryType
- * @property VipCase $relatedCase
  * @property PayType $payType
  * @property PickUpPoint $pickPoint
- * @property SheetType $sheetType
  * @property SoSheetCoupon[] $soSheetCoupons
  * @property SoSheetDetail[] $soSheetDetails
  * @property SoSheetPayInfo[] $soSheetPayInfos
  * @property SoSheetVip[] $soSheetVips
  * @property VipCoupon[] $vipCoupons
  * @property VipCouponLog[] $vipCouponLogs
- * @property SysParameter $serviceStyle
  */
 class SoSheet extends \app\models\b2b2c\BasicModel
 {
@@ -125,23 +117,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         return 't_so_sheet';
     }
     
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert) {
-    	if($this->related_services) {
-    		$this->related_service = implode(',',$this->related_services);
-    	}
-    	return parent::beforeSave($insert);
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public function afterFind() {
-    	$this->related_services = explode(',',$this->related_service);
-    	parent::afterFind();
-    }
     
     
     /**
@@ -166,17 +141,17 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['sheet_type_id', 'code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
-            [['sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id', 'merchant_id'], 'integer'],
-            [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'budget_amount'], 'number'],
+            [['code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
+            [['vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'quotation_id'], 'integer'],
+            [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt'], 'number'],
             [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
-        	[['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['merchant_id' => 'id']],
-            [['delivery_no', 'invoice_header', 'related_service', 'service_style'], 'string', 'max' => 60],
+            [['delivery_no', 'invoice_header'], 'string', 'max' => 60],
             [['memo'], 'string', 'max' => 400],
             [['mobile'], 'string', 'max' => 20],
             [['detail_address'], 'string', 'max' => 255],
             [['code'], 'unique'],
+        	[['quotation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quotation::className(), 'targetAttribute' => ['quotation_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['city_id' => 'id']],
             [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['country_id' => 'id']],
@@ -187,10 +162,8 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             [['pay_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['pay_status' => 'id']],
             [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysRegion::className(), 'targetAttribute' => ['province_id' => 'id']],
             [['delivery_type'], 'exist', 'skipOnError' => true, 'targetClass' => DeliveryTypeTpl::className(), 'targetAttribute' => ['delivery_type' => 'id']],
-            [['related_case_id'], 'exist', 'skipOnError' => true, 'targetClass' => VipCase::className(), 'targetAttribute' => ['related_case_id' => 'id']],
             [['pay_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => PayType::className(), 'targetAttribute' => ['pay_type_id' => 'id']],
             [['pick_point_id'], 'exist', 'skipOnError' => true, 'targetClass' => PickUpPoint::className(), 'targetAttribute' => ['pick_point_id' => 'id']],
-            [['sheet_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => SheetType::className(), 'targetAttribute' => ['sheet_type_id' => 'id']],
         ];
     }
 
@@ -201,7 +174,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'sheet_type_id' => Yii::t('app', /* '订单类型（普通订单，定制订单）' */'订单类型'),
             'code' => Yii::t('app', '订单编号'/* '订单编号(so-年月日-顺序号，根据单据设置进行生成)' */),
             'vip_id' => Yii::t('app', '会员编号'),
             'order_amt' => Yii::t('app', '待支付金额'),
@@ -236,13 +208,10 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'invoice_type' => Yii::t('app', '发票类型（电子发票，纸质发票)'),
             'invoice_header' => Yii::t('app', '发票抬头名称'),
             'service_date' => Yii::t('app', /* '服务时间(婚礼)' */'婚礼服务时间'),
-            'budget_amount' => Yii::t('app', '婚礼预算'),
-            'related_service' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
-            'service_style' => Yii::t('app', '婚礼类型（单选）（室内，室外）'),
-            'related_case_id' => Yii::t('app', '关联案例编号'),
-        	'merchant_id' => Yii::t('app', '订单咨询商户编号'/* '关联商户编号（订单咨询时可用）' */),
+        	'quotation_id' => Yii::t('app', /* '关联报价单编号' */'订单咨询编号'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         	'vip.vip_name' =>  Yii::t('app', '会员名称'),
+        	'quotation.code' => Yii::t('app', '订单咨询编号'),
         		'city.name' =>  Yii::t('app', '城市'),
         		'country.name' =>  Yii::t('app', '国家'),
         		'deliveryStatus.param_val' =>  Yii::t('app', '配送状态'),
@@ -254,14 +223,11 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         		'deliveryType.name' =>  Yii::t('app', '配送方式'),
         		'payType.name' =>  Yii::t('app', '支付方式'),
         		'pickPoint.name' =>  Yii::t('app', '自提点'),
-        		'sheetType.name' =>  Yii::t('app', '订单类型'),
-        		'serviceStyle.param_val' =>  Yii::t('app', '婚礼类型'),
-        		'related_services' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
-        		'related_service_names' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
         		'vip_no' => Yii::t('app', '会员编号'),
         		'start_date' => Yii::t('app', '开始日期'),
         		'end_date' => Yii::t('app', '结束日期'),
         		'order_code' => Yii::t('app', '订单编号'),
+        		
         ];
     }
 
@@ -308,11 +274,11 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMerchant()
+    public function getQuotation()
     {
-    	return $this->hasOne(Vip::className(), ['id' => 'merchant_id']);
+    	return $this->hasOne(Quotation::className(), ['id' => 'quotation_id']);
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -396,14 +362,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRelatedCase()
-    {
-        return $this->hasOne(VipCase::className(), ['id' => 'related_case_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getPayType()
     {
         return $this->hasOne(PayType::className(), ['id' => 'pay_type_id']);
@@ -415,14 +373,6 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getPickPoint()
     {
         return $this->hasOne(PickUpPoint::className(), ['id' => 'pick_point_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSheetType()
-    {
-        return $this->hasOne(SheetType::className(), ['id' => 'sheet_type_id']);
     }
 
     /**
@@ -471,13 +421,5 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getVipCouponLogs()
     {
         return $this->hasMany(VipCouponLog::className(), ['order_id' => 'id']);
-    }
-    
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getServiceStyle()
-    {
-    	return $this->hasOne(SysParameter::className(), ['id' => 'service_style']);
     }
 }

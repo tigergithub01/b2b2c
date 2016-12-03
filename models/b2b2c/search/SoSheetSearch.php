@@ -19,9 +19,9 @@ class SoSheetSearch extends SoSheet
     public function rules()
     {
         return [
-            [['id', 'sheet_type_id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'related_case_id', 'merchant_id'], 'integer'],
-            [['code', 'order_date', 'delivery_date', 'pay_date', 'delivery_no', 'return_date', 'memo', 'consignee', 'mobile', 'detail_address', 'invoice_header', 'service_date', 'related_service', 'service_style'], 'safe'],
-            [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'budget_amount'], 'number'],
+            [['id', 'vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'quotation_id'], 'integer'],
+            [['code', 'order_date', 'delivery_date', 'pay_date', 'delivery_no', 'return_date', 'memo', 'consignee', 'mobile', 'detail_address', 'invoice_header', 'service_date'], 'safe'],
+            [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt'], 'number'],
         ];
     }
 
@@ -56,8 +56,7 @@ class SoSheetSearch extends SoSheet
     	->joinWith("deliveryType deliveryType")
     	->joinWith("payType payType")
     	->joinWith("pickPoint pickPoint")
-    	->joinWith("sheetType sheetType")
-    	->joinWith("serviceStyle serviceStyle");
+    	->joinWith("quotation quotation");
         
         
         
@@ -79,10 +78,6 @@ class SoSheetSearch extends SoSheet
         				'vip.vip_name' => [
         						'asc'  => ['vip.vip_name' => SORT_ASC],
         						'desc' => ['vip.vip_name' => SORT_DESC],
-        				],
-        				'sheetType.name' => [
-        						'asc'  => ['sheetType.name' => SORT_ASC],
-        						'desc' => ['sheetType.name' => SORT_DESC],
         				],
         				'orderStatus.param_val' => [
         						'asc'  => ['orderStatus.param_val' => SORT_ASC],
@@ -106,7 +101,6 @@ class SoSheetSearch extends SoSheet
         // grid filtering conditions
         $query->andFilterWhere([
             'so.id' => $this->id,
-            'so.sheet_type_id' => $this->sheet_type_id,
             'so.vip_id' => $this->vip_id,
             'so.order_amt' => $this->order_amt,
             'so.order_quantity' => $this->order_quantity,
@@ -134,9 +128,7 @@ class SoSheetSearch extends SoSheet
             'so.district_id' => $this->district_id,
             'so.invoice_type' => $this->invoice_type,
             'so.service_date' => $this->service_date,
-            'so.budget_amount' => $this->budget_amount,
-            'so.related_case_id' => $this->related_case_id,
-        	'so.merchant_id' => $this->merchant_id,
+        	'so.quotation_id' => $this->quotation_id,
         ]);
 
         $query->andFilterWhere(['like', 'so.code', $this->code])
@@ -146,8 +138,6 @@ class SoSheetSearch extends SoSheet
             ->andFilterWhere(['like', 'so.mobile', $this->mobile])
             ->andFilterWhere(['like', 'so.detail_address', $this->detail_address])
             ->andFilterWhere(['like', 'so.invoice_header', $this->invoice_header])
-            ->andFilterWhere(['like', 'so.related_service', $this->related_service])
-            ->andFilterWhere(['like', 'so.service_style', $this->service_style])
         	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
         
         if($this->start_date){

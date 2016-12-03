@@ -42,9 +42,9 @@ class Quotation extends \app\models\b2b2c\BasicModel
 	public $related_service_names;	
 	
 	/* 报价单状态： */
-	const pay_need_pay = 29001; // 待回复（用户提交咨询，商户待回复）
-	const pay_part_pay = 29002; // 已回复（商户已回复）
-	const pay_completed = 29003; // 已执行（用户已生成订单)
+	const stat_need_reply = 29001; // 待回复（用户提交咨询，商户待回复）
+	const stat_replied = 29002; // 已回复（商户已回复）
+	const stat_effective = 29003; // 已执行（用户已生成订单)
     
     /**
      * @inheritdoc
