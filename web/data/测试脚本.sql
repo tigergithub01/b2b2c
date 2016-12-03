@@ -745,10 +745,10 @@ alter table t_quotation add constraint fk_quotation_vip_id_ref_vip foreign key (
 create table t_quotation_detail
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
-   quotation_id         bigint(20) comment '关联报价单编号',
-   product_id           bigint(20) comment '关联产品编号',
+   quotation_id         bigint(20) not null comment '关联报价单编号',
+   product_id           bigint(20) not null comment '关联产品编号',
    quantity             int not null comment '购买数量',
-   price                decimal(20,6) comment '单价',
+   price                decimal(20,6) not null comment '单价',
    amount               decimal(20,6) comment '金额',
    primary key (id)
 );
@@ -768,6 +768,13 @@ insert into t_sys_parameter_type(id,name,description) values(29,'报价单状态
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29001,29,'待回复',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29002,29,'已回复',null,2);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29003,29,'已执行',null,3);
+
+
+alter table t_so_sheet add quotation_id         bigint(20) comment '关联报价单编号';
+
+alter table t_so_sheet add constraint fk_so_sheet_ref_quotation foreign key (quotation_id)
+      references t_quotation (id);
+
 
 
 
