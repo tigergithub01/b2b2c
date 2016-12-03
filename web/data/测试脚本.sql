@@ -791,4 +791,34 @@ merchant_id	merchant_id	bigint(20)	20		FALSE	TRUE	FALSE
 select * from t_vip where merchant_flag = 0;
 
 
+delete from t_sys_parameter  where id = 5001;
+
+20101204
+
+
+
+create table t_vip_cart
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   vip_id               bigint(20) not null comment '会员编号',
+   product_id           bigint(20) comment '关联产品编号',
+   package_id           bigint(20) comment '关联团体服务编号',
+   quantity             int not null comment '数量',
+   price                decimal(20,6) not null comment '单价',
+   checked              bigint(20) not null comment '是否选中？1：是；0：否',
+   primary key (id)
+);
+
+alter table t_vip_cart comment '购物车';
+
+alter table t_vip_cart add constraint fk_cart_package_ref_act foreign key (package_id)
+      references t_activity (id);
+
+alter table t_vip_cart add constraint fk_cart_product_ref_product foreign key (product_id)
+      references t_product (id);
+
+alter table t_vip_cart add constraint fk_cart_vip_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
+
 */
