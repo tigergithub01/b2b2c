@@ -632,41 +632,71 @@ $(function() {
 			);
 	});
 	
-	
 	/*
-	 	订单咨询
-		http://localhost:8089/vip/api/member/order/so-sheet/create-consult
+	 	订单咨询列表
+		http://localhost:8089/vip/api/member/order/quotation/index
 	*/
-	$("#btn_order_consult").click(function() {
+	$("#btn_quotation_list").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'merchant_id':'2',//商家编号
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-create_date', //排序(按照创建日期倒序）
 				},
 				'get'
 			);
 	});
-
+	
 	/*
-	 	订单咨询
-		http://localhost:8089/vip/api/member/order/so-sheet/create-consult
+	 	订单咨询详情
+		http://localhost:8089/vip/api/member/order/quotation/index
 	*/
-	$("#btn_order_consult_submit").click(function() {
+	$("#btn_quotation_view").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'merchant_id':'2',//商家编号
-				'SoSheet[consignee]':'我是马侬', //婚礼人
-				'SoSheet[mobile]':'13724345562', //婚礼人手机号码
-				'SoSheet[service_date]':'2017-01-01', //婚礼服务时间
-				'SoSheet[budget_amount]':'20000', //婚礼预算
-				'SoSheet[related_services][0]':'27001', //婚礼需要人员 - 策划师
-				'SoSheet[related_services][1]':'27002', //婚礼需要人员 - 主持人
-				'SoSheet[related_services][2]':'27003', //婚礼需要人员 - 摄影师
-				'SoSheet[service_style]':'26001', //婚礼类型（室内26001，室外26002）
-				'SoSheet[memo]':'我的需求.......团体....', //买家留言
+				'id':'1',//咨询编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+	 	订单咨询
+		http://localhost:8089/vip/api/member/order/quotation/create
+	*/
+	$("#btn_quotation_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'Quotation[merchant_id]':'2',//商家编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+	 	订单咨询  - 提交
+		http://localhost:8089/vip/api/member/order/quotation/create
+	*/
+	$("#btn_quotation_create_submit").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'Quotation[merchant_id]':'2',//商家编号
+				'Quotation[consignee]':'我是马侬', //婚礼人
+				'Quotation[mobile]':'13724345562', //婚礼人手机号码
+				'Quotation[service_date]':'2017-01-01', //婚礼服务时间
+				'Quotation[budget_amount]':'20000', //婚礼预算
+				'Quotation[related_services][0]':'27001', //婚礼需要人员 - 策划师
+				'Quotation[related_services][1]':'27002', //婚礼需要人员 - 主持人
+				'Quotation[related_services][2]':'27003', //婚礼需要人员 - 摄影师
+				'Quotation[service_style]':'26001', //婚礼类型（室内26001，室外26002）
+				'Quotation[memo]':'我的需求.......团体....', //买家留言
 				},
 				'post'
 			);
 	});
+	
+	
+	
 	
 	
 	/*
