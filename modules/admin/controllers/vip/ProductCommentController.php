@@ -140,6 +140,8 @@ class ProductCommentController extends BaseAuthController
     	->joinWith('parent parent')
     	->joinWith('vip vip')
     	->joinWith('product prod')
+    	->joinWith('order order')
+    	->joinWith('package package')
     	->where(['pcmt.id'=>$id])->one();
     	if($model){
 //     	if (($model = ProductComment::findOne($id)) !== null) {
