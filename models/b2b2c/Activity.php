@@ -36,6 +36,7 @@ use Yii;
  * @property SysParameter $auditStatus
  * @property SysUser $auditUser
  * @property SysParameter $activityScope
+ * @property ProductComment[] $productComments
  * @property ShoppingCart[] $shoppingCarts
  * @property SoSheetDetail[] $soSheetDetails
  * @property VipCollect[] $vipCollects
@@ -202,6 +203,14 @@ class Activity extends \app\models\b2b2c\BasicModel
     public function getActivityScope()
     {
         return $this->hasOne(SysParameter::className(), ['id' => 'activity_scope']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductComments()
+    {
+    	return $this->hasMany(ProductComment::className(), ['package_id' => 'id']);
     }
 
     /**

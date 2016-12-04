@@ -17,7 +17,7 @@ class ProductCommentSearch extends ProductComment
     public function rules()
     {
         return [
-            [['id', 'product_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id'], 'integer'],
+            [['id', 'product_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id', 'order_id', 'package_id'], 'integer'],
             [['content', 'comment_date', 'ip_addr'], 'safe'],
         ];
     }
@@ -45,7 +45,9 @@ class ProductCommentSearch extends ProductComment
     	->joinWith('cmtRank cmtRank')
     	->joinWith('parent parent')
     	->joinWith('vip vip')
-    	->joinWith('product prod');
+    	->joinWith('product prod')
+    	->joinWith('order order')
+    	->joinWith('package package');
 
         // add conditions that should always apply here
 
@@ -61,6 +63,14 @@ class ProductCommentSearch extends ProductComment
         				'product.name' => [
         						'asc'  => ['prod.name' => SORT_ASC],
         						'desc' => ['prod.name' => SORT_DESC],
+        				],
+        				'order.code' => [
+        						'asc'  => ['order.code' => SORT_ASC],
+        						'desc' => ['order.code' => SORT_DESC],
+        				],
+        				'package.name' => [
+        						'asc'  => ['package.name' => SORT_ASC],
+        						'desc' => ['package.name' => SORT_DESC],
         				],
         				'vip.vip_id' => [
         						'asc'  => ['vip.vip_id' => SORT_ASC],
@@ -92,13 +102,20 @@ class ProductCommentSearch extends ProductComment
             'pcmt.comment_date' => $this->comment_date,
             'pcmt.status' => $this->status,
             'pcmt.parent_id' => $this->parent_id,
-        	'prod.vip_id' => $this->merchant_id,
+        	'pcmt.order_id' => $this->order_id,
+        	'pcmt.package_id' => $this->package_id,
         ]);
 
         $query->andFilterWhere(['like', 'pcmt.content', $this->content])
             ->andFilterWhere(['like', 'pcmt.ip_addr', $this->ip_addr])
         	->andFilterWhere(['like', 'prod.name', $this->product_name])
         	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+       	
+//        if($this->merchant_id){
+       		//TODO:根据团体服务与产品的商户编号进行查询
+       		$query->andFilterWhere(['OR', ['prod.vip_id'=>$this->merchant_id] , ['package.vip_id' =>$this->merchant_id]  ]);
+//        }
+        	
 
         return $dataProvider;
     }

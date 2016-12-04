@@ -128,6 +128,7 @@ class SoSheetSearch extends SoSheet
             'so.district_id' => $this->district_id,
             'so.invoice_type' => $this->invoice_type,
             'so.service_date' => $this->service_date,
+        	'so.cancel_date' => $this->cancel_date,
         	'so.quotation_id' => $this->quotation_id,
         ]);
 
@@ -138,6 +139,7 @@ class SoSheetSearch extends SoSheet
             ->andFilterWhere(['like', 'so.mobile', $this->mobile])
             ->andFilterWhere(['like', 'so.detail_address', $this->detail_address])
             ->andFilterWhere(['like', 'so.invoice_header', $this->invoice_header])
+            ->andFilterWhere(['like', 'so.cancel_reason', $this->cancel_reason])
         	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
         
         if($this->start_date){

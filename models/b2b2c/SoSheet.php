@@ -43,8 +43,11 @@ use Yii;
  * @property string $invoice_header
  * @property string $service_date
  * @property string $quotation_id
+ * @property string $cancel_date
+ * @property string $cancel_reason
  *
  * @property OutStockSheet[] $outStockSheets
+ * @property ProductComment[] $productComments
  * @property RefundSheet[] $refundSheets
  * @property RefundSheetApply[] $refundSheetApplies
  * @property ReturnApply[] $returnApplies
@@ -68,6 +71,7 @@ use Yii;
  * @property SoSheetVip[] $soSheetVips
  * @property VipCoupon[] $vipCoupons
  * @property VipCouponLog[] $vipCouponLogs
+ * 
  */
 class SoSheet extends \app\models\b2b2c\BasicModel
 {
@@ -149,11 +153,12 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             [['code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
             [['vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'quotation_id'], 'integer'],
             [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt'], 'number'],
-            [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date'], 'safe'],
+            [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date', 'cancel_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
             [['delivery_no', 'invoice_header'], 'string', 'max' => 60],
             [['memo'], 'string', 'max' => 400],
             [['mobile'], 'string', 'max' => 20],
+        	[['detail_address', 'cancel_reason'], 'string', 'max' => 255],
             [['detail_address'], 'string', 'max' => 255],
             [['code'], 'unique'],
         	[['quotation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Quotation::className(), 'targetAttribute' => ['quotation_id' => 'id']],
@@ -214,6 +219,8 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'invoice_header' => Yii::t('app', '发票抬头名称'),
             'service_date' => Yii::t('app', /* '服务时间(婚礼)' */'婚礼服务时间'),
         	'quotation_id' => Yii::t('app', /* '关联报价单编号' */'订单咨询编号'),
+        	'cancel_date' => Yii::t('app', '订单取消日期'),
+        	'cancel_reason' => Yii::t('app', '订单取消原因'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         	'vip.vip_name' =>  Yii::t('app', '会员名称'),
         	'quotation.code' => Yii::t('app', '订单咨询编号'),
@@ -242,6 +249,14 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getOutStockSheets()
     {
         return $this->hasMany(OutStockSheet::className(), ['order_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductComments()
+    {
+    	return $this->hasMany(ProductComment::className(), ['order_id' => 'id']);
     }
 
     /**

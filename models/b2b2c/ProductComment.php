@@ -16,7 +16,12 @@ use Yii;
  * @property string $ip_addr
  * @property string $status
  * @property string $parent_id
+ * @property string $order_id
+ * @property string $package_id
  *
+ *
+ * @property SoSheet $order
+ * @property Activity $package
  * @property SysParameter $status0
  * @property SysParameter $cmtRank
  * @property ProductComment $parent
@@ -72,14 +77,16 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     public function rules()
     {
         return [
-            [['product_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id'], 'integer'],
+            [['product_id', 'vip_id', 'cmt_rank_id', 'status', 'parent_id', 'order_id', 'package_id'], 'integer'],
             [['vip_id', 'content', 'comment_date', 'ip_addr', 'status'], 'required'],
             [['comment_date'], 'safe'],
             [['content'], 'string', 'max' => 300],
             [['ip_addr'], 'string', 'max' => 15],
+        	[['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
             [['cmt_rank_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['cmt_rank_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductComment::className(), 'targetAttribute' => ['parent_id' => 'id']],
+        	[['package_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['package_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
@@ -100,6 +107,8 @@ class ProductComment extends \app\models\b2b2c\BasicModel
             'ip_addr' => Yii::t('app', '评价IP地址'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
             'parent_id' => Yii::t('app', '上级评价'),
+        	'order_id' => Yii::t('app', '关联订单编号'),
+        	'package_id' => Yii::t('app', '团体服务编号'),
         	'status0.param_val' => '是否显示',
         	'cmtRank.param_val' => '评价等级',
         	'vip.vip_id' => '会员',
@@ -107,6 +116,14 @@ class ProductComment extends \app\models\b2b2c\BasicModel
         	'product_name'  => '产品名称',
         	'vip_no'  => '会员编号',
         ];
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrder()
+    {
+    	return $this->hasOne(SoSheet::className(), ['id' => 'order_id']);
     }
 
     /**
@@ -139,6 +156,14 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     public function getProductComments()
     {
         return $this->hasMany(ProductComment::className(), ['parent_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPackage()
+    {
+    	return $this->hasOne(Activity::className(), ['id' => 'package_id']);
     }
 
     /**
