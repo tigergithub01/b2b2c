@@ -821,4 +821,57 @@ alter table t_vip_cart add constraint fk_cart_vip_ref_vip foreign key (vip_id)
       references t_vip (id);
 
 
+20161204
+alter table t_product_comment add order_id             bigint(20) null comment '关联订单编号';
+alter table t_product_comment add package_id           bigint(20) comment '团体服务编号';
+
+alter table t_product_comment add constraint fk_prod_cmt_pkg_ref_act foreign key (package_id)
+      references t_activity (id);
+
+alter table t_product_comment add constraint fk_prod_cmt_order_id_ref_so_sheet foreign key (order_id)
+      references t_so_sheet (id);
+
+
+alter table t_so_sheet add  cancel_date          datetime comment '订单取消日期';
+ alter table t_so_sheet add   cancel_reason        varchar(255) comment '订单取消原因';
+
+select a.service_flag ,a.* from t_product  a；
+
+alter table t_so_sheet add deposit_amount       decimal(20,6) comment '订金金额';
+
+
+
+SELECT `p`.* FROM `t_product` `p` LEFT JOIN `t_vip` `vip` ON `p`.`vip_id` = `vip`.`id` WHERE `vip`.`audit_status`=3003;
+
+select * from t_vip where id=11;
+select * from t_product;
+
+select * from t_so_sheet_vip where order_id = 30;
+
+alter table t_quotation add  order_id  bigint(20) comment '订单编号';
+
+alter table t_quotation add constraint fk_quotation_order_id_ref_so_st foreign key (order_id)
+      references t_so_sheet (id);
+
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5009,5,'待评价','客户确认交易完成后可评价',1);
+
+update t_sys_parameter set param_val = '交易成功' where id = 5008;
+
+update t_sys_parameter set seq_id = '9' where id = 5009;
+t_sys_parameter
+
+select * from t_sys_parameter where type_id  = 5;
+
+select * from t_pay_type;
+
+alter table t_so_sheet_pay_info add pay_type_id          bigint(20) not null comment '支付方式';
+
+
+alter table t_so_sheet_pay_info add constraint fk_so_pay_info_paytype_ref_paytype foreign key (pay_type_id)
+      references t_pay_type (id);
+
+
+select * from t_so_sheet_pay_info;
+
+
 */
