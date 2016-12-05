@@ -20,6 +20,7 @@ use app\models\b2b2c\common\PaginationObj;
 use app\common\utils\CommonUtils;
 use app\common\utils\UrlUtils;
 use yii\helpers\ArrayHelper;
+use app\modules\vip\service\order\QuotationService;
 
 /**
  * QuotationController implements the CRUD actions for Quotation model.
@@ -52,62 +53,15 @@ class QuotationController extends BaseAuthApiController
         $searchModel = new QuotationSearch();
         $searchModel->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
+		$quotationService = new QuotationService();
+        
+        
         $models = $dataProvider->getModels();
-        $pagionationObj = new PaginationObj($this->getModelArray($models), $dataProvider->getTotalCount());
+        $pagionationObj = new PaginationObj($quotationService->getQuotationModelArray($models), $dataProvider->getTotalCount());
         return CommonUtils::json_success($pagionationObj);
     }
     
-    /**
-     * 格式化model
-     * @param unknown $model
-     */
-    public function getModelArray($model){
-    	$data = ArrayHelper::toArray ($model, [
-    			Quotation::className() => array_merge(CommonUtils::getModelFields(new Quotation()),[
-    			'merchant' => function($value){
-    					$merchant  = $value->merchant;
-    					if($value->merchant){
-    						$merchant_tmp = new Vip();
-    						$merchant_tmp->id = $merchant->id;
-    						$merchant_tmp->vip_id = $merchant->vip_id;
-    						$merchant_tmp->vip_name = $merchant->vip_name;
-    						$merchant_tmp->thumb_url = UrlUtils::formatUrl($merchant->thumb_url);
-    						$merchant_tmp->img_url = UrlUtils::formatUrl($merchant->img_url);
-    						$merchant_tmp->img_original = UrlUtils::formatUrl($merchant->img_original);
-    					}
-    					 
-    					//商户类型
-    					$vip_type_name = (empty($merchant) || empty($merchant->vipType))?'':$merchant->vipType->name;
-    					 
-    					return [
-    							'model' => $merchant_tmp,
-    							'vip_type_name' => $vip_type_name,
-    					];
-    				},
-    				'status_name' => function($value){
-    					return (empty($value->status0)?'':$value->status0->param_val);
-    				},
-    				'vip_name' => function($value){
-    					return (empty($value->vip)?'':$value->vip->vip_name);
-    				},
-    				'service_style_name' => function($value){
-    					return (empty($value->serviceStyle)?'':$value->serviceStyle->param_val);
-    				},
-    				'related_service_names' => function($value){
-    					$related_service_names = [];
-    					if($value->related_services){
-    						$related_service_names = [];
-    						foreach ($value->related_services as $value) {
-    							$related_service_names[] =  SysParameter::findOne($value)->param_val;
-    						}
-    					}
-    					return implode("，", $related_service_names);
-    				},
-    			])
-    		]);
-    	return $data;
-    }
+    
 
     /**
      * Displays a single Quotation model.
@@ -118,9 +72,11 @@ class QuotationController extends BaseAuthApiController
     {
     	$model =  $this->findModel($id);
     	$quotationDetailList = $this->findQuotationDetailList($id);
+    	$quotationService = new QuotationService();
+    	
     	
     	return CommonUtils::json_success([
-    			"model"=>$this->getModelArray($model),
+    			"model"=>$quotationService->getQuotationModelArray($model),
     			'quotationDetailList'=>$quotationDetailList,
     	]);
     }

@@ -44,12 +44,16 @@ use app\models\b2b2c\common\Constant;
     <?php // echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+	
+	 <?= $form->field($model, 'goods_amt')->textInput(['maxlength' => true]) ?>
+	 
     <?= $form->field($model, 'order_amt')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'deposit_amount')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'order_quantity')->textInput() ?>
 
-    <?= $form->field($model, 'goods_amt')->textInput(['maxlength' => true]) ?>
+   
 
     <?php // echo $form->field($model, 'deliver_fee')->textInput(['maxlength' => true]) ?>
 

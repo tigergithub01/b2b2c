@@ -31,9 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'code',
             //'vip_id',
             'vip.vip_name',
-		    'goods_amt',
-		    'paid_amt',
+		    // 'goods_amt',
             'order_amt',
+		    'deposit_amount',
+		    'paid_amt',
             // 'order_quantity',
             
             // 'deliver_fee',
