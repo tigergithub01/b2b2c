@@ -625,7 +625,7 @@ $(function() {
 	$("#btn_quotation_create").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'Quotation[merchant_id]':'2',//商家编号
+				'merchant_id':'2',//商家编号
 				},
 				'get'
 			);
@@ -638,7 +638,7 @@ $(function() {
 	$("#btn_quotation_create_submit").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'Quotation[merchant_id]':'2',//商家编号
+				'merchant_id':'2',//商家编号
 				'Quotation[consignee]':'我是马侬', //婚礼人
 				'Quotation[mobile]':'13724345562', //婚礼人手机号码
 				'Quotation[service_date]':'2017-01-01', //婚礼服务时间
@@ -661,7 +661,7 @@ $(function() {
 	$("#btn_product_buy").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'SoSheet[merchant_id]':'2',//商家编号
+				'merchant_id':'2',//商家编号
 				},
 				'get'
 			);
@@ -675,7 +675,7 @@ $(function() {
 	$("#btn_order_product_submit").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'SoSheet[merchant_id]':'2',//商家编号
+				'merchant_id':'2',//商家编号
 				'SoSheet[consignee]':'随便', //婚礼人
 				'SoSheet[mobile]':'13724345562', //婚礼人手机号码
 				'SoSheet[service_date]':'2017-01-01', //婚礼服务时间
@@ -685,50 +685,69 @@ $(function() {
 			);
 	});
 	
-	/*
-	 	订单提交-个人服务
-		http://localhost:8089/vip/api/member/order/so-sheet/create
-	*/
-	$("#btn_order_submit").click(function() {
-		test_api($(this).attr('url'),
-				{
-				'product_id':'1',//产品编号（个人服务)
-				'SoSheet[consignee]':'随便', //婚礼人
-				'SoSheet[mobile]':'13724345562', //婚礼人手机号码
-				'SoSheet[service_date]':'2017-01-01', //婚礼服务时间
-				'SoSheet[budget_amount]':'20000', //婚礼预算
-				'SoSheet[related_services][0]':'27001', //婚礼需要人员 - 策划师
-				'SoSheet[related_services][1]':'27002', //婚礼需要人员 - 主持人
-				'SoSheet[related_services][2]':'27003', //婚礼需要人员 - 摄影师
-				'SoSheet[service_style]':'26001', //婚礼类型（室内26001，室外26002）
-				'SoSheet[message]':'我的需求......', //买家留言
-				},
-				'post'
-			);
-	});
 	
 	/*
-	 	订单提交-团体服务
+	 	订单确认-团体服务
 		http://localhost:8089/vip/api/member/order/so-sheet/create-package
 	*/
-	$("#btn_order_submit_package").click(function() {
+	$("#btn_package_buy").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'activity_id':'1',//团体服务编号
+				'activity_id':'4',//团体服务编号
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	订单提交--团体服务
+		http://localhost:8089/vip/api/member/order/so-sheet/create-package
+	*/
+	$("#btn_order_package_submit").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'activity_id':'4',//团体服务编号
 				'SoSheet[consignee]':'随便', //婚礼人
 				'SoSheet[mobile]':'13724345562', //婚礼人手机号码
 				'SoSheet[service_date]':'2017-01-01', //婚礼服务时间
-				'SoSheet[budget_amount]':'20000', //婚礼预算
-				'SoSheet[related_services][0]':'27001', //婚礼需要人员 - 策划师
-				'SoSheet[related_services][1]':'27002', //婚礼需要人员 - 主持人
-				'SoSheet[related_services][2]':'27003', //婚礼需要人员 - 摄影师
-				'SoSheet[service_style]':'26001', //婚礼类型（室内26001，室外26002）
-				'SoSheet[message]':'我的需求..团体....', //买家留言
+				'SoSheet[memo]':'我的需求.....团体服务.', //买家留言
 				},
 				'post'
 			);
 	});
 	
+	
+	/*
+	 	订单确认-订单咨询
+		http://localhost:8089/vip/api/member/order/so-sheet/create-quotation
+	*/
+	$("#btn_quotation_buy").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'quotation_id':'1',//咨询编号
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	订单提交--订单咨询
+		http://localhost:8089/vip/api/member/order/so-sheet/create-quotation
+	*/
+	$("#btn_order_quotation_submit").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'quotation_id':'1',//咨询编号
+				'SoSheet[consignee]':'随便', //婚礼人
+				'SoSheet[mobile]':'13724345562', //婚礼人手机号码
+				'SoSheet[service_date]':'2017-01-01', //婚礼服务时间
+				'SoSheet[memo]':'我的需求.....订单咨询服务.', //买家留言
+				},
+				'post'
+			);
+	});
 	
 	
 	/*
