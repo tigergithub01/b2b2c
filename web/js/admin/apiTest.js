@@ -567,8 +567,8 @@ $(function() {
 				{
 				'page':'1',//页码
 				'per-page' : '10', //每页行数
-				'sort' : '-order_date', //排序
-				'SoSheetSearch[code]' : 'so2', //可选项（客户根据订单编号来进行查询)
+				'sort' : '-order.order_date', //排序
+				'SoSheetDetailSearch[code]' : 'so2', //可选项（客户根据订单编号来进行查询)
 				},
 				'get'
 			);
@@ -654,6 +654,36 @@ $(function() {
 	});
 	
 	
+	/*
+	 	订单确认-个人服务
+		http://localhost:8089/vip/api/member/order/so-sheet/create
+	*/
+	$("#btn_product_buy").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'SoSheet[merchant_id]':'2',//商家编号
+				},
+				'get'
+			);
+	});
+
+	
+	/*
+	 	订单提交--个人服务
+		http://localhost:8089/vip/api/member/order/so-sheet/create
+	*/
+	$("#btn_order_product_submit").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'SoSheet[merchant_id]':'2',//商家编号
+				'SoSheet[consignee]':'随便', //婚礼人
+				'SoSheet[mobile]':'13724345562', //婚礼人手机号码
+				'SoSheet[service_date]':'2017-01-01', //婚礼服务时间
+				'SoSheet[memo]':'我的需求......', //买家留言
+				},
+				'post'
+			);
+	});
 	
 	/*
 	 	订单提交-个人服务
