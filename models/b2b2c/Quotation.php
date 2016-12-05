@@ -23,7 +23,9 @@ use Yii;
  * @property string $related_service
  * @property string $service_style
  * @property string $merchant_id
+ * @property string $order_id
  *
+ * @property SoSheet $order
  * @property Vip $vip
  * @property Vip $merchant
  * @property SysParameter $status0
@@ -91,7 +93,7 @@ class Quotation extends \app\models\b2b2c\BasicModel
     {
         return [
             [['code', 'vip_id', 'create_date', 'update_date', 'status', 'consignee', 'mobile', 'service_date', 'merchant_id'], 'required'],
-            [['vip_id', 'status', 'merchant_id'], 'integer'],
+            [['vip_id', 'status', 'merchant_id', 'order_id'], 'integer'],
             [['order_amt', 'deposit_amount', 'budget_amount'], 'number'],
             [['create_date', 'update_date', 'service_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
@@ -99,6 +101,7 @@ class Quotation extends \app\models\b2b2c\BasicModel
             [['mobile'], 'string', 'max' => 20],
             [['related_service', 'service_style'], 'string', 'max' => 60],
             [['code'], 'unique'],
+        	[['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => SoSheet::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['merchant_id' => 'id']],
             [['status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['status' => 'id']],
@@ -127,6 +130,7 @@ class Quotation extends \app\models\b2b2c\BasicModel
             'related_service' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
             'service_style' => Yii::t('app', /* '婚礼类型（单选）（室内，室外）' */'婚礼类型'),
             'merchant_id' => Yii::t('app', '关联商户编号'),
+        	'order_id' => Yii::t('app', '订单编号'),
         	'related_services' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
         	'related_service_names' => Yii::t('app', /* '需要人员（多选）（婚礼策划师，摄影师，摄像师，化妆师，主持人）' */'需要人员'),
         	'serviceStyle.param_val' =>  Yii::t('app', '婚礼类型'),
@@ -135,7 +139,16 @@ class Quotation extends \app\models\b2b2c\BasicModel
         		'serviceStyle.param_val' =>  Yii::t('app', '婚礼类型'),
         		'merchant.vip_name' =>  Yii::t('app', '商户名称'),
         		'vip_name' =>  Yii::t('app', '会员名称'),
+        		'order.code' =>  Yii::t('app', '订单编号'),
         ];
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrder()
+    {
+    	return $this->hasOne(SoSheet::className(), ['id' => 'order_id']);
     }
 
     /**

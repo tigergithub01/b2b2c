@@ -47,7 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'service_style',
             'serviceStyle.param_val',
             //'merchant_id',
-		   'merchant.vip_name'
+		   'merchant.vip_name',
+		    //order_id,
+		   'order.code',
 		        ],
 		    ]) ?>
     	</div>

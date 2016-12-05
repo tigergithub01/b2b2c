@@ -227,4 +227,11 @@ return [
 		'Quotations'=>'订单咨询列表',
 		'Create Quotation'=>'新增订单咨询',
 		'Update Quotation'=>'编辑订单咨询',
+		
+		//订单咨询明细
+		'Quotation Detail'=>'订单咨询明细',
+		'Quotation Details'=>'订单咨询明细列表',
+		'Create Quotation Detail'=>'新增订单咨询明细',
+		'Update Quotation Detail'=>'编辑订单咨询明细',
+		
 ];

@@ -8,7 +8,7 @@ use app\modules\merchant\Module;
 /* @var $model app\models\b2b2c\Activity */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = Module::t('app', 'Create So Sheet Detail');
+$this->title = Module::t('app', 'Create Quotation Detail');
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'So Sheets'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $quotation->code, 'url' => ['view', 'id' => $model->quotation_id]];
 $this->params['breadcrumbs'][] = $this->title;

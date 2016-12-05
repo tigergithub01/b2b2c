@@ -115,12 +115,17 @@ use yii\helpers\Url;
 			
 			<div class="form-group">
 				<?php echo Html::button('订单确认-个人服务',['id'=>'btn_product_buy','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
-				<?php echo Html::button('订单确认-团体服务',['id'=>'btn_package_buy','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
-				<?php echo Html::button('订单确认-订单咨询',['id'=>'btn_quotation_buy','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
-				
-				<?php echo Html::button('订单提交--个人服务',['id'=>'btn_order_product_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
-				<?php echo Html::button('订单提交--团体服务',['id'=>'btn_order_package_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
-				<?php echo Html::button('订单提交--订单咨询',['id'=>'btn_order_quotation_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
+				<?php echo Html::button('订单提交-个人服务',['id'=>'btn_order_product_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('订单确认-团体服务',['id'=>'btn_package_buy','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-package'])]);?>
+				<?php echo Html::button('订单提交-团体服务',['id'=>'btn_order_package_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-package'])]);?>
+			</div>
+			
+			<div class="form-group">
+				<?php echo Html::button('订单确认-订单咨询',['id'=>'btn_quotation_buy','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-quotation'])]);?>
+				<?php echo Html::button('订单提交-订单咨询',['id'=>'btn_order_quotation_submit','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/create-quotation'])]);?>
 			</div>
 			
 			

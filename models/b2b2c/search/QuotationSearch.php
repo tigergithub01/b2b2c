@@ -46,7 +46,8 @@ class QuotationSearch extends Quotation
     	->joinWith("vip vip")
     	->joinWith("merchant merchant")
     	->joinWith("status0 status0")
-    	->joinWith("serviceStyle serviceStyle");
+    	->joinWith("serviceStyle serviceStyle")
+    	->joinWith("order order");
 
         // add conditions that should always apply here
 

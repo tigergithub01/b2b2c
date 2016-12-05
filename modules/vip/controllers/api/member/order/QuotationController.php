@@ -21,6 +21,7 @@ use app\common\utils\CommonUtils;
 use app\common\utils\UrlUtils;
 use yii\helpers\ArrayHelper;
 use app\modules\vip\service\order\QuotationService;
+use app\modules\vip\service\vip\MerchantService;
 
 /**
  * QuotationController implements the CRUD actions for Quotation model.
@@ -72,12 +73,13 @@ class QuotationController extends BaseAuthApiController
     {
     	$model =  $this->findModel($id);
     	$quotationDetailList = $this->findQuotationDetailList($id);
+    	
+    	//格式化
     	$quotationService = new QuotationService();
     	
-    	
     	return CommonUtils::json_success([
-    			"model"=>$quotationService->getQuotationModelArray($model),
-    			'quotationDetailList'=>$quotationDetailList,
+    			'model'=>$quotationService->getQuotationModelArray($model),
+    			'quotationDetailList'=>$quotationService->getQuotationDetailModelArray($quotationDetailList),
     	]);
     }
 
@@ -88,7 +90,24 @@ class QuotationController extends BaseAuthApiController
      */
     public function actionCreate()
     {
+    	$merchantService = new MerchantService();
         $model = new Quotation();
+        
+       
+        
+        $merchant_id = isset ( $_REQUEST ['merchant_id'] ) ? $_REQUEST ['merchant_id'] : null;
+        if(empty($merchant_id)){
+        	return CommonUtils::json_failed ( '商户编号不能为空！' );
+        }
+        
+        $merchant = Vip::find ()->where ( [
+        		'id' => $merchant_id,
+        		'merchant_flag' => SysParameter::yes,
+        		'audit_status' => SysParameter::audit_approved
+        ] )->one ();
+        if (empty ( $merchant )) {
+        	return CommonUtils::json_failed ( '商户不存在！' );
+        }
         
         $model->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         $model->code = SheetType::getCode(SheetType::qu);
@@ -96,6 +115,8 @@ class QuotationController extends BaseAuthApiController
         $model->update_date = date(VipConst::DATE_FORMAT, time());
         $model->service_date = date(VipConst::DATE_FORMAT, time());
         $model->status = Quotation::stat_need_reply;
+        $model->merchant_id = $merchant->id;
+        
 
         if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
         	
@@ -117,45 +138,14 @@ class QuotationController extends BaseAuthApiController
         		$model->addError('code',$e->getMessage());
         		return CommonUtils::jsonModel_failed($model);
         	}
-        } else {
-        	if($model->load(Yii::$app->request->get())){
-        		$merchant = null;
-        		if($model->merchant_id){
-        			$merchant = Vip::find()->where(['id' => $model->merchant_id, 'merchant_flag' => SysParameter::yes, 'audit_status' => SysParameter::audit_approved])->one();
-        			if(empty($merchant)){
-        				return CommonUtils::json_failed('您咨询的商户不存在！');
-        			}
-        		}
-        		
-        		//格式化图片
-        		$merchant->img_url = UrlUtils::formatUrl($merchant->img_url);
-        		$merchant->thumb_url = UrlUtils::formatUrl($merchant->thumb_url);
-        		$merchant->img_original = UrlUtils::formatUrl($merchant->img_original);
-        		 
-        		//格式化输出
-        		$data = ArrayHelper::toArray ($merchant, [
-        				Vip::className() => array_merge(CommonUtils::getModelFields($merchant),[
-        					'vip_type_name' => function($value){
-        						return (empty($value->vipType)?'':$value->vipType->name);
-        					},
-        					'password' => function($value){
-        						//密码设置为空
-        						return null;
-        					},
-        				])
-        		]);
-        		 
-        		return CommonUtils::json_success([
-        				'merchant' => $data,
-        				'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
-        				'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
-        				'vip'=>\Yii::$app->session->get(VipConst::LOGIN_VIP_USER),
-        		]);
-        	}else{
-        		return CommonUtils::json_failed("参数非法！");
-        	}
-        	
-        }
+        } 
+       	
+        return CommonUtils::json_success([
+        		'merchant' => $merchantService->getMerchantModelArray($merchant),
+        		'serviceStyleList' => SysParameterType::getSysParametersById(SysParameterType::SERVICE_STYLE),
+        		'relatedServiceList' => SysParameterType::getSysParametersById(SysParameterType::RELATED_SERVICE),
+        		'vip'=>\Yii::$app->session->get(VipConst::LOGIN_VIP_USER),
+        ]);
     }
     
     
@@ -300,6 +290,7 @@ class QuotationController extends BaseAuthApiController
     	->joinWith("merchant merchant")
     	->joinWith("status0 status0")
     	->joinWith("serviceStyle serviceStyle")
+    	->joinWith("order order")
     	->where(['quot.id' => $id])->one();
     	 
     	if($model){
@@ -332,6 +323,8 @@ class QuotationController extends BaseAuthApiController
     	$models = QuotationDetail::find()->alias('quotDetail')
     	->joinWith('quotation quotation')
     	->joinWith('product product')
+    	->joinWith('product.vip vip')
+    	->joinWith('product.vip.vipType vipType')
     	->where(['quotDetail.quotation_id' => $quotation_id])->all();
     	return $models;
     }

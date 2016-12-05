@@ -26,6 +26,7 @@ use app\models\b2b2c\SoSheetDetail;
 use app\models\b2b2c\ActPackageProduct;
 use app\models\b2b2c\VipOrganization;
 use yii\web\NotFoundHttpException;
+use app\modules\vip\service\vip\ActivityService;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -101,45 +102,11 @@ class ActivityController extends BaseApiController
     	$actPackageProducts = $this->findActPackageProductList($id);
     	
     	//格式化输出
-    	$data = ArrayHelper::toArray ($model, [
-    			Activity::className() => array_merge(CommonUtils::getModelFields($model),[
-    					'vip_name' => function($value){
-    						return (empty($value->vip)?'':$value->vip->vip_name);
-    					},
-    					'vip_no' => function($value){
-    						return (empty($value->vip)?'':$value->vip->vip_id);
-    					},
-    				])
-    		]);    
-    	
-    	//格式化输出
-    	$detailList = ArrayHelper::toArray ($actPackageProducts, [
-    			ActPackageProduct::className() => array_merge(CommonUtils::getModelFields(new ActPackageProduct()),[
-    					'vip_id' => function($value){
-    						return ((empty($value->product) || empty($value->product->vip))?'':$value->product->vip->id);
-    					},
-    					'vip_name' => function($value){
-    						return ((empty($value->product) || empty($value->product->vip))?'':$value->product->vip->vip_name);
-	    				},
-	    				'vip_type_name' => function($value){
-	    					return ((empty($value->product) || empty($value->product->vip) || empty($value->product->vip->vipType))?'':$value->product->vip->vipType->name);
-	    				},
-	    				'sale_price' => function($value){
-		    				return (empty($value->product)?'':$value->product->sale_price);
-		    			},
-		    			'description' => function($value){
-		    				$vipOrganization =  VipOrganization::find()->where(['vip_id'=>$value->product->vip->id])->one();
-			    			return (empty($vipOrganization)?'':$vipOrganization->description);
-			    		},
-		    			'thumb_url' => function($value){
-		    				return ((empty($value->product) || empty($value->product->vip))?'':UrlUtils::formatUrl($value->product->vip->thumb_url));
-	        			},
-    				])
-    			]);
+		$activityService = new ActivityService();
     	
     	return CommonUtils::json_success([
-    			"model"=>$data,
-    			'actPackageProducts'=>$detailList,
+    			"model"=> $activityService->getActivityModelArray($model),
+    			'actPackageProducts'=>$activityService->getActPackageProductModelArray($actPackageProducts),
     	]);
     }
 
@@ -164,10 +131,6 @@ class ActivityController extends BaseApiController
     	if(empty($model)){
     		throw new \yii\web\NotFoundHttpException('您查找的数据不存在！');
     	}
-    	
-    	$model->img_url = UrlUtils::formatUrl($model->img_url);
-    	$model->thumb_url = UrlUtils::formatUrl($model->thumb_url);
-    	$model->img_original = UrlUtils::formatUrl($model->img_original);
     	
     	return $model;
     }

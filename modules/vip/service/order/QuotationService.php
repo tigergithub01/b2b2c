@@ -9,12 +9,13 @@ use app\common\utils\CommonUtils;
 use app\models\b2b2c\Quotation;
 use app\common\utils\UrlUtils;
 use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\QuotationDetail;
 
 class QuotationService {
 	
 	/**
 	 * 格式化model
-	 * 
+	 *
 	 * @param unknown $model        	
 	 */
 	public function getQuotationModelArray($model) {
@@ -50,6 +51,9 @@ class QuotationService {
 									'vip_org_desc' => $vip_org_desc 
 							];
 						},
+						'order_code' => function ($value) {
+							return (empty ( $value->order ) ? '' : $value->order->code);
+						},
 						'status_name' => function ($value) {
 							return (empty ( $value->status0 ) ? '' : $value->status0->param_val);
 						},
@@ -64,18 +68,56 @@ class QuotationService {
 							if ($value->related_services) {
 								$related_service_names = [ ];
 								foreach ( $value->related_services as $value ) {
-									$related_service_names[] =  SysParameter::findOne($value)->param_val;
-						}
-					}
-					return implode("，", $related_service_names);
-				},
-			])
-		]);
+									$related_service_names [] = SysParameter::findOne ( $value )->param_val;
+								}
+							}
+							return implode ( "，", $related_service_names );
+						} 
+				] ) 
+		] );
 		
 		return $data;
 	}
 	
-	
-	
-	
+	/**
+	 * 格式化model
+	 *
+	 * @param unknown $model        	
+	 */
+	public function getQuotationDetailModelArray($model) {
+		$data = ArrayHelper::toArray ( $model, [ 
+				QuotationDetail::className () => array_merge ( CommonUtils::getModelFields ( new QuotationDetail () ), [ 
+						'vip_id' => function ($value) {
+							return ((empty ( $value->product ) || empty ( $value->product->vip )) ? '' : $value->product->vip->id);
+						},
+						'vip_name' => function ($value) {
+							return ((empty ( $value->product ) || empty ( $value->product->vip )) ? '' : $value->product->vip->vip_name);
+						},
+						'vip_type_name' => function ($value) {
+							return ((empty ( $value->product ) || empty ( $value->product->vip ) || empty ( $value->product->vip->vipType )) ? '' : $value->product->vip->vipType->name);
+						},
+						'original_price' => function ($value) {
+							return (empty ( $value->product ) ? '' : $value->product->sale_price);
+						},
+						'description' => function ($value) {
+							$vipOrganization = VipOrganization::find ()->where ( [ 
+									'vip_id' => $value->product->vip->id 
+							] )->one ();
+							return (empty ( $vipOrganization ) ? '' : $vipOrganization->description);
+						},
+						'thumb_url' => function ($value) {
+							return ((empty ( $value->product ) || empty ( $value->product->vip )) ? '' : UrlUtils::formatUrl ( $value->product->vip->thumb_url ));
+						},
+						'img_url' => function ($value) {
+							return ((empty ( $value->product ) || empty ( $value->product->vip )) ? '' : UrlUtils::formatUrl ( $value->product->vip->img_url ));
+						},
+						'img_original' => function ($value) {
+							return ((empty ( $value->product ) || empty ( $value->product->vip )) ? '' : UrlUtils::formatUrl ( $value->product->vip->img_original ));
+						} 
+						
+				] ) 
+		] );
+		
+		return $data;
+	}
 }
