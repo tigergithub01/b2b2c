@@ -751,6 +751,93 @@ $(function() {
 	
 	
 	/*
+	 	订单取消
+		http://localhost:8089/vip/api/member/order/so-sheet/cancel
+	*/
+	$("#btn_order_cancel").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order_id':'1',//订单编号
+				'SoSheet[cancel_reason]' : '不想买了' , //取消原因
+				},
+				'post'
+			);
+	});
+	
+	
+	/*
+	 	订单支付成功逻辑
+		http://localhost:8089/vip/api/member/order/so-sheet/pay-callback
+		
+		支付方式
+		wxpay	微信支付
+		alipay	支付宝
+	*/
+	$("#btn_order_pay_callback").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order_id':'1',//订单编号
+				'SoSheet[pay_amt]' : '100', //本次支付金额
+				'SoSheet[pay_type_id]' : '1', //支付方式（1:微信支付；2：支付宝支付）
+				},
+				'post'
+			);
+	});
+	
+	/*
+	 	确认交易完成
+		http://localhost:8089/vip/api/member/order/so-sheet/done
+	*/
+	$("#btn_order_done").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order':'1',//订单编号
+				},
+				'get'
+			);
+	});
+	
+	/*
+	 	订单评价
+		http://localhost:8089/vip/api/member/vip/product-comment/create
+	*/
+	$("#btn_product_comment_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order':'1',//订单编号
+				},
+				'post'
+			);
+	});
+	
+	/*
+	 	退款申请
+		http://localhost:8089/vip/api/member/order/refund-apply/create
+	*/
+	$("#btn_refund_apply_create").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order':'1',//订单编号
+				},
+				'post'
+			);
+	});
+	
+	/*
+	 	订单权限
+		http://localhost:8089/vip/api/member/order/so-sheet/auth
+	*/
+	$("#btn_order_auth").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order':'1',//订单编号
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
 	 	论坛板块
 		http://localhost:8089/vip/api/blog/vip-blog-type/index
 	*/
