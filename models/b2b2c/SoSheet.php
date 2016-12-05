@@ -45,6 +45,7 @@ use Yii;
  * @property string $quotation_id
  * @property string $cancel_date
  * @property string $cancel_reason
+ * @property string $deposit_amount
  *
  * @property OutStockSheet[] $outStockSheets
  * @property ProductComment[] $productComments
@@ -100,20 +101,12 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	/* 结束日期 （查询用） */
 	public $end_date;
 	
-	/* 订单编号 （查询用） */
-	public $order_code;
+	/* 商户编号-查询与传递参数使用 */
+	public $merchant_id;
 	
-	/* 服务类别（多选）用来接收数据 */
-	public $related_services;
+	/* 本次付款金额-订单支付时传入金额 */
+	public $pay_amt;
 	
-	/* 服务类别，用来显示数据 */
-	public $related_service_names;
-	
-	/* 商户编号-查询用 */
-	public $query_merchant_id;
-	
-	/* 订单状态（显示）  */
-// 	public $order_status_name;
 	
 	
     /**
@@ -137,11 +130,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_code';
-//     	$scenarios[self::SCENARIO_DEFAULT][]  = 'related_services';
-//     	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_status_name';
-    	
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'merchant_id';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'pay_amt';    	
     	return $scenarios;
-    	// 		return parent::scenarios();
     }
 
     /**
@@ -152,7 +143,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         return [
             [['code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
             [['vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'quotation_id'], 'integer'],
-            [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt'], 'number'],
+            [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'deposit_amount'], 'number'],
             [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date', 'cancel_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
             [['delivery_no', 'invoice_header'], 'string', 'max' => 60],
@@ -186,9 +177,9 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
             'code' => Yii::t('app', '订单编号'/* '订单编号(so-年月日-顺序号，根据单据设置进行生成)' */),
             'vip_id' => Yii::t('app', '会员编号'),
-            'order_amt' => Yii::t('app', '待支付金额'),
+            'order_amt' => Yii::t('app', '订单金额'),
             'order_quantity' => Yii::t('app', '产品数量（所有商品数量汇总）'),
-            'goods_amt' => Yii::t('app', '订单总金额'),
+            'goods_amt' => Yii::t('app', '服务总金额'/* '商品总金额' */),
             'deliver_fee' => Yii::t('app', '运费'),
             'order_date' => Yii::t('app', '订单日期'),
             'delivery_date' => Yii::t('app', '发货日期'),
@@ -221,6 +212,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         	'quotation_id' => Yii::t('app', /* '关联报价单编号' */'订单咨询编号'),
         	'cancel_date' => Yii::t('app', '订单取消日期'),
         	'cancel_reason' => Yii::t('app', '订单取消原因'),
+        	'deposit_amount' => Yii::t('app', '定金金额'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         	'vip.vip_name' =>  Yii::t('app', '会员名称'),
         	'quotation.code' => Yii::t('app', '订单咨询编号'),
@@ -441,9 +433,5 @@ class SoSheet extends \app\models\b2b2c\BasicModel
     public function getVipCouponLogs()
     {
         return $this->hasMany(VipCouponLog::className(), ['order_id' => 'id']);
-    }
-    
-    public function getOrderStatusName(){
-    	return "xxx";
     }
 }

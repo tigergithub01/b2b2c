@@ -105,7 +105,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             'description' => Yii::t('app', /* '活动描述' */'描述'),
         	'market_price' => Yii::t('app', /* '套装价' */'市场价'),
             'package_price' => Yii::t('app', /* '套装价' */'销售价'),
-            'deposit_amount' => Yii::t('app', '最少定金金额'),
+            'deposit_amount' => Yii::t('app', '定金金额'),
             'buy_limit_num' => Yii::t('app', '限购数量'),
             'vip_id' => Yii::t('app', '关联商户编号'),
             'img_url' => Yii::t('app', /* '图片（放大后查看）(上传商品图片后自动加入商品相册）' */'团体封面'),

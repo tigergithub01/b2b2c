@@ -5,7 +5,6 @@ namespace app\models\b2b2c\search;
 use app\models\b2b2c\SoSheetDetail;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\b2b2c\SoSheetVip;
 
 /**
  * SoSheetDetailSearch represents the model behind the search form about `app\models\b2b2c\SoSheetDetail`.
@@ -28,8 +27,8 @@ class SoSheetDetailSearch extends SoSheetDetail
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
-        return parent::scenarios();
+    	// bypass scenarios() implementation in the parent class
+    	return parent::scenarios();
     }
 
     /**
@@ -41,7 +40,7 @@ class SoSheetDetailSearch extends SoSheetDetail
      */
     public function search($params)
     {
-        $query = SoSheetDetail::find()->alias('soDetail')
+        $query = SoSheetDetail::find()->alias('soDetail') 
     	->joinWith('order order')
     	->joinWith('package package')
     	->joinWith('product product')
@@ -55,6 +54,16 @@ class SoSheetDetailSearch extends SoSheetDetail
             'query' => $query,
             //'pagination' => ['pagesize' => '15',],
             
+        ]);
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'order.order_date' => [
+        						'asc'  => ['order.order_date' => SORT_ASC],
+        						'desc' => ['order.order_date' => SORT_DESC],
+        				],
+        		])
         ]);
 
         $this->load($params);
@@ -78,9 +87,18 @@ class SoSheetDetailSearch extends SoSheetDetail
         
         
         //根据会员编号进行过滤
-        if($this->query_vip_id){
-        	$query->andFilterWhere(['vip.id'=>$this->query_vip_id]);
+        $query->andFilterWhere(['vip.id'=>$this->vip_id]);
+        
+        //根据订单起止日期进行过滤
+        if($this->start_date){
+        	$query->andFilterWhere(['>=', 'order.order_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);
         }
+        
+        if($this->end_date){
+        	$query->andFilterWhere(['<=', 'order.order_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+        }
+        
+        $query->andFilterWhere(['like', 'order.code', $this->code]);
 
         return $dataProvider;
     }

@@ -115,7 +115,7 @@ class Quotation extends \app\models\b2b2c\BasicModel
             'code' => Yii::t('app', '咨询编号'),
             'vip_id' => Yii::t('app', '会员编号'),
             'order_amt' => Yii::t('app', '报价金额'),
-            'deposit_amount' => Yii::t('app', '最少定金金额'),
+            'deposit_amount' => Yii::t('app', '定金金额'),
             'create_date' => Yii::t('app', '提交日期'),
             'update_date' => Yii::t('app', '修改日期'),
             'memo' => Yii::t('app', '备注'),

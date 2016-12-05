@@ -136,7 +136,7 @@ class Product extends \app\models\b2b2c\BasicModel
             'brand_id' => Yii::t('app', '品牌'),
             'market_price' => Yii::t('app', '市场价'),
             'sale_price' => Yii::t('app', '销售价'),
-            'deposit_amount' => Yii::t('app', '最少定金金额'),
+            'deposit_amount' => Yii::t('app', '定金金额'),
             'description' => Yii::t('app', '产品描述'),
             'is_on_sale' => Yii::t('app', '产品状态（1:正常销售、0:下架）'),
             'is_hot' => Yii::t('app', '是否热销商品？1：是；0：否'),

@@ -23,7 +23,18 @@ class SoSheetDetail extends \app\models\b2b2c\BasicModel
 {
     
 	/* 会员编号-查询用  */
-	public $query_vip_id;
+	public $vip_id; 
+	
+	/* 起始日期 （查询用） */
+	public $start_date;
+	
+	/* 结束日期 （查询用） */
+	public $end_date;
+	
+	/* 订单编号（查询用） */
+	public $code;
+	
+	
     
     /**
      * @inheritdoc
@@ -40,7 +51,10 @@ class SoSheetDetail extends \app\models\b2b2c\BasicModel
     {
     	// bypass scenarios() implementation in the parent class
     	$scenarios = parent::scenarios();
-    	$scenarios[self::SCENARIO_DEFAULT][]  = 'query_merchant_id';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_id'; 
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'code';
     	return $scenarios;
     }
 
