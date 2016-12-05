@@ -9,6 +9,7 @@ use app\models\b2b2c\VipOrganization;
 use yii\helpers\ArrayHelper;
 use app\models\b2b2c\SoSheetDetail;
 use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\common\JsonObj;
 
 class SoSheetService {
 	
@@ -98,5 +99,81 @@ class SoSheetService {
 		] );
 		
 		return $data;
+	}
+	
+	/**
+	 * 判断订单取消权限
+	 * @param unknown $model
+	 * @param unknown $vip_id
+	 * @return string
+	 */
+	public function getSoSheetCancelAuth($model, $vip_id){
+		$jsonObj = new JsonObj();
+		$jsonObj->status = false;
+		
+		//只能操作自己的订单
+		if($model->vip_id != $vip_id){
+			$jsonObj->message = "非法操作，只能操作自己的订单!";
+			return $jsonObj;
+		}
+		
+		//只有未付款的订单才可以取消
+		if($model->order_status != SoSheet::order_need_pay){
+			$jsonObj->message = "只有未付款的订单才可以取消!";
+			return $jsonObj;
+		}
+		
+		//成功
+		$jsonObj->status = true;
+		return $jsonObj;
+	}
+	
+	/**
+	 * 判断订单支付权限
+	 * @param unknown $model
+	 * @param unknown $vip_id
+	 * @return \app\models\b2b2c\common\JsonObj
+	 */
+	public function getSoSheetPayAuth($model, $vip_id){
+		$jsonObj = new JsonObj();
+		$jsonObj->status = false;
+	
+		//只能操作自己的订单
+		if($model->vip_id != $vip_id){
+			$jsonObj->message = "非法操作，只能操作自己的订单!";
+			return $jsonObj;
+		}
+	
+		//“待付款，待接单，待服务,交易成功”状态下用户可以付款
+		if(!($model->order_status == SoSheet::order_need_pay || 
+				$model->order_status == SoSheet::order_need_schedule ||
+				$model->order_status == SoSheet::order_need_service || 
+				$model->order_status == SoSheet::order_completed)){
+			$jsonObj->message = "订单在该状态不能付款!";
+			return $jsonObj;
+		}
+		
+		if($model->order_amt <= $model->paid_amt){
+			$jsonObj->message = "订单已经付款完成，不能付款!";
+			return $jsonObj;
+		}			
+	
+		//成功
+		$jsonObj->status = true;
+		return $jsonObj;
+	}
+	
+	
+	/**
+	 * 查找订单信息
+	 * @param unknown $id
+	 * @return \yii\db\ActiveRecord|NULL
+	 */
+	protected function findModel($id) {
+		$model = SoSheet::find ()->alias ( "so" )->joinWith ( "vip vip" )->joinWith ( "city city" )->joinWith ( "country country" )->joinWith ( "deliveryStatus deliveryStatus" )->joinWith ( "district district" )->joinWith ( "invoiceType invoiceType" )->joinWith ( "orderStatus orderStatus" )->joinWith ( "payStatus payStatus" )->joinWith ( "province province" )->joinWith ( "deliveryType deliveryType" )->joinWith ( "payType payType" )->joinWith ( "pickPoint pickPoint" )->where ( [
+				'so.id' => $id
+		] )->one ();
+	
+		return $model;
 	}
 }

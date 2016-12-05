@@ -34,6 +34,7 @@ use app\models\b2b2c\ActPackageProduct;
 use app\modules\vip\service\order\QuotationService;
 use app\models\b2b2c\Quotation;
 use app\models\b2b2c\QuotationDetail;
+use app\models\b2b2c\SoSheetPayInfo;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -111,40 +112,39 @@ class SoSheetController extends BaseAuthApiController {
 	 * @return mixed
 	 */
 	public function actionCreate() {
-		$merchantService = new MerchantService();
+		$merchantService = new MerchantService ();
 		$model = new SoSheet ();
 		
 		$merchant_id = isset ( $_REQUEST ['merchant_id'] ) ? $_REQUEST ['merchant_id'] : null;
-		if(empty($merchant_id)){
+		if (empty ( $merchant_id )) {
 			return CommonUtils::json_failed ( '商户编号不能为空！' );
 		}
 		
-		$merchant = Vip::find ()->where ( [
+		$merchant = Vip::find ()->where ( [ 
 				'id' => $merchant_id,
 				'merchant_flag' => SysParameter::yes,
-				'audit_status' => SysParameter::audit_approved
+				'audit_status' => SysParameter::audit_approved 
 		] )->one ();
 		if (empty ( $merchant )) {
 			return CommonUtils::json_failed ( '商户不存在！' );
 		}
 		
-		//根据商户编号查询此商户对应的个人服务
-		$product = $this->findProduct($merchant_id);
-		if(empty($product)){
+		// 根据商户编号查询此商户对应的个人服务
+		$product = $this->findProduct ( $merchant_id );
+		if (empty ( $product )) {
 			return CommonUtils::json_failed ( '服务不存在！' );
 		}
 		
 		// 根据产品编号计算出订单总金额
 		$model->order_quantity = 1;
 		$model->goods_amt = $product->sale_price * $model->order_quantity; // 服务总金额
-		$model->order_amt = $product->sale_price * $model->order_quantity;  // 如果折扣有活动时，另外计算订单金额，TODO :
-		$model->deposit_amount = $product->deposit_amount; //定金
-		
+		$model->order_amt = $product->sale_price * $model->order_quantity; // 如果折扣有活动时，另外计算订单金额，TODO :
+		$model->deposit_amount = $product->deposit_amount; // 定金
 		
 		if ($model->load ( Yii::$app->request->post () ) /* && $model->save() */) {
 			$transaction = SoSheet::getDb ()->beginTransaction ();
 			try {
-				//初始化数据
+				// 初始化数据
 				$model->integral = 0;
 				$model->integral_money = 0;
 				$model->coupon = 0;
@@ -154,19 +154,19 @@ class SoSheetController extends BaseAuthApiController {
 				$model->deliver_fee = 0;
 				$model->vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 				$model->code = SheetType::getCode ( SheetType::so, true );
-				$model->order_date = date ( VipConst::DATE_FORMAT, time () );				
+				$model->order_date = date ( VipConst::DATE_FORMAT, time () );
 				
-				if(empty($model->consignee)){
+				if (empty ( $model->consignee )) {
 					return CommonUtils::json_failed ( '联系人不能为空！' );
 				}
 				
-				if(empty($model->mobile)){
+				if (empty ( $model->mobile )) {
 					return CommonUtils::json_failed ( '联系方式不能为空！' );
 				}
 				
-				if(empty($model->service_date)){
+				if (empty ( $model->service_date )) {
 					return CommonUtils::json_failed ( '服务日期不能为空！' );
-				}				
+				}
 				
 				/* 保存失败处理 */
 				if (! ($model->save ())) {
@@ -214,18 +214,15 @@ class SoSheetController extends BaseAuthApiController {
 			}
 			
 			return CommonUtils::json_success ( $model->id );
-		} 
+		}
 		
-		
-		return CommonUtils::json_success ( [
-					'model' => $model,
-					'merchant' => $merchantService->getMerchantModelArray($merchant),
-					'product'  => $product,
-					'vip' => \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )
-			] );
+		return CommonUtils::json_success ( [ 
+				'model' => $model,
+				'merchant' => $merchantService->getMerchantModelArray ( $merchant ),
+				'product' => $product,
+				'vip' => \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER ) 
+		] );
 	}
-	
-	
 	
 	/**
 	 * 团体服务 - 确认提交
@@ -235,40 +232,38 @@ class SoSheetController extends BaseAuthApiController {
 	 * @return mixed
 	 */
 	public function actionCreatePackage() {
-		$activityService = new ActivityService();
+		$activityService = new ActivityService ();
 		$model = new SoSheet ();
-	
+		
 		$activity_id = isset ( $_REQUEST ['activity_id'] ) ? $_REQUEST ['activity_id'] : null;
-		if(empty($activity_id)){
+		if (empty ( $activity_id )) {
 			return CommonUtils::json_failed ( '团体服务不能为空！' );
 		}
-	
-		$activity = Activity::find ()->where ( [
+		
+		$activity = Activity::find ()->where ( [ 
 				'id' => $activity_id,
-				'audit_status' => SysParameter::audit_approved
+				'audit_status' => SysParameter::audit_approved 
 		] )->one ();
 		if (empty ( $activity )) {
 			return CommonUtils::json_failed ( '团体服务不存在！' );
 		}
-	
-		//团体服务明细
-		$actPackageProductList = $this->findActPackageProductList($activity_id);
-		if(empty($actPackageProductList)){
-			return CommonUtils::json_failed ( '团体服务无明细！' );
-		}		
 		
-	
+		// 团体服务明细
+		$actPackageProductList = $this->findActPackageProductList ( $activity_id );
+		if (empty ( $actPackageProductList )) {
+			return CommonUtils::json_failed ( '团体服务无明细！' );
+		}
+		
 		// 根据团体服务计算出订单总金额
 		$model->order_quantity = 1;
 		$model->goods_amt = $activity->package_price * $model->order_quantity; // 服务总金额
-		$model->order_amt = $activity->package_price * $model->order_quantity;  // 如果折扣有活动时，另外计算订单金额，TODO :
-		$model->deposit_amount = $activity->deposit_amount; //定金
-	
-	
+		$model->order_amt = $activity->package_price * $model->order_quantity; // 如果折扣有活动时，另外计算订单金额，TODO :
+		$model->deposit_amount = $activity->deposit_amount; // 定金
+		
 		if ($model->load ( Yii::$app->request->post () ) /* && $model->save() */) {
 			$transaction = SoSheet::getDb ()->beginTransaction ();
 			try {
-				//初始化数据
+				// 初始化数据
 				$model->integral = 0;
 				$model->integral_money = 0;
 				$model->coupon = 0;
@@ -279,25 +274,25 @@ class SoSheetController extends BaseAuthApiController {
 				$model->vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 				$model->code = SheetType::getCode ( SheetType::so, true );
 				$model->order_date = date ( VipConst::DATE_FORMAT, time () );
-	
-				if(empty($model->consignee)){
+				
+				if (empty ( $model->consignee )) {
 					return CommonUtils::json_failed ( '联系人不能为空！' );
 				}
-	
-				if(empty($model->mobile)){
+				
+				if (empty ( $model->mobile )) {
 					return CommonUtils::json_failed ( '联系方式不能为空！' );
 				}
-	
-				if(empty($model->service_date)){
+				
+				if (empty ( $model->service_date )) {
 					return CommonUtils::json_failed ( '服务日期不能为空！' );
 				}
-	
+				
 				/* 保存失败处理 */
 				if (! ($model->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
 				}
-	
+				
 				/* 写订单明细 */
 				$soSheetDetail = new SoSheetDetail ();
 				$soSheetDetail->package_id = $activity->id;
@@ -305,18 +300,18 @@ class SoSheetController extends BaseAuthApiController {
 				$soSheetDetail->quantity = $model->order_quantity;
 				$soSheetDetail->price = $activity->package_price;
 				$soSheetDetail->amount = $soSheetDetail->quantity * $soSheetDetail->price;
-	
+				
 				if (! $soSheetDetail->save ()) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
 				}
-	
+				
 				/* 订单商户对应关系 */
 				$vip_ids = $this->findVipIdList ( $model->id );
-	
+				
 				// delete frist
-				SoSheetVip::deleteAll ( [
-						'order_id' => $model->id
+				SoSheetVip::deleteAll ( [ 
+						'order_id' => $model->id 
 				] );
 				// insert last
 				foreach ( $vip_ids as $vip_id ) {
@@ -328,7 +323,7 @@ class SoSheetController extends BaseAuthApiController {
 						return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
 					}
 				}
-	
+				
 				$transaction->commit ();
 				return CommonUtils::json_success ( $model->id );
 			} catch ( \Exception $e ) {
@@ -336,18 +331,17 @@ class SoSheetController extends BaseAuthApiController {
 				$model->addError ( 'code', $e->getMessage () );
 				return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
 			}
-				
+			
 			return CommonUtils::json_success ( $model->id );
 		}
 		
-		return CommonUtils::json_success ( [
+		return CommonUtils::json_success ( [ 
 				'model' => $model,
-				'activity' => $activityService->getActivityModelArray($activity),
-				'actPackageProducts'  => $activityService->getActPackageProductModelArray($actPackageProductList),
-				'vip' => \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )
+				'activity' => $activityService->getActivityModelArray ( $activity ),
+				'actPackageProducts' => $activityService->getActPackageProductModelArray ( $actPackageProductList ),
+				'vip' => \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER ) 
 		] );
 	}
-	
 	
 	/**
 	 * 订单咨询 - 确认提交
@@ -357,49 +351,47 @@ class SoSheetController extends BaseAuthApiController {
 	 * @return mixed
 	 */
 	public function actionCreateQuotation() {
-		$quotationService = new QuotationService();
+		$quotationService = new QuotationService ();
 		$model = new SoSheet ();
 		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 		
-	
 		$quotation_id = isset ( $_REQUEST ['quotation_id'] ) ? $_REQUEST ['quotation_id'] : null;
-		if(empty($quotation_id)){
+		if (empty ( $quotation_id )) {
 			return CommonUtils::json_failed ( '咨询编号不能为空！' );
 		}
-	
-		$quotation = Quotation::find ()->where ( [
-				'id' => $quotation_id,
+		
+		$quotation = Quotation::find ()->where ( [ 
+				'id' => $quotation_id 
 		] )->one ();
 		if (empty ( $quotation )) {
 			return CommonUtils::json_failed ( '订单咨询不存在！' );
-		}		
+		}
 		
-		if($quotation->vip_id != $vip_id){
+		if ($quotation->vip_id != $vip_id) {
 			return CommonUtils::json_failed ( '非法操作！' );
 		}
 		
-		if($quotation->status != Quotation::stat_replied){
-			//只有回复的订单咨询才能提交订单
+		if ($quotation->status != Quotation::stat_replied) {
+			// 只有回复的订单咨询才能提交订单
 			return CommonUtils::json_failed ( '非法操作，只有待回复的订单咨询才能提交订单！' );
-		}		
-	
-		//咨询明细
-		$quotationDetailList = $this->findQuotationDetailList($quotation_id);
-		if(empty($quotationDetailList)){
+		}
+		
+		// 咨询明细
+		$quotationDetailList = $this->findQuotationDetailList ( $quotation_id );
+		if (empty ( $quotationDetailList )) {
 			return CommonUtils::json_failed ( '咨询无明细！' );
 		}
-	
+		
 		// 根据咨询计算出订单总金额
 		$model->order_quantity = 1;
 		$model->goods_amt = $quotation->order_amt * $model->order_quantity; // 服务总金额
-		$model->order_amt = $quotation->order_amt * $model->order_quantity;  // 如果折扣有活动时，另外计算订单金额，TODO :
-		$model->deposit_amount = $quotation->deposit_amount; //定金
-	
-	
+		$model->order_amt = $quotation->order_amt * $model->order_quantity; // 如果折扣有活动时，另外计算订单金额，TODO :
+		$model->deposit_amount = $quotation->deposit_amount; // 定金
+		
 		if ($model->load ( Yii::$app->request->post () ) /* && $model->save() */) {
 			$transaction = SoSheet::getDb ()->beginTransaction ();
 			try {
-				//初始化数据
+				// 初始化数据
 				$model->integral = 0;
 				$model->integral_money = 0;
 				$model->coupon = 0;
@@ -410,28 +402,28 @@ class SoSheetController extends BaseAuthApiController {
 				$model->vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 				$model->code = SheetType::getCode ( SheetType::so, true );
 				$model->order_date = date ( VipConst::DATE_FORMAT, time () );
-				$model->quotation_id = $quotation->id; //订单咨询编号
-	
-				if(empty($model->consignee)){
+				$model->quotation_id = $quotation->id; // 订单咨询编号
+				
+				if (empty ( $model->consignee )) {
 					return CommonUtils::json_failed ( '联系人不能为空！' );
 				}
-	
-				if(empty($model->mobile)){
+				
+				if (empty ( $model->mobile )) {
 					return CommonUtils::json_failed ( '联系方式不能为空！' );
 				}
-	
-				if(empty($model->service_date)){
+				
+				if (empty ( $model->service_date )) {
 					return CommonUtils::json_failed ( '服务日期不能为空！' );
 				}
-	
+				
 				/* 保存失败处理 */
 				if (! ($model->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
 				}
-	
+				
 				/* 写订单明细 */
-				foreach ($quotationDetailList as $quotationDetail) {
+				foreach ( $quotationDetailList as $quotationDetail ) {
 					$soSheetDetail = new SoSheetDetail ();
 					$soSheetDetail->product_id = $quotationDetail->product->id;
 					$soSheetDetail->order_id = $model->id;
@@ -442,18 +434,16 @@ class SoSheetController extends BaseAuthApiController {
 					if (! $soSheetDetail->save ()) {
 						$transaction->rollBack ();
 						return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
-					};
+					}
+					;
 				}
 				
-				
-				
-	
 				/* 订单商户对应关系 */
 				$vip_ids = $this->findVipIdList ( $model->id );
-	
+				
 				// delete frist
-				SoSheetVip::deleteAll ( [
-						'order_id' => $model->id
+				SoSheetVip::deleteAll ( [ 
+						'order_id' => $model->id 
 				] );
 				// insert last
 				foreach ( $vip_ids as $vip_id ) {
@@ -466,12 +456,148 @@ class SoSheetController extends BaseAuthApiController {
 					}
 				}
 				
-				//修改咨询单状态
-				$quotation->status = Quotation::stat_effective; //写入咨询状态
-				$quotation->order_id = $model->id; //写入关联订单编号
-				if(!($quotation->save())){
+				// 修改咨询单状态
+				$quotation->status = Quotation::stat_effective; // 写入咨询状态
+				$quotation->order_id = $model->id; // 写入关联订单编号
+				if (! ($quotation->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
+				}
+				
+				$transaction->commit ();
+				return CommonUtils::json_success ( $model->id );
+			} catch ( \Exception $e ) {
+				$transaction->rollBack ();
+				$model->addError ( 'code', $e->getMessage () );
+				return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
+			}
+			
+			return CommonUtils::json_success ( $model->id );
+		}
+		
+		return CommonUtils::json_success ( [ 
+				'model' => $model,
+				'quotation' => $quotationService->getQuotationModelArray ( $quotation ),
+				'quotationDetailList' => $quotationService->getQuotationDetailModelArray ( $quotationDetailList ),
+				'vip' => \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER ) 
+		] );
+	}
+	
+	/**
+	 * 订单取消
+	 * @return string
+	 */
+	public function actionCancel() {
+		$model = new SoSheet ();
+		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
+		
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ('订单编号不能为空!' );
+		}
+		
+		//判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if(empty($model)){
+			return CommonUtils::json_failed ('订单不存在!' );
+		}		
+				
+		if ($model->load ( Yii::$app->request->post () )) {
+			$transaction = SoSheet::getDb ()->beginTransaction ();
+			try {
+				$soSheetService = new SoSheetService();
+				$jsonObj = $soSheetService->getSoSheetCancelAuth($model, $vip_id); //判断权限
+				
+				
+				if(!($jsonObj->status)){
+					return CommonUtils::json_failed ($jsonObj->message );
+				}
+				
+				$model->order_status = SoSheet::order_cancelled;
+				$model->cancel_date = date(VipConst::DATE_FORMAT, time());
+				if(!($model->save())){
+					$transaction->rollBack ();
+					return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+				}
+				
+				$transaction->commit ();
+				return CommonUtils::json_success ( $model->id );
+			} catch ( \Exception $e ) {
+				$transaction->rollBack ();
+				$model->addError ( 'code', $e->getMessage () );
+				return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+			}
+		}
+		
+		return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+	}
+	
+	
+	/**
+	 * 订单支付成功逻辑
+	 * @return string
+	 */
+	public function actionPayCallback() {
+		$model = new SoSheet ();
+		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
+		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
+	
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ('订单编号不能为空!' );
+		}
+	
+		//判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if(empty($model)){
+			return CommonUtils::json_failed ('订单不存在!' );
+		}		
+	
+		if ($model->load ( Yii::$app->request->post () )) {
+			$transaction = SoSheet::getDb ()->beginTransaction ();
+			try {
+				
+				if(empty($model->pay_type_id)){
+					return CommonUtils::json_failed ('支付方式编号不能为空!' );
+				}
+				
+				$payType = PayType::findOne($model->pay_type_id);
+				if(empty($payType)){
+					return CommonUtils::json_failed ('支付方式不存在!' );
+				}
+				
+				$soSheetService = new SoSheetService();
+				$jsonObj = $soSheetService->getSoSheetPayAuth($model, $vip_id); //判断权限
+				if(!($jsonObj->status)){
+					return CommonUtils::json_failed ($jsonObj->message );
+				}
+				
+				if($model->order_amt < ($model->paid_amt + $model->pay_amt)){
+					return CommonUtils::json_failed ('支付金额不合法!' );
+				}
+	
+				$model->order_status = SoSheet::order_need_schedule; //待接单
+				if($model->order_amt > ($model->paid_amt + $model->pay_amt)){
+					$model->pay_status = SoSheet::pay_part_pay; //部分支付
+				}else{
+					$model->pay_status = SoSheet::pay_completed; //支付完成
+				}
+				$model->pay_date = date(VipConst::DATE_FORMAT, time()); //最后一次支付时间
+				$model->paid_amt = ($model->paid_amt + $model->pay_amt); //更新已付款金额
+				if(!($model->save())){
+					$transaction->rollBack ();
+					return CommonUtils::jsonMsgObj_failed ( '订单支付失败！', $model );
+				}
+				
+				//插入支付记录
+				$soSheetPayInfo = new SoSheetPayInfo();
+				$soSheetPayInfo->order_id = $model->id;
+				$soSheetPayInfo->pay_type_id = $model->pay_type_id;
+				$soSheetPayInfo->pay_amt = $model->pay_amt;
+				$soSheetPayInfo->pay_date = $model->pay_date;				
+				if(!($soSheetPayInfo->save())){
+					$transaction->rollBack ();
+					return CommonUtils::jsonMsgObj_failed ( '订单支付失败！', $soSheetPayInfo );
 				}
 				
 	
@@ -480,20 +606,12 @@ class SoSheetController extends BaseAuthApiController {
 			} catch ( \Exception $e ) {
 				$transaction->rollBack ();
 				$model->addError ( 'code', $e->getMessage () );
-				return CommonUtils::jsonMsgObj_failed ( '订单提交失败！', $model );
+				return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
 			}
-	
-			return CommonUtils::json_success ( $model->id );
 		}
 	
-		return CommonUtils::json_success ( [
-				'model' => $model,
-				'quotation' => $quotationService->getQuotationModelArray($quotation),
-				'quotationDetailList'  => $quotationService->getQuotationDetailModelArray($quotationDetailList),
-				'vip' => \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )
-		] );
+		return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
 	}
-	
 	
 	/**
 	 *
@@ -646,16 +764,18 @@ class SoSheetController extends BaseAuthApiController {
 		return $vip_ids;
 	}
 	
-	
 	/**
 	 * findProduct
-	 * @param unknown $id
+	 * 
+	 * @param unknown $id        	
 	 * @return unknown
 	 */
-	protected function findProduct($vip_id)
-	{
-		$model = Product::find()
-		->where(['vip_id'=>$vip_id, 'service_flag'=>SysParameter::yes, 'audit_status' => SysParameter::audit_approved])->one();
+	protected function findProduct($vip_id) {
+		$model = Product::find ()->where ( [ 
+				'vip_id' => $vip_id,
+				'service_flag' => SysParameter::yes,
+				'audit_status' => SysParameter::audit_approved 
+		] )->one ();
 		return $model;
 	}
 	
@@ -663,32 +783,24 @@ class SoSheetController extends BaseAuthApiController {
 	 *
 	 * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
 	 */
-	function findActPackageProductList($act_id){
-		$models = ActPackageProduct::find()->alias('actProd')
-		->joinWith('act act')
-		->joinWith('product product')
-		->joinWith('product.vip vip')
-		->joinWith('product.vip.vipType vipType')
-		->where(['actProd.act_id' => $act_id])->all();
-		 
+	function findActPackageProductList($act_id) {
+		$models = ActPackageProduct::find ()->alias ( 'actProd' )->joinWith ( 'act act' )->joinWith ( 'product product' )->joinWith ( 'product.vip vip' )->joinWith ( 'product.vip.vipType vipType' )->where ( [ 
+				'actProd.act_id' => $act_id 
+		] )->all ();
+		
 		return $models;
 	}
-	
 	
 	/**
 	 *
 	 * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
 	 */
-	function findQuotationDetailList($quotation_id){
-		$models = QuotationDetail::find()->alias('quotDetail')
-		->joinWith('quotation quotation')
-		->joinWith('product product')
-		->joinWith('product.vip vip')
-		->joinWith('product.vip.vipType vipType')
-		->where(['quotDetail.quotation_id' => $quotation_id])->all();
+	function findQuotationDetailList($quotation_id) {
+		$models = QuotationDetail::find ()->alias ( 'quotDetail' )->joinWith ( 'quotation quotation' )->joinWith ( 'product product' )->joinWith ( 'product.vip vip' )->joinWith ( 'product.vip.vipType vipType' )->where ( [ 
+				'quotDetail.quotation_id' => $quotation_id 
+		] )->all ();
 		return $models;
 	}
-	
 	
 	// /**
 	// * 婚礼类型列表
