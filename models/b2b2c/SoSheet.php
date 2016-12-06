@@ -46,6 +46,8 @@ use Yii;
  * @property string $cancel_date
  * @property string $cancel_reason
  * @property string $deposit_amount
+ * @property string $confirm_date
+ * @property string $done_date
  *
  * @property OutStockSheet[] $outStockSheets
  * @property ProductComment[] $productComments
@@ -144,7 +146,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             [['code', 'vip_id', 'order_amt', 'order_quantity', 'goods_amt', 'deliver_fee', 'order_date', /* 'delivery_type', */ 'integral', 'integral_money', 'coupon', 'discount', 'order_status', /* 'delivery_status', */ 'pay_status', 'consignee', 'mobile'], 'required'],
             [['vip_id', 'order_quantity', 'delivery_type', 'pay_type_id', 'pick_point_id', 'integral', 'order_status', 'delivery_status', 'pay_status', 'country_id', 'province_id', 'city_id', 'district_id', 'invoice_type', 'quotation_id'], 'integer'],
             [['order_amt', 'goods_amt', 'deliver_fee', 'paid_amt', 'integral_money', 'coupon', 'discount', 'return_amt', 'deposit_amount'], 'number'],
-            [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date', 'cancel_date'], 'safe'],
+            [['order_date', 'delivery_date', 'pay_date', 'return_date', 'service_date', 'cancel_date', 'confirm_date', 'done_date'], 'safe'],
             [['code', 'consignee'], 'string', 'max' => 30],
             [['delivery_no', 'invoice_header'], 'string', 'max' => 60],
             [['memo'], 'string', 'max' => 400],
@@ -182,7 +184,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
             'goods_amt' => Yii::t('app', '服务总金额'/* '商品总金额' */),
             'deliver_fee' => Yii::t('app', '运费'),
             'order_date' => Yii::t('app', '订单日期'),
-            'delivery_date' => Yii::t('app', '发货日期'),
+            'delivery_date' => Yii::t('app', /* '发货日期' */'商家确认服务完成时间'),
             'delivery_type' => Yii::t('app', '配送方式'),
             'pay_type_id' => Yii::t('app', '支付方式'),
             'pay_date' => Yii::t('app', '付款日期'),
@@ -213,6 +215,8 @@ class SoSheet extends \app\models\b2b2c\BasicModel
         	'cancel_date' => Yii::t('app', '订单取消日期'),
         	'cancel_reason' => Yii::t('app', '订单取消原因'),
         	'deposit_amount' => Yii::t('app', '定金金额'),
+        	'confirm_date' => Yii::t('app', /*' 确认日期（商户确认开始接单日期）' */'接单日期'),
+        	'done_date' => Yii::t('app', /* '订单完成日期（两种情况：客户确认完成 ，系统自动确认完成）' */'客户确认服务完成日期'),
         	'vip.vip_id' =>  Yii::t('app', '会员编号'),
         	'vip.vip_name' =>  Yii::t('app', '会员名称'),
         	'quotation.code' => Yii::t('app', '订单咨询编号'),

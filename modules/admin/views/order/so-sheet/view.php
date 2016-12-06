@@ -39,8 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             // 'deliver_fee',
             'order_date',
-            // 'delivery_date',
-            //'delivery_type',
+		  
             // 'deliveryType.name',
             //'pay_type_id',
 		    'payType.name',
@@ -79,7 +78,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'service_date',
 		    // 'quotation_id',
 		    'quotation.code',
-		        		
+        	'confirm_date',
+        	'delivery_date',
+        	//'delivery_type',
+        	'done_date',
 		        ],
 		    ]) ?>
     	</div>

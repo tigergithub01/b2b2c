@@ -35,6 +35,7 @@ use app\modules\vip\service\order\QuotationService;
 use app\models\b2b2c\Quotation;
 use app\models\b2b2c\QuotationDetail;
 use app\models\b2b2c\SoSheetPayInfo;
+use app\models\b2b2c\SheetLog;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -485,6 +486,7 @@ class SoSheetController extends BaseAuthApiController {
 	
 	/**
 	 * 订单取消
+	 *
 	 * @return string
 	 */
 	public function actionCancel() {
@@ -493,29 +495,41 @@ class SoSheetController extends BaseAuthApiController {
 		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
 		
 		if (empty ( $order_id )) {
-			return CommonUtils::json_failed ('订单编号不能为空!' );
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
 		}
 		
-		//判断订单是否存在
+		// 判断订单是否存在
 		$model = $this->findModel ( $order_id );
-		if(empty($model)){
-			return CommonUtils::json_failed ('订单不存在!' );
-		}		
-				
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+		
 		if ($model->load ( Yii::$app->request->post () )) {
 			$transaction = SoSheet::getDb ()->beginTransaction ();
 			try {
-				$soSheetService = new SoSheetService();
-				$jsonObj = $soSheetService->getSoSheetCancelAuth($model, $vip_id); //判断权限
+				$soSheetService = new SoSheetService ();
+				$jsonObj = $soSheetService->getSoSheetCancelAuth ( $model, $vip_id ); // 判断权限
 				
-				
-				if(!($jsonObj->status)){
-					return CommonUtils::json_failed ($jsonObj->message );
+				if (! ($jsonObj->status)) {
+					return CommonUtils::json_failed ( $jsonObj->message );
 				}
 				
 				$model->order_status = SoSheet::order_cancelled;
-				$model->cancel_date = date(VipConst::DATE_FORMAT, time());
-				if(!($model->save())){
+				$model->cancel_date = date ( VipConst::DATE_FORMAT, time () );
+				if (! ($model->save ())) {
+					$transaction->rollBack ();
+					return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+				}
+				
+				// 插入日志记录
+				$sheetLog = new SheetLog ();
+				$sheetLog->sheet_type_id = Sheettype::so;
+				$sheetLog->ref_sheet_id = $model->id;
+				$sheetLog->ref_sheet_code = $model->code;
+				$sheetLog->action_date = date ( VipConst::DATE_FORMAT, time () );
+				$sheetLog->vip_id = $vip_id;
+				$sheetLog->description = "用户取消订单";
+				if (! ($sheetLog->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
 				}
@@ -532,9 +546,52 @@ class SoSheetController extends BaseAuthApiController {
 		return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
 	}
 	
+	/**
+	 * 订单支付确认
+	 *
+	 * @return string
+	 */
+	public function actionPay() {
+		$model = new SoSheet ();
+		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
+		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
+		
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
+		}
+		
+		// 判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+		
+		$soSheetService = new SoSheetService ();
+		$jsonObj = $soSheetService->getSoSheetPayAuth ( $model, $vip_id ); // 判断权限
+		if (! ($jsonObj->status)) {
+			return CommonUtils::json_failed ( $jsonObj->message );
+		}
+		
+		// 格式化支付方式输出
+		$data = ArrayHelper::toArray ( $this->findPayTypeList (), [ 
+				PayType::className () => array_merge ( CommonUtils::getModelFields ( new PayType () ), [ 
+						'configure' => function ($value) {
+							return null;
+						} 
+				] ) 
+		] );
+		
+		return CommonUtils::json_success ( [ 
+				'model' => $model,
+				'payTypeList' => $data,
+				'payAmtList' => $soSheetService->getPayAmtInfo ( $model ) 
+		] );
+	}
 	
 	/**
 	 * 订单支付成功逻辑
+	 *
 	 * @return string
 	 */
 	public function actionPayCallback() {
@@ -542,65 +599,64 @@ class SoSheetController extends BaseAuthApiController {
 		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
-	
+		
 		if (empty ( $order_id )) {
-			return CommonUtils::json_failed ('订单编号不能为空!' );
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
 		}
-	
-		//判断订单是否存在
+		
+		// 判断订单是否存在
 		$model = $this->findModel ( $order_id );
-		if(empty($model)){
-			return CommonUtils::json_failed ('订单不存在!' );
-		}		
-	
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+		
 		if ($model->load ( Yii::$app->request->post () )) {
 			$transaction = SoSheet::getDb ()->beginTransaction ();
 			try {
 				
-				if(empty($model->pay_type_id)){
-					return CommonUtils::json_failed ('支付方式编号不能为空!' );
+				if (empty ( $model->pay_type_id )) {
+					return CommonUtils::json_failed ( '支付方式编号不能为空!' );
 				}
 				
-				$payType = PayType::findOne($model->pay_type_id);
-				if(empty($payType)){
-					return CommonUtils::json_failed ('支付方式不存在!' );
+				$payType = PayType::findOne ( $model->pay_type_id );
+				if (empty ( $payType )) {
+					return CommonUtils::json_failed ( '支付方式不存在!' );
 				}
 				
-				$soSheetService = new SoSheetService();
-				$jsonObj = $soSheetService->getSoSheetPayAuth($model, $vip_id); //判断权限
-				if(!($jsonObj->status)){
-					return CommonUtils::json_failed ($jsonObj->message );
+				$soSheetService = new SoSheetService ();
+				$jsonObj = $soSheetService->getSoSheetPayAuth ( $model, $vip_id ); // 判断权限
+				if (! ($jsonObj->status)) {
+					return CommonUtils::json_failed ( $jsonObj->message );
 				}
 				
-				if($model->order_amt < ($model->paid_amt + $model->pay_amt)){
-					return CommonUtils::json_failed ('支付金额不合法!' );
+				if ($model->order_amt < ($model->paid_amt + $model->pay_amt)) {
+					return CommonUtils::json_failed ( '支付金额不合法!' );
 				}
-	
-				$model->order_status = SoSheet::order_need_schedule; //待接单
-				if($model->order_amt > ($model->paid_amt + $model->pay_amt)){
-					$model->pay_status = SoSheet::pay_part_pay; //部分支付
-				}else{
-					$model->pay_status = SoSheet::pay_completed; //支付完成
+				
+				$model->order_status = SoSheet::order_need_schedule; // 待接单
+				if ($model->order_amt > ($model->paid_amt + $model->pay_amt)) {
+					$model->pay_status = SoSheet::pay_part_pay; // 部分支付
+				} else {
+					$model->pay_status = SoSheet::pay_completed; // 支付完成
 				}
-				$model->pay_date = date(VipConst::DATE_FORMAT, time()); //最后一次支付时间
-				$model->paid_amt = ($model->paid_amt + $model->pay_amt); //更新已付款金额
-				if(!($model->save())){
+				$model->pay_date = date ( VipConst::DATE_FORMAT, time () ); // 最后一次支付时间
+				$model->paid_amt = ($model->paid_amt + $model->pay_amt); // 更新已付款金额
+				if (! ($model->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单支付失败！', $model );
 				}
 				
-				//插入支付记录
-				$soSheetPayInfo = new SoSheetPayInfo();
+				// 插入支付记录
+				$soSheetPayInfo = new SoSheetPayInfo ();
 				$soSheetPayInfo->order_id = $model->id;
 				$soSheetPayInfo->pay_type_id = $model->pay_type_id;
 				$soSheetPayInfo->pay_amt = $model->pay_amt;
-				$soSheetPayInfo->pay_date = $model->pay_date;				
-				if(!($soSheetPayInfo->save())){
+				$soSheetPayInfo->pay_date = $model->pay_date;
+				if (! ($soSheetPayInfo->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单支付失败！', $soSheetPayInfo );
 				}
 				
-	
 				$transaction->commit ();
 				return CommonUtils::json_success ( $model->id );
 			} catch ( \Exception $e ) {
@@ -609,8 +665,68 @@ class SoSheetController extends BaseAuthApiController {
 				return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
 			}
 		}
-	
+		
 		return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+	}
+	
+	/**
+	 * 客户确认交易完成
+	 *
+	 * @return string
+	 */
+	public function actionDone() {
+		$model = new SoSheet ();
+		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
+		
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
+		}
+		
+		// 判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+		
+		$transaction = SoSheet::getDb ()->beginTransaction ();
+		try {
+			
+			$soSheetService = new SoSheetService ();
+			$jsonObj = $soSheetService->getSoSheetDoneAuth ( $model, $vip_id ); // 判断权限
+			if (! ($jsonObj->status)) {
+				return CommonUtils::json_failed ( $jsonObj->message );
+			}
+			
+			$model->done_date =  date ( VipConst::DATE_FORMAT, time () );
+			$model->order_status = SoSheet::order_need_commented; // 待评价
+			if (! ($model->save ())) {
+				$transaction->rollBack ();
+				return CommonUtils::jsonModel_failed ( $model );
+			}
+			
+			// 插入订单日志
+			$sheetLog = new SheetLog ();
+			$sheetLog->sheet_type_id = Sheettype::so;
+			$sheetLog->ref_sheet_id = $model->id;
+			$sheetLog->ref_sheet_code = $model->code;
+			$sheetLog->action_date = date ( VipConst::DATE_FORMAT, time () );
+			$sheetLog->vip_id = $vip_id;
+			$sheetLog->description = "客户确认订单完成";
+			if (! ($sheetLog->save ())) {
+				$transaction->rollBack ();
+				return CommonUtils::jsonModel_failed ( $model );
+			}
+			
+			$transaction->commit ();
+			return CommonUtils::json_success ( $model->id );
+		} catch ( \Exception $e ) {
+			$transaction->rollBack ();
+			$model->addError ( 'code', $e->getMessage () );
+			return CommonUtils::jsonModel_failed ( $model );
+		}
+		
+		return CommonUtils::jsonModel_failed ( $model );
 	}
 	
 	/**
@@ -766,7 +882,7 @@ class SoSheetController extends BaseAuthApiController {
 	
 	/**
 	 * findProduct
-	 * 
+	 *
 	 * @param unknown $id        	
 	 * @return unknown
 	 */

@@ -96,6 +96,7 @@ use yii\helpers\Url;
 				<?php echo Html::button('帖子回复列表',['id'=>'btn_blog_cmt_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/blog/vip-blog-cmt/index'])]);?>
 				<?php echo Html::button('帖子回复列表-作者回复',['id'=>'btn_blog_cmt_reply_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/blog/vip-blog-cmt/index'])]);?>
 				<?php echo Html::button('作者发帖',['id'=>'btn_blog_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog/create'])]);?>
+				<?php echo Html::button('作者更新发帖（传图片)',['id'=>'btn_blog_update','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog/update','id'=>'1'])]);?>
 				<?php echo Html::button('用户回帖',['id'=>'btn_blog_cmt_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog-cmt/create'])]);?>
 				<?php echo Html::button('作者回复评论',['id'=>'btn_blog_cmt_reply_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/blog/vip-blog-cmt/create'])]);?>
 			</div>
@@ -131,6 +132,7 @@ use yii\helpers\Url;
 			
 			<div class="form-group">
 				<?php echo Html::button('订单取消',['id'=>'btn_order_cancel','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/cancel'])]);?>
+				<?php echo Html::button('订单支付确认',['id'=>'btn_order_pay','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/pay'])]);?>
 				<?php echo Html::button('订单支付成功回调',['id'=>'btn_order_pay_callback','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/pay-callback'])]);?>
 				<?php echo Html::button('确认交易完成',['id'=>'btn_order_done','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/done'])]);?>
 				<?php echo Html::button('订单评价',['id'=>'btn_product_comment_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/product-comment/create'])]);?>

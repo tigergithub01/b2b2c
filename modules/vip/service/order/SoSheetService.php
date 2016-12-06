@@ -163,6 +163,38 @@ class SoSheetService {
 		return $jsonObj;
 	}
 	
+	/**
+	 * 判断订单确认完成权限
+	 * @param unknown $model
+	 * @param unknown $vip_id
+	 * @return \app\models\b2b2c\common\JsonObj
+	 */
+	public function getSoSheetDoneAuth($model, $vip_id){
+		$jsonObj = new JsonObj();
+		$jsonObj->status = false;
+	
+		//只能操作自己的订单
+		if($model->vip_id != $vip_id){
+			$jsonObj->message = "非法操作，只能操作自己的订单!";
+			return $jsonObj;
+		}
+	
+		//“交易成功”状态下用户可以确认完成
+		if(!($model->order_status == SoSheet::order_completed)){
+					$jsonObj->message = "商户确认服务完成后，才能确认交易完成!";
+					return $jsonObj;
+		}
+	
+		if($model->order_amt > $model->paid_amt){
+			$jsonObj->message = "订单未付款完成，不能确认交易完成!";
+			return $jsonObj;
+		}
+	
+		//成功
+		$jsonObj->status = true;
+		return $jsonObj;
+	}
+	
 	
 	/**
 	 * 查找订单信息
@@ -170,10 +202,54 @@ class SoSheetService {
 	 * @return \yii\db\ActiveRecord|NULL
 	 */
 	protected function findModel($id) {
-		$model = SoSheet::find ()->alias ( "so" )->joinWith ( "vip vip" )->joinWith ( "city city" )->joinWith ( "country country" )->joinWith ( "deliveryStatus deliveryStatus" )->joinWith ( "district district" )->joinWith ( "invoiceType invoiceType" )->joinWith ( "orderStatus orderStatus" )->joinWith ( "payStatus payStatus" )->joinWith ( "province province" )->joinWith ( "deliveryType deliveryType" )->joinWith ( "payType payType" )->joinWith ( "pickPoint pickPoint" )->where ( [
+		$model = SoSheet::find ()->alias ( "so" )->joinWith ( "vip vip" )->joinWith ( "city city" )->joinWith ( "country country" )->joinWith ( "deliveryStatus deliveryStatus" )->joinWith ( "district district" )->joinWith ( "invoiceType invoiceType" )->joinWith ( "orderStatus orderStatus" )->joinWith ( "payStatus payStatus")->joinWith ( "province province" )->joinWith ( "deliveryType deliveryType" )->joinWith ( "payType payType" )->joinWith ( "pickPoint pickPoint" )->where ( [
 				'so.id' => $id
 		] )->one ();
 	
 		return $model;
+	}
+	
+	
+	/**
+	 * 获取订单可支付金额情况（定金，全款，尾款）
+	 * @param unknown $model
+	 * @return string[]|string[][]
+	 */
+	public function getPayAmtInfo($model) {
+		$model =  empty($model)?(new SoSheet()):$model;
+		$deposit_amt = 0; //定金
+		$order_amt = 0; //全款
+		$balance_amt = 0; //尾款
+		
+		if($model->paid_amt==0){
+			//未支付
+			if($model->deposit_amount>0){
+				//需要支付定金
+				$deposit_amt = $model->deposit_amount;
+				$order_amt =  $model->order_amt;
+			}else{
+				//不需要支付定金
+				$order_amt =  $model->order_amt;
+			}
+		}else{
+			//已支付,支付尾款
+			$balance_amt = $model->order_amt - $model->paid_amt;
+		}
+		
+				
+		return [ 
+				'deposit_amt' => [ 
+						'name' => '定金金额',
+						'value' => $deposit_amt, 
+				],
+				'order_amt' => [ 
+						'name' => '全款金额',
+						'value' => $order_amt,
+				],
+				'balance_amt' => [ 
+						'name' => '尾款金额',
+						'value' => $balance_amt, 
+				],
+		];
 	}
 }
