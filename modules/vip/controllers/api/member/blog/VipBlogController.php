@@ -11,6 +11,7 @@ use app\modules\vip\models\VipConst;
 use Yii;
 use yii\web\UploadedFile;
 use app\common\utils\image\ImageUtils;
+use app\models\b2b2c\VipBlogPhoto;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
