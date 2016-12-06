@@ -132,12 +132,15 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2300
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(23002,23,'女',null,2);
 
 insert into t_sys_parameter_type(id,name,description) values(24,'退款申请单状态',null);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24001,24,'审核中',null,1);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24002,24,'退款处理中(审核通过)',null,2);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24003,24,'已退款',null,3);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24004,24,'审核不通过',null,4);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24005,24,'用户已撤销',null,5);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24006,24,'未提交',null,5);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24001,24,'商户待确认','等待商户审核',1);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24002,24,'退款处理中','平台待审核,平台发起退款单，开始退款。',2);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24003,24,'已退款','平台已退款',3);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24004,24,'审核不通过','商户或者平台审核不通过',4);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24005,24,'用户已撤销','用户撤销退款申请',5);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24006,24,'审核中','平台待审核',6);
+
+
+
 
 insert into t_sys_parameter_type(id,name,description) values(25,'退款单状态',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(25001,25,'待退款',null,1);
@@ -166,6 +169,8 @@ insert into t_sys_parameter_type(id,name,description) values(29,'报价单状态
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29001,29,'待回复',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29002,29,'已回复',null,2);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(29003,29,'已执行',null,3);
+
+
 
 
 /*

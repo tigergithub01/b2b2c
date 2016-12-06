@@ -874,4 +874,42 @@ alter table t_so_sheet_pay_info add constraint fk_so_pay_info_paytype_ref_paytyp
 select * from t_so_sheet_pay_info;
 
 
+alter table t_so_sheet add confirm_date         datetime comment '确认日期（商户确认开始接单日期）';
+ alter table t_so_sheet add  done_date            datetime comment '订单完成日期（两种情况：客户确认完成 ，系统自动确认完成）';
+
+drop table t_sheet_log;
+
+
+
+create table t_sheet_log
+(
+   id                   bigint(20) not null auto_increment comment '主键编号',
+   sheet_type_id        bigint(20) not null comment '单据类型',
+   ref_sheet_id         bigint(20) not null comment '关联单据编号',
+   ref_sheet_code       varchar(30) not null comment '单据编号',
+   user_id              bigint(20) comment '关联操作用户编号',
+   vip_id               bigint(20) comment '关联操作会员编号',
+   action_type_id       bigint(20) comment '操作类型',
+   action_date          datetime not null comment '操作时间',
+   description          varchar(200) comment '操作描述',
+   primary key (id)
+);
+
+alter table t_sheet_log comment '单据操作日志表';
+
+alter table t_sheet_log add constraint fk_sheet_log_action_type_ref_param foreign key (action_type_id)
+      references t_sys_parameter (id);
+
+alter table t_sheet_log add constraint fk_sheet_log_ref_st_type foreign key (sheet_type_id)
+      references t_sheet_type (id);
+
+alter table t_sheet_log add constraint fk_sheet_log_ref_user foreign key (user_id)
+      references t_sys_user (id);
+
+alter table t_sheet_log add constraint fk_sheet_log_ref_vip foreign key (vip_id)
+      references t_vip (id);
+
+select * from t_sheet_log;
+
+
 */
