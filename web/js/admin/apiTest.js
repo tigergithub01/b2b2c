@@ -764,14 +764,26 @@ $(function() {
 			);
 	});
 	
+	/*
+	 	订单支付确认
+		http://localhost:8089/vip/api/member/order/so-sheet/pay
+	*/
+	$("#btn_order_pay").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order_id':'1',//订单编号
+				},
+				'get'
+			);
+	});
 	
 	/*
 	 	订单支付成功逻辑
 		http://localhost:8089/vip/api/member/order/so-sheet/pay-callback
 		
 		支付方式
-		wxpay	微信支付
-		alipay	支付宝
+		1	微信支付
+		2	支付宝
 	*/
 	$("#btn_order_pay_callback").click(function() {
 		test_api($(this).attr('url'),
@@ -791,7 +803,7 @@ $(function() {
 	$("#btn_order_done").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'order':'1',//订单编号
+				'order_id':'1',//订单编号
 				},
 				'get'
 			);
@@ -804,7 +816,7 @@ $(function() {
 	$("#btn_product_comment_create").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'order':'1',//订单编号
+				'order_id':'1',//订单编号
 				},
 				'post'
 			);
@@ -817,7 +829,7 @@ $(function() {
 	$("#btn_refund_apply_create").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'order':'1',//订单编号
+				'order_id':'1',//订单编号
 				},
 				'post'
 			);
@@ -932,6 +944,21 @@ $(function() {
 				'VipBlog[blog_flag]' : '16001', //标志是会员博客
 				'VipBlog[name]' : '发帖test', //标题
 				'VipBlog[content]' : '内容内容，内容内容，内容内容', //帖子内容
+				//'VipBlog[imageFiles][]' : '' //图片（多个）
+				},
+				'post'
+			);
+	});
+	
+	/*
+		发帖 - 更新
+		http://localhost:8089/vip/api/member/blog/vip-blog/update?id=1
+	*/
+	$("#btn_blog_update").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'VipBlog[name]' : '发帖test1', //标题（可以不传入）
+				'VipBlog[content]' : '内容内容，内容内容1，内容内容', //帖子内容（可以不传入）
 				//'VipBlog[imageFiles][]' : '' //图片（多个）
 				},
 				'post'
