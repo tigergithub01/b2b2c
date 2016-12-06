@@ -4,38 +4,34 @@ namespace app\modules\vip\controllers\api\member\order;
 
 use app\common\utils\CommonUtils;
 use app\models\b2b2c\Activity;
+use app\models\b2b2c\ActPackageProduct;
 use app\models\b2b2c\common\PaginationObj;
 use app\models\b2b2c\DeliveryTypeTpl;
 use app\models\b2b2c\PayType;
 use app\models\b2b2c\PickUpPoint;
 use app\models\b2b2c\Product;
+use app\models\b2b2c\Quotation;
+use app\models\b2b2c\QuotationDetail;
 use app\models\b2b2c\search\SoSheetSearch;
+use app\models\b2b2c\SheetLog;
 use app\models\b2b2c\SheetType;
 use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\SoSheetDetail;
+use app\models\b2b2c\SoSheetPayInfo;
 use app\models\b2b2c\SoSheetVip;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysRegion;
 use app\models\b2b2c\Vip;
 use app\modules\vip\common\controllers\BaseAuthApiController;
 use app\modules\vip\models\VipConst;
+use app\modules\vip\service\order\QuotationService;
+use app\modules\vip\service\order\SoSheetService;
+use app\modules\vip\service\vip\ActivityService;
+use app\modules\vip\service\vip\MerchantService;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
-use app\common\utils\UrlUtils;
-use app\models\b2b2c\VipOrganization;
-use app\models\b2b2c\SysParameterType;
-use app\modules\vip\service\order\SoSheetService;
-use app\modules\vip\service\vip\VipService;
-use app\modules\vip\service\vip\MerchantService;
-use app\modules\vip\service\vip\ActivityService;
-use app\models\b2b2c\ActPackageProduct;
-use app\modules\vip\service\order\QuotationService;
-use app\models\b2b2c\Quotation;
-use app\models\b2b2c\QuotationDetail;
-use app\models\b2b2c\SoSheetPayInfo;
-use app\models\b2b2c\SheetLog;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -727,6 +723,46 @@ class SoSheetController extends BaseAuthApiController {
 		}
 		
 		return CommonUtils::jsonModel_failed ( $model );
+	}
+	
+	/**
+	 * 订单权限
+	 *
+	 * @return string
+	 */
+	public function actionAuth() {
+		$model = new SoSheet ();
+		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
+		
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
+		}
+		
+		// 判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+		
+		if ($model->vip_id != $vip_id) {
+			CommonUtils::json_failed ( "非法操作，只能操作自己的订单!" );
+		}
+		
+		$soSheetService = new SoSheetService ();
+		$cancel = $soSheetService->getSoSheetCancelAuth ( $model, $vip_id )->status;
+		$pay = $soSheetService->getSoSheetPayAuth ( $model, $vip_id )->status;
+		$comment = $soSheetService->getSoSheetCmtAuth ( $model, $vip_id )->status;
+		$refund = $soSheetService->getSoSheetRefundApplyAuth ( $model, $vip_id )->status;
+		$done = $soSheetService->getSoSheetDoneAuth ( $model, $vip_id )->status;
+		
+		return CommonUtils::json_success ( [ 
+				'cancel' => $cancel,
+				'pay' => $pay,
+				'comment' => $comment,
+				'refund' => $refund,
+				'done' => $done 
+		] );
 	}
 	
 	/**

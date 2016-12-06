@@ -27,9 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             // 'product_id',
             'product.name',
+		    'package.name',
+		    'order.code',
             // 'vip_id',
             'vip.vip_id',
             //'cmt_rank_id',
@@ -44,7 +46,56 @@ $this->params['breadcrumbs'][] = $this->title;
 		    ]) ?>
     	</div>
     
-	    <div class="box-footer">
+	    
+    
+    </div>
+    
+    
+    <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">图片</h3>
+
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                   <div class="input-group-btn">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->        
+            
+            
+            
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th></th>
+                  <th>操作</th>
+                </tr>
+                <?php foreach ($model->productCommentPhotos as $productCommentPhoto) {?>
+                <tr>
+                  <td>
+                  <a class="fancybox" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $productCommentPhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $productCommentPhoto->thumb_url?>"></a>
+                  <td valign="middle">
+                  	<?= Html::a(Yii::t('app', 'Delete'), ['delete-product-comment-photo', 'id' => $productCommentPhoto->id], [
+			            'class' => '',
+			            'data' => [
+			                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+			                'method' => 'post',
+			            ],
+			        ]) ?>
+                  </td>
+                </tr>
+                <?php }?>
+              </table>
+            </div>
+            <!-- /.box-body -->
+    </div>
+          <!-- /.box -->
+          
+    
+    <div class="box"> 
+    		<div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
@@ -54,7 +105,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	            ],
 	        ]) ?>
 	    </div>
-    
-    </div>
+	</div>      
 
 </div>

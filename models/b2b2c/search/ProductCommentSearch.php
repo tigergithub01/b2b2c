@@ -76,6 +76,10 @@ class ProductCommentSearch extends ProductComment
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'cmtRank.param_val' => [
         						'asc'  => ['cmtRank.param_val' => SORT_ASC],
         						'desc' => ['cmtRank.param_val' => SORT_DESC],

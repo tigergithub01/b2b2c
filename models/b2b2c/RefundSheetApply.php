@@ -23,13 +23,13 @@ use Yii;
  */
 class RefundSheetApply extends \app\models\b2b2c\BasicModel
 {
-	/* 退款申请单状态： */
-	const status_need_confirm = 24001; //待审核
-	const status_approved = 24002; // 退款处理中(审核通过)
-	const status_refund = 24003; // 已退款
-	const status_rejected = 24004; // 审核不通过
-	const status_cancelled = 24005; // 用户已撤销
-	const status_need_submit = 24006; //未提交
+	/* 退款申请单状态：会员->商户->平台 */
+	const status_need_confirm = 24001; //商户待确认(等待商户审核)
+	const status_approved = 24002; // 退款处理中(平台审核通过, 平台发起退款单，开始退款流程)
+	const status_refund = 24003; // 已退款（平台已退款）
+	const status_rejected = 24004; // 审核不通过（商户或者平台审核不通过）
+	const status_cancelled = 24005; // 用户已撤销（用户撤销退款申请）
+	const status_need_approve = 24006; //待审核(平台待审核)
 	
 	/* 会员编号（查询用） */
 	public $vip_no;

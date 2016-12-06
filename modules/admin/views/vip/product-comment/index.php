@@ -25,13 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
 			
-            'id',
+            // 'id',
             // 'product_id',
         	'product.name',
+        	'package.name',
             // 'vip_id',
-        	'vip.vip_id',
+        	'vip.vip_name',
             // 'cmt_rank_id',
         	'cmtRank.param_val',
+        	'order.code',
             // 'content',
             // 'comment_date',
             // 'ip_addr',

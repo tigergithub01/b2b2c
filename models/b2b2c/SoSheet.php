@@ -84,7 +84,7 @@ class SoSheet extends \app\models\b2b2c\BasicModel
 	const order_cancelled = 5003; // 已取消 （用户未付款时直接取消;24小时内，系统自动取消未付款订单）
 	const order_need_schedule = 5004; // 待接单（客户付款后，商户点击接单，确认开始服务）
 	const order_need_service = 5005; // 待服务(服务完成后，商户可以点击服务完成）
-	const order_need_refund = 5006; // 待退款 (用户申请退款，待接单与待服务状态都可以申请退款)
+	const order_need_refund = 5006; // 待退款 (用户申请退款，待接单与待服务状态都可以申请退款)（TODO：此状态应该不需要，应该有一个已关闭的状态，这个状态多余）
 	const order_closed = 5007; // 已关闭 (已经退款给用户，订单关闭) 
 	const order_completed = 5008; // 交易成功(客户付尾款，客户确认交易完成；如果已经付款完成，并且7个工作日内不确定服务完成，系统自动确认完成)
 	const order_need_commented = 5009; // 待评价 (客户确认交易完成后可评价)

@@ -48,6 +48,9 @@ class ProductComment extends \app\models\b2b2c\BasicModel
 	const cmt_3_star = 12003; // 中评-3星
 	const cmt_4_star = 12004; // 好评-4星
 	const cmt_5_star = 12005; // 好评-5星
+	
+	//图片
+	public $imageFiles;
     
     /**
      * @inheritdoc
@@ -89,6 +92,7 @@ class ProductComment extends \app\models\b2b2c\BasicModel
         	[['package_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['package_id' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+        	[['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 10],
         ];
     }
 
@@ -112,9 +116,13 @@ class ProductComment extends \app\models\b2b2c\BasicModel
         	'status0.param_val' => '是否显示',
         	'cmtRank.param_val' => '评价等级',
         	'vip.vip_id' => '会员',
+        	'vip.vip_name' => '会员名称',
         	'product.name' => '关联产品',
+        	'package.name' => '团体服务名称',
         	'product_name'  => '产品名称',
         	'vip_no'  => '会员编号',
+        	'imageFiles' => Yii::t('app', '评论图片'),
+        	'order.code' => '订单编号',
         ];
     }
     

@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
 use app\models\b2b2c\SoSheetDetail;
 use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\common\JsonObj;
+use app\models\b2b2c\RefundSheetApply;
 
 class SoSheetService {
 	
@@ -164,7 +165,7 @@ class SoSheetService {
 	}
 	
 	/**
-	 * 判断订单确认完成权限
+	 * 判断订单客户确认完成权限
 	 * @param unknown $model
 	 * @param unknown $vip_id
 	 * @return \app\models\b2b2c\common\JsonObj
@@ -191,6 +192,76 @@ class SoSheetService {
 		}
 	
 		//成功
+		$jsonObj->status = true;
+		return $jsonObj;
+	}
+	
+	
+	/**
+	 * 判断订单评价权限
+	 * @param unknown $model
+	 * @param unknown $vip_id
+	 * @return \app\models\b2b2c\common\JsonObj
+	 */
+	public function getSoSheetCmtAuth($model, $vip_id){
+		$jsonObj = new JsonObj();
+		$jsonObj->status = false;
+	
+		//只能操作自己的订单
+		if($model->vip_id != $vip_id){
+			$jsonObj->message = "非法操作，只能操作自己的订单!";
+			return $jsonObj;
+		}
+	
+		//“交易成功”状态下用户可以确认完成
+		if(!($model->order_status == SoSheet::order_need_commented)){
+			$jsonObj->message = "订单确认服务完成后，才能评价!";
+			return $jsonObj;
+		}
+	
+		//成功
+		$jsonObj->status = true;
+		return $jsonObj;
+	}
+	
+	
+	/**
+	 * 判断订单申请退款权限
+	 * @param unknown $model
+	 * @param unknown $vip_id
+	 * @return \app\models\b2b2c\common\JsonObj
+	 */
+	public function getSoSheetRefundApplyAuth($model, $vip_id){
+		$jsonObj = new JsonObj();
+		$jsonObj->status = false;
+	
+		//只能操作自己的订单
+		if($model->vip_id != $vip_id){
+			$jsonObj->message = "非法操作，只能操作自己的订单!";
+			return $jsonObj;
+		}
+		
+		if ($model->return_amt >0 && $model->return_date ){
+			$jsonObj->message = "已经退款，不能重复申请!";
+			return $jsonObj;
+		}
+	
+		//“交易成功”状态下用户可以确认完成
+		if($model->paid_amt > 0 && (($model->order_status == SoSheet::order_need_schedule || $model->order_status == SoSheet::order_need_service || SoSheet::order_completed ))){
+			//已经付款，才可以申请付款
+		}else{
+			$jsonObj->message = "非法操作，已经付款的订单才可以申请退款!";
+		}
+		
+		//已经申请退款的不可以多次申请
+		$count = RefundSheetApply::find()->where(['order_id'=>$model->id,'status'=>[RefundSheetApply::status_need_confirm,
+				RefundSheetApply::status_approved,RefundSheetApply::status_refund,RefundSheetApply::status_need_approve ]])->count();
+		if($count>0){
+			$jsonObj->message = "非法操作，退款处理中!";
+			return $jsonObj;
+		}
+		
+		//成功,
 		$jsonObj->status = true;
 		return $jsonObj;
 	}

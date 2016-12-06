@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     		'vipList' => $vipList,
     		'productList' => $productList,
     		'cmtRankList' => $cmtRankList,
+    		'activityList' => $activityList,
     ]) ?>
 
 </div>
