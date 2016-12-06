@@ -812,28 +812,72 @@ $(function() {
 	/*
 	 	订单评价
 		http://localhost:8089/vip/api/member/vip/product-comment/create
+		
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(12001,12,'差评-1星',null,1);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(12002,12,'中评-2星',null,2);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(12003,12,'中评-3星',null,3);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(12004,12,'好评-4星',null,4);
+		insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(12005,12,'好评-5星',null,5);
+
 	*/
 	$("#btn_product_comment_create").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'order_id':'1',//订单编号
+				'ProductComment[product_id]':'1',//产品编号（订单详细接口中有输出product_id）
+				'ProductComment[order_id]':'1',//订单编号
+				//'ProductComment[package_id]':'1',//团体服务编号
+				'ProductComment[cmt_rank_id]':'12004',//评价等级
+				'ProductComment[content]':'产品评价内容，给个好评吧！烧人。',//评价内容
+				//'ProductComment[imageFiles][]' : '' //图片（多个）
 				},
 				'post'
 			);
 	});
 	
 	/*
+	 	退款申请单列表
+		http://localhost:8089/vip/api/member/order/refund-sheet-apply/index
+	*/
+	$("#btn_refund_apply_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-apply_date', //排序(按照申请日期倒序）
+				},
+				'get'
+			);
+	});	
+	
+	/*
+	 	退款申请单详情
+		http://localhost:8089/vip/api/member/order/refund-sheet-apply/view
+	*/
+	$("#btn_refund_apply_view").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'id':'',//退款申请单编号
+				},
+				'get'
+			);
+	});	
+	
+	1
+	/*
 	 	退款申请
-		http://localhost:8089/vip/api/member/order/refund-apply/create
+		http://localhost:8089/vip/api/member/order/refund-sheet-apply/create
 	*/
 	$("#btn_refund_apply_create").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'order_id':'1',//订单编号
+				'RefundSheetApply[order_id]':'2',//订单编号
+				'RefundSheetApply[reason]':'我就想退款，真么的。',//退款申请理由
 				},
 				'post'
 			);
-	});
+	});	
+	
+	
 	
 	/*
 	 	订单权限
@@ -842,7 +886,7 @@ $(function() {
 	$("#btn_order_auth").click(function() {
 		test_api($(this).attr('url'),
 				{
-				'order':'1',//订单编号
+				'order_id':'1',//订单编号
 				},
 				'get'
 			);
