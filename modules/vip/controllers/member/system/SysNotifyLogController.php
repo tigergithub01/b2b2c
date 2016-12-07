@@ -59,7 +59,7 @@ class SysNotifyLogController extends BaseAuthController
     	$model = $this->findModel($id);
 
     	//更新阅读时间
-    	$model->read_date = date(VipConst::DATE_FORMAT, time());
+    	$model->read_date = \app\common\utils\DateUtils::formatDatetime();
     	$model->save();
     	
         return $this->render('view', [

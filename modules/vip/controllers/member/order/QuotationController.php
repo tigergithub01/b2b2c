@@ -87,9 +87,9 @@ class QuotationController extends BaseAuthController
         
         $model->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
         $model->code = SheetType::getCode(SheetType::qu);
-        $model->create_date = date(VipConst::DATE_FORMAT, time());
-        $model->update_date = date(VipConst::DATE_FORMAT, time());
-        $model->service_date = date(VipConst::DATE_FORMAT, time());
+        $model->create_date = \app\common\utils\DateUtils::formatDatetime();
+        $model->update_date = \app\common\utils\DateUtils::formatDatetime();
+        $model->service_date = \app\common\utils\DateUtils::formatDatetime();
         $model->status = Quotation::stat_need_reply;
 
         if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {

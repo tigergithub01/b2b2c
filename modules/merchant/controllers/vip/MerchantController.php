@@ -105,7 +105,7 @@ class MerchantController extends BaseAuthController
         $model->email_verify_flag = SysParameter::no;
         $model->status = SysParameter::yes;
         $model->audit_status = SysParameter::audit_need_approve;
-        $model->register_date = date(AdminConst::DATE_FORMAT, time());
+        $model->register_date = \app\common\utils\DateUtils::formatDatetime();
         
         $vipOrganization= new VipOrganization();
         $vipExtend= new VipExtend();
@@ -187,8 +187,8 @@ class MerchantController extends BaseAuthController
         	$vipOrganization= new VipOrganization();
         	$vipOrganization->vip_id = $model->id;
         	$vipOrganization->status = SysParameter::yes;
-        	$vipOrganization->create_date = date(AdminConst::DATE_FORMAT, time());
-        	$vipOrganization->update_date = date(AdminConst::DATE_FORMAT, time());
+        	$vipOrganization->create_date = \app\common\utils\DateUtils::formatDatetime();
+        	$vipOrganization->update_date = \app\common\utils\DateUtils::formatDatetime();
         	$vipOrganization->audit_status = SysParameter::audit_approved;
         }
         $vipExtend = $this->findVipExtend($model->id);
@@ -196,8 +196,8 @@ class MerchantController extends BaseAuthController
         	$vipExtend= new VipExtend();
         	$vipExtend->vip_id = $model->id;
         	$vipExtend->audit_status = SysParameter::audit_approved;
-        	$vipExtend->create_date = date(AdminConst::DATE_FORMAT, time());
-        	$vipExtend->update_date = date(AdminConst::DATE_FORMAT, time());
+        	$vipExtend->create_date = \app\common\utils\DateUtils::formatDatetime();
+        	$vipExtend->update_date = \app\common\utils\DateUtils::formatDatetime();
         }
         $product = $this->findProduct($model->id);
         if(empty($product)){

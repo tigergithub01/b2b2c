@@ -79,7 +79,7 @@ class RefundSheetController extends BaseAuthController
         $model->sheet_type_id = SheetType::rd;
         $model->code = SheetType::getCode($model->sheet_type_id);
         $model->status = RefundSheet::status_need_confirm;
-        $model->sheet_date = date(AdminConst::DATE_FORMAT, time());
+        $model->sheet_date = \app\common\utils\DateUtils::formatDatetime();
         $model->user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
         
         $refund_apply_id = isset($_REQUEST['refund_apply_id'])?$_REQUEST['refund_apply_id']:null;

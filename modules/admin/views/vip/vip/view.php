@@ -7,7 +7,7 @@ use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Vip */
 
-$this->title = $model->id;
+$this->title = $model->vip_id;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Vips'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             'vip_id',
             // 'merchant_flag',
             //'merchantFlag.param_val',
@@ -57,8 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
             //'sex',
             'sex0.param_val',
 //             'nick_name',
-            'wedding_date',
-            'birthday',
+            'wedding_date:date',
+            'birthday:date',
             // 'img_url:url',
             // 'thumb_url:url',
             // 'img_original',

@@ -48,7 +48,9 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'blog_flag')->dropDownList(\yii\helpers\ArrayHelper::map($blogFlagList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'vip_no') ?>
+    <?php // echo $form->field($model, 'vip_no') ?>
+    
+    <?= $form->field($model, 'vip_name') ?>
 	
 	<?= $form->field($model, 'name') ?>
 	

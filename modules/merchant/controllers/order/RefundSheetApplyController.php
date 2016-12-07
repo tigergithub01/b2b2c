@@ -79,7 +79,7 @@ class RefundSheetApplyController extends BaseAuthController
     {
         $model = new RefundSheetApply();
         $model->sheet_type_id = SheetType::ra;
-        $model->apply_date = date(MerchantConst::DATE_FORMAT, time());
+        $model->apply_date = \app\common\utils\DateUtils::formatDatetime();
         $model->sheet_type_id = SheetType::ra;
         $model->code = SheetType::getCode($model->sheet_type_id);
         $model->status = RefundSheetApply::status_need_confirm;

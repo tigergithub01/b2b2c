@@ -151,7 +151,7 @@ class SoSheetController extends BaseAuthApiController {
 				$model->deliver_fee = 0;
 				$model->vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 				$model->code = SheetType::getCode ( SheetType::so, true );
-				$model->order_date = date ( VipConst::DATE_FORMAT, time () );
+				$model->order_date = \app\common\utils\DateUtils::formatDatetime();
 				
 				if (empty ( $model->consignee )) {
 					return CommonUtils::json_failed ( '联系人不能为空！' );
@@ -270,7 +270,7 @@ class SoSheetController extends BaseAuthApiController {
 				$model->deliver_fee = 0;
 				$model->vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 				$model->code = SheetType::getCode ( SheetType::so, true );
-				$model->order_date = date ( VipConst::DATE_FORMAT, time () );
+				$model->order_date = \app\common\utils\DateUtils::formatDatetime();
 				
 				if (empty ( $model->consignee )) {
 					return CommonUtils::json_failed ( '联系人不能为空！' );
@@ -398,7 +398,7 @@ class SoSheetController extends BaseAuthApiController {
 				$model->deliver_fee = 0;
 				$model->vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 				$model->code = SheetType::getCode ( SheetType::so, true );
-				$model->order_date = date ( VipConst::DATE_FORMAT, time () );
+				$model->order_date = \app\common\utils\DateUtils::formatDatetime();
 				$model->quotation_id = $quotation->id; // 订单咨询编号
 				
 				if (empty ( $model->consignee )) {
@@ -511,7 +511,7 @@ class SoSheetController extends BaseAuthApiController {
 				}
 				
 				$model->order_status = SoSheet::order_cancelled;
-				$model->cancel_date = date ( VipConst::DATE_FORMAT, time () );
+				$model->cancel_date = \app\common\utils\DateUtils::formatDatetime();
 				if (! ($model->save ())) {
 					$transaction->rollBack ();
 					return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
@@ -522,7 +522,7 @@ class SoSheetController extends BaseAuthApiController {
 				$sheetLog->sheet_type_id = Sheettype::so;
 				$sheetLog->ref_sheet_id = $model->id;
 				$sheetLog->ref_sheet_code = $model->code;
-				$sheetLog->action_date = date ( VipConst::DATE_FORMAT, time () );
+				$sheetLog->action_date = \app\common\utils\DateUtils::formatDatetime();
 				$sheetLog->vip_id = $vip_id;
 				$sheetLog->description = "用户取消订单";
 				if (! ($sheetLog->save ())) {
@@ -635,7 +635,7 @@ class SoSheetController extends BaseAuthApiController {
 				} else {
 					$model->pay_status = SoSheet::pay_completed; // 支付完成
 				}
-				$model->pay_date = date ( VipConst::DATE_FORMAT, time () ); // 最后一次支付时间
+				$model->pay_date = \app\common\utils\DateUtils::formatDatetime(); // 最后一次支付时间
 				$model->paid_amt = ($model->paid_amt + $model->pay_amt); // 更新已付款金额
 				if (! ($model->save ())) {
 					$transaction->rollBack ();
@@ -694,7 +694,7 @@ class SoSheetController extends BaseAuthApiController {
 				return CommonUtils::json_failed ( $jsonObj->message );
 			}
 			
-			$model->done_date =  date ( VipConst::DATE_FORMAT, time () );
+			$model->done_date =  \app\common\utils\DateUtils::formatDatetime();
 			$model->order_status = SoSheet::order_need_commented; // 待评价
 			if (! ($model->save ())) {
 				$transaction->rollBack ();
@@ -706,7 +706,7 @@ class SoSheetController extends BaseAuthApiController {
 			$sheetLog->sheet_type_id = Sheettype::so;
 			$sheetLog->ref_sheet_id = $model->id;
 			$sheetLog->ref_sheet_code = $model->code;
-			$sheetLog->action_date = date ( VipConst::DATE_FORMAT, time () );
+			$sheetLog->action_date = \app\common\utils\DateUtils::formatDatetime();
 			$sheetLog->vip_id = $vip_id;
 			$sheetLog->description = "客户确认订单完成";
 			if (! ($sheetLog->save ())) {

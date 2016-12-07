@@ -87,7 +87,7 @@ class AdminAuthBehavior extends Behavior{
 	 	if($login_user){
 	 		$sys_log->user_id = $login_user->id;
 	 	}
-	 	$sys_log->op_date=date(AdminConst::DATE_FORMAT,time());
+	 	$sys_log->op_date=\app\common\utils\DateUtils::formatDatetime();
 	 	$sys_log->op_ip_addr = Yii::$app->request->userIP;
 	 	$sys_log->op_browser_type = Yii::$app->request->userAgent;
 	 	$sys_log->op_url = Yii::$app->request->url;

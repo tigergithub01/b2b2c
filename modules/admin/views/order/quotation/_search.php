@@ -75,8 +75,10 @@ use app\modules\admin\Module;
 
     <?php // echo $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+    <?php // echo $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	
+	<?php echo $form->field($model, 'merchant_name') ?>
+		
 	    
 	    </div>
 	    

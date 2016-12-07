@@ -21,6 +21,7 @@ use app\models\b2b2c\common\Constant;
 use app\models\b2b2c\VipOrganization;
 use app\models\b2b2c\VipExtend;
 use app\modules\admin\models\AdminConst;
+use app\common\utils\DateUtils;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -66,8 +67,10 @@ class VipController extends BaseAuthController
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $model = $this->findModel($id);
+        
+    	return $this->render('view', [
+            'model' => $model,
         ]);
     }
 
@@ -84,8 +87,9 @@ class VipController extends BaseAuthController
         $model->email_verify_flag = SysParameter::no;
         $model->status = SysParameter::yes;
         $model->audit_status = SysParameter::audit_approved;
-        $model->register_date = date(AdminConst::DATE_FORMAT, time());
+        $model->register_date = \app\common\utils\DateUtils::formatDatetime();
 
+        $model->register_date = \app\common\utils\DateUtils::formatDatetime();
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	//加密
         	$model->password = md5($model->password);
@@ -238,6 +242,8 @@ class VipController extends BaseAuthController
     	->where(['vip.id'=>$id])->one();
     	if($model){
 //     	if (($model = Vip::findOne($id)) !== null) {
+    		$model->wedding_date = DateUtils::asDate($model->wedding_date);
+    		$model->birthday = DateUtils::asDate($model->birthday);
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

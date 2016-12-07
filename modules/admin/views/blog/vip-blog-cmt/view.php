@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'model' => $model,
 		        'attributes' => [
 		            'id',
-            'content',
+            'content:ntext',
             // 'blog_id',
             'blog.name',
             'reply_date',
@@ -36,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'vip.vip_name',
             // 'status',
             'status0.param_val',
-            'parent_id',
+            //'parent_id',
+            'parent.content:ntext'
 		        ],
 		    ]) ?>
     	</div>

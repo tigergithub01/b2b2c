@@ -7,7 +7,7 @@ use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SysConfig */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Sys Configs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             'code',
             'value',
             'description',

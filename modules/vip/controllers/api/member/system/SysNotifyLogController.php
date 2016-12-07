@@ -88,7 +88,7 @@ class SysNotifyLogController extends BaseAuthApiController
     	
     	if(empty($model->read_date)){
     		//第一次查看消息时，写入阅读时间
-    		$model->read_date = date(VipConst::DATE_FORMAT , time());
+    		$model->read_date = \app\common\utils\DateUtils::formatDatetime();
     		$model->update(true,['read_date']);
     	}
     	

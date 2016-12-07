@@ -37,7 +37,7 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php // echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'name') ?>
 

@@ -29,7 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            'id',
             //'vip_id',
-            'vip.vip_id',
+            // 'vip.vip_id',
+		    'vip.vip_name',
 		    'collectType.param_val',
             //'product_id',
             'product.name',

@@ -42,12 +42,14 @@ use app\modules\admin\Module;
     <?php // echo $form->field($model, 'sheet_type_id') ?>
 
     <?php // echo $form->field($model, 'refund_apply_id') ?>
-
+	
+	<?= $form->field($model, 'order_code') ?>
+	 
     <?= $form->field($model, 'code') ?>
 
     <?php // echo $form->field($model, 'order_id') ?>
     
-    <?= $form->field($model, 'order_code') ?>
+    <?= $form->field($model, 'refund_apply_code') ?>
 
     <?php // echo $form->field($model, 'return_id') ?>
 
@@ -64,6 +66,8 @@ use app\modules\admin\Module;
     <?php // echo $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'vip_id') ?>
+    
+    <?php  echo $form->field($model, 'vip_name') ?>
 
     <?php // echo $form->field($model, 'merchant_id') ?>
 

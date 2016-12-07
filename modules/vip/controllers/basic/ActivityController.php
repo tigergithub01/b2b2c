@@ -89,8 +89,8 @@ class ActivityController extends BaseController
     {
         $model = new Activity();
         $model->activity_type = 1;//优惠套装
-        $model->start_time=date(AdminConst::DATE_FORMAT,time());
-        $model->end_date= date(AdminConst::DATE_FORMAT,time());
+        $model->start_time=\app\common\utils\DateUtils::formatDatetime();
+        $model->end_date= \app\common\utils\DateUtils::formatDatetime();
         
 
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {

@@ -86,7 +86,7 @@ class VipController extends BaseAuthController
         $model->email_verify_flag = SysParameter::no;
         $model->status = SysParameter::yes;
         $model->audit_status = SysParameter::audit_approved;
-        $model->register_date = date(VipConst::DATE_FORMAT, time());
+        $model->register_date = \app\common\utils\DateUtils::formatDatetime();
 
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	//加密

@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
+            // 'id',
             'name',
         	'parent.name',
 // 			['attribute' => 'parent.name', 'label' =>'上级区域名称'],

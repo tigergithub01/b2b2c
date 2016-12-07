@@ -92,8 +92,8 @@ class VipCaseController extends BaseAuthController
     	$merchant_user = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER);
     	$vip_id = $merchant_user->id;
         $model = new VipCase();
-        $model->create_date = date(AdminConst::DATE_FORMAT,time());
-        $model->update_date= date(AdminConst::DATE_FORMAT,time());
+        $model->create_date = \app\common\utils\DateUtils::formatDatetime();
+        $model->update_date= \app\common\utils\DateUtils::formatDatetime();
         $model->is_hot = SysParameter::no;
         $model->status = SysParameter::yes;
         $model->audit_status = SysParameter::audit_need_submit;

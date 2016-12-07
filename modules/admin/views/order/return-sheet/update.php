@@ -7,9 +7,9 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Return Sheet',
-]) . $model->id;
+]) . $model->code;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Return Sheets'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->code, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="return-sheet-update">

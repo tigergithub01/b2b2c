@@ -174,7 +174,7 @@ class VipCollectController extends BaseAuthApiController
     	$ref_id = isset($_REQUEST['ref_id'])?$_REQUEST['ref_id']:null; //关联收藏对象编号
     	
     	$model->vip_id = $vip_user->id;
-    	$model->collect_date = date(VipConst::DATE_FORMAT, time());
+    	$model->collect_date = \app\common\utils\DateUtils::formatDatetime();
     	
     	$vipCollectService = new VipCollectService();
     	

@@ -73,7 +73,7 @@ class SysAppReleaseController extends BaseAuthController
     {
         $model = new SysAppRelease();
         $model->issue_user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
-        $model->issue_date = date(AdminConst::DATE_FORMAT,time());
+        $model->issue_date = \app\common\utils\DateUtils::formatDatetime();
         $model->force_upgrade = SysParameter::yes;
 
         if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {

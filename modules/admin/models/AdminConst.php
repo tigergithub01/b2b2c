@@ -8,8 +8,8 @@ class AdminConst{
 	const COOKIE_ADMIN_USER_ID= 'cookie_admin_user_id';
 	const COOKIE_ADMIN_PASSWORD= 'cookie_admin_password';
 	
-	/* 日期格式 */
-	const DATE_FORMAT='Y-m-d H:i:s';
+	/* 日期格式  */
+	const DATE_FORMAT='Y-m-d';
 	
 	/* 金额与价格格式 */
 	const DECIMAL_FORMAT = '0.00';

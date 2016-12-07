@@ -28,8 +28,8 @@ class VipBlogController extends BaseAuthApiController
     {
     	$model = new VipBlog();
     	
-    	$model->create_date = date(VipConst::DATE_FORMAT, time());
-    	$model->update_date = date(VipConst::DATE_FORMAT, time());
+    	$model->create_date = \app\common\utils\DateUtils::formatDatetime();
+    	$model->update_date = \app\common\utils\DateUtils::formatDatetime();
     	$model->audit_status = SysParameter::audit_need_approve;
     	$model->status = SysParameter::no;
     	$model->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;

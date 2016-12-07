@@ -7,8 +7,6 @@ class VipConst{
 	const COOKIE_VIP_USER_ID= 'cookie_vip_user_id';
 	const COOKIE_VIP_PASSWORD= 'cookie_vip_password';
 	
-	/* 日期格式 */
-	const DATE_FORMAT='Y-m-d H:i:s';
 	
 	/* 金额与价格格式 */
 	const DECIMAL_FORMAT = '0.00';

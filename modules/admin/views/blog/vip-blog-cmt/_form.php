@@ -63,7 +63,7 @@ use app\models\b2b2c\common\Constant;
     
     <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
 
 		</div>
 	

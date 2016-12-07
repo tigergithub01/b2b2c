@@ -40,7 +40,7 @@ class VipLogFilter extends ActionFilter{
 		if($login_user){
 			$sys_log->vip_id = $login_user->id;
 		}
-		$sys_log->op_date=date(VipConst::DATE_FORMAT,time());
+		$sys_log->op_date=\app\common\utils\DateUtils::formatDatetime();
 		$sys_log->op_ip_addr = Yii::$app->request->userIP;
 		$sys_log->op_browser_type = Yii::$app->request->userAgent;
 		$sys_log->op_url = Yii::$app->request->url;
@@ -53,6 +53,7 @@ class VipLogFilter extends ActionFilter{
 		$sys_log->op_module = $action->controller->module->id;
 		$sys_log->op_controller = $action->controller->id;
 		$sys_log->op_action = $action->id;
+// 		$xx = \Yii::app()->controller->id;
 		/* var_dump(Json::encode($_REQUEST)); */
 		if(isset($_REQUEST)){
 			$parameters = Json::encode($_REQUEST);

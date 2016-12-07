@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
         		'value'=>empty($vipOrganization->cover_img_url)?'':'<a class="fancybox" href="'.Yii::$app->request->hostInfo . '/' . $vipOrganization->cover_img_url. '"><img src="'.Yii::$app->request->hostInfo . '/' . $vipOrganization->cover_thumb_url.'" width="200" height="200"></a>'
         	],
             // 'vip_id',
-            'description',
+            'description:ntext',
             //'country_id',
             'country.name',
             //'province_id',

@@ -85,9 +85,9 @@ class QuotationController extends BaseAuthController
         $model = new Quotation();
         
         $model->code = SheetType::getCode(SheetType::qu);
-        $model->create_date = date(AdminConst::DATE_FORMAT, time());
-        $model->update_date = date(AdminConst::DATE_FORMAT, time());
-        $model->service_date = date(AdminConst::DATE_FORMAT, time());
+        $model->create_date = \app\common\utils\DateUtils::formatDatetime();
+        $model->update_date = \app\common\utils\DateUtils::formatDatetime();
+        $model->service_date = \app\common\utils\DateUtils::formatDatetime();
         $model->status = Quotation::stat_need_reply;
 
         if ($model->load(Yii::$app->request->post()) /* && $model->save() */) {
@@ -158,7 +158,7 @@ class QuotationController extends BaseAuthController
      * @return Ambigous <string, string>
      */
     protected function renderUpdate($model){
-    	return $this->render('create', [
+    	return $this->render('update', [
     			'model' => $model,
     			'vipList' => $this->findVipList(SysParameter::no),
     			'merchantList' => $this->findVipList(SysParameter::yes),

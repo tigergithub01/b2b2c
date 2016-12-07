@@ -77,7 +77,9 @@ use app\models\b2b2c\common\Constant;
 
     <?php // echo $form->field($model, 'op_app_type_id') ?>
 
-    <?php // echo $form->field($model, 'op_module') ?>
+    <?php  //echo $form->field($model, 'op_module') ?>
+    
+    <?= $form->field($model, 'op_module')->dropDownList(['vip'=>'会员日志', 'merchant'=>'商户日志'], ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'op_controller') ?>
 

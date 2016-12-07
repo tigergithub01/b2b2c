@@ -70,7 +70,7 @@ class SysArticleController extends BaseAuthController
     {
         $model = new SysArticle();
         $model->issue_user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
-        $model->issue_date = date(AdminConst::DATE_FORMAT,time());
+        $model->issue_date = \app\common\utils\DateUtils::formatDatetime();
         $model->is_sys_flag = SysParameter::no;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

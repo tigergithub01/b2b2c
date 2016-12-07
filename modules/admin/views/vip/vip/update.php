@@ -8,9 +8,9 @@ use app\modules\admin\Module;
 
 $this->title = Module::t('app', 'Update {modelClass}: ', [
     'modelClass' => Module::t('app', 'Vip'),
-]) . $model->id;
+]) . $model->vip_id;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Vips'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->vip_id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="vip-update">

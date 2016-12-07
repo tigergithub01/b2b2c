@@ -78,7 +78,7 @@ class SysNotifyController extends BaseAuthController
     public function actionCreate()
     {
         $model = new SysNotify();
-        $model->issue_date = date(AdminConst::DATE_FORMAT, time());
+        $model->issue_date = \app\common\utils\DateUtils::formatDatetime();
         $model->issue_user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
         $model->status = SysParameter::yes;
         $model->is_sent = SysParameter::no;
@@ -169,12 +169,12 @@ class SysNotifyController extends BaseAuthController
 	    			$sysNotifyLog = new SysNotifyLog();
 	    			$sysNotifyLog->notify_id = $model->id;
 	    			$sysNotifyLog->vip_id = $vip->id;
-	    			$sysNotifyLog->create_date = date(AdminConst::DATE_FORMAT, time());
+	    			$sysNotifyLog->create_date = \app\common\utils\DateUtils::formatDatetime();
 	    			$sysNotifyLog->save();
 	    		}
 	    		
 	    		$model->is_sent = SysParameter::yes;
-	    		$model->sent_time = date(AdminConst::DATE_FORMAT, time());
+	    		$model->sent_time = \app\common\utils\DateUtils::formatDatetime();
 	    		$model->save();
     			$transaction->commit();
     		}catch (\Exception $e) {

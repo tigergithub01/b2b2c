@@ -39,11 +39,11 @@ use app\modules\admin\Module;
 	
 	    <?php //echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'user_id') ?>
+    <?php // echo $form->field($model, 'user_id') ?>
 
-    <?= $form->field($model, 'module_id') ?>
+    <?php // echo $form->field($model, 'module_id') ?>
 
-    <?= $form->field($model, 'op_date') ?>
+    <?php // echo $form->field($model, 'op_date') ?>
 
     <?= $form->field($model, 'op_ip_addr') ?>
 

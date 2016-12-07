@@ -78,7 +78,7 @@ class ProductCommentController extends BaseAuthController
     public function actionCreate()
     {
     	$model = new ProductComment();
-    	$model->comment_date = date(AdminConst::DATE_FORMAT, time());
+    	$model->comment_date = \app\common\utils\DateUtils::formatDatetime();
     	$model->status = SysParameter::no;
     	$model->ip_addr = \Yii::$app->request->userIP;
     

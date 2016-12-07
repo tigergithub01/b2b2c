@@ -90,8 +90,8 @@ class ActivityController extends BaseAuthController
     {
         $model = new Activity();
         $model->activity_type = ActivityType::activity_type_package;//优惠套装
-        $model->start_time=date(MerchantConst::DATE_FORMAT,time());
-        $model->end_date= date(MerchantConst::DATE_FORMAT,time());
+        $model->start_time=\app\common\utils\DateUtils::formatDatetime();
+        $model->end_date= \app\common\utils\DateUtils::formatDatetime();
         $model->vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
         $model->audit_status = SysParameter::audit_need_submit;
 

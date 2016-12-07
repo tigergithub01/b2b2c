@@ -110,7 +110,7 @@ class SoSheetController extends BaseAuthController
     	
     	$model = new SoSheet();
     	$model->code = SheetType::getCode($model->sheet_type_id);
-    	$model->order_date = date(VipConst::DATE_FORMAT, time());
+    	$model->order_date = \app\common\utils\DateUtils::formatDatetime();
     	$model->integral = 0;
     	$model->integral_money = 0;
     	$model->coupon = 0;
@@ -138,7 +138,7 @@ class SoSheetController extends BaseAuthController
     		try {
     			//重新获取订单编号
     			$model->code = SheetType::getCode(SheetType::so, true);
-    			$model->order_date = date(VipConst::DATE_FORMAT, time());
+    			$model->order_date = \app\common\utils\DateUtils::formatDatetime();
     			
     			 
     			/* 保存失败处理 */
@@ -214,7 +214,7 @@ class SoSheetController extends BaseAuthController
     	$model = new SoSheet();
     	$model->sheet_type_id = SheetType::so;
     	$model->code = SheetType::getCode($model->sheet_type_id);
-    	$model->order_date = date(VipConst::DATE_FORMAT, time());
+    	$model->order_date = \app\common\utils\DateUtils::formatDatetime();
     	$model->integral = 0;
     	$model->integral_money = 0;
     	$model->coupon = 0;
@@ -242,7 +242,7 @@ class SoSheetController extends BaseAuthController
     		try {
     			//重新获取订单编号
     			$model->code = SheetType::getCode($model->sheet_type_id, true);
-    			$model->order_date = date(VipConst::DATE_FORMAT, time());
+    			$model->order_date = \app\common\utils\DateUtils::formatDatetime();
     
     
     			/* 保存失败处理 */
@@ -320,7 +320,7 @@ class SoSheetController extends BaseAuthController
     	$model = new SoSheet();
     	$model->sheet_type_id = SheetType::so;
     	$model->code = SheetType::getCode($model->sheet_type_id);
-    	$model->order_date = date(VipConst::DATE_FORMAT, time());
+    	$model->order_date = \app\common\utils\DateUtils::formatDatetime();
     	$model->integral = 0;
     	$model->integral_money = 0;
     	$model->coupon = 0;
@@ -345,7 +345,7 @@ class SoSheetController extends BaseAuthController
     		try {
     			//重新获取订单编号
     			$model->code = SheetType::getCode($model->sheet_type_id, true);
-    			$model->order_date = date(VipConst::DATE_FORMAT, time());
+    			$model->order_date = \app\common\utils\DateUtils::formatDatetime();
     
     
     			/* 保存失败处理 */

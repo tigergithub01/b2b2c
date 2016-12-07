@@ -7,7 +7,7 @@ use app\modules\admin\Module;
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Quotation */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Quotations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            //'id',
             'code',
             //'vip_id',
 		    'vip.vip_name',
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'status0.param_val',
             'consignee',
             'mobile',
-            'service_date',
+            'service_date:date',
             'budget_amount',
             //'related_service',
             'related_service_names',

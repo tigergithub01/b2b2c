@@ -85,8 +85,8 @@ class VipBlogController extends BaseAuthController
     public function actionCreate()
     {
         $model = new VipBlog();
-        $model->create_date = date(MerchantConst::DATE_FORMAT, time());
-        $model->update_date = date(MerchantConst::DATE_FORMAT, time());
+        $model->create_date = \app\common\utils\DateUtils::formatDatetime();
+        $model->update_date = \app\common\utils\DateUtils::formatDatetime();
         $model->audit_status = SysParameter::audit_need_approve;
         $model->status = SysParameter::yes;
         $model->blog_flag = VipBlog::blog_flag_merchant;

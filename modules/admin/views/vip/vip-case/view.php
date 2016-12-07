@@ -27,12 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             'name',
             // 'type_id',
             'type.name',
             // 'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             'content:ntext',
             'create_date',
             'update_date',
@@ -57,9 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'isHot.param_val',
             //'case_flag',
             //'caseFlag.param_val',
-            'service_date',
+            'service_date:date',
 		    'address',
-            'market_price',
+            //'market_price:decimal',
+		    'market_price',
             'sale_price',
 		        ],
 		    ]) ?>

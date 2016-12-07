@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
-            'id',
+//             'id',
             'name',
             // 'activity_type',
             //'activityType.name',
@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'deposit_amount',
             // 'buy_limit_num',
             // 'vip_id',
+            'vip.vip_name',
             // 'img_url:url',
             // 'thumb_url:url',
             // 'img_original',

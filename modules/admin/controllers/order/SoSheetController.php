@@ -99,7 +99,7 @@ class SoSheetController extends BaseAuthController
     {
         $model = new SoSheet();
         $model->code = SheetType::getCode(SheetType::so); 
-        $model->order_date = date(AdminConst::DATE_FORMAT, time());
+        $model->order_date = \app\common\utils\DateUtils::formatDatetime();
         $model->integral = 0;
         $model->integral_money = 0;
         $model->coupon = 0;

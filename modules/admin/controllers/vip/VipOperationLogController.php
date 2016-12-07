@@ -39,6 +39,7 @@ class VipOperationLogController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new VipOperationLogSearch();
+        $searchModel->op_module='vip';
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -120,7 +121,11 @@ class VipOperationLogController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipOperationLog::findOne($id)) !== null) {
+    	$model = VipOperationLog::find()->alias('log')
+    	->joinWith('module mod')
+    	->joinWith('vip vip')->one();
+    	
+        if ($model !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

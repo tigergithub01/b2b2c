@@ -49,7 +49,7 @@ class SysUserService{
     	}
     	 
     	//更新最后一次登录时间
-    	$_user->last_login_date = date(AdminConst::DATE_FORMAT,time());
+    	$_user->last_login_date = \app\common\utils\DateUtils::formatDatetime();
     	$_user->update(true,['last_login_date']);
     	return $_user;
     }

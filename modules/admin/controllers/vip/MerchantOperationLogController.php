@@ -39,6 +39,7 @@ class MerchantOperationLogController extends BaseAuthController
     public function actionIndex()
     {
         $searchModel = new MerchantOperationLogSearch();
+        $searchModel->op_module="merchant";
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -120,10 +121,14 @@ class MerchantOperationLogController extends BaseAuthController
      */
     protected function findModel($id)
     {
-        if (($model = VipOperationLog::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-        }
+    	$model = VipOperationLog::find()->alias('log')
+    	->joinWith('module mod')
+    	->joinWith('vip vip')->one();
+    	 
+    	if ($model !== null) {
+    		return $model;
+    	} else {
+    		throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    	}
     }
 }

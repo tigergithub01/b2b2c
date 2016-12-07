@@ -78,7 +78,7 @@ class VipBlogCmtController extends BaseAuthController
     public function actionCreate()
     {
         $model = new VipBlogCmt();
-        $model->reply_date = date(AdminConst::DATE_FORMAT, time());
+        $model->reply_date = \app\common\utils\DateUtils::formatDatetime();
         $model->status = SysParameter::no;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

@@ -55,7 +55,7 @@ class VipService {
 		}
 		
 		// 更新最后一次登录时间
-		$_vip->last_login_date = date ( VipConst::DATE_FORMAT, time () );
+		$_vip->last_login_date = \app\common\utils\DateUtils::formatDatetime();
 		$_vip->update ( true, [ 
 				'last_login_date' 
 		] );
@@ -115,7 +115,7 @@ class VipService {
 		 $vip->password = md5($model->password);//md5 加密
 		 $vip->email_verify_flag=SysParameter::no;
 		 $vip->status = SysParameter::yes;
-		 $vip->register_date=date(VipConst::DATE_FORMAT,time());
+		 $vip->register_date=\app\common\utils\DateUtils::formatDatetime();
 		 $vip->audit_status = SysParameter::audit_need_approve;
 		 $vip->mobile_verify_flag=SysParameter::yes;
 		 $vip->nick_name = $model->nick_name; */
@@ -123,11 +123,11 @@ class VipService {
 		$model->merchant_flag = SysParameter::no;
 		$model->email_verify_flag = SysParameter::no;
 		$model->status = SysParameter::yes;
-		$model->register_date = date ( VipConst::DATE_FORMAT, time () );
+		$model->register_date = \app\common\utils\DateUtils::formatDatetime();
 		$model->audit_status = SysParameter::audit_approved;
 		$model->mobile_verify_flag = SysParameter::yes;
 		$model->password = md5 ( $model->password );
-		$model->last_login_date = date ( VipConst::DATE_FORMAT, time () ); // 注册成功后自动登录
+		$model->last_login_date = \app\common\utils\DateUtils::formatDatetime(); // 注册成功后自动登录
 		                                                                   
 		// 判断该用户是否已经注册
 		$count = Vip::find ()->where ( [ 
@@ -146,7 +146,7 @@ class VipService {
 		] )->andWhere ( [ 
 				'>=',
 				'expiration_time',
-				date ( VipConst::DATE_FORMAT, time () ) 
+				\app\common\utils\DateUtils::formatDatetime() 
 		] )->orderBy ( [ 
 				'sent_time' => SORT_DESC 
 		] )->one ();
@@ -224,7 +224,7 @@ class VipService {
 		] )->andWhere ( [ 
 				'>=',
 				'expiration_time',
-				date ( VipConst::DATE_FORMAT, time () ) 
+				\app\common\utils\DateUtils::formatDatetime() 
 		] )->orderBy ( [ 
 				'sent_time' => SORT_DESC 
 		] )->one ();

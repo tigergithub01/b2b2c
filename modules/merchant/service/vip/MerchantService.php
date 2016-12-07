@@ -55,7 +55,7 @@ class MerchantService{
 		}
 		
 		//更新最后一次登录时间
-		$_vip->last_login_date = date(MerchantConst::DATE_FORMAT,time());
+		$_vip->last_login_date = \app\common\utils\DateUtils::formatDatetime();
 		$_vip->update(true,['last_login_date']);
 		
 		return $_vip;
@@ -81,7 +81,7 @@ class MerchantService{
 		$vip->password = md5($model->password);//md5 加密
 		$vip->email_verify_flag=SysParameter::no;
 		$vip->status = SysParameter::yes;
-		$vip->register_date=date(MerchantConst::DATE_FORMAT,time());
+		$vip->register_date=\app\common\utils\DateUtils::formatDatetime();
 		$vip->audit_status = SysParameter::audit_need_approve;
 		$vip->mobile_verify_flag=SysParameter::yes;
 		$vip->vip_type_id = $model->vip_type_id; */
@@ -90,11 +90,11 @@ class MerchantService{
 		$model->merchant_flag= SysParameter::yes;
 		$model->email_verify_flag=SysParameter::no;
 		$model->status = SysParameter::yes;
-		$model->register_date=date(MerchantConst::DATE_FORMAT,time());
+		$model->register_date=\app\common\utils\DateUtils::formatDatetime();
 		$model->audit_status = SysParameter::audit_need_submit;
 		$model->mobile_verify_flag = SysParameter::yes;
 		$model->password = md5($model->password);
-		$model->last_login_date = date(MerchantConst::DATE_FORMAT,time());//注册成功后自动登录
+		$model->last_login_date = \app\common\utils\DateUtils::formatDatetime();//注册成功后自动登录
 		
 		//判断该用户是否已经注册
 		$count = Vip::find()->where(['vip_id'=>$model->vip_id,'merchant_flag'=>SysParameter::yes])->count();
@@ -104,7 +104,7 @@ class MerchantService{
 		}
 		
 		//判断短信验证码是否正确，根据最后发送的有效的验证码进行查询
-		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$model->vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',date(MerchantConst::DATE_FORMAT,time())])->orderBy(['sent_time'=>SORT_DESC])->one();
+		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$model->vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',\app\common\utils\DateUtils::formatDatetime()])->orderBy(['sent_time'=>SORT_DESC])->one();
 		if(($model->sms_code !='wl1234') && !($verifyCode && $verifyCode->verify_code==$model->sms_code)){
 			$model->addError("sms_code",Yii::t('app', '短信验证码不正确。'));
 			return false;
@@ -131,8 +131,8 @@ class MerchantService{
 			$vipOrg->vip_id = $model->id;
 			$vipOrg->name = $model->vip_id;
 			$vipOrg->audit_status = SysParameter::audit_need_approve;
-			$vipOrg->create_date = date(MerchantConst::DATE_FORMAT,time());
-			$vipOrg->update_date = date(MerchantConst::DATE_FORMAT,time());
+			$vipOrg->create_date = \app\common\utils\DateUtils::formatDatetime();
+			$vipOrg->update_date = \app\common\utils\DateUtils::formatDatetime();
 			
 			if(!($vipOrg->insert())){
 				Yii::error($vipOrg->errors);
@@ -145,8 +145,8 @@ class MerchantService{
 			$vipExtend = new VipExtend();
 			$vipExtend->audit_status  = SysParameter::audit_need_approve;
 			$vipExtend->vip_id = $model->id;
-			$vipExtend->create_date = date(MerchantConst::DATE_FORMAT,time());
-			$vipExtend->update_date = date(MerchantConst::DATE_FORMAT,time());
+			$vipExtend->create_date = \app\common\utils\DateUtils::formatDatetime();
+			$vipExtend->update_date = \app\common\utils\DateUtils::formatDatetime();
 			if(!($vipExtend->insert())){
 				Yii::error($vipExtend->errors);
 				$model->addError("vip_id",Yii::t('app', '手机号码注册不成功。'));
@@ -240,7 +240,7 @@ class MerchantService{
 		}
 	
 		//判断短信验证码是否正确，根据最后发送的有效的验证码进行查询
-		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$model->vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',date(MerchantConst::DATE_FORMAT,time())])->orderBy(['sent_time'=>SORT_DESC])->one();
+		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$model->vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',\app\common\utils\DateUtils::formatDatetime()])->orderBy(['sent_time'=>SORT_DESC])->one();
 		if(!($verifyCode && $verifyCode->verify_code==$model->sms_code)){
 			$model->addError("sms_code",Yii::t('app', '短信验证码不正确。'));
 			return false;

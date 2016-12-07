@@ -23,7 +23,7 @@ class VipBlogCmtController extends BaseAuthApiController
 	public function actionCreate()
 	{
 		$model = new VipBlogCmt();
-		$model->reply_date = date(VipConst::DATE_FORMAT, time());
+		$model->reply_date = \app\common\utils\DateUtils::formatDatetime();
 		$model->vip_id = \Yii::$app->session->get(VipConst::LOGIN_VIP_USER)->id;
 		$model->status = SysParameter::no;
 	

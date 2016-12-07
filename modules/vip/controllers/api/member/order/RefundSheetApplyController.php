@@ -89,7 +89,7 @@ class RefundSheetApplyController extends BaseAuthApiController {
 		
 		$model = new RefundSheetApply ();
 		$model->sheet_type_id = SheetType::ra;
-		$model->apply_date = date ( VipConst::DATE_FORMAT, time () );
+		$model->apply_date = \app\common\utils\DateUtils::formatDatetime();
 		$model->code = SheetType::getCode ( $model->sheet_type_id );
 		$model->status = RefundSheetApply::status_need_confirm;
 		$model->vip_id = $vip_id;

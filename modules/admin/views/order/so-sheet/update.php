@@ -8,9 +8,9 @@ use app\modules\admin\Module;
 
 $this->title = Module::t('app', 'Update {modelClass}: ', [
     'modelClass' => Module::t('app', 'So Sheet'),
-]) . $model->id;
+]) . $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'So Sheets'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->code, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="so-sheet-update">

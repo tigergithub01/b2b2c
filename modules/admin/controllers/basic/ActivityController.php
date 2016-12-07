@@ -89,8 +89,8 @@ class ActivityController extends BaseAuthController
     {
         $model = new Activity();
         $model->activity_type = Activity::act_package;//优惠套装
-        $model->start_time=date(AdminConst::DATE_FORMAT,time());
-        $model->end_date= date(AdminConst::DATE_FORMAT,time());
+        $model->start_time=\app\common\utils\DateUtils::formatDatetime();
+        $model->end_date= \app\common\utils\DateUtils::formatDatetime();
         
 
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
@@ -345,7 +345,8 @@ class ActivityController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findProductList(){
-    	return Product::find()->all();
+    	return Product::find()->alias('p')
+    	->joinWith('vip vip')->where(['vip.audit_status' => SysParameter::audit_approved])->all();
     }
     
     /**

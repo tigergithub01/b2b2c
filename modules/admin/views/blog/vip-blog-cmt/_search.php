@@ -37,15 +37,24 @@ use app\modules\admin\Module;
 	    
 	    <div class="box-body">
 	
-	    <?= $form->field($model, 'id') ?>
+	    <?php // echo $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'content') ?>
 
-    <?= $form->field($model, 'blog_id') ?>
+    <?php // echo $form->field($model, 'blog_id') ?>
+    
+    <?= $form->field($model, 'blog_name') ?>
+    
+    
 
-    <?= $form->field($model, 'reply_date') ?>
+    <?php // echo $form->field($model, 'reply_date') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
+    <?php // echo $form->field($model, 'vip_id') ?>
+    
+    <?= $form->field($model, 'vip_name') ?>
+    
+    
+    
 
     <?php // echo $form->field($model, 'status') ?>
 

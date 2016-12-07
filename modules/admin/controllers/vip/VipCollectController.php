@@ -173,7 +173,8 @@ class VipCollectController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findProductList(){
-    	return Product::find()->all();
+    	return Product::find()->alias('p')
+    	->joinWith('vip vip')->where(['vip.audit_status' => SysParameter::audit_approved])->all();
     }
     
     /**
@@ -181,7 +182,7 @@ class VipCollectController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findActivityList(){
-    	return Activity::find()->all();
+    	return Activity::find(['audit_status'=>SysParameter::audit_approved])->all();
     }
     
     /**
@@ -189,6 +190,6 @@ class VipCollectController extends BaseAuthController
      * @return Ambigous <multitype:, multitype:\yii\db\ActiveRecord >
      */
     protected  function findVipCaseList(){
-    	return VipCase::find()->all();
+    	return VipCase::find(['audit_status'=>SysParameter::audit_approved])->all();
     }
 }

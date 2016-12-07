@@ -77,8 +77,8 @@ class ProductCommentController extends BaseAuthApiController {
 		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 		
 		$model = new ProductComment ();
-		$model->comment_date = date ( VipConst::DATE_FORMAT, time () );
-		$model->status = SysParameter::no;
+		$model->comment_date = \app\common\utils\DateUtils::formatDatetime();
+		$model->status = SysParameter::yes;
 		$model->ip_addr = \Yii::$app->request->userIP;
 		$model->vip_id = $vip_id;
 		
