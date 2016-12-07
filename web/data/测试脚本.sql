@@ -911,5 +911,87 @@ alter table t_sheet_log add constraint fk_sheet_log_ref_vip foreign key (vip_id)
 
 select * from t_sheet_log;
 
+alter table t_activity add audit_memo           varchar(255) comment '审核意见（不通过时必须填写）';
+
+delete from t_vip_operation_log;
+
+select * from t_vip_operation_log;
+
+SELECT `log`.* FROM `t_vip_operation_log` `log` 
+LEFT JOIN `t_vip_module` `mod` ON `log`.`module_id` = `mod`.`id` 
+LEFT JOIN `t_vip` `vip` ON `log`.`vip_id` = `vip`.`id` WHERE `log`.`op_module`='vip' LIMIT 20
+
+2016-12-07：
+alter table t_vip_operation_log modify op_controller        varchar(100) comment '控制器';
+alter table t_sys_operation_log modify  op_controller        varchar(100) comment '控制器';
+alter table  t_sys_module modify  controller           varchar(100) comment '模块对应的控制器编号';
+alter table  t_vip_module modify  controller           varchar(100) not null comment '模块对应的控制器编号';
+
+alter table t_act_buy_discount modify buy_amount decimal(20,2);
+alter table t_act_buy_giving_detail modify buy_amount decimal(20,2);
+alter table t_act_package_product modify package_price decimal(20,2);
+alter table t_act_special_price modify sale_price decimal(20,2);
+alter table t_act_special_price modify special_price decimal(20,2);
+alter table t_activity modify package_price decimal(20,2);
+alter table t_activity modify deposit_amount decimal(20,2);
+alter table t_activity modify market_price decimal(20,2);
+alter table t_product modify market_price decimal(20,2);
+alter table t_product modify sale_price decimal(20,2);
+alter table t_product modify deposit_amount decimal(20,2);
+alter table t_product modify cost_price decimal(20,2);
+alter table t_product_prod_sale modify sale_price decimal(20,2);
+alter table t_product_vip_price modify price decimal(20,2);
+alter table t_quotation modify order_amt decimal(20,2);
+alter table t_quotation modify deposit_amount decimal(20,2);
+alter table t_quotation modify budget_amount decimal(20,2);
+alter table t_quotation_detail modify price decimal(20,2);
+alter table t_quotation_detail modify amount decimal(20,2);
+alter table t_refund_sheet modify need_return_amt decimal(20,2);
+alter table t_refund_sheet modify return_amt decimal(20,2);
+alter table t_return_sheet modify return_amt decimal(20,2);
+alter table t_shopping_cart modify price decimal(20,2);
+alter table t_so_sheet modify order_amt decimal(20,2);
+alter table t_so_sheet modify goods_amt decimal(20,2);
+alter table t_so_sheet modify paid_amt decimal(20,2);
+alter table t_so_sheet modify return_amt decimal(20,2);
+alter table t_so_sheet modify deposit_amount decimal(20,2);
+alter table t_so_sheet_detail modify price decimal(20,2);
+alter table t_so_sheet_detail modify amount decimal(20,2);
+alter table t_so_sheet_pay_info modify pay_amt decimal(20,2);
+alter table t_vip_cart modify price decimal(20,2);
+alter table t_vip_case modify market_price decimal(20,2);
+alter table t_vip_case modify sale_price decimal(20,2);
+alter table t_vip_coupon modify used_amount decimal(20,2);
+alter table t_vip_coupon_log modify used_amount decimal(20,2);
+alter table t_vip_coupon_type modify min_amount decimal(20,2);
+alter table t_vip_coupon_type modify max_amount decimal(20,2);
+
+delete from t_sys_parameter where id = 5006;
+
+
+select a.column_name,a.data_type,a.column_comment , is_nullable, character_maximum_length
+	from information_schema.columns a where a.column_name like '%price%' and a.data_type = 'decimal'
+	where a.table_name = #{tableName} order by a.ordinal_position
+
+select * from information_schema.columns;
+
+
+
+
+select a.table_name, a.column_name,a.data_type,a.column_comment , is_nullable, character_maximum_length
+	from information_schema.columns a where a.column_name like '%price%' or a.column_name like '%amt%';
+
+
+select CONCAT('alter table ',a.table_name,' modify ',a.column_name,' decimal(20,2);')
+	from information_schema.columns a where (a.column_name like '%price%' or a.column_name like '%amt%' or a.column_name like '%amount%') and a.data_type = 'decimal';
+
+
+
+
+
+
+
+
+
 
 */

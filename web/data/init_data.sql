@@ -30,7 +30,7 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5002
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5003,5,'已取消','用户未付款时直接取消;24小时内，系统自动取消未付款订单；',3);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5004,5,'待接单','客户付款后，商户点击接单，确认开始服务',4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5005,5,'待服务','服务完成后，商户可以点击服务完成',5);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5006,5,'待退款','用户申请退款，待接单、待服务与交易成功，状态都可以申请退款',6);
+/*insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5006,5,'待退款','用户申请退款，待接单、待服务与交易成功，状态都可以申请退款',6);*/
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5007,5,'已关闭','已经退款给用户，订单关闭',7);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5008,5,'交易成功','客户付尾款，并确认交易完成；如果已经付款完成，并且7个工作日内不确定服务完成，系统自动确认完成',8);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5009,5,'待评价','客户确认交易完成后可评价',9);
