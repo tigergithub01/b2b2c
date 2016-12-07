@@ -39,6 +39,12 @@ class ProductComment extends \app\models\b2b2c\BasicModel
 	/* 会员名（查询用） */
 	public $vip_no;
 	
+	/* 会员名（查询用） */
+	public $vip_name;
+	
+	/* 团体服务名（查询用） */
+	public $package_name;
+	
 	/* 商户主键（查询用） */
 	public $merchant_id;
 	
@@ -70,6 +76,8 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'product_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'merchant_id';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'package_name';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -103,7 +111,7 @@ class ProductComment extends \app\models\b2b2c\BasicModel
     {
         return [
             'id' => Yii::t('app', '主键编号'),
-            'product_id' => Yii::t('app', '关联产品编号（评价商品时写此字段)'),
+            'product_id' => Yii::t('app', /* '关联产品编号（评价商品时写此字段)' */'个人服务'),
             'vip_id' => Yii::t('app', '会员编号'),
             'cmt_rank_id' => Yii::t('app', '评价等级'/* '评价等级（好评、中评、差评）(也可以是星级1：差；2，3：中，4，5：好）' */),
             'content' => Yii::t('app', '评价内容'),
@@ -117,10 +125,12 @@ class ProductComment extends \app\models\b2b2c\BasicModel
         	'cmtRank.param_val' => '评价等级',
         	'vip.vip_id' => '会员',
         	'vip.vip_name' => '会员名称',
-        	'product.name' => '关联产品',
+        	'product.name' => '商户名称',
         	'package.name' => '团体服务名称',
-        	'product_name'  => '产品名称',
+        	'package_name' => '团体服务名称',
+        	'product_name'  => /* '产品名称' */'商户名称',
         	'vip_no'  => '会员编号',
+        	'vip_name' => '会员名',
         	'imageFiles' => Yii::t('app', '评论图片'),
         	'order.code' => '订单编号',
         ];

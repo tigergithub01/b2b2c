@@ -113,7 +113,9 @@ class ProductCommentSearch extends ProductComment
         $query->andFilterWhere(['like', 'pcmt.content', $this->content])
             ->andFilterWhere(['like', 'pcmt.ip_addr', $this->ip_addr])
         	->andFilterWhere(['like', 'prod.name', $this->product_name])
-        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        	->andFilterWhere(['like', 'vip.vip_name', $this->vip_name])
+        	->andFilterWhere(['like', 'package.name', $this->package_name]);
        	
 //        if($this->merchant_id){
        		//TODO:根据团体服务与产品的商户编号进行查询

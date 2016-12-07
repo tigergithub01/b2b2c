@@ -51,7 +51,7 @@ class MerchantSearch extends Vip
         ->joinWith('vipType vType')
         ->joinWith('mobileVerifyFlag mobileVerify')    
         ->joinWith('rank rank')    
-        ->joinWith('sex0 sex')
+        ->joinWith('sex0 sex0')
         ->where(['vip.merchant_flag' => SysParameter::yes]);
 
         // add conditions that should always apply here
@@ -68,6 +68,10 @@ class MerchantSearch extends Vip
         				'vipType.name' => [
         						'asc'  => ['vipType.name' => SORT_ASC],
         						'desc' => ['vipType.name' => SORT_DESC],
+        				],
+        				'sex0.param_val' => [
+        						'asc'  => ['sex0.param_val' => SORT_ASC],
+        						'desc' => ['sex0.param_val' => SORT_DESC],
         				],
         				'auditStatus.param_val' => [
         						'asc'  => ['auditStat.param_val' => SORT_ASC],

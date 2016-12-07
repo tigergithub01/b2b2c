@@ -98,7 +98,8 @@ class RefundSheetApplySearch extends RefundSheetApply
 
         $query->andFilterWhere(['like', 'reason', $this->reason])
         	->andFilterWhere(['like', 'code', $this->code])
-        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        	->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
         
         if($this->start_date){
         	$query->andFilterWhere(['>=', 'refundApply.apply_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);

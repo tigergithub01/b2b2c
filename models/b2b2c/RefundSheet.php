@@ -39,6 +39,9 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
+	/* 会员名称（查询用） */
+	public $vip_name;
+	
 	/* 起始日期 （查询用） */
 	public $start_date;
 	
@@ -70,6 +73,7 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
     	// bypass scenarios() implementation in the parent class
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_code';
@@ -131,9 +135,11 @@ class RefundSheet extends \app\models\b2b2c\BasicModel
         	'vip.vip_name' => Yii::t('app', '申请会员'),
         	'merchant.vip_name' => Yii::t('app', '商户名称'),
         		'vip_no' => Yii::t('app', '会员手机号码'),
+        		'vip_name' => Yii::t('app', '会员名称'),
         		'start_date' => Yii::t('app', '开始日期'),
         		'end_date' => Yii::t('app', '结束日期'),
         		'order_code' => Yii::t('app', '订单编号'),
+        		'refund_apply_code' => Yii::t('app', '退款申请单编号'),
         ];
     }
 

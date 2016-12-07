@@ -71,6 +71,10 @@ class ActivitySearch extends Activity
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'auditStatus.param_val' => [
         						'asc'  => ['auditStatus.param_val' => SORT_ASC],
         						'desc' => ['auditStatus.param_val' => SORT_DESC],
@@ -111,7 +115,8 @@ class ActivitySearch extends Activity
             ->andFilterWhere(['like', 'act.img_url', $this->img_url])
             ->andFilterWhere(['like', 'act.thumb_url', $this->thumb_url])
             ->andFilterWhere(['like', 'act.img_original', $this->img_original])
-        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        	->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
 
         return $dataProvider;
     }

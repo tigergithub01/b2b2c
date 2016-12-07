@@ -37,6 +37,9 @@ class Quotation extends \app\models\b2b2c\BasicModel
 	/* 会员名称，查询用 */
 	public $vip_name;
 	
+	/* 商户名称，查询用 */
+	public $merchant_name;
+	
 	/* 服务类别（多选）用来接收数据 */
 	public $related_services;
 	
@@ -83,6 +86,7 @@ class Quotation extends \app\models\b2b2c\BasicModel
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'related_services';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'merchant_name';
     	return $scenarios;
     }
 
@@ -140,6 +144,7 @@ class Quotation extends \app\models\b2b2c\BasicModel
         		'merchant.vip_name' =>  Yii::t('app', '商户名称'),
         		'vip_name' =>  Yii::t('app', '会员名称'),
         		'order.code' =>  Yii::t('app', '订单编号'),
+        		'merchant_name' =>  Yii::t('app', '商户名称'),
         ];
     }
     

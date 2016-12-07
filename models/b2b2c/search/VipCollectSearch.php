@@ -63,6 +63,10 @@ class VipCollectSearch extends VipCollect
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'product.name' => [
         						'asc'  => ['product.name' => SORT_ASC],
         						'desc' => ['product.name' => SORT_DESC],
@@ -109,6 +113,7 @@ class VipCollectSearch extends VipCollect
         
         $query->andFilterWhere(['like', 'product.name', $this->product_name])
         ->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        ->andFilterWhere(['like', 'vip.vip_name', $this->vip_name])
         ->andFilterWhere(['like', 'package.name', $this->package_name])
         ->andFilterWhere(['like', 'case.name', $this->case_name])
         ->andFilterWhere(['like', 'refVip.vip_name', $this->ref_vip_name]);

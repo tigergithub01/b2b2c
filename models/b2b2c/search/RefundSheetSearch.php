@@ -66,6 +66,10 @@ class RefundSheetSearch extends RefundSheet
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
         				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
         				'merchant.vip_id' => [
         						'asc'  => ['merchant.vip_id' => SORT_ASC],
         						'desc' => ['merchant.vip_id' => SORT_DESC],
@@ -79,12 +83,16 @@ class RefundSheetSearch extends RefundSheet
         						'desc' => ['return.code' => SORT_DESC],
         				],
         				'refundApply.code' => [
-        						'asc'  => ['order.code' => SORT_ASC],
-        						'desc' => ['order.code' => SORT_DESC],
+        						'asc'  => ['refundApply.code' => SORT_ASC],
+        						'desc' => ['refundApply.code' => SORT_DESC],
         				],
         				'status0.param_val' => [
         						'asc'  => ['status0.param_val' => SORT_ASC],
         						'desc' => ['status0.param_val' => SORT_DESC],
+        				],
+        				'user.user_id' => [
+        						'asc'  => ['user.user_id' => SORT_ASC],
+        						'desc' => ['user.user_id' => SORT_DESC],
         				],
         		])
         ]);
@@ -116,7 +124,10 @@ class RefundSheetSearch extends RefundSheet
 
         $query->andFilterWhere(['like', 'refundSheet.code', $this->code])
             ->andFilterWhere(['like', 'refundSheet.memo', $this->memo])
-        	->andFilterWhere(['like', 'order.code', $this->order_code]);
+        	->andFilterWhere(['like', 'order.code', $this->order_code])
+        	->andFilterWhere(['like', 'refundApply.code', $this->refund_apply_code])
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_id])
+        	->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
 
         return $dataProvider;
     }

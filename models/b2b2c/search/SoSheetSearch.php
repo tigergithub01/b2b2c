@@ -141,7 +141,8 @@ class SoSheetSearch extends SoSheet
             ->andFilterWhere(['like', 'so.detail_address', $this->detail_address])
             ->andFilterWhere(['like', 'so.invoice_header', $this->invoice_header])
             ->andFilterWhere(['like', 'so.cancel_reason', $this->cancel_reason])
-        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        	->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
         
         if($this->start_date){
         	$query->andFilterWhere(['>=', 'so.order_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);

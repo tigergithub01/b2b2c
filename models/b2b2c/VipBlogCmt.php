@@ -26,6 +26,14 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
 {
 	/* 回帖标识（用来区分直接回帖与评论回复） */
 	public $blog_reply_flag;
+	
+	/* 会员名称（查询用） */
+	public $vip_name;
+	
+	/* 会员名称（查询用） */
+	public $blog_name;
+	
+	
     
     
     /**
@@ -45,6 +53,8 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
     	// bypass scenarios() implementation in the parent class
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'blog_reply_flag';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'blog_name';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -72,7 +82,7 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', '主键'),
+            'id' => Yii::t('app', '编号'),
             'content' => Yii::t('app', '回复内容'),
             'blog_id' => Yii::t('app', '关联帖子编号'),
             'reply_date' => Yii::t('app', '回复日期'),
@@ -81,6 +91,9 @@ class VipBlogCmt extends \app\models\b2b2c\BasicModel
             'parent_id' => Yii::t('app', '上级评论'),
         	'blog.name' => Yii::t('app', '帖子标题'),
         	'vip.vip_name' => Yii::t('app', '回帖人'),
+        	'vip_name' => Yii::t('app', '回帖人'),
+        	'blog_name' => Yii::t('app', '帖子标题'),
+        	'parent.content' => Yii::t('app', '上级评论'),
         	'status0.param_val' => Yii::t('app', '是否显示'),
         ];
     }

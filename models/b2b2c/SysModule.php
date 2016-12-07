@@ -43,7 +43,8 @@ class SysModule extends \app\models\b2b2c\BasicModel
         return [
             [['code', 'name', 'menu_flag', 'status'], 'required'],
             [['parent_id', 'menu_flag', 'status'], 'integer'],
-            [['code', 'module', 'controller', 'action'], 'string', 'max' => 30],
+            [['code', 'module', 'action'], 'string', 'max' => 30],
+        	[['controller'], 'string', 'max' => 100],
             [['name'], 'string', 'max' => 60],
             [['url'], 'string', 'max' => 200],
             [['code'], 'unique'],

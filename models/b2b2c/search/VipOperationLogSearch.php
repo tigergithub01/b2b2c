@@ -43,8 +43,7 @@ class VipOperationLogSearch extends VipOperationLog
     {
         $query = VipOperationLog::find()->alias('log')
     	->joinWith('module mod')
-    	->joinWith('vip vip')
-        ->where(['log.op_module' => 'vip']);
+    	->joinWith('vip vip');
 
         // add conditions that should always apply here
 
@@ -64,6 +63,10 @@ class VipOperationLogSearch extends VipOperationLog
         				'vip.vip_id' => [
         						'asc'  => ['vip.vip_id' => SORT_ASC],
         						'desc' => ['vip.vip_id' => SORT_DESC],
+        				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
         				],
         		])
         ]);

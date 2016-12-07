@@ -41,6 +41,9 @@ class VipBlog extends \app\models\b2b2c\BasicModel
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
+	/* 会员名称（查询用） */
+	public $vip_name;
+	
 	/* 起始日期 （查询用） */
 	public $start_date;
 	
@@ -66,6 +69,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     	// bypass scenarios() implementation in the parent class
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
     	return $scenarios;
@@ -102,7 +106,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
             'id' => Yii::t('app', '主键编号'),
         	'name' => Yii::t('app', '帖子标题'),
             'blog_type' => Yii::t('app', '博客频道'),
-            'blog_flag' => Yii::t('app', '博客分类：会员博客，商户博客'),
+            'blog_flag' => Yii::t('app', /* '博客分类(会员博客，商户博客)' */'博客分类'),
             'vip_id' => Yii::t('app', '关联会员编号'),
             'content' => Yii::t('app', '发布内容'),
             'create_date' => Yii::t('app', '发布时间'),
@@ -113,12 +117,14 @@ class VipBlog extends \app\models\b2b2c\BasicModel
             'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
         	'vip.vip_id' => Yii::t('app', '会员编号'),
+        	'vip.vip_name' => Yii::t('app', '会员(商户)名称'),
         	'blogType.name' => Yii::t('app', '博客频道'),
-        	'blogFlag.param_val' => Yii::t('app', '博客分类(会员博客，商户博客)'),
+        	'blogFlag.param_val' => Yii::t('app', /* '博客分类(会员博客，商户博客)' */'博客分类'),
         	'status0.param_val' => Yii::t('app', '是否显示'),
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
         	'auditUser.user_id' => Yii::t('app', '审核人'),
         	'vip_no' => Yii::t('app', '会员编号'),
+        	'vip_name' => Yii::t('app', '会员(商户)名称'),
         	'start_date' => Yii::t('app', '日期'),
         	'end_date' => Yii::t('app', '结束日期'),
         	'imageFiles' => Yii::t('app', '帖子图片'),

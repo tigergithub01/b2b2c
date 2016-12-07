@@ -47,6 +47,9 @@ class VipCase extends \app\models\b2b2c\BasicModel
 	/* 商户编号（查询用） */
 	public $vip_no;
 	
+	/* 商户名称（查询用） */
+	public $vip_name;
+	
 	//案例封面
 	public $imageFile;
 	
@@ -66,6 +69,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
     	// bypass scenarios() implementation in the parent class
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -132,6 +136,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
         	'vip.vip_id' => Yii::t('app', '商户编号'),
         	'vip.vip_name' => Yii::t('app', '商户名称'),
         	'vip_no' => Yii::t('app', '商户编号'),
+        	'vip_name' => Yii::t('app', '商户名称'),
         	'imageFile' => Yii::t('app', '案例封面'),
         	'imageFiles' => Yii::t('app', '案例相册'),	
         ];

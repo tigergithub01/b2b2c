@@ -28,7 +28,7 @@ class VipBlogSearch extends VipBlog
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -108,7 +108,8 @@ class VipBlogSearch extends VipBlog
         $query->andFilterWhere(['like', 'vipBlog.content', $this->content])
             ->andFilterWhere(['like', 'vipBlog.audit_memo', $this->audit_memo])
         	->andFilterWhere(['like', 'vipBlog.name', $this->name])
-        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no]);
+        	->andFilterWhere(['like', 'vip.vip_id', $this->vip_no])
+        	->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
         
         if($this->start_date){
         	$query->andFilterWhere(['>=', 'vipBlog.create_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);

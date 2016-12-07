@@ -42,7 +42,8 @@ class VipModule extends \app\models\b2b2c\BasicModel
         return [
             [['code', 'name', 'controller', 'action', 'menu_flag', 'status', 'merchant_flag'], 'required'],
             [['parent_id', 'menu_flag', 'status', 'merchant_flag'], 'integer'],
-            [['code', 'module', 'controller', 'action'], 'string', 'max' => 30],
+            [['code', 'module', 'action'], 'string', 'max' => 30],
+        	[['controller'], 'string', 'max' => 100],
             [['name'], 'string', 'max' => 60],
             [['url'], 'string', 'max' => 200],
             [['code'], 'unique'],

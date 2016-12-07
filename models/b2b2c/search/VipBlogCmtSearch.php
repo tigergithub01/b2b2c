@@ -53,6 +53,25 @@ class VipBlogCmtSearch extends VipBlogCmt
             //'pagination' => ['pagesize' => '15',],
             
         ]);
+        
+        
+        //add sorts
+        $dataProvider->setSort([
+        		'attributes' => array_merge($dataProvider->getSort()->attributes,[
+        				'blog.name' => [
+        						'asc'  => ['blog.name' => SORT_ASC],
+        						'desc' => ['blog.name' => SORT_DESC],
+        				],
+        				'vip.vip_name' => [
+        						'asc'  => ['vip.vip_name' => SORT_ASC],
+        						'desc' => ['vip.vip_name' => SORT_DESC],
+        				],
+        				'status0.param_val' => [
+        						'asc'  => ['status0.param_val' => SORT_ASC],
+        						'desc' => ['status0.param_val' => SORT_DESC],
+        				],
+        		])
+        ]);
 
         $this->load($params);
 
@@ -72,7 +91,9 @@ class VipBlogCmtSearch extends VipBlogCmt
             'vipBlogCmt.parent_id' => $this->parent_id,
         ]);
 
-        $query->andFilterWhere(['like', 'vipBlogCmt.content', $this->content]);
+        $query->andFilterWhere(['like', 'vipBlogCmt.content', $this->content])
+        		->andFilterWhere(['like', 'blog.name', $this->blog_name])
+        		->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
         
         if($this->blog_reply_flag){
 //         	$query->andWhere(['IS', 'vipBlogCmt.parent_id', NULL]);

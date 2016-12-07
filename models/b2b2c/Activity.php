@@ -25,6 +25,7 @@ use Yii;
  * @property string $audit_status
  * @property string $audit_user_id
  * @property string $audit_date
+ * @property string $audit_memo
  *
  * @property ActBuyDiscount[] $actBuyDiscounts
  * @property ActBuyGivingDetail[] $actBuyGivingDetails
@@ -46,6 +47,9 @@ class Activity extends \app\models\b2b2c\BasicModel
 	/* 商户编号（查询用） */
 	public $vip_no;
 	
+	/* 商户名称（查询用） */
+	public $vip_name;
+	
 	//封面
 	public $imageFile;
 	
@@ -65,6 +69,7 @@ class Activity extends \app\models\b2b2c\BasicModel
     	// bypass scenarios() implementation in the parent class
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -80,6 +85,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             [['start_time', 'end_date', 'audit_date'], 'safe'],
             [['package_price', 'deposit_amount', 'market_price'], 'number'],
             [['name'], 'string', 'max' => 30],
+        	[['audit_memo'], 'string', 'max' => 255],
             [['description', 'img_url', 'thumb_url', 'img_original'], 'string', 'max' => 255],
             [['activity_type'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityType::className(), 'targetAttribute' => ['activity_type' => 'id']],
             [['vip_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vip::className(), 'targetAttribute' => ['vip_id' => 'id']],
@@ -114,9 +120,11 @@ class Activity extends \app\models\b2b2c\BasicModel
             'audit_status' => Yii::t('app', /* '审核状态：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
+        	'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
         	'activityType.name' => '活动类型',
         	'vip.vip_id' => '商家编号',
         	'vip.vip_name' => '商家名称',
+        	'vip_name' => '商家名称',
         	'auditStatus.param_val' => '审核状态',
         	'auditUser.user_id' => '审核人',
         	'actScopes.param_val' => '是否全场参与活动',

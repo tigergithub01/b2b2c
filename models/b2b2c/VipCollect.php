@@ -32,6 +32,10 @@ class VipCollect extends \app\models\b2b2c\BasicModel
 	/* 会员编号（查询用） */
 	public $vip_no;
 	
+	/* 会员名称（查询用） */
+	public $vip_name;
+	
+	
 	/* 套餐名称 （查询用） */
 	public $package_name;
 	
@@ -67,6 +71,7 @@ class VipCollect extends \app\models\b2b2c\BasicModel
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'product_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'package_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'case_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'ref_vip_name';
@@ -109,6 +114,7 @@ class VipCollect extends \app\models\b2b2c\BasicModel
             'ref_vip_id' => Yii::t('app', '关注商家'),
         		
         	'vip.vip_id' => Yii::t('app', '会员编号'),
+        	'vip.vip_name' => Yii::t('app', '会员名称'),
         	'product.name' => Yii::t('app', '关联产品'),
         	'package.name' => Yii::t('app', '关联团体服务'),
         	'case.name' => Yii::t('app', '关联案例'),
@@ -116,6 +122,7 @@ class VipCollect extends \app\models\b2b2c\BasicModel
         	'collectType.param_val' => Yii::t('app', '收藏类型'),
         		
         	'vip_no' => Yii::t('app', '会员编号'),
+        	'vip_name' => Yii::t('app', '会员名称'),
         	'product_name' => Yii::t('app', '关联产品'),
         	'package_name' => Yii::t('app', '关联团体服务'),
         	'case_name' => Yii::t('app', '关联案例'),

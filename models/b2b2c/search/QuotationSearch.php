@@ -104,7 +104,8 @@ class QuotationSearch extends Quotation
             ->andFilterWhere(['like', 'quot.mobile', $this->mobile])
             ->andFilterWhere(['like', 'quot.related_service', $this->related_service])
             ->andFilterWhere(['like', 'quot.service_style', $this->service_style])
-            ->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
+            ->andFilterWhere(['like', 'vip.vip_name', $this->vip_name])
+            ->andFilterWhere(['like', 'merchant.vip_name', $this->merchant_name]);
 
         return $dataProvider;
     }

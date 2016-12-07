@@ -42,7 +42,9 @@ class SysOperationLogSearch extends SysOperationLog
     public function search($params)
     {
 //         $query = SysOperationLog::find();
-    	$query = SysOperationLog::find()->alias('op')->joinWith("user usr");
+    	$query = SysOperationLog::find()->alias('op')
+    	->joinWith("user user")
+    	->joinWith("module module");
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -55,8 +57,12 @@ class SysOperationLogSearch extends SysOperationLog
         $dataProvider->setSort([
         		'attributes' => array_merge($dataProvider->getSort()->attributes,[
         				'user.user_id' => [
-        						'asc'  => ['usr.user_id' => SORT_ASC],
-        						'desc' => ['usr.user_id' => SORT_DESC],
+        						'asc'  => ['user.user_id' => SORT_ASC],
+        						'desc' => ['user.user_id' => SORT_DESC],
+        				],
+        				'module.name' => [
+        						'asc'  => ['module.name' => SORT_ASC],
+        						'desc' => ['module.name' => SORT_DESC],
         				],
         		])
         ]);

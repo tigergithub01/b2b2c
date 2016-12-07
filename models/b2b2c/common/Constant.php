@@ -18,5 +18,16 @@ class Constant{
 	const DATE_PICKER_FORMAT='yyyy-mm-dd';
 	
 	
+	/* 日期时分秒格式 */
+	const DATE_TIME_FORMAT='Y-m-d H:i:s';
+	
+	/* 日期格式  */
+	const DATE_FORMAT='Y-m-d';
+	
+	/* 时分秒格式  */
+	const TIME_FORMAT='H:i:s';	
+	
+	
+	
 	
 }

@@ -44,7 +44,8 @@ class SysOperationLog extends \app\models\b2b2c\BasicModel
             [['user_id', 'module_id'], 'integer'],
             [['op_date'], 'safe'],
             [['op_desc'], 'string'],
-            [['op_ip_addr', 'op_module', 'op_controller'], 'string', 'max' => 30],
+            [['op_ip_addr', 'op_module'], 'string', 'max' => 30],
+        	[['op_controller'], 'string', 'max' => 100],
             [['op_browser_type'], 'string', 'max' => 200],
             [['op_url', 'op_referrer'], 'string', 'max' => 400],
             [['op_method', 'op_action'], 'string', 'max' => 20],
@@ -73,6 +74,7 @@ class SysOperationLog extends \app\models\b2b2c\BasicModel
             'op_controller' => Yii::t('app', '控制器'),
             'op_action' => Yii::t('app', '操作'),
         	'user.user_id' => Yii::t('app', '关联用户'),
+        	'module.name' => Yii::t('app', '模块名称'),
         ];
     }
 
