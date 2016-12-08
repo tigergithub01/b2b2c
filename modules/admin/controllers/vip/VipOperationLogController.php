@@ -40,7 +40,9 @@ class VipOperationLogController extends BaseAuthController
     {
         $searchModel = new VipOperationLogSearch();
         $searchModel->op_module='vip';
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $queryParams = Yii::$app->request->queryParams;
+//         $queryParams['VipOperationLogSearch']['op_module']='vip';        
+        $dataProvider = $searchModel->search($queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

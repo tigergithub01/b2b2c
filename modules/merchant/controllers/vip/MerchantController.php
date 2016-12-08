@@ -2,32 +2,28 @@
 
 namespace app\modules\merchant\controllers\vip;
 
-use Yii;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\search\MerchantSearch;
-use app\modules\merchant\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use app\common\utils\CommonUtils;
+use app\common\utils\image\ImageUtils;
 use app\common\utils\MsgUtils;
+use app\models\b2b2c\common\Constant;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\search\VipSearch;
+use app\models\b2b2c\SysConfig;
+use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\SysRegion;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\VipExtend;
+use app\models\b2b2c\VipOrganization;
+use app\models\b2b2c\VipProductType;
 use app\models\b2b2c\VipRank;
 use app\models\b2b2c\VipType;
-use app\models\b2b2c\SysParameter;
-use app\models\b2b2c\SysUser;
-use app\models\b2b2c\VipOrganization;
-use app\models\b2b2c\VipExtend;
-use app\models\b2b2c\SysRegion;
-use yii\web\UploadedFile;
-use app\common\utils\image\ImageUtils;
-use app\models\b2b2c\common\Constant;
-use app\models\b2b2c\SysConfig;
-use app\modules\admin\models\AdminConst;
-use app\common\utils\CommonUtils;
-use app\models\b2b2c\Product;
-use app\models\b2b2c\app\models\b2b2c;
-use app\models\b2b2c\ProductType;
-use app\models\b2b2c\VipProductType;
+use app\modules\merchant\common\controllers\BaseAuthController;
 use app\modules\merchant\models\MerchantConst;
+use Yii;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -57,8 +53,10 @@ class MerchantController extends BaseAuthController
      */
     public function actionIndex()
     {
-        $searchModel = new MerchantSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new VipSearch();
+        $queryParams = Yii::$app->request->queryParams;
+        $queryParams['VipSearch']['merchant_flag'] = SysParameter::yes;
+        $dataProvider = $searchModel->search($queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

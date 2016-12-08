@@ -2,37 +2,68 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\common\controllers\BaseAuthController;
+use app\modules\admin\service\system\SysUserService;
 use Yii;
 use yii\web\Controller;
-use app\modules\admin\common\controllers\BaseAuthController;
-use app\modules\admin\models\AdminConst;
-use app\modules\admin\service\system\SysUserService;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\VipCase;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\RefundSheetApply;
 
 /**
  * Default controller for the `admin` module
  */
-class DefaultController extends BaseAuthController
-{
-// 	public $layout = "main-default";
+class DefaultController extends BaseAuthController {
+	// public $layout = "main-default";
 	public $layout = "main";
-    
-    /**
-     * Renders the index view for the module
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return $this->render('index');
-    } 
-    
-    /**
-     * 注销
-     */
-    public function actionLogout()
-    {
-    	$userService = new SysUserService();
-    	$userService->logout();
-    	
-    	Yii::$app->getResponse()->redirect("/admin/system/login/index");
-    }
+	
+	/**
+	 * Renders the index view for the module
+	 *
+	 * @return string
+	 */
+	public function actionIndex() {
+		// 待审核商户
+		$need_approve_merchant_count = Vip::find ()->where ( [ 
+				'merchant_flag' => SysParameter::yes,
+				'audit_status' => SysParameter::audit_need_approve 
+		] )->count ();
+		
+		// 待审核案例
+		$need_approve_case_count = VipCase::find ()->where ( [ 
+				'audit_status' => SysParameter::audit_need_approve 
+		] )->count ();
+		
+		// 待审核团体服务
+		$need_approve_act_count = Activity::find ()->where ( [ 
+				'audit_status' => SysParameter::audit_need_approve 
+		] )->count ();
+		
+		// 待处理退款申请
+		$need_approve_refund_apply_count = RefundSheetApply::find ()->where ( [ 
+				'status' => RefundSheetApply::status_need_approve 
+		] )->count ();
+		
+		// output
+		$model ['need_approve_merchant_count'] = $need_approve_merchant_count;
+		$model ['need_approve_case_count'] = $need_approve_case_count;
+		$model ['need_approve_act_count'] = $need_approve_act_count;
+		$model ['need_approve_refund_apply_count'] = $need_approve_refund_apply_count;
+		
+		return $this->render ( 'index', [ 
+				'model' => $model 
+		] );
+	}
+	
+	/**
+	 * 注销
+	 */
+	public function actionLogout() {
+		$userService = new SysUserService ();
+		$userService->logout ();
+		
+		Yii::$app->getResponse ()->redirect ( "/admin/system/login/index" );
+	}
 }

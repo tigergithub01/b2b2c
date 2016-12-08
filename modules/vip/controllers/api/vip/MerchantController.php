@@ -6,19 +6,19 @@ use app\common\utils\CommonUtils;
 use app\common\utils\UrlUtils;
 use app\models\b2b2c\common\PaginationObj;
 use app\models\b2b2c\Product;
-use app\models\b2b2c\search\MerchantSearch;
+use app\models\b2b2c\ProductComment;
+use app\models\b2b2c\search\VipSearch;
+use app\models\b2b2c\SoSheet;
+use app\models\b2b2c\SoSheetVip;
 use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\Vip;
+use app\models\b2b2c\VipCase;
+use app\models\b2b2c\VipExtend;
+use app\models\b2b2c\VipOrganization;
 use app\modules\vip\common\controllers\BaseApiController;
+use app\modules\vip\service\vip\MerchantService;
 use Yii;
 use yii\helpers\ArrayHelper;
-use app\modules\vip\service\vip\MerchantService;
-use app\models\b2b2c\VipOrganization;
-use app\models\b2b2c\VipExtend;
-use app\models\b2b2c\SoSheet;
-use app\models\b2b2c\ProductComment;
-use app\models\b2b2c\VipCase;
-use app\models\b2b2c\SoSheetVip;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -48,13 +48,18 @@ class MerchantController extends BaseApiController
      */
     public function actionIndex()
     {
-        /* $searchModel = new MerchantSearch();
+        /* $searchModel = new VipSearch();
         $params = Yii::$app->request->queryParams;
-        $params['MerchantSearch']['audit_status'] = SysParameter::audit_approved; //审核通过
-        $dataProvider = $searchModel->search($params); */   	
-    	$searchModel = new MerchantSearch();
-    	$searchModel->audit_status = SysParameter::audit_approved;
-    	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params['VipSearch']['audit_status'] = SysParameter::audit_approved; //审核通过
+        $dataProvider = $searchModel->search($params); */   
+    	
+    	$searchModel = new VipSearch();
+    	$queryParams = Yii::$app->request->queryParams;
+    	$queryParams['VipSearch']['merchant_flag'] = SysParameter::yes;
+    	$queryParams['VipSearch']['audit_status'] = SysParameter::audit_approved;
+    	$dataProvider = $searchModel->search($queryParams);    	
+    	
+    	
         $models = $dataProvider->getModels();
         foreach ($models as $vip) {
         	$vip->img_url = UrlUtils::formatUrl($vip->img_url);

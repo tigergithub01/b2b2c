@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\modules\admin\Module;
+use app\models\b2b2c\common\Constant;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\search\SysOperationLogSearch */
@@ -44,6 +45,17 @@ use app\modules\admin\Module;
     <?php // echo $form->field($model, 'module_id') ?>
 
     <?php // echo $form->field($model, 'op_date') ?>
+    
+    <?= $form->field($model, 'start_date')->widget(dosamigos\datepicker\DateRangePicker::className(), [
+    		'attributeTo' => 'end_date',
+    		'language' => Yii::$app->language,
+    		'clientOptions' => [
+    				'autoclose' => true,
+    				'format' => Constant::DATE_PICKER_FORMAT,
+    			]
+          ]) ?>
+    
+    <?php echo $form->field($model, 'user_no') ?>
 
     <?= $form->field($model, 'op_ip_addr') ?>
 
