@@ -120,7 +120,7 @@ class Activity extends \app\models\b2b2c\BasicModel
             'audit_status' => Yii::t('app', /* '审核状态：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
-        	'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
+        	'audit_memo' => Yii::t('app', '审核意见'),
         	'activityType.name' => '活动类型',
         	'vip.vip_id' => '商家编号',
         	'vip.vip_name' => '商家名称',

@@ -57,7 +57,7 @@ class SysAuditLog extends \app\models\b2b2c\BasicModel
             'audit_operate' => Yii::t('app', '审核动作：审核通过，审核不通过'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
-            'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
+            'audit_memo' => Yii::t('app', '审核意见'),
         ];
     }
 

@@ -216,7 +216,7 @@ class Vip extends \app\models\b2b2c\BasicModel
             'audit_status' => Yii::t('app', /* '审核状态(商户字段)：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
-            'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
+            'audit_memo' => Yii::t('app', '审核意见'),
             'vip_type_id' => Yii::t('app', /*'会员类型（婚礼人类型：策划师，主持人，摄影师，化妆师，摄像师）'*/'婚礼人类型'),
             'sex' => Yii::t('app', '性别'),
             'nick_name' => Yii::t('app', '会员昵称'),

@@ -117,7 +117,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
             'audit_status' => Yii::t('app', /* '审核状态：未审核，审核不通过，已审核' */'审核状态'),
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_date' => Yii::t('app', '审核日期'),
-            'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
+            'audit_memo' => Yii::t('app', '审核意见'),
             'cover_img_url' => Yii::t('app', /* '图片（放大后查看）(封面)' */'案例封面'),
             'cover_thumb_url' => Yii::t('app', '缩略图(封面)'),
             'cover_img_original' => Yii::t('app', '原图(封面)'),

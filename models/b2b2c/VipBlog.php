@@ -114,7 +114,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
             'audit_user_id' => Yii::t('app', '审核人'),
             'audit_status' => Yii::t('app', /* '审核状态（未审核，审核通过，审核不通过）' */'审核状态'),
             'audit_date' => Yii::t('app', '审核日期'),
-            'audit_memo' => Yii::t('app', '审核意见（不通过时必须填写）'),
+            'audit_memo' => Yii::t('app', '审核意见'),
             'status' => Yii::t('app', '是否显示？1：是；0：否'),
         	'vip.vip_id' => Yii::t('app', '会员编号'),
         	'vip.vip_name' => Yii::t('app', '会员(商户)名称'),
