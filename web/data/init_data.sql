@@ -62,6 +62,7 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(9003
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(9004,9,'审核不通过',null,4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(9005,9,'用户撤销',null,5);
 
+
 insert into t_sys_parameter_type(id,name,description) values(10,'退货单状态',null);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(10001,10,'待退货',null,1);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(10002,10,'已完成',null,2);
@@ -137,9 +138,7 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(2400
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24003,24,'已退款','平台已退款',3);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24004,24,'审核不通过','商户或者平台审核不通过',4);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24005,24,'用户已撤销','用户撤销退款申请',5);
-insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24006,24,'审核中','平台待审核',6);
-
-
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(24006,24,'平台待审核','平台待审核',6);
 
 
 insert into t_sys_parameter_type(id,name,description) values(25,'退款单状态',null);

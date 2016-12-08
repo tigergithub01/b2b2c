@@ -986,7 +986,11 @@ select CONCAT('alter table ',a.table_name,' modify ',a.column_name,' decimal(20,
 	from information_schema.columns a where (a.column_name like '%price%' or a.column_name like '%amt%' or a.column_name like '%amount%') and a.data_type = 'decimal';
 
 
+select * from t_vip_operation_log;
 
+select * from t_vip_case where name = '案例-好';
+
+update t_vip_case set audit_status = '3001' where id = 12;
 
 
 
