@@ -6,6 +6,11 @@ return [
 		'Save'=>'保存',
 		'Create_Save'=>'保存',
 		'Update_Save'=>'保存',
+		
+		'submit'=>'提交审核',
+		'approve'=>'通过',
+		'reject'=>'不通过',
+		'Whether to submit?'=>'是否提交？',
 		'Are you sure you want to delete this item?'=>'是否删除该记录？',
 		'operation' => '操作',
 		'Search' => '查询',
