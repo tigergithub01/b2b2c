@@ -327,8 +327,8 @@ $(function() {
 				'page':'1',//页码
 				'per-page' : '10', //每页行数
 				'sort' : 'vip_name', //排序
-				'MerchantSearch[vip_type_id]' : '1', //商家类型
-				'MerchantSearch[vip_name]' : '', //商户名（昵称）
+				'VipSearch[vip_type_id]' : '1', //商家类型
+				'VipSearch[vip_name]' : '', //商户名（昵称）
 				},
 				'get'
 			);
