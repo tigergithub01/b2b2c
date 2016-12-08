@@ -227,6 +227,8 @@ return [
 		'Quotations'=>'订单咨询列表',
 		'Create Quotation'=>'新增订单咨询',
 		'Update Quotation'=>'编辑订单咨询',
+		'Reply Quotation'=>'回复订单咨询',
+		
 		
 		//订单咨询明细
 		'Quotation Detail'=>'订单咨询明细',

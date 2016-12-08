@@ -19,6 +19,7 @@ use app\modules\admin\models\AdminConst;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
+use app\common\utils\DateUtils;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
@@ -248,9 +249,43 @@ class VipBlogController extends BaseAuthController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-		MsgUtils::success();
-        return $this->redirect(['index']);
+    	$model = $this->findModel($id);
+    	
+    	//TODO: 权限判断
+    	
+    	//开始事务
+    	$transaction = VipBlog::getDb()->beginTransaction();
+    	try {
+    		//删除blog图片
+    		$vipBlogPhotos = VipBlogPhoto::find()->where(['blog_id' => $model->id])->all();
+    		foreach ($vipBlogPhotos as $vipBlogPhoto) {
+    			$thumb_url = iconv("UTF-8", "GBK", $vipBlogPhoto->thumb_url);
+    			$img_original = iconv("UTF-8", "GBK", $vipBlogPhoto->img_original);
+    			$img_url = iconv("UTF-8", "GBK", $vipBlogPhoto->img_url);
+    	
+    			if(is_file($thumb_url)){
+    				unlink($thumb_url);
+    			}
+    			if(file_exists($img_original)){
+    				unlink($img_original);
+    			}
+    			if(file_exists($img_url)){
+    				unlink($img_url);
+    			}
+    			$vipBlogPhoto->delete();
+    		}
+    	
+    		//删除
+    		$model->delete();
+    		$transaction->commit();
+    	}catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error("删除失败!");
+    		return $this->redirect(['index']);
+    	}
+    	
+    	MsgUtils::success();
+    	return $this->redirect(['index']);
     }
     
     /**
@@ -281,6 +316,42 @@ class VipBlogController extends BaseAuthController
     	}
     	MsgUtils::success();
     	return $this->redirect(['view','id'=>$vipBlogPhoto->blog_id]);
+    }
+    
+    
+    /**
+     * 同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionApprove($id)
+    {
+    	$model =  $this->findModel($id);
+    	$model->audit_status = SysParameter::audit_approved;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    
+    /**
+     * 不同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionReject($id)
+    {
+    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
+    	$model =  $this->findModel($id);
+    	$model->audit_memo = $audit_memo;
+    	$model->audit_status = SysParameter::audit_rejected;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

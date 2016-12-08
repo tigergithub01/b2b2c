@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            //'id',
             'name',
             // 'activity_type',
 		    //'activityType.name',
@@ -36,13 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		    //'actScopes.param_val',
             //'start_time',
             //'end_date',
-            'description',
+            'description:ntext',
 		    'market_price', 
             'package_price',
             'deposit_amount',
             //'buy_limit_num',
             // 'vip_id',
-            'vip.vip_id',
+            //'vip.vip_name',
             // 'img_url:url',
             // 'thumb_url:url',
             // 'img_original',
@@ -140,10 +140,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	        ])*/ ?>
 	        <?= Html::a('添加团队成员',['create-act-package-product', 'act_id'=>$model->id],['class' => 'btn btn-success']);?>
 	        
-	        <?php echo  Html::a(Yii::t('app', '提交审核'), ['submit', 'id' => $model->id], [
+	        <?php echo  Html::a(Yii::t('app', 'submit'), ['submit', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
-	                'confirm' => Yii::t('app', '是否确认提交?'),
+	                'confirm' => Yii::t('app', 'Whether to submit?'),
 	                'method' => 'post',
 	            ],
 	        ]) ?>

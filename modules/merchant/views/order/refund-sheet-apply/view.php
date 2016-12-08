@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\merchant\Module;
+use app\models\b2b2c\RefundSheetApply;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\RefundSheetApply */
@@ -57,6 +58,25 @@ $this->params['breadcrumbs'][] = $this->title;
 	                'method' => 'post',
 	            ],
 	        ])*/ ?>
+	        
+		  
+		  <?php if($model->status==RefundSheetApply::status_need_confirm) {?>    
+		  		 <?php echo  Html::a(Yii::t('app', 'approve'), ['approve', 'id' => $model->id], [
+		            'class' => 'btn btn-primary',
+		            'data' => [
+		                'confirm' => Yii::t('app', 'Whether to submit?'),
+		                'method' => 'post',
+		            ],
+		        ]) ?>
+		        	  
+		        <?php echo  Html::a(Yii::t('app', 'reject'), ['reject', 'id' => $model->id], [
+		            'class' => 'btn btn-danger',
+		            'data' => [
+		                'confirm' => Yii::t('app', 'Whether to submit?'),
+		                'method' => 'post',
+		            ],
+		        ]) ?>
+	      <?php }?>
 	    </div>
     
     </div>

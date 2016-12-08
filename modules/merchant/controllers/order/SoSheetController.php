@@ -334,6 +334,42 @@ class SoSheetController extends BaseAuthController
     	
     	return $this->redirect(['view','id'=>$soSheetDetail->order_id]);
     }
+    
+    
+    /**
+     * 确认接单
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionSchedule($id)
+    {
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	$model =  $this->findModel($id);
+    	//TODO：权限判断
+    	
+    	$model->order_status = SoSheet::order_need_service;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    
+    /**
+     * 确认服务完成
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCompleted($id)
+    {
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	$model =  $this->findModel($id);
+    	//TODO：权限判断
+    	
+    	$model->order_status = SoSheet::order_completed;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
 
     /**
      * Finds the SoSheet model based on its primary key value.

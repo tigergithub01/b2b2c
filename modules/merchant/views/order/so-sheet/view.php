@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\merchant\Module;
+use app\models\b2b2c\SoSheet;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\SoSheet */
@@ -138,6 +139,27 @@ $this->params['breadcrumbs'][] = $this->title;
 	            ],
 	        ])*/ ?>
 	        <?php // echo Html::a('添加订单明细',['create-so-sheet-detail', 'order_id'=>$model->id],['class' => 'btn btn-success']);?>
+	        
+	      <?php if($model->order_status==SoSheet::order_need_schedule) {?>
+		       <?php echo  Html::a(Yii::t('app', '接单'), ['schedule', 'id' => $model->id], [
+		            'class' => 'btn btn-primary',
+		            'data' => [
+		                'confirm' => Yii::t('app', '是否确认接单?'),
+		                'method' => 'post',
+		            ],
+		        ]) ?>
+		  <?php }?>
+		  
+		  <?php if($model->order_status==SoSheet::order_need_service) {?>      
+		        <?php echo  Html::a(Yii::t('app', '确认服务完成'), ['completed', 'id' => $model->id], [
+		            'class' => 'btn btn-primary',
+		            'data' => [
+		                'confirm' => Yii::t('app', '是否确认服务完成?'),
+		                'method' => 'post',
+		            ],
+		        ]) ?>
+	      <?php }?>
+	        
 	    </div>
 	</div> 
 

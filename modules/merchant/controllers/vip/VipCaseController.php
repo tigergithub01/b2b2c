@@ -360,26 +360,50 @@ class VipCaseController extends BaseAuthController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        $vipCasePhotos = VipCasePhoto::find()->where(['case_id' => $id])->all();
-        foreach ($vipCasePhotos as $vipCasePhoto) {
-	        $thumb_url = iconv("UTF-8", "GBK", $vipCasePhoto->thumb_url);
-	    	$img_original = iconv("UTF-8", "GBK", $vipCasePhoto->img_original);
-	    	$img_url = iconv("UTF-8", "GBK", $vipCasePhoto->img_url);
-	    	 
-	    	if(is_file($thumb_url)){
-	    		unlink($thumb_url);
-	    	}
-	    	if(file_exists($img_original)){
-	    		unlink($img_original);
-	    	}
-	    	if(file_exists($img_url)){
-	    		unlink($img_url);
-	    	}
-        }       
-        
-		MsgUtils::success();
-        return $this->redirect(['index']);
+    	$model = $this->findModel($id);
+    	
+    	//TODO: 权限判断
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	if($model->vip_id != $vip_id){
+    		MsgUtils::error("非法操作！");
+    		return $this->redirect(['index']);
+    	}
+    	
+    	//开始事务
+    	$transaction = VipCase::getDb()->beginTransaction();
+    	try{
+    		//删除图片
+    		$vipCasePhotos = VipCasePhoto::find()->where(['case_id' => $id])->all();
+    		foreach ($vipCasePhotos as $vipCasePhoto) {
+    			$thumb_url = iconv("UTF-8", "GBK", $vipCasePhoto->thumb_url);
+    			$img_original = iconv("UTF-8", "GBK", $vipCasePhoto->img_original);
+    			$img_url = iconv("UTF-8", "GBK", $vipCasePhoto->img_url);
+    			 
+    			if(is_file($thumb_url)){
+    				unlink($thumb_url);
+    			}
+    			if(file_exists($img_original)){
+    				unlink($img_original);
+    			}
+    			if(file_exists($img_url)){
+    				unlink($img_url);
+    			}
+    			$vipCasePhoto->delete();
+    		}
+    		 
+    		//删除文字内容
+    		$model->delete();
+    		
+    		$transaction->commit();
+    		 
+    	}catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error("删除失败!");
+    		return $this->redirect(['index']);
+    	}
+    	
+    	MsgUtils::success();
+    	return $this->redirect(['index']);
     }
     
     /**
@@ -420,10 +444,16 @@ class VipCaseController extends BaseAuthController
      */
     public function actionSubmit($id)
     {
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
     	$model =  $this->findModel($id);
+    	$vip = Vip::findOne($vip_id);
+    	if($vip->audit_status!=SysParameter::audit_approved){
+    		MsgUtils::warning("营业信息审核通过后，才能提交！");
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
+    	
+    	//修改案例状态-待审核
     	$model->audit_status = SysParameter::audit_need_approve;
-    	 
-    	//TODO:根据状态判断能否提交
     	$model->save();
     	MsgUtils::success();
     	return $this->render('view', [

@@ -51,7 +51,7 @@ class VipBlogController extends BaseAuthController
     {
         $searchModel = new VipBlogSearch();
         $searchModel->vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
-        
+        $searchModel->status=SysParameter::yes;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -84,7 +84,15 @@ class VipBlogController extends BaseAuthController
      */
     public function actionCreate()
     {
-        $model = new VipBlog();
+    	//TODO:根据状态判断能否提交
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	$vip = Vip::findOne($vip_id);
+    	if($vip->audit_status!=SysParameter::audit_approved){
+    		MsgUtils::warning("营业信息审核通过后，才能提交！");
+    		return $this->redirect(['index']);
+    	}
+    	
+    	$model = new VipBlog();
         $model->create_date = \app\common\utils\DateUtils::formatDatetime();
         $model->update_date = \app\common\utils\DateUtils::formatDatetime();
         $model->audit_status = SysParameter::audit_need_approve;
@@ -253,15 +261,49 @@ class VipBlogController extends BaseAuthController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-		
-    	//逻辑删除
-    	/* $model = $this->findModel($id);
-    	$model->status = SysParameter::no;
-    	$model->save();   	 */
     	
-		MsgUtils::success();
-        return $this->redirect(['index']);
+    	$model = $this->findModel($id);
+    	
+    	//TODO: 判断权限
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	if($model->vip_id != $vip_id){
+    		MsgUtils::error("非法操作！");
+    		return $this->redirect(['index']);
+    	}
+    	
+    	//开始事务
+    	$transaction = VipBlog::getDb()->beginTransaction();
+    	try {
+	    	//删除blog图片
+	    	$vipBlogPhotos = VipBlogPhoto::find()->where(['blog_id' => $model->id])->all();
+	    	foreach ($vipBlogPhotos as $vipBlogPhoto) {
+	    		$thumb_url = iconv("UTF-8", "GBK", $vipBlogPhoto->thumb_url);
+	    		$img_original = iconv("UTF-8", "GBK", $vipBlogPhoto->img_original);
+	    		$img_url = iconv("UTF-8", "GBK", $vipBlogPhoto->img_url);
+	    		 
+	    		if(is_file($thumb_url)){
+	    			unlink($thumb_url);
+	    		}
+	    		if(file_exists($img_original)){
+	    			unlink($img_original);
+	    		}
+	    		if(file_exists($img_url)){
+	    			unlink($img_url);
+	    		}
+	    		$vipBlogPhoto->delete();
+	    	}
+	    	
+	    	//删除
+	    	$model->delete();
+	    	$transaction->commit();	    	
+    	}catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error("删除失败!");
+    		return $this->redirect(['index']);
+    	}
+    	 
+    	MsgUtils::success();
+    	return $this->redirect(['index']);
     }
     
     /**

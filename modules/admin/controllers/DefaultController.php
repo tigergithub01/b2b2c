@@ -11,6 +11,7 @@ use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\VipCase;
 use app\models\b2b2c\Activity;
 use app\models\b2b2c\RefundSheetApply;
+use app\models\b2b2c\VipBlog;
 
 /**
  * Default controller for the `admin` module
@@ -46,11 +47,25 @@ class DefaultController extends BaseAuthController {
 				'status' => RefundSheetApply::status_need_approve 
 		] )->count ();
 		
+		// 待审核商户动态
+		$need_approve_merchant_blog_count = VipBlog::find ()->where ( [
+				'blog_flag' => VipBlog::blog_flag_merchant,
+				'audit_status' => SysParameter::audit_need_approve
+		] )->count ();
+		
+		// 待审核用户发帖
+		$need_approve_vip_blog_count = VipBlog::find ()->where ( [
+				'blog_flag' => VipBlog::blog_flag_vip,
+				'audit_status' => SysParameter::audit_need_approve
+		] )->count ();
+		
 		// output
 		$model ['need_approve_merchant_count'] = $need_approve_merchant_count;
 		$model ['need_approve_case_count'] = $need_approve_case_count;
 		$model ['need_approve_act_count'] = $need_approve_act_count;
 		$model ['need_approve_refund_apply_count'] = $need_approve_refund_apply_count;
+		$model ['need_approve_merchant_blog_count'] = $need_approve_merchant_blog_count;
+		$model ['need_approve_vip_blog_count'] = $need_approve_vip_blog_count;
 		
 		return $this->render ( 'index', [ 
 				'model' => $model 

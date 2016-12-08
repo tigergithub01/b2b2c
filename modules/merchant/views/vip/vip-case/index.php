@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'sale_price',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}</span>',
+            'template' => '<span class=\'tbl_operation\'>{view}</span>',
 			'buttons' => [
 					'update' => function ($url, $model, $key) {
 						return (($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected)?Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['title' => '修改密码'] ):'');

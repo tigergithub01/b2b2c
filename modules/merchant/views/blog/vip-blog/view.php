@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\merchant\Module;
+use app\models\b2b2c\SysParameter;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipBlog */
@@ -29,11 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		        'attributes' => [
 		            // 'id',
             // 'blog_type',
-            'blogType.name',
+            //'blogType.name',
             //'blog_flag',
             // 'blogFlag.param_val',
             //'vip_id',
             // 'vip.vip_name',
+            'name',
             'content:ntext',
             'create_date',
             // 'update_date',
@@ -98,14 +100,17 @@ $this->params['breadcrumbs'][] = $this->title;
           
    <div class="box"> 
           <div class="box-footer">
-	    	<?php // echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	        <?php /* Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-	            'class' => 'btn btn-danger',
-	            'data' => [
-	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-	                'method' => 'post',
-	            ],
-	        ])*/ ?>
+          
+          <?php if($model->audit_status!=SysParameter::audit_approved) {?>   
+		    	<?php // echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+		        <?php  echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+		            'class' => 'btn btn-danger',
+		            'data' => [
+		                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+		                'method' => 'post',
+		            ],
+		        ])  ?>
+	       <?php }?>
 	    </div>
 	</div>
 

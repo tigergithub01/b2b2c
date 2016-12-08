@@ -21,6 +21,7 @@ use app\models\b2b2c\common\Constant;
 use app\modules\admin\models\AdminConst;
 use app\models\b2b2c\VipCasePhoto;
 use app\common\utils\CommonUtils;
+use app\common\utils\DateUtils;
 
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
@@ -347,23 +348,41 @@ class VipCaseController extends BaseAuthController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        $vipCasePhotos = VipCasePhoto::find()->where(['case_id' => $id])->all();
-        foreach ($vipCasePhotos as $vipCasePhoto) {
-	        $thumb_url = iconv("UTF-8", "GBK", $vipCasePhoto->thumb_url);
-	    	$img_original = iconv("UTF-8", "GBK", $vipCasePhoto->img_original);
-	    	$img_url = iconv("UTF-8", "GBK", $vipCasePhoto->img_url);
-	    	 
-	    	if(is_file($thumb_url)){
-	    		unlink($thumb_url);
-	    	}
-	    	if(file_exists($img_original)){
-	    		unlink($img_original);
-	    	}
-	    	if(file_exists($img_url)){
-	    		unlink($img_url);
-	    	}
-        }       
+    	$model = $this->findModel($id);
+    	//TODO: 权限判断
+    	
+    	//开始事务
+    	$transaction = VipCase::getDb()->beginTransaction();
+        try{
+        	//删除图片
+        	$vipCasePhotos = VipCasePhoto::find()->where(['case_id' => $id])->all();
+        	foreach ($vipCasePhotos as $vipCasePhoto) {
+        		$thumb_url = iconv("UTF-8", "GBK", $vipCasePhoto->thumb_url);
+        		$img_original = iconv("UTF-8", "GBK", $vipCasePhoto->img_original);
+        		$img_url = iconv("UTF-8", "GBK", $vipCasePhoto->img_url);
+        		 
+        		if(is_file($thumb_url)){
+        			unlink($thumb_url);
+        		}
+        		if(file_exists($img_original)){
+        			unlink($img_original);
+        		}
+        		if(file_exists($img_url)){
+        			unlink($img_url);
+        		}
+        		$vipCasePhoto->delete();
+        	}
+        	
+        	//删除文字内容
+        	$model->delete();
+        	
+        	$transaction->commit();
+        	
+        }catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error("删除失败!");
+    		return $this->redirect(['index']);
+    	}
         
 		MsgUtils::success();
         return $this->redirect(['index']);
@@ -397,6 +416,42 @@ class VipCaseController extends BaseAuthController
     	}
     	MsgUtils::success();
     	return $this->redirect(['view','id'=>$vipCasePhoto->case_id]);
+    }
+    
+    
+    /**
+     * 同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionApprove($id)
+    {
+    	$model =  $this->findModel($id);
+    	$model->audit_status = SysParameter::audit_approved;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    
+    /**
+     * 不同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionReject($id)
+    {
+    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
+    	$model =  $this->findModel($id);
+    	$model->audit_memo = $audit_memo;
+    	$model->audit_status = SysParameter::audit_rejected;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

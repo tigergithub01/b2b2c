@@ -16,6 +16,7 @@ use app\models\b2b2c\SysParameter;
 use app\modules\merchant\models\MerchantConst;
 use app\models\b2b2c\QuotationDetail;
 use app\models\b2b2c\Product;
+use app\common\utils\DateUtils;
 
 /**
  * QuotationController implements the CRUD actions for Quotation model.
@@ -159,7 +160,7 @@ class QuotationController extends BaseAuthController
      * @return Ambigous <string, string>
      */
     protected function renderUpdate($model){
-    	return $this->render('create', [
+    	return $this->render('update', [
     			'model' => $model,
     			'vipList' => $this->findVipList(SysParameter::no),
     			'merchantList' => $this->findVipList(SysParameter::yes),
@@ -261,6 +262,25 @@ class QuotationController extends BaseAuthController
     	}
     	 
     	return $this->redirect(['view','id'=>$quotationDetail->quotation_id]);
+    }
+    
+    
+    /**
+     * submit Activity model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionSubmit($id)
+    {
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	$model =  $this->findModel($id);
+    	 
+    	//修改案例状态-待审核
+    	$model->update_date = DateUtils::formatDatetime();
+    	$model->status = Quotation::stat_replied;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

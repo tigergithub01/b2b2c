@@ -21,6 +21,7 @@ use app\modules\admin\models\AdminConst;
 use app\models\b2b2c\common\Constant;
 use app\models\b2b2c\ActPackageProduct;
 use app\models\b2b2c\Product;
+use app\common\utils\DateUtils;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -210,12 +211,42 @@ class ActivityController extends BaseAuthController
      * @param string $id
      * @return mixed
      */
+    
+    /**
+     * Deletes an existing VipCase model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-		MsgUtils::success();
-        return $this->redirect(['index']);
+    	$model = $this->findModel($id);
+    	//TODO: 权限判断
+    	 
+    	//开始事务
+    	$transaction = Activity::getDb()->beginTransaction();
+    	try{
+    		//删除图片
+    		$detailList = ActPackageProduct::find()->where(['act_id' => $model->id])->all();
+    		foreach ($detailList as $detail) {
+    			$detail->delete();
+    		}
+    		 
+    		//删除文字内容
+    		$model->delete();
+    		 
+    		$transaction->commit();
+    		 
+    	}catch (\Exception $e) {
+    		$transaction->rollBack();
+    		MsgUtils::error($e->getMessage());
+    		return $this->redirect(['index']);
+    	}
+    
+    	MsgUtils::success();
+    	return $this->redirect(['index']);
     }
+    
     
     
     /**
@@ -278,6 +309,41 @@ class ActivityController extends BaseAuthController
     	$actPackageProduct->delete();
     	MsgUtils::success();
     	return $this->redirect(['view','id'=>$actPackageProduct->act_id]);
+    }
+    
+    /**
+     * 同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionApprove($id)
+    {
+    	$model =  $this->findModel($id);
+    	$model->audit_status = SysParameter::audit_approved;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    
+    /**
+     * 不同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionReject($id)
+    {
+    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
+    	$model =  $this->findModel($id);
+    	$model->audit_memo = $audit_memo;
+    	$model->audit_status = SysParameter::audit_rejected;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

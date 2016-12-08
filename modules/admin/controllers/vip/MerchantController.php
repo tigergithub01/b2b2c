@@ -23,6 +23,8 @@ use app\modules\admin\common\controllers\BaseAuthController;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
+use app\common\utils\DateUtils;
+use app\modules\admin\models\AdminConst;
 
 /**
  * VipController implements the CRUD actions for Vip model.
@@ -383,6 +385,42 @@ class MerchantController extends BaseAuthController
         $this->findModel($id)->delete();
 		MsgUtils::success();
         return $this->redirect(['index']);
+    }
+    
+    
+    /**
+     * 同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionApprove($id)
+    {
+    	$model =  $this->findModel($id);
+    	$model->audit_status = SysParameter::audit_approved;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    
+    /**
+     * 不同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionReject($id)
+    {
+    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
+    	$model =  $this->findModel($id);
+    	$model->audit_memo = $audit_memo;
+    	$model->audit_status = SysParameter::audit_rejected;
+    	$model->audit_date = DateUtils::formatDatetime();
+    	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

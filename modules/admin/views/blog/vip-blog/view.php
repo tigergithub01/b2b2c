@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\admin\Module;
+use app\models\b2b2c\SysParameter;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\VipBlog */
@@ -106,6 +107,27 @@ $this->params['breadcrumbs'][] = $this->title;
 	                'method' => 'post',
 	            ],
 	        ]) ?>
+	        
+	        
+	        <?php if($model->audit_status==SysParameter::audit_need_approve ) {?>    
+		  		 <?php echo  Html::a(Yii::t('app', 'approve'), ['approve', 'id' => $model->id], [
+		            'class' => 'btn btn-primary',
+		            'data' => [
+		                'confirm' => Yii::t('app', 'Whether to submit?'),
+		                'method' => 'post',
+		            ],
+		        ]) ?>
+		        
+		        	  
+		        <?php echo  Html::a(Yii::t('app', 'reject'), ['reject', 'id' => $model->id/* , 'audit_memo' => 'Reject' */], [
+		            'class' => 'btn btn-danger',
+		            'data' => [
+		                'confirm' => Yii::t('app', 'Whether to submit?'),
+		                'method' => 'post',
+		            ],
+		        ]) ?>
+	     	<?php }?>
+	     	
 	    </div>
 	</div>
 

@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\merchant\Module;
+use app\models\b2b2c\Quotation;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Quotation */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => Module::t('app', 'Quotations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    <?= DetailView::widget([
 		        'model' => $model,
 		        'attributes' => [
-		            'id',
+		            // 'id',
             'code',
             //'vip_id',
 		    'vip.vip_name',
@@ -83,13 +84,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                   <td><?= $quotationDetail->product->name?></td>
                   <td><?= $quotationDetail->price ?></td>
-                  <td><?= Html::a(Yii::t('app', 'Delete'), ['delete-quotation-detail', 'id' => $quotationDetail->id], [
-	            'class' => '',
-	            'data' => [
-	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-	                'method' => 'post',
-	            ],
-	        ]) ?></td>
+                  <td>
+                  
+                  <?php if($quotationDetail->quotation->status==Quotation::stat_need_reply || $quotationDetail->quotation->status==Quotation::stat_replied) {?>
+	                  <?= Html::a(Yii::t('app', 'Delete'), ['delete-quotation-detail', 'id' => $quotationDetail->id], [
+				            'class' => '',
+				            'data' => [
+				                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+				                'method' => 'post',
+				            ],
+				        ]) ?>
+			       <?php }?> 
+	        </td>
                 </tr>
                 <?php }?>
               </table>
@@ -100,6 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <div class="box">
 	    <div class="box-footer">
+	    <?php if($model->status==Quotation::stat_need_reply || $model->status==Quotation::stat_replied) {?>
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?php /* echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
@@ -108,7 +115,17 @@ $this->params['breadcrumbs'][] = $this->title;
 	                'method' => 'post',
 	            ],
 	        ])*/ ?>
+	        
+	        <?php echo  Html::a(Yii::t('app', '提交回复方案'), ['submit', 'id' => $model->id], [
+	            'class' => 'btn btn-primary',
+	            'data' => [
+	                'confirm' => Yii::t('app', '是否确认提交?'),
+	                'method' => 'post',
+	            ],
+	        ]) ?>
+	        
 	         <?= Html::a('添加订单咨询明细',['create-quotation-detail', 'quotation_id'=>$model->id],['class' => 'btn btn-success']);?>
+	     <?php }?>
 	    </div>
     
     </div>

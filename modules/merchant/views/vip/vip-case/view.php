@@ -123,10 +123,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	                'method' => 'post',
 	            ],
 	        ]) ?>
-	        <?php echo  Html::a(Yii::t('app', '提交审核'), ['submit', 'id' => $model->id], [
+	        <?php echo  Html::a(Yii::t('app', 'submit'), ['submit', 'id' => $model->id], [
 	            'class' => 'btn btn-primary',
 	            'data' => [
-	                'confirm' => Yii::t('app', '是否确认提交?'),
+	                'confirm' => Yii::t('app', 'Whether to submit?'),
 	                'method' => 'post',
 	            ],
 	        ]) ?>

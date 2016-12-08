@@ -157,6 +157,37 @@ class RefundSheetApplyController extends BaseAuthController
 		MsgUtils::success();
         return $this->redirect(['index']);
     }
+    
+    
+    /**
+     * 同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionApprove($id)
+    {
+    	$model =  $this->findModel($id);
+    	$model->status = RefundSheetApply::status_approved;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    
+    /**
+     * 不同意
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionReject($id)
+    {
+    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
+    	$model =  $this->findModel($id);
+    	$model->status = RefundSheetApply::status_rejected;
+    	$model->save();
+    	MsgUtils::success();
+    	return $this->redirect(['view', 'id' => $model->id]);
+    }
 
     /**
      * Finds the RefundSheetApply model based on its primary key value.

@@ -290,10 +290,17 @@ class ActivityController extends BaseAuthController
      */
     public function actionSubmit($id)
     {
-    	$model =  $this->findModel($id);
-    	$model->audit_status = SysParameter::audit_need_approve;
-    	
     	//TODO:根据状态判断能否提交
+    	$vip_id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
+    	$model =  $this->findModel($id);
+    	$vip = Vip::findOne($vip_id);
+    	if($vip->audit_status!=SysParameter::audit_approved){
+    		MsgUtils::warning("营业信息审核通过后，才能提交！");
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
+    	
+    	//更新
+    	$model->audit_status = SysParameter::audit_need_approve;
     	$model->save();
     	
 	    MsgUtils::success();

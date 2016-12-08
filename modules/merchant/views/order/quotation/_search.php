@@ -82,7 +82,7 @@ use app\modules\merchant\Module;
 	    
 	    <div class="box-footer clearfix form-group search_box">
 	    	<?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary'])?>
-	    	<?= Html::a(Module::t('app', 'Create Quotation'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?php // echo Html::a(Module::t('app', 'Create Quotation'), ['create'], ['class' => 'btn btn-success']) ?>
 	    </div>
 	
 	    <?php ActiveForm::end(); ?>

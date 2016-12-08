@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use app\models\b2b2c\common\Constant;
 
@@ -10,7 +11,49 @@ use app\models\b2b2c\common\Constant;
 ?>
 
 <div class="quotation-form">
-
+	
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title" style="visibility: visible;">咨询详情</h3>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool"
+					data-widget="collapse" data-toggle="tooltip" title="Collapse">
+					<i class="fa fa-minus"></i>
+				</button>
+			</div>
+		</div>
+		
+		<div class="box-body">
+		    <?= DetailView::widget([
+		        'model' => $model,
+		        'attributes' => [
+		            //'id',
+            'code',
+            //'vip_id',
+		    'vip.vip_name',
+            // 'order_amt',
+            // 'deposit_amount',
+            'create_date',
+            'update_date',
+            'memo:ntext',
+            //'status',
+            'status0.param_val',
+            'consignee',
+            'mobile',
+            'service_date',
+            'budget_amount',
+            //'related_service',
+            'related_service_names',
+            //'service_style',
+            'serviceStyle.param_val',
+            //'merchant_id',
+		   // 'merchant.vip_name',
+		   //order_id,
+		    // 'order.code',
+		        ],
+		    ]) ?>
+    	</div>
+	</div>	
 	<div class="box box-primary">
 		<div class="box-header with-border">
 			<h3 class="box-title" style="visibility: visible;"><?= Html::encode($this->title) ?></h3>
@@ -21,6 +64,9 @@ use app\models\b2b2c\common\Constant;
 				</button>
 			</div>
 		</div>
+		
+		
+    	
 
 	    <?php $form = ActiveForm::begin([
 	    	'options' => [ 
@@ -38,11 +84,11 @@ use app\models\b2b2c\common\Constant;
     	<?php //echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
-	    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+	    <?php // echo $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
 
     <?php // eho $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'order_amt')->textInput(['maxlength' => true]) ?>
 
@@ -50,59 +96,59 @@ use app\models\b2b2c\common\Constant;
 
     <?php //  echo $form->field($model, 'create_date')->textInput() ?>
     
-    <?= $form->field($model, 'create_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* echo $form->field($model, 'create_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
     <?php // echo $form->field($model, 'update_date')->textInput() ?>
     
-    <?= $form->field($model, 'update_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
+    <?php /* echo $form->field($model, 'update_date')->widget(dosamigos\datetimepicker\DateTimePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_TIME_PICKER_FORMAT,
     				'todayBtn' => true,
     			]
-          ]) ?>
+          ])*/ ?>
 
-    <?= $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
+    <?php // echo $form->field($model, 'memo')->textarea(['rows' => 6]) ?>
 
     <?php // echo $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($statusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'status')->dropDownList(\yii\helpers\ArrayHelper::map($statusList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
-    <?= $form->field($model, 'consignee')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'consignee')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'service_date')->textInput() ?>
     
-     <?= $form->field($model, 'service_date')->widget(\dosamigos\datepicker\DatePicker::className(), [
+     <?php /* echo $form->field($model, 'service_date')->widget(\dosamigos\datepicker\DatePicker::className(), [
     		'language' => Yii::$app->language,
     		'clientOptions' => [
     				'autoclose' => true,
     				'format' => Constant::DATE_PICKER_FORMAT,
     			]
-          ]) ?>
+          ])*/ ?>
 
-    <?= $form->field($model, 'budget_amount')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'budget_amount')->textInput(['maxlength' => true]) ?>
 
     <?php //echo $form->field($model, 'related_service')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'related_services')->checkboxList(\yii\helpers\ArrayHelper::map($relatedServiceList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php //echo $form->field($model, 'related_services')->checkboxList(\yii\helpers\ArrayHelper::map($relatedServiceList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'service_style')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'service_style')->dropDownList(\yii\helpers\ArrayHelper::map($serviceStyleList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php //echo $form->field($model, 'service_style')->dropDownList(\yii\helpers\ArrayHelper::map($serviceStyleList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?php // echo $form->field($model, 'merchant_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'merchant_id')->dropDownList(\yii\helpers\ArrayHelper::map($merchantList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
 		</div>
 	

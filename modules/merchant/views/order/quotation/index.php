@@ -43,15 +43,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'status0.param_val',
              'consignee',
              'mobile',
-             'service_date',
+             'service_date:date',
             // 'budget_amount',
             // 'related_service',
             // 'service_style',
             // 'merchant_id',
-            'merchant.vip_name',
+            // 'merchant.vip_name',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
+            'template' => '<span class=\'tbl_operation\'>{view}</span>',
         ],
             
         ],

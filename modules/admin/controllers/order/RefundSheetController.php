@@ -18,6 +18,7 @@ use app\models\b2b2c\ReturnSheet;
 use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\SheetType;
 use app\modules\admin\models\AdminConst;
+use app\common\utils\DateUtils;
 
 /**
  * RefundSheetController implements the CRUD actions for RefundSheet model.
@@ -83,6 +84,8 @@ class RefundSheetController extends BaseAuthController
         $model->user_id = \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
         
         $refund_apply_id = isset($_REQUEST['refund_apply_id'])?$_REQUEST['refund_apply_id']:null;
+        $refundApplySheet = null;
+        $soSheet = null;
         if($refund_apply_id){
         	$refundApplySheet = RefundSheetApply::findOne($refund_apply_id);
         	$soSheet = $refundApplySheet->order;
@@ -90,6 +93,7 @@ class RefundSheetController extends BaseAuthController
         	$model->order_id = $soSheet->id;
         	$model->status = RefundSheet::status_completed;
         	$model->vip_id = $soSheet->vip_id;
+        	$model->need_return_amt = $soSheet->order_amt;
         }
         
 
@@ -104,6 +108,19 @@ class RefundSheetController extends BaseAuthController
         		if(!($model->save())){
         			$transaction->rollBack();
         			return $this->renderCreate($model);
+        		}
+        		
+        		/* 修改退款申请单状态  */
+        		if($refundApplySheet){
+        			$refundApplySheet->status = RefundSheetApply::status_refund;
+        			$refundApplySheet->save();
+        		}
+        		
+        		/* 修改订单数据  */
+        		if($soSheet){
+        			$soSheet->return_date = DateUtils::formatDatetime();
+        			$soSheet->return_amt = $model->return_amt;
+        			$soSheet->save();
         		}
         		 
         		$transaction->commit();
