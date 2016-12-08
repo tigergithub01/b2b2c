@@ -30,7 +30,7 @@ class VipSearch extends Vip
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -52,8 +52,7 @@ class VipSearch extends Vip
         ->joinWith('vipType vipType')
         ->joinWith('mobileVerifyFlag mobileVerify')    
         ->joinWith('rank rank')    
-        ->joinWith('sex0 sex0')
-        ->where(['vip.merchant_flag' => SysParameter::no]);
+        ->joinWith('sex0 sex0');
 
         // add conditions that should always apply here
 

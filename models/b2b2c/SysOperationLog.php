@@ -26,12 +26,42 @@ use Yii;
  */
 class SysOperationLog extends \app\models\b2b2c\BasicModel
 {
+	/* 模块名称（查询用） */
+	public $module_name;
+	
+	/* 用户登录名（查询用） */
+	public $user_no;
+	
+	/* 用户名称（查询用） */
+	public $user_name;
+	
+	/* 起始日期 （查询用） */
+	public $start_date;
+	
+	/* 结束日期 （查询用） */
+	public $end_date;
+	
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 't_sys_operation_log';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+    	// bypass scenarios() implementation in the parent class
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'module_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	return $scenarios;
     }
 
     /**
@@ -75,6 +105,11 @@ class SysOperationLog extends \app\models\b2b2c\BasicModel
             'op_action' => Yii::t('app', '操作'),
         	'user.user_id' => Yii::t('app', '关联用户'),
         	'module.name' => Yii::t('app', '模块名称'),
+        		'module_name' => Yii::t('app', '模块名称'),
+        		'user_no' => Yii::t('app', '用户登录名'),
+        		'user_name' => Yii::t('app', '用户名称'),
+        		'start_date' => Yii::t('app', '开始日期'),
+        		'end_date' => Yii::t('app', '结束日期'),
         ];
     }
 

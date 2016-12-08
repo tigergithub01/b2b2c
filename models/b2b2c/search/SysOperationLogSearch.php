@@ -29,7 +29,7 @@ class SysOperationLogSearch extends SysOperationLog
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -42,7 +42,7 @@ class SysOperationLogSearch extends SysOperationLog
     public function search($params)
     {
 //         $query = SysOperationLog::find();
-    	$query = SysOperationLog::find()->alias('op')
+    	$query = SysOperationLog::find()->alias('log')
     	->joinWith("user user")
     	->joinWith("module module");
         // add conditions that should always apply here
@@ -77,21 +77,33 @@ class SysOperationLogSearch extends SysOperationLog
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'op.id' => $this->id,
-            'op.user_id' => $this->user_id,
-            'op.module_id' => $this->module_id,
-            'op.op_date' => $this->op_date,
+            'log.id' => $this->id,
+            'log.user_id' => $this->user_id,
+            'log.module_id' => $this->module_id,
+            'log.op_date' => $this->op_date,
         ]);
 
-        $query->andFilterWhere(['like', 'op.op_ip_addr', $this->op_ip_addr])
-            ->andFilterWhere(['like', 'op.op_browser_type', $this->op_browser_type])
-            ->andFilterWhere(['like', 'op.op_url', $this->op_url])
-            ->andFilterWhere(['like', 'op.op_desc', $this->op_desc])
-            ->andFilterWhere(['like', 'op.op_method', $this->op_method])
-            ->andFilterWhere(['like', 'op.op_referrer', $this->op_referrer])
-            ->andFilterWhere(['like', 'op.op_module', $this->op_module])
-            ->andFilterWhere(['like', 'op.op_controller', $this->op_controller])
-            ->andFilterWhere(['like', 'op.op_action', $this->op_action]);
+        $query->andFilterWhere(['like', 'log.op_ip_addr', $this->op_ip_addr])
+            ->andFilterWhere(['like', 'log.op_browser_type', $this->op_browser_type])
+            ->andFilterWhere(['like', 'log.op_url', $this->op_url])
+            ->andFilterWhere(['like', 'log.op_desc', $this->op_desc])
+            ->andFilterWhere(['like', 'log.op_method', $this->op_method])
+            ->andFilterWhere(['like', 'log.op_referrer', $this->op_referrer])
+            ->andFilterWhere(['like', 'log.op_module', $this->op_module])
+            ->andFilterWhere(['like', 'log.op_controller', $this->op_controller])
+            ->andFilterWhere(['like', 'log.op_action', $this->op_action])
+            ->andFilterWhere(['like', 'module.name', $this->module_name])
+            ->andFilterWhere(['like', 'user.user_id', $this->user_no])
+            ->andFilterWhere(['like', 'user.user_name', $this->user_name]);
+        
+            
+            if($this->start_date){
+            	$query->andFilterWhere(['>=', 'log.op_date', date('Y-m-d 00:00:00',strtotime($this->start_date))]);
+            }
+            
+            if($this->end_date){
+            	$query->andFilterWhere(['<=', 'log.op_date', date('Y-m-d 23:59:59',strtotime($this->end_date))]);
+            }
 
         return $dataProvider;
     }
