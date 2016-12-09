@@ -42,6 +42,9 @@ class VipExtend extends \app\models\b2b2c\BasicModel
 	
 	//身份证背面照
 	public $imageFileIdCardBack;
+	
+	//场景
+	const SCENARIO_MERCHANT_REG = 'merchant_reg';//商户信息完善
     
     /**
      * @inheritdoc
@@ -68,6 +71,9 @@ class VipExtend extends \app\models\b2b2c\BasicModel
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
         	[['imageFileIdCard', 'imageFileIdCardBack'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+        	[['real_name', 'id_card_no', 'bank_account', 'bank_name', 'bank_number', 'bank_addr'], 'required','on' => [self::SCENARIO_MERCHANT_REG,]],
+        	[['imageFileIdCard'], 'required','on' => [self::SCENARIO_MERCHANT_REG,], 'when' => function($model) {return empty($model->id_card_img_url);}],
+        	[['imageFileIdCardBack'], 'required','on' => [self::SCENARIO_MERCHANT_REG,], 'when' => function($model) {return empty($model->id_back_img_url);}],
         ];
     }
 

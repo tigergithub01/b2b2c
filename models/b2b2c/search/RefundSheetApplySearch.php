@@ -112,7 +112,7 @@ class RefundSheetApplySearch extends RefundSheetApply
         //根据商户编号进行过滤
         if($this->merchant_id){
         	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$this->merchant_id])->column();
-        	$query->andFilterWhere(['refundApply.order_id' => $subquery]);
+        	$query->andWhere(['refundApply.order_id' => $subquery]);
         }
 
         return $dataProvider;

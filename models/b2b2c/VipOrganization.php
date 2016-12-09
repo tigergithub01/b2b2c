@@ -48,6 +48,9 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
 	//商户封面
 	public $imageFilecover;
 	
+	//场景
+	const SCENARIO_MERCHANT_REG = 'merchant_reg';//商户信息完善
+	
     /**
      * @inheritdoc
      */
@@ -78,6 +81,8 @@ class VipOrganization extends \app\models\b2b2c\BasicModel
             [['audit_status'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['audit_status' => 'id']],
             [['audit_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => SysUser::className(), 'targetAttribute' => ['audit_user_id' => 'id']],
         	[['imageFileLogo', 'imageFilecover'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+        	[['country_id', 'province_id', 'city_id', 'district_id', 'address'], 'required','on' => [self::SCENARIO_MERCHANT_REG,]],
+        	['imageFilecover', 'required','on' => [self::SCENARIO_MERCHANT_REG,], 'when' => function($model) {return empty($model->cover_img_url);}],
         ];
     }
 

@@ -84,6 +84,9 @@ class Product extends \app\models\b2b2c\BasicModel
 	
 	/* 产品状态：下架 */
 	const is_on_sale_no = 2002;
+	
+	//场景
+	const SCENARIO_MERCHANT_REG = 'merchant_reg';//商户信息完善
     
     /**
      * @inheritdoc
@@ -120,6 +123,7 @@ class Product extends \app\models\b2b2c\BasicModel
             [['is_hot'], 'exist', 'skipOnError' => true, 'targetClass' => SysParameter::className(), 'targetAttribute' => ['is_hot' => 'id']],
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['type_id' => 'id']],
+        	[['market_price', 'sale_price', 'deposit_amount'], 'required','on' => [self::SCENARIO_MERCHANT_REG,]],
         ];
     }
 

@@ -69,6 +69,7 @@ class RefundSheetApply extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'order_code';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'merchant_id';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
