@@ -180,6 +180,8 @@ class MerchantController extends BaseAuthController
     {
     	$id = \Yii::$app->session->get(MerchantConst::LOGIN_MERCHANT_USER)->id;
         $model = $this->findModel($id);
+        
+        //营业信息
         $vipOrganization = $this->findVipOrganization($model->id);
         if(empty($vipOrganization)){
         	$vipOrganization= new VipOrganization();
@@ -189,6 +191,9 @@ class MerchantController extends BaseAuthController
         	$vipOrganization->update_date = \app\common\utils\DateUtils::formatDatetime();
         	$vipOrganization->audit_status = SysParameter::audit_approved;
         }
+        $vipOrganization->setScenario(VipOrganization::SCENARIO_MERCHANT_REG);
+        
+        //个人信息
         $vipExtend = $this->findVipExtend($model->id);
         if(empty($vipExtend)){
         	$vipExtend= new VipExtend();
@@ -197,6 +202,10 @@ class MerchantController extends BaseAuthController
         	$vipExtend->create_date = \app\common\utils\DateUtils::formatDatetime();
         	$vipExtend->update_date = \app\common\utils\DateUtils::formatDatetime();
         }
+        $vipExtend->setScenario(VipExtend::SCENARIO_MERCHANT_REG);
+        
+        
+        //产品信息
         $product = $this->findProduct($model->id);
         if(empty($product)){
         	$product= new Product();
@@ -208,6 +217,8 @@ class MerchantController extends BaseAuthController
         	$product->can_return_flag = SysParameter::yes;
         	$product->is_free_shipping = SysParameter::no;
         }
+        $product->setScenario(Product::SCENARIO_MERCHANT_REG);
+        
 
         if ($model->load(Yii::$app->request->post())  && $vipOrganization->load(Yii::$app->request->post()) && $vipExtend->load(Yii::$app->request->post()) && $product->load(Yii::$app->request->post())) {
         	

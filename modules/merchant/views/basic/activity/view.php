@@ -70,8 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'audit_status',
             'auditStatus.param_val',
             // 'audit_user_id',
-           	'auditUser.user_id',
+           	//'auditUser.user_id',
             'audit_date',
+		    'audit_memo:ntext',
 		        ],
 		    ]) ?>
     	</div>

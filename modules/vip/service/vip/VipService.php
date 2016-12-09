@@ -7,6 +7,7 @@ use app\models\b2b2c\SysVerifyCode;
 use app\models\b2b2c\Vip;
 use app\modules\vip\models\VipConst;
 use Yii;
+use app\common\utils\ConfigUtils;
 
 class VipService {
 	
@@ -150,7 +151,7 @@ class VipService {
 		] )->orderBy ( [ 
 				'sent_time' => SORT_DESC 
 		] )->one ();
-		if (($model->sms_code != 'wl1234') && ! ($verifyCode && $verifyCode->verify_code == $model->sms_code)) {
+		if (($model->sms_code != ConfigUtils::get_universal_sms_code()) && ! ($verifyCode && $verifyCode->verify_code == $model->sms_code)) {
 			$model->addError ( "sms_code", Yii::t ( 'app', '短信验证码不正确。' ) );
 			return false;
 		}
@@ -228,7 +229,7 @@ class VipService {
 		] )->orderBy ( [ 
 				'sent_time' => SORT_DESC 
 		] )->one ();
-		if (($model->sms_code != 'wl1234') && ! ($verifyCode && $verifyCode->verify_code == $model->sms_code)) {
+		if (($model->sms_code != ConfigUtils::get_universal_sms_code()) && ! ($verifyCode && $verifyCode->verify_code == $model->sms_code)) {
 			$model->addError ( "sms_code", Yii::t ( 'app', '短信验证码不正确。' ) );
 			return false;
 		}

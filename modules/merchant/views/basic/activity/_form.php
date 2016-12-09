@@ -86,6 +86,7 @@ use yii\widgets\ActiveForm;
 
     <?php echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
 	
+	<!-- 
 	<?php if(!($model->isNewRecord)) {?>
 		<div class="form-group">
     		<?= Html::activeLabel($model, 'img_url',['class'=>'col-lg-2 control-label', 'style'=>'visibility:hidden;']) ?>
@@ -94,6 +95,7 @@ use yii\widgets\ActiveForm;
 			</div>
 		</div>
     <?php }?>
+     -->
     
     <?php // echo $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
 

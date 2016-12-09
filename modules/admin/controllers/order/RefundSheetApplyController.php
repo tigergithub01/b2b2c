@@ -167,10 +167,15 @@ class RefundSheetApplyController extends BaseAuthController
     public function actionApprove($id)
     {
     	$model =  $this->findModel($id);
+    	$model->load(Yii::$app->request->post());
     	$model->status = RefundSheetApply::status_approved;
-    	$model->save();
-    	MsgUtils::success();
-    	return $this->redirect(['view', 'id' => $model->id]);
+    	if($model->save()){
+    		MsgUtils::success();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}else{
+    		MsgUtils::error();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
     }
     
     
@@ -181,12 +186,16 @@ class RefundSheetApplyController extends BaseAuthController
      */
     public function actionReject($id)
     {
-    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
     	$model =  $this->findModel($id);
+    	$model->load(Yii::$app->request->post());
     	$model->status = RefundSheetApply::status_rejected;
-    	$model->save();
-    	MsgUtils::success();
-    	return $this->redirect(['view', 'id' => $model->id]);
+    	if($model->save()){
+    		MsgUtils::success();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}else{
+    		MsgUtils::error();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
     }
 
     /**

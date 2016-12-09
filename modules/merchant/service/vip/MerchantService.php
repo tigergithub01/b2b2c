@@ -12,6 +12,7 @@ use app\models\b2b2c\VipOrganization;
 use app\models\b2b2c\VipExtend;
 use app\models\b2b2c\VipProductType;
 use app\models\b2b2c\Product;
+use app\common\utils\ConfigUtils;
 
 class MerchantService{
 	/**
@@ -105,7 +106,7 @@ class MerchantService{
 		
 		//判断短信验证码是否正确，根据最后发送的有效的验证码进行查询
 		$verifyCode= SysVerifyCode::find()->where(['verify_number'=>$model->vip_id,'verify_type'=>SysParameter::verify_mobile])->andWhere(['>=','expiration_time',\app\common\utils\DateUtils::formatDatetime()])->orderBy(['sent_time'=>SORT_DESC])->one();
-		if(($model->sms_code !='wl1234') && !($verifyCode && $verifyCode->verify_code==$model->sms_code)){
+		if(($model->sms_code !=ConfigUtils::get_universal_sms_code()) && !($verifyCode && $verifyCode->verify_code==$model->sms_code)){
 			$model->addError("sms_code",Yii::t('app', '短信验证码不正确。'));
 			return false;
 		}		

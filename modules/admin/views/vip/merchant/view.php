@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use app\modules\admin\Module;
 use app\models\b2b2c\Vip;
 use app\models\b2b2c\SysParameter;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\b2b2c\Vip */
@@ -70,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			            //'audit_user_id',
 			            'auditUser.user_id',
 			            'audit_date',
-			            'audit_memo',
+			            'audit_memo:ntext',
 			            // 'vip_type_id',
 			            'vipType.name',
 			            //'sex',
@@ -191,7 +192,26 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
           
 
-		
+		<div class="box"> 
+   		 
+   		 <?php $form = ActiveForm::begin([
+	    	'options' => [ 
+						'enctype' => 'multipart/form-data',
+						'class' => 'form-horizontal',
+				],
+				'fieldConfig' => [ 
+						'template' => "{label}\n<div class=\"col-lg-6\">{input}</div>\n<div class=\"col-lg-4\">{error}</div>",
+						'labelOptions' => [ 
+								'class' => 'col-lg-2 control-label' 
+						] 
+				],
+	    ]); ?>
+	    	
+	    	<?php if($model->audit_status==SysParameter::audit_need_approve) {?>   
+	     	<div class="box-body">
+	        	<textarea rows="5"  style="width: 100%;" placeholder="审批描述" name="Vip[audit_memo]"></textarea>
+	        </div>
+			<?php }?>
     
 	    <div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -223,6 +243,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	     	<?php }?>
 	        
 	    </div>
+	    
+	     <?php ActiveForm::end(); ?>
+	</div>
     
     </div>
 

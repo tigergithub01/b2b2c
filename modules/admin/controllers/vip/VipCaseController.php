@@ -427,12 +427,17 @@ class VipCaseController extends BaseAuthController
     public function actionApprove($id)
     {
     	$model =  $this->findModel($id);
+    	$model->load(Yii::$app->request->post());
     	$model->audit_status = SysParameter::audit_approved;
     	$model->audit_date = DateUtils::formatDatetime();
     	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
-    	$model->save();
-    	MsgUtils::success();
-    	return $this->redirect(['view', 'id' => $model->id]);
+    	if($model->save()){
+    		MsgUtils::success();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}else{
+    		MsgUtils::error();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
     }
     
     
@@ -443,15 +448,22 @@ class VipCaseController extends BaseAuthController
      */
     public function actionReject($id)
     {
-    	$audit_memo = isset($_REQUEST['audit_memo'])?$_REQUEST['audit_memo']:null;
     	$model =  $this->findModel($id);
-    	$model->audit_memo = $audit_memo;
+    	$model->load(Yii::$app->request->post());
+    	if(empty($model->audit_memo)){
+    		MsgUtils::warning("请输入审批描述！");
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
     	$model->audit_status = SysParameter::audit_rejected;
     	$model->audit_date = DateUtils::formatDatetime();
     	$model->audit_user_id =  \Yii::$app->session->get(AdminConst::LOGIN_ADMIN_USER)->id;
-    	$model->save();
-    	MsgUtils::success();
-    	return $this->redirect(['view', 'id' => $model->id]);
+    	if($model->save()){
+    		MsgUtils::success();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}else{
+    		MsgUtils::error();
+    		return $this->redirect(['view', 'id' => $model->id]);
+    	}
     }
 
     /**

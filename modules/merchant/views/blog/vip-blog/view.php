@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'audit_status',
             // 'auditStatus.param_val',
             // 'audit_date',
-            // 'audit_memo',
+            // 'audit_memo:ntext',
             // 'status',
 		    // 'status0.param_val',
 		        ],

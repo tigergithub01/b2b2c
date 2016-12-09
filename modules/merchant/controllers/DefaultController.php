@@ -57,7 +57,7 @@ class DefaultController extends BaseAuthController
     	// 待处理退款申请
     	$query = RefundSheetApply::find()->alias("rsa")->joinWith("order order")->where(['rsa.status'=>RefundSheetApply::status_need_confirm]);
     	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$vip_id])->column();
-    	$query->andFilterWhere(['order.id' => $subquery]);
+    	$query->andWhere(['order.id' => $subquery]);
     	$need_approve_refund_apply_count =$query->count ();
     	
     	// 待审核商户动态
@@ -70,7 +70,7 @@ class DefaultController extends BaseAuthController
     	//待接单订单
     	$query = SoSheet::find()->alias("so")->where(['so.order_status'=>SoSheet::order_need_schedule]);
     	$subquery = SoSheetVip::find()->select(['order_id'])->where(['vip_id'=>$vip_id])->column();
-    	$query->andFilterWhere(['so.id' => $subquery]);
+    	$query->andWhere(['so.id' => $subquery]);
     	$need_schedule_order =$query->count ();
     	
     	
