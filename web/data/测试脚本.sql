@@ -994,7 +994,14 @@ update t_vip_case set audit_status = '3001' where id = 12;
 
 
 
+SELECT `refundApply`.* FROM `t_refund_sheet_apply` `refundApply` LEFT JOIN `t_vip` `vip` ON `refundApply`.`vip_id` = `vip`.`id` 
+LEFT JOIN `t_so_sheet` `order` ON `refundApply`.`order_id` = `order`.`id` 
+LEFT JOIN `t_sys_parameter` `stat` ON `refundApply`.`status` = `stat`.`id` 
+WHERE `refundApply`.`status`='24001' LIMIT 20
 
+SELECT * FROM T_PRODUCT;
+
+select * from t_vip_organization where id = 8;
 
 
 
