@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'blogFlag.param_val',
             //'vip_id',
             // 'vip.vip_name',
-            'name',
+            // 'name',
             'content:ntext',
             'create_date',
             // 'update_date',

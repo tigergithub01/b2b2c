@@ -39,7 +39,7 @@ use app\models\b2b2c\common\Constant;
 
 	    <div class="box-body">
 	    
-	    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+	    <?php // echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 	    
 	<?php //echo $form->field($model, 'blog_type')->textInput(['maxlength' => true]) ?>
 	    

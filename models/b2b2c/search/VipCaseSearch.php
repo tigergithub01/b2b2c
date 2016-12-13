@@ -30,7 +30,7 @@ class VipCaseSearch extends VipCase
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        return parent::scenarios();
     }
 
     /**
@@ -119,7 +119,8 @@ class VipCaseSearch extends VipCase
             ->andFilterWhere(['like', 'case.audit_memo', $this->audit_memo])
             ->andFilterWhere(['like', 'case.cover_img_url', $this->cover_img_url])
             ->andFilterWhere(['like', 'case.cover_thumb_url', $this->cover_thumb_url])
-            ->andFilterWhere(['like', 'case.cover_img_original', $this->cover_img_original]);
+            ->andFilterWhere(['like', 'case.cover_img_original', $this->cover_img_original])
+            ->andFilterWhere(['like', 'vip.vip_name', $this->vip_name]);
 
         return $dataProvider;
     }

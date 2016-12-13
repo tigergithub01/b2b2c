@@ -83,7 +83,8 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     {
         return [
             [['blog_type', 'blog_flag', 'vip_id', 'audit_user_id', 'audit_status', 'status'], 'integer'],
-            [['blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status', 'name'], 'required'],
+            [['blog_flag', 'content', 'create_date', 'update_date', 'audit_status', 'status'], 'required'],
+        	['name', 'required', 'on' => [self::SCENARIO_DEFAULT], 'when' => function($model) {return ($model->blog_flag == self::blog_flag_vip);}],
             [['content'], 'string'],
             [['create_date', 'update_date', 'audit_date'], 'safe'],
             [['audit_memo', 'name'], 'string', 'max' => 200],

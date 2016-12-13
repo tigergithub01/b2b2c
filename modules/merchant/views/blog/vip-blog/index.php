@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'app\modules\admin\components\AppSerialColumn'],
             // 'id',
-        	'name',
+        	//'name',
             //'blog_type',
             // 'blogType.name',
             //'blog_flag',
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'vip_id',
             //'vip.vip_id',
         	//'vip.vip_name',
-            //'content:ntext',
+            'content:ntext',
             'create_date',
             // 'update_date',
             // 'audit_user_id',
