@@ -1003,6 +1003,8 @@ SELECT * FROM T_PRODUCT;
 
 select * from t_vip_organization where id = 8;
 
+alter table t_vip_blog modify column name                 varchar(200) null comment '帖子标题';
+
 
 
 */
