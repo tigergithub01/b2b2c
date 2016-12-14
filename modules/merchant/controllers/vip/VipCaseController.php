@@ -22,6 +22,7 @@ use app\modules\admin\models\AdminConst;
 use app\models\b2b2c\VipCasePhoto;
 use app\common\utils\CommonUtils;
 use app\modules\merchant\models\MerchantConst;
+use app\common\utils\UrlUtils;
 
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
@@ -221,6 +222,8 @@ class VipCaseController extends BaseAuthController
             		'caseFlagList' => SysParameterType::getSysParametersById(SysParameterType::CASE_FLAG),
             		'vipList' => $this->findVipList(),
             		'sysUserList' => $this->findSysUserList(),
+    				'vipCasePhotoThumbs' => [],
+    				'coverThumb' => [],
             ]);
     }
 
@@ -339,6 +342,18 @@ class VipCaseController extends BaseAuthController
      * @return Ambigous <string, string>
      */
     protected function renderUpdate($model){
+    	//案例图片
+    	$vipCasePhotoThumbs = [];
+    	foreach ($model->vipCasePhotos as $vipCasePhoto) {
+    		$vipCasePhotoThumbs[] = UrlUtils::formatUrl($vipCasePhoto->thumb_url) ;
+    	}
+    	
+    	//封面
+    	$coverThumb=[];
+    	if($model->cover_thumb_url){
+    		$coverThumb[] = UrlUtils::formatUrl($model->cover_thumb_url) ;
+    	}
+    	
     	return $this->render('update', [
     			'model' => $model,
     			'vipCaseTypeList' => $this->findVipCaseTypeList(),
@@ -347,6 +362,9 @@ class VipCaseController extends BaseAuthController
     			'caseFlagList' => SysParameterType::getSysParametersById(SysParameterType::CASE_FLAG),
     			'vipList' => $this->findVipList(),
     			'sysUserList' => $this->findSysUserList(),
+    			'vipCasePhotoThumbs' => $vipCasePhotoThumbs, 
+    			'coverImg' => $vipCasePhotoThumbs,
+    			'coverThumb' => $coverThumb,
     	]);
     }
     

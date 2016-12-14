@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
     		'caseFlagList' => $caseFlagList,
     		'vipList' => $vipList,
     		'sysUserList' => $sysUserList,
+    		'vipCasePhotoThumbs' => $vipCasePhotoThumbs,
+    		'coverThumb'  => $coverThumb,
     ]) ?>
 
 </div>
