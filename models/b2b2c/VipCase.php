@@ -56,6 +56,9 @@ class VipCase extends \app\models\b2b2c\BasicModel
 	//案例相册
 	public $imageFiles;
 	
+	//案例相册图片地址
+	public $imageUrls;
+	
     /**
      * @inheritdoc
      */
@@ -70,6 +73,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
     	$scenarios = parent::scenarios();
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_no';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'imageUrls';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
