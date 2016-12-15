@@ -9,6 +9,7 @@ use app\models\b2b2c\common\JsonObj;
 use yii\base\Exception;
 use yii\base\UserException;
 use yii\web\HttpException;
+use yii\helpers\Json;
 
 class BaseController extends Controller
 {

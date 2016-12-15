@@ -104,14 +104,14 @@ use app\models\b2b2c\common\Constant;
 		echo $form->field($model, 'imageFile')->widget(\kartik\file\FileInput::classname(), [
 				'options' => ['accept' => 'image/*'],
 				'pluginOptions' => [
-						'initialPreview'=> $coverThumb,
+						'initialPreview'=> $initialPreviewCover,
 						'initialPreviewAsData'=>true,
-						'overwriteInitial'=>false,
-						'showCaption' => true,
-						'showRemove' => true,
+						'overwriteInitial'=>true,
+						'showCaption' => false,
+						'showRemove' => false,
 						'showUpload' => false,
 				],
-		]);
+		])->label($model->attributeLabels()['imageFile']. \Yii::t('app', 'upload_picture_tips'));
 	?>
 	
 	<?php /*if($model->cover_img_url) {?>
@@ -159,36 +159,91 @@ use app\models\b2b2c\common\Constant;
 		echo $form->field($model, 'imageFiles[]')->widget(\kartik\file\FileInput::classname(), [
 				'options' => ['multiple' => true, 'accept' => 'image/*'],
 				'pluginOptions' => [
-						//'initialPreview'=>$vipCasePhotoThumbs,
-						'initialPreviewConfig' => [
-								['caption' => 'Moon.jpg', 'size' => '873727'],
-								['caption' => 'Earth.jpg', 'size' => '1287883'],
-						],
+						'initialPreview'=>$initialPreview,
+						'initialPreviewConfig' => $initialPreviewConfig,
 						'initialPreviewAsData'=>true,
 						'overwriteInitial'=>false,
-						'showCaption' => true,
-						'showRemove' => true,
+						'showCaption' => false,
+						'fileUrlName' => 'VipCase[imageUrls][]',
+						'showRemove' => false,
+						'maxFileCount' => 5,
+						'showBrowse'=> true,
+// 						'browseLabel' =>  '选择图片（图片分辨率1024*681）',
 						'showUpload' => false,
 						'browseOnZoneClick' => true,// 展示图片区域是否可点击选择多文件
-						//'uploadUrl' => \yii\helpers\Url::to(['/site/file-upload']),
+						'uploadUrl' => ($model->isNewRecord?\yii\helpers\Url::toRoute(['common-upload','id'=>$model->id]):\yii\helpers\Url::toRoute(['upload','id'=>$model->id])),
 						// 如果要设置具体图片上的移除、上传和展示按钮，需要设置该选项
 						'fileActionSettings' => [
 								// 设置具体图片的查看属性为false,默认为true
-								'showZoom' => false,
+								'showZoom' => true,
 								// 设置具体图片的上传属性为true,默认为true
-								'showUpload' => false,
+								'showUpload' => true,
 								// 设置具体图片的移除属性为true,默认为true
-								'showRemove' => true,
+								'showRemove' => false,
 						],
 				],
 				// 一些事件行为
 				'pluginEvents' => [
 						// 上传成功后的回调方法，需要的可查看data后再做具体操作，一般不需要设置
 						"filedeleted" => "function (event, key) {
-				            console.info('deleted.');
+							console.log('deleted Key = ' + key);
+				        }",
+						"change" => "function (event) {
+				            console.log('change');
+				        }",
+						"fileselect" => "function (event, numFiles, label) {
+				            console.log('---fileselect start---');
+							console.log(label);
+							console.log(event);
+							console.log(numFiles);
+							console.log('---fileselect end---');
+							//$(event.target).fileinput('upload');	
+				        }",
+						"filebatchselected" => "function (event, files) {
+				            console.log('filebatchselected');
+							console.log(event);
+							console.log(files);
+							//$('.field-vipcase-imagefiles .fileinput-upload-button').click();
+							//for(i=0;i<numFiles;i++){
+								//$(event.target).fileinput('upload');
+							//}
+							$(event.target).fileinput('upload');
+							//$('#input-id').fileinput('upload');
+				        }",
+						"fileloaded" => "function (event, file, previewId, index, reader) {
+				            console.log('-- fileloaded start -- ');
+						 	console.log(file);
+							console.log(event);
+							console.log(previewId);
+							console.log(index);
+							console.log(reader);
+							console.log('---fileloaded end---');
+				        }",
+						"fileimageloaded" => "function (event, previewId) {
+				            console.log('-- fileimageloaded start -- ');
+							console.log(event);
+							console.log(previewId);
+							console.log('---fileimageloaded end---');
+				        }",
+						"fileuploaded" => "function (event, data, previewId, index) {
+				            var form = data.form, files = data.files, extra = data.extra,
+						    response = data.response, reader = data.reader;
+						    console.log('---fileuploaded start---');
+						 	console.log(data);
+							console.log(event);
+							console.log(previewId);
+							console.log(index);
+							console.log('---fileuploaded end---');
+				        }",
+						"filebatchuploadcomplete" => "function (event, files, extra) {
+							console.log('---filebatchuploadcomplete start---');
+							console.log(event);
+							console.log(files);
+							console.log(extra);
+							console.log('---filebatchuploadcomplete end---');
 				        }",
 				],
-		])->label("案例相册（按住CTR键多选）");
+		])->label($model->attributeLabels()['imageFiles']. \Yii::t('app', 'upload_picture_tips'));
 	?>
     
 

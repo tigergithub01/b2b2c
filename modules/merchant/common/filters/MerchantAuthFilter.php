@@ -92,7 +92,7 @@ class MerchantAuthFilter extends ActionFilter{
 	 	/* var_dump(Json::encode($_REQUEST)); */
 	 	if(isset($_REQUEST)){
 	 		$parameters = Json::encode($_REQUEST);
-	 		$sys_log->op_desc = $parameters;
+	 		$sys_log->op_desc = substr($parameters, 0, 4000);
 	 	}
 	 	$sys_log->insert();
 	 	if($sys_log->hasErrors()){

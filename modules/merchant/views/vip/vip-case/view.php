@@ -83,29 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
             
             
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
-                <tr>
-                  <th></th>
-                  <th>操作</th>
-                </tr>
                 <?php foreach ($model->vipCasePhotos as $vipCasePhoto) {?>
-                <tr>
-                  <td>
-                  <a class="fancybox" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->thumb_url?>"></a>
-                  <td valign="middle">
-                  	<?php if($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected) {?>
-                  	<?= Html::a(Yii::t('app', 'Delete'), ['delete-vip-case-photo', 'id' => $vipCasePhoto->id], [
-			            'class' => '',
-			            'data' => [
-			                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-			                'method' => 'post',
-			            ],
-			        ]) ?>
-			        <?php }?>
-                  </td>
-                </tr>
+                  <a class="fancybox gallery" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->thumb_url?>"></a>
                 <?php }?>
-              </table>
             </div>
             <!-- /.box-body -->
     </div>

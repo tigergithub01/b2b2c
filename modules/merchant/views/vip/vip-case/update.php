@@ -23,8 +23,9 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     		'caseFlagList' => $caseFlagList,
     		'vipList' => $vipList,
     		'sysUserList' => $sysUserList,
-    		'vipCasePhotoThumbs' => $vipCasePhotoThumbs,
-    		'coverThumb'  => $coverThumb,
+    		'initialPreview' => $initialPreview,
+    		'initialPreviewConfig' => $initialPreviewConfig,
+    		'initialPreviewCover'  => $initialPreviewCover,
     ]) ?>
 
 </div>
