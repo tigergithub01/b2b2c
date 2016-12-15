@@ -164,4 +164,8 @@ a.desc:after {
 	text-align: right;
 }
 
+.gallery{
+	padding: 5px;float: left;
+}
+
 
