@@ -27,5 +27,8 @@ return [
 		'Exception'=>'xxx',
 		
 		
+		'upload_picture_tips' => '（图片分辨率1024*681，按住CTR或SHIFT键多选）',
+		
+		
 		
 ];
