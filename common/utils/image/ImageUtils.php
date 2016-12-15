@@ -172,7 +172,7 @@ class ImageUtils{
 	 * @param string $uploadType (ads, etc)
 	 * @return boolean|multitype:string
 	 */
-	function uploadImage($imageFile, $uploadPath, $uploadType='item', $filename = '',$thumb_width = 220, $thumb_height = 220){
+	function uploadImage($imageFile, $uploadPath, $uploadType='item', $filename = '',$thumb_width = 220, $thumb_height = 220, $process_img = true){
 		//yii\web\UploadedFile
 		if(empty($imageFile)){
 			return false;
@@ -203,19 +203,91 @@ class ImageUtils{
 		$imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
 		 
 		//处理图片
-		$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $extension;
-		$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $extension;
-		 
-		//拷贝文件
-		copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
-		copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $thumb_url));
-		$imageUtils = new ImageUtils();
-		if($thumbed_url = ($imageUtils->make_thumb($thumb_url, $thumb_width, $thumb_height))){
-			unlink(iconv("UTF-8", "GBK",  $thumb_url));
+		if($process_img){
+			//处理图片
+			$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $extension;
+			$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $extension;
+				
+			//拷贝文件
+			copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
+			copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $thumb_url));
+			$imageUtils = new ImageUtils();
+			if($thumbed_url = ($imageUtils->make_thumb($thumb_url, $thumb_width, $thumb_height))){
+				unlink(iconv("UTF-8", "GBK",  $thumb_url));
+			}
+			//返回处理好的图片
+			return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
+		}else{
+			return ['img_original' => $img_original];
 		}
+		
 		 
-		//返回处理好的图片
-		return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
+		
+	}
+	
+	/**
+	 * 文件上传
+	 * @param unknown $imageFile (yii\web\UploadedFile)
+	 * @param unknown $uploadPath
+	 * @param string $uploadType (ads, etc)
+	 * @return boolean|multitype:string
+	 */
+	function uploadCommonImage($imageFile, $uploadPath, $uploadType='item', $filename = '',$thumb_width = 220, $thumb_height = 220, $process_img = true){
+		//yii\web\UploadedFile
+		$info = pathinfo($imageFile);
+		
+		
+		if(empty($info)){
+			return false;
+		}
+			
+		$base_dir = $uploadPath;
+		$path = $base_dir . '/' . date('Ym',time()) . '/';
+		//     	$webroot = Yii::getAlias("@webroot")  ;
+			
+		//创建文件夹
+		if(!is_dir($path)){
+			mkdir(iconv("UTF-8", "GBK", $path),0777,true);
+		}
+	
+		//主文件名
+		if(empty($filename)){
+			$filename = str_replace("?","",$info['baseName']);//处理掉后缀名带?等特殊字符的情况
+			
+		}
+	
+		//扩展名
+		$extension = str_replace("?","",$info['extension']);
+			
+		//重新命名广告图，命名规则ads_id_yyyymmdd_xxxx.ext
+		$img_original = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $extension;
+		$file_path = $img_original;
+			
+		//上传图片
+// 		$imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
+		copy(iconv("UTF-8","GBK",$imageFile), iconv("UTF-8", "GBK",  $file_path));
+		
+		//备份并压缩文件
+		if($process_img){
+			//处理图片
+			$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $extension;
+			$thumb_url = $path . $uploadType . '_'. $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '.' . $extension;
+				
+			//拷贝文件
+			copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $img_url));
+			copy(iconv("UTF-8","GBK",$file_path), iconv("UTF-8", "GBK",  $thumb_url));
+			$imageUtils = new ImageUtils();
+			if($thumbed_url = ($imageUtils->make_thumb($thumb_url, $thumb_width, $thumb_height))){
+				unlink(iconv("UTF-8", "GBK",  $thumb_url));
+			}
+			//返回处理好的图片
+			return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
+		}else{
+			return ['img_original' => $img_original ];
+		}
+		
+			
+		
 	}
 	
 	
