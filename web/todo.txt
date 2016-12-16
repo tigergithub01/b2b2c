@@ -488,8 +488,22 @@ http://www.jq22.com/jquery-info230
 jquery base64 文件上传。
 
 
+yii2-widgets:
+http://demos.krajee.com/widgets
+https://github.com/kartik-v/yii2-widgets
+https://github.com/kartik-v/yii2-widget-select2
+https://github.com/kartik-v/yii2-widget-fileinput
 
+http://demos.krajee.com/widget-details/fileinput
 	
+yii2-widget-fileinput使用文章：
+http://www.gushanxia.com/item/29
+http://www.cnblogs.com/wwolf/p/5619176.html
+主要的问题是要删除图片的链接地址是什么？
+官方文档：http://plugins.krajee.com/file-input
+
+1024*681
+
 
 
 
