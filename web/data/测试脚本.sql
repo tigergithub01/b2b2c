@@ -1006,5 +1006,23 @@ select * from t_vip_organization where id = 8;
 alter table t_vip_blog modify column name                 varchar(200) null comment '帖子标题';
 
 
+drop table t_sys_upload_file;
+
+create table t_sys_upload_file
+(
+   id                   bigint(20) not null auto_increment comment '主键',
+   vip_id               bigint(20) comment '关联会员编号',
+   user_id              bigint(20) comment '关联用户编号',
+   file_path            varchar(255) not null comment '文件地址',
+   create_date          datetime not null comment '创建日期',
+   session_id           varchar(255) comment '会话编号',
+   primary key (id)
+);
+
+alter table t_sys_upload_file comment '系统上传文件';
+
+select * from t_sys_upload_file;
+
+
 
 */
