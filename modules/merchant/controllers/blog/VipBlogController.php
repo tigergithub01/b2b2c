@@ -2,24 +2,23 @@
 
 namespace app\modules\merchant\controllers\blog;
 
-use Yii;
-use app\models\b2b2c\VipBlog;
-use app\models\b2b2c\search\VipBlogSearch;
-use app\modules\merchant\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use app\common\utils\CommonUtils;
+use app\common\utils\image\ImageUtils;
 use app\common\utils\MsgUtils;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\VipBlogType;
+use app\models\b2b2c\search\VipBlogSearch;
+use app\models\b2b2c\SysConfig;
+use app\models\b2b2c\SysParameter;
 use app\models\b2b2c\SysParameterType;
 use app\models\b2b2c\SysUser;
-use app\models\b2b2c\SysParameter;
-use app\common\utils\image\ImageUtils;
-use yii\web\UploadedFile;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\VipBlog;
 use app\models\b2b2c\VipBlogPhoto;
-use app\models\b2b2c\SysConfig;
-use app\common\utils\CommonUtils;
+use app\models\b2b2c\VipBlogType;
+use app\modules\merchant\common\controllers\BaseAuthController;
 use app\modules\merchant\models\MerchantConst;
+use Yii;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * VipBlogController implements the CRUD actions for VipBlog model.
@@ -107,10 +106,11 @@ class VipBlogController extends BaseAuthController
         	$image_type = 'vip_blog';
         	$width = SysConfig::getInstance()->getConfigVal("thumb_width");
         	$height = SysConfig::getInstance()->getConfigVal("thumb_height");
-        	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
+//         	$model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
         	$vipBlogPhotos = [];
-        	foreach ($model->imageFiles as $galleryFile) {
-        		$galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
+        	foreach ($model->imageUrls as $galleryFile) {
+        		//$galleryFiles = $imageUtils->uploadImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
+        		$galleryFiles = $imageUtils->uploadCommonImage($galleryFile, "uploads/$image_type", $image_type,CommonUtils::random(6), $width, $height);
         		$vipBlogPhoto = new VipBlogPhoto();
         		$vipBlogPhoto->img_url = $galleryFiles['img_url'];
         		$vipBlogPhoto->img_original = $galleryFiles['img_original'];
@@ -270,6 +270,16 @@ class VipBlogController extends BaseAuthController
     		MsgUtils::error("非法操作！");
     		return $this->redirect(['index']);
     	}
+    	
+    	$model->status = SysParameter::no;
+    	$model->save();
+    	MsgUtils::success ();
+    	return $this->redirect ( [
+    			'index'
+    	] );
+    	
+    	/* 已将删除改为逻辑删除，直接返回忽略下面代码  */
+    	
     	
     	//开始事务
     	$transaction = VipBlog::getDb()->beginTransaction();

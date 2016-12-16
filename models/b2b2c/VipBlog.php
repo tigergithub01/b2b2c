@@ -53,6 +53,9 @@ class VipBlog extends \app\models\b2b2c\BasicModel
 	//帖子图片
 	public $imageFiles;
 	
+	//帖子图片地址
+	public $imageUrls;
+	
     /**
      * @inheritdoc
      */
@@ -72,6 +75,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'vip_name';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'start_date';
     	$scenarios[self::SCENARIO_DEFAULT][]  = 'end_date';
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'imageUrls';
     	return $scenarios;
     	// 		return parent::scenarios();
     }
@@ -121,7 +125,7 @@ class VipBlog extends \app\models\b2b2c\BasicModel
         	'vip.vip_name' => Yii::t('app', '会员(商户)名称'),
         	'blogType.name' => Yii::t('app', '博客频道'),
         	'blogFlag.param_val' => Yii::t('app', /* '博客分类(会员博客，商户博客)' */'博客分类'),
-        	'status0.param_val' => Yii::t('app', '是否显示'),
+        	'status0.param_val' => Yii::t('app', '是否已删除'),
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
         	'auditUser.user_id' => Yii::t('app', '审核人'),
         	'vip_no' => Yii::t('app', '会员编号'),

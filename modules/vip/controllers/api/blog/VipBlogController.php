@@ -41,6 +41,7 @@ class VipBlogController extends BaseApiController
     {
         $searchModel = new VipBlogSearch();
         $searchModel->audit_status = SysParameter::audit_approved;//审核通过
+        $searchModel->status = SysParameter::yes;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $models = $dataProvider->getModels();
         

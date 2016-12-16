@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'isHot.param_val',
             //'case_flag',
             //'caseFlag.param_val',
-		    'service_date',
+		    'service_date:date',
 		    'address',
             'market_price',
             'sale_price',
@@ -80,11 +80,15 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <!-- /.box-header -->        
             
-            
-            
             <div class="box-body table-responsive no-padding">
                 <?php foreach ($model->vipCasePhotos as $vipCasePhoto) {?>
-                  <a class="fancybox gallery" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->thumb_url?>"></a>
+                  	<?php if (strchr(strtolower($vipCasePhoto->img_url), 'mp4')=='mp4'){ ?>
+                  		 <video src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>" controls="controls">
+						您的浏览器不支持 video 标签。
+						</video>
+                    <?php }else {?>
+	                  	<a class="fancybox gallery" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->thumb_url?>"></a>
+					<?php }?>
                 <?php }?>
             </div>
             <!-- /.box-body -->
@@ -93,16 +97,17 @@ $this->params['breadcrumbs'][] = $this->title;
           
      <div class="box"> 
           <div class="box-footer">
-          <?php if($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected) {?>
-	    	<?php // echo Html::a(Module::t('app', 'Create Vip Case'), ['create'], ['class' => 'btn btn-success']) ?>
-	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+          <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
 	            'class' => 'btn btn-danger',
 	            'data' => [
 	                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
 	                'method' => 'post',
 	            ],
 	        ]) ?>
+	        
+          <?php if($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected) {?>
+	    	<?php // echo Html::a(Module::t('app', 'Create Vip Case'), ['create'], ['class' => 'btn btn-success']) ?>
+	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?php echo  Html::a(Yii::t('app', 'submit'), ['submit', 'id' => $model->id], [
 	            'class' => 'btn btn-primary',
 	            'data' => [

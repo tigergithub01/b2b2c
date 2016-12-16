@@ -2,31 +2,29 @@
 
 namespace app\modules\merchant\controllers\vip;
 
-use Yii;
-use app\models\b2b2c\VipCase;
-use app\models\b2b2c\search\VipCaseSearch;
-use app\modules\merchant\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use app\common\utils\MsgUtils;
-use app\models\b2b2c\VipCaseType;
-use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\SysParameter;
-use app\models\b2b2c\SysUser;
-use yii\web\UploadedFile;
-use app\common\utils\image\ImageUtils;
-use app\models\b2b2c\SysConfig;
-use app\models\b2b2c\common\Constant;
-use app\modules\admin\models\AdminConst;
-use app\models\b2b2c\VipCasePhoto;
 use app\common\utils\CommonUtils;
-use app\modules\merchant\models\MerchantConst;
-use app\common\utils\UrlUtils;
-use yii\helpers\Url;
-use yii\helpers\Json;
-use app\models\b2b2c\SysUploadFile;
 use app\common\utils\DateUtils;
+use app\common\utils\image\ImageUtils;
+use app\common\utils\MsgUtils;
+use app\common\utils\UrlUtils;
+use app\models\b2b2c\common\Constant;
+use app\models\b2b2c\search\VipCaseSearch;
+use app\models\b2b2c\SysConfig;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
+
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\Vip;
+use app\models\b2b2c\VipCase;
+use app\models\b2b2c\VipCasePhoto;
+use app\models\b2b2c\VipCaseType;
+use app\modules\merchant\common\controllers\BaseAuthController;
+use app\modules\merchant\models\MerchantConst;
+use Yii;
+use yii\helpers\Json;
+use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * VipCaseController implements the CRUD actions for VipCase model.
@@ -59,6 +57,7 @@ class VipCaseController extends BaseAuthController {
 		$merchant_user = \Yii::$app->session->get ( MerchantConst::LOGIN_MERCHANT_USER );
 		$vip_id = $merchant_user->id;
 		$searchModel->vip_id = $vip_id;
+		$searchModel->status = SysParameter::yes;
 		$dataProvider = $searchModel->search ( Yii::$app->request->queryParams );
 		
 		return $this->render ( 'index', [ 
@@ -94,6 +93,12 @@ class VipCaseController extends BaseAuthController {
 	public function actionCreate() {
 		$merchant_user = \Yii::$app->session->get ( MerchantConst::LOGIN_MERCHANT_USER );
 		$vip_id = $merchant_user->id;
+		$vip = Vip::findOne($vip_id);
+		if($vip->audit_status!=SysParameter::audit_approved){
+			MsgUtils::warning("营业信息审核通过后，才能提交！");
+			return $this->redirect(['index']);
+		}
+		
 		$model = new VipCase ();
 		$model->create_date = \app\common\utils\DateUtils::formatDatetime ();
 		$model->update_date = \app\common\utils\DateUtils::formatDatetime ();
@@ -126,7 +131,6 @@ class VipCaseController extends BaseAuthController {
 // 			$model->imageFiles = UploadedFile::getInstances ( $model, "imageFiles" );
 			if ($model->imageUrls) {
 				foreach ( $model->imageUrls as $galleryFile ) {
-					//TODO:考虑视频文件上传的问题。
 					$galleryFiles = $imageUtils->uploadCommonImage ( $galleryFile, "uploads/$image_type", $image_type, CommonUtils::random ( 6 ), $width, $height );
 					$vipcasePhoto = new VipCasePhoto ();
 					$vipcasePhoto->img_url = $galleryFiles ['img_url'];
@@ -177,7 +181,7 @@ class VipCaseController extends BaseAuthController {
 						$vipCasePhoto->case_id = $model->id;
 						if (! ($vipCasePhoto->save ())) {
 							// var_dump($vipCasePhoto);
-							$model->addError ( 'imageFiles', '案例相册上传失败' );
+							$model->addError ( 'imageFiles', \Yii::t('app', "upload_error"));
 							$transaction->rollBack ();
 							return $this->renderCreate ();
 						}
@@ -322,118 +326,6 @@ class VipCaseController extends BaseAuthController {
 		// }
 	}
 	
-	public function actionCommonUpload() {
-		$vip_id = \Yii::$app->session->get ( MerchantConst::LOGIN_MERCHANT_USER )->id;
-		$model = new VipCase();
-		// 案例相册
-		$model->imageFiles = UploadedFile::getInstances ( $model, "imageFiles" );
-		if ($model->imageFiles) {
-			$imageUtils = new ImageUtils ();
-			$image_type = 'tmp';
-			$width = SysConfig::getInstance ()->getConfigVal ( "thumb_width" );
-			$height = SysConfig::getInstance ()->getConfigVal ( "thumb_height" );
-			
-			// 处理案例相册
-			// $model->imageFiles = UploadedFile::getInstances($model, "imageFiles");
-			$vipCasePhotos = [ ];
-			if (! empty ( $model->imageFiles )) {
-				foreach ( $model->imageFiles as $galleryFile ) {
-					if ($galleryFile) {
-						$galleryFiles = $imageUtils->uploadImage ( $galleryFile, "uploads/$image_type", $image_type, CommonUtils::random ( 6 ), $width, $height,false );
-						$vipcasePhoto = new VipCasePhoto ();
-// 						$vipcasePhoto->img_url = $galleryFiles ['img_url'];
-						$vipcasePhoto->img_original = $galleryFiles ['img_original'];
-// 						$vipcasePhoto->thumb_url = $galleryFiles ['thumb_url'];
-						$vipCasePhotos [] = $vipcasePhoto;
-					}
-				}
-			}
-			
-			
-			// 上传图片返回值
-			$initialPreview = [ ];
-			$initialPreviewConfig = [ ];
-			
-			// 插入相册信息
-			if (! empty ( $vipCasePhotos )) {
-				foreach ( $vipCasePhotos as $vipCasePhoto ) {
-					$sysUploadFile = new SysUploadFile();
-					$sysUploadFile->vip_id = $vip_id;
-					$sysUploadFile->create_date = DateUtils::formatDatetime();
-					$sysUploadFile->file_path = $vipCasePhoto->img_original;
-					$sysUploadFile->session_id = Yii::$app->session->id;
-					if (! ($sysUploadFile->save ())) {
-						return Json::encode ( [
-							'imageUrl' => '',
-							'error' => '文件上传失败！'
-						] );
-					}
-						
-					// 上传图片返回值
-					$initialPreviewConfig [] = [
-							'url' => Url::toRoute ( [
-									'common-del-file',
-									'id' => $sysUploadFile->id
-							] ),
-							// 图片大小
-							'size' => filesize ( $vipCasePhoto->img_original ),
-			
-					];
-					$initialPreview [] = UrlUtils::formatUrl ( $vipcasePhoto->img_original );
-				}
-			}
-			
-			return Json::encode ( [
-					'initialPreview' => $initialPreview,
-					'initialPreviewConfig' => $initialPreviewConfig,
-					'error' => ''
-			] );
-			
-		}
-		
-		return Json::encode ( [
-				'imageUrl' => '',
-				'error' => '文件上传失败'
-		] );
-	}
-	
-	
-	
-	public function actionCommonDelFile($id) {
-		
-		$vip_id = \Yii::$app->session->get ( MerchantConst::LOGIN_MERCHANT_USER )->id;
-		
-		$sysUploadFile = SysUploadFile::findOne($id);
-		if(empty($sysUploadFile)){
-			return Json::encode ( [
-					'success' => false
-			] );
-		}
-		
-		//只能删除临时文件夹，并且为自己上传的文件（TODO：可以将数据放入数据库中）
-		if($sysUploadFile->vip_id != $vip_id){
-			return Json::encode ( [
-					'success' => false
-			] );
-		}
-		
-		//删除记录
-		$sysUploadFile->delete();
-		
-		//删除文件
-		if(file_exists($sysUploadFile->file_path)){
-			unlink($sysUploadFile->file_path);
-		}
-		
-		return Json::encode ( [
-				'success' => true
-		] );
-		
-		
-		
-	}
-	
-
 	
 	
 	/**
@@ -464,8 +356,8 @@ class VipCaseController extends BaseAuthController {
 					if ($galleryFile) {
 						$galleryFiles = $imageUtils->uploadImage ( $galleryFile, "uploads/$image_type", $image_type, CommonUtils::random ( 6 ), $width, $height );
 						$vipcasePhoto = new VipCasePhoto ();
-						$vipcasePhoto->img_url = $galleryFiles ['img_url'];
 						$vipcasePhoto->img_original = $galleryFiles ['img_original'];
+						$vipcasePhoto->img_url = $galleryFiles ['img_url'];
 						$vipcasePhoto->thumb_url = $galleryFiles ['thumb_url'];
 						$vipCasePhotos [] = $vipcasePhoto;
 					}
@@ -483,7 +375,7 @@ class VipCaseController extends BaseAuthController {
 					foreach ( $vipCasePhotos as $vipCasePhoto ) {
 						$vipCasePhoto->case_id = $model->id;
 						if (! ($vipCasePhoto->save ())) {
-							$model->addError ( 'imageFiles', '案例相册上传失败' );
+							$model->addError ( 'imageFiles', \Yii::t('app', "upload_error"));
 							$transaction->rollBack ();
 							return $this->renderUpdate ();
 						}
@@ -496,7 +388,7 @@ class VipCaseController extends BaseAuthController {
 								] ),
 
 						];
-						$initialPreview [] = UrlUtils::formatUrl ( $vipcasePhoto->thumb_url );
+						$initialPreview [] = UrlUtils::formatUrl ( $vipcasePhoto->img_original );
 					}
 				}
 				
@@ -512,14 +404,14 @@ class VipCaseController extends BaseAuthController {
 				$transaction->rollBack ();
 				return Json::encode ( [
 						'imageUrl' => '',
-						'error' => '文件上传失败'
+						'error' => \Yii::t('app', "upload_error"),
 				] );
 			}
 		}
 		
 		return Json::encode ( [
 				'imageUrl' => '',
-				'error' => '文件上传失败'
+				'error' => \Yii::t('app', "upload_error"),
 		] );
 	}
 	
@@ -574,7 +466,6 @@ class VipCaseController extends BaseAuthController {
 	public function actionDelete($id) {
 		$model = $this->findModel ( $id );
 		
-		// TODO: 权限判断
 		$vip_id = \Yii::$app->session->get ( MerchantConst::LOGIN_MERCHANT_USER )->id;
 		if ($model->vip_id != $vip_id) {
 			MsgUtils::error ( "非法操作！" );
@@ -582,6 +473,16 @@ class VipCaseController extends BaseAuthController {
 					'index' 
 			] );
 		}
+		
+		$model->status = SysParameter::no;
+		$model->save();
+		MsgUtils::success ();
+		return $this->redirect ( [
+				'index'
+		] );
+		
+		/* 已将删除改为逻辑删除，直接返回忽略下面代码  */
+		
 		
 		// 开始事务
 		$transaction = VipCase::getDb ()->beginTransaction ();

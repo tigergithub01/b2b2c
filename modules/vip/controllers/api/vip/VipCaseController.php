@@ -44,6 +44,7 @@ class VipCaseController extends BaseApiController
     {
         $searchModel = new VipCaseSearch();
         $searchModel->audit_status = SysParameter::audit_approved;
+        $searchModel->status = SysParameter::yes;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $models = $dataProvider->getModels();
         foreach ($models as $model) {

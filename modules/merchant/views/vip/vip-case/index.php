@@ -1,10 +1,9 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
-use app\modules\merchant\Module; 
 use app\models\b2b2c\SysParameter;
+use app\modules\merchant\Module;
+use yii\helpers\Html;
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\b2b2c\search\VipCaseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -59,11 +58,15 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'sale_price',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}</span>',
+            'template' => '<span class=\'tbl_operation\'>{view}{update}{delete}</span>',
 			'buttons' => [
 					'update' => function ($url, $model, $key) {
-						return (($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected)?Html::a('<span class="glyphicon glyphicon-edit"></span>', $url, ['title' => '修改密码'] ):'');
+						return (($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected)?Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, ['title' => '编辑'] ):'');
 					},
+					//永远都可以删除，审核通过后，永远都是逻辑删除。
+// 					'delete' => function ($url, $model, $key) {
+// 						return (($model->audit_status==SysParameter::audit_need_submit || $model->audit_status==SysParameter::audit_rejected)?Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, ['title' => '删除'] ):'');
+// 					},
 			],
         ],
             

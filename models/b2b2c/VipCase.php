@@ -135,7 +135,7 @@ class VipCase extends \app\models\b2b2c\BasicModel
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
         	'type.name' => Yii::t('app', '案例类型'),
         	'caseFlag.param_val' => Yii::t('app', '案例类别'),
-        	'status0.param_val' => Yii::t('app', '是否显示'),
+        	'status0.param_val' => Yii::t('app', '是否已删除'),
         	'isHot.param_val' => Yii::t('app', '是否经典案例'),
         	'vip.vip_id' => Yii::t('app', '商户编号'),
         	'vip.vip_name' => Yii::t('app', '商户名称'),

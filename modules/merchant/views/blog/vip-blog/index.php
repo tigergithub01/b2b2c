@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'status',
 		[
 			'class' => 'app\modules\admin\components\AppActionColumn',
-            'template' => '<span class=\'tbl_operation\'>{view}</span>',
+            'template' => '<span class=\'tbl_operation\'>{view}{delete}</span>',
         ],
             
         ],

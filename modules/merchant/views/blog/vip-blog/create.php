@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
     		'auditStatusList' => $auditStatusList,
     		'vipBlogTypeList' => $vipBlogTypeList,
     		'sysUserList' => $sysUserList,
+    		'initialPreview' => [],
+    		'initialPreviewConfig' => [],
     ]) ?>
 
 </div>

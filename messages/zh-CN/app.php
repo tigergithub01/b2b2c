@@ -28,6 +28,8 @@ return [
 		
 		
 		'upload_picture_tips' => '（图片分辨率1024*681，按住CTR或SHIFT键多选）',
+		'upload_error' => '文件上传失败!',
+		
 		
 		
 		
