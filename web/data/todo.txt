@@ -54,6 +54,9 @@ FLUSH PRIVILEGES;
 1、设置列表页，自动更新，关于页面（显示公司信息与版本信息），后台服务, sqlite，数据获取json交互，异常补货，网络异常提示, 启动页，安装页，下拉刷新listview，详情页（滑动切换）, 首页轮询广告图，分享，支付，GridView功能导航，推送服务，测试。
 个人信息，登陆，注册，找回密码，修改密码，代码保护，二维码生成与扫码。
 
+vs download url:
+https://www.visualstudio.com/downloads/
+
 
   
 
