@@ -202,7 +202,7 @@ class ImageUtils{
 		//上传图片
 		$imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
 		 
-		//处理图片
+		//处理图片(非图片文件不压缩）
 		if($process_img){
 			//处理图片
 			$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $extension;
@@ -216,9 +216,9 @@ class ImageUtils{
 				unlink(iconv("UTF-8", "GBK",  $thumb_url));
 			}
 			//返回处理好的图片
-			return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
+			return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url?$thumbed_url:$thumb_url), 'img_original' => $img_original ];
 		}else{
-			return ['img_original' => $img_original];
+			return ['img_original' => $img_original, 'thumb_url' => null, 'img_url' => null];
 		}
 		
 		 
@@ -267,7 +267,7 @@ class ImageUtils{
 // 		$imageFile->saveAs(iconv("UTF-8","GBK",$file_path),false);
 		copy(iconv("UTF-8","GBK",$imageFile), iconv("UTF-8", "GBK",  $file_path));
 		
-		//备份并压缩文件
+		//备份并压缩文件(视频文件不压缩）
 		if($process_img){
 			//处理图片
 			$img_url = $path . $uploadType . '_' . $filename . '_' . date('ymdhis',time()) . '_' . CommonUtils::random(4, 1). '_img' . '.' . $extension;
@@ -281,9 +281,9 @@ class ImageUtils{
 				unlink(iconv("UTF-8", "GBK",  $thumb_url));
 			}
 			//返回处理好的图片
-			return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url), 'img_original' => $img_original ];
+			return ['img_url'=> $img_url, 'thumb_url' => iconv("GBK", "UTF-8",  $thumbed_url?$thumbed_url:$thumb_url), 'img_original' => $img_original ];
 		}else{
-			return ['img_original' => $img_original ];
+			return ['img_original' => $img_original, 'thumb_url' => null, 'img_url' => null ];
 		}
 		
 			
