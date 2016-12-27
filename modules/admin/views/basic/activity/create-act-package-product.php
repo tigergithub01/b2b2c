@@ -49,8 +49,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $form->field($model, 'product_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?php // echo $form->field($model, 'product_id')->dropDownList(\yii\helpers\ArrayHelper::map($productList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
+	<?=  $form->field($model, 'product_id')->widget(\kartik\select2\Select2::className(),[
+			'data' => \yii\helpers\ArrayHelper::map($productList, "id", "name"),
+			'options' => [
+					'prompt' => Yii::t('app', 'select_prompt'),
+			],
+			'pluginOptions' => [
+					'allowClear' => true
+			],
+	] ) ?>
+	
+	
+	
     <?= $form->field($model, 'package_price')->textInput(['maxlength' => true]) ?>
 
     <?php // echo $form->field($model, 'quantity')->textInput() ?>
