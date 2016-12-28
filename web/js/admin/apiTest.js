@@ -559,16 +559,33 @@ $(function() {
 	});
 	
 	/*
-	 	订单列表
+	 	订单列表-带明细
 		http://localhost:8089/vip/api/member/order/so-sheet-detail/index
 	*/
-	$("#btn_so_sheet_list").click(function() {
+	$("#btn_so_sheet_list_with_detail").click(function() {
 		test_api($(this).attr('url'),
 				{
 				'page':'1',//页码
 				'per-page' : '10', //每页行数
 				'sort' : '-order.order_date', //排序
 				'SoSheetDetailSearch[code]' : 'so2', //可选项（客户根据订单编号来进行查询)
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	订单列表-无明细
+		http://localhost:8089/vip/api/member/order/so-sheet/index
+	*/
+	$("#btn_so_sheet_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : '-order_date', //排序
+				'SoSheetSearch[code]' : 'so2', //可选项（客户根据订单编号来进行查询)
 				},
 				'get'
 			);
