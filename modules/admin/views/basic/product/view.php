@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'return_desc:ntext',
             'cost_price',
             // 'vip_id',
-            'vip.vip_id',
+            'vip.vip_name',
             'keywords',
             // is_free_shipping',
 		    'isFreeShipping.param_val',
@@ -66,13 +66,48 @@ $this->params['breadcrumbs'][] = $this->title;
             'product_weight',
             'product_weight_unit',
             'product_group_id',
-            'img_url:url',
-            'thumb_url:url',
-            'img_original',
+        	[
+        		'attribute' => 'img_url',
+        		'format' =>'raw',
+        		'value'=>empty($model->img_url)?'':'<a class="fancybox" href="'.Yii::$app->request->hostInfo . '/' . $model->img_url. '"><img src="'.Yii::$app->request->hostInfo . '/' . $model->thumb_url.'" width="200" height="200"></a>'
+        	],
+//             'img_url:url',
+//             'thumb_url:url',
+//             'img_original',
 		        ],
 		    ]) ?>
     	</div>
+    </div>
     
+    <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">案例相册</h3>
+
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                   <div class="input-group-btn">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->        
+            
+            <div class="box-body table-responsive no-padding">
+                <?php foreach ($model->productGalleries as $vipCasePhoto) {?>
+                  	<?php if (strchr(strtolower($vipCasePhoto->img_url), 'mp4')=='mp4'){ ?>
+                  		 <video src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>" controls="controls">
+						您的浏览器不支持 video 标签。
+						</video>
+                    <?php }else {?>
+	                  	<a class="fancybox gallery" data-fancybox-group="gallery" href="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->img_url?>"><img width="200" height="200" src="<?php echo Yii::$app->request->hostInfo . '/' . $vipCasePhoto->thumb_url?>"></a>
+					<?php }?>
+                <?php }?>
+            </div>
+            <!-- /.box-body -->
+    </div>
+          <!-- /.box -->
+    
+    <div class="box"> 
 	    <div class="box-footer">
 	    	<?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 	        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [

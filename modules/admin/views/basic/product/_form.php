@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
 				],
 	    ]); ?>
     
-    	<?php //echo $form->errorSummary($model);?>
+    	<?php echo $form->errorSummary($model);?>
 
 	    <div class="box-body">
 	    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
@@ -43,7 +43,11 @@ use yii\widgets\ActiveForm;
 
     <?php //echo $form->field($model, 'type_id')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'type_id')->dropDownList(\yii\helpers\ArrayHelper::map($ptypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
-
+    
+	
+	<?= $form->field($model, 'service_flag')->dropDownList(\yii\helpers\ArrayHelper::map($yesNoList, "id", "param_val"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+	
+	
     <?php //echo $form->field($model, 'brand_id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'brand_id')->dropDownList(\yii\helpers\ArrayHelper::map($pbrandList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
@@ -88,7 +92,7 @@ use yii\widgets\ActiveForm;
 
     <?php //echo $form->field($model, 'vip_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_id"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
+    <?= $form->field($model, 'vip_id')->dropDownList(\yii\helpers\ArrayHelper::map($vipList, "id", "vip_name"), ['prompt' => Yii::t('app', 'select_prompt')]) ?>
 
     <?= $form->field($model, 'keywords')->textInput(['maxlength' => true]) ?>
 
@@ -112,11 +116,63 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'product_group_id')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'img_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'thumb_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
+    <?php // echo $form->field($model, 'img_original')->textInput(['maxlength' => true]) ?>
+    
+    
+    <?php //echo $form->field($model, 'imageFile')->fileInput(['multiple' => false, 'accept' => 'image/*']); ?>
+    
+    <?php 
+		echo $form->field($model, 'imageFile')->widget(\kartik\file\FileInput::classname(), [
+				'options' => ['accept' => 'image/*'],
+				'pluginOptions' => [
+						'initialPreview'=> $initialPreviewCover,
+						'initialPreviewAsData'=>true,
+						'overwriteInitial'=>true,
+						'showCaption' => false,
+						'showRemove' => false,
+						'showUpload' => false,
+				],
+		])->label($model->attributeLabels()['imageFile']);
+	?>
+    
+    
+    <?php 
+		echo $form->field(/* new \app\models\b2b2c\VipCase() */$model, 'imageFiles[]')->widget(\kartik\file\FileInput::classname(), [
+				'options' => ['multiple' => true, 'accept' => 'image/*'],
+				'pluginOptions' => [
+						'initialPreview'=>$initialPreview,
+						'initialPreviewConfig' => $initialPreviewConfig,
+						'initialPreviewAsData'=>true,
+						'overwriteInitial'=>false,
+						'showCaption' => false,
+						'fileUrlName' => 'VipCase[imageUrls][]',
+						'showRemove' => false,
+						'showBrowse'=> true,
+						'showUpload' => false,
+						'browseOnZoneClick' => true,
+						//'uploadUrl' => ($model->isNewRecord?\yii\helpers\Url::toRoute(['common-upload','id'=>$model->id]):\yii\helpers\Url::toRoute(['upload','id'=>$model->id])),
+						'uploadUrl' => ($model->isNewRecord?'':\yii\helpers\Url::toRoute(['upload1','id'=>$model->id])),
+						'fileActionSettings' => [
+								'showZoom' => true,
+								'showUpload' => true,
+								'showRemove' => true,
+						],
+				],
+				'pluginEvents' => [
+						"filebatchselected" => "function (event, files) {
+							$(event.target).fileinput('upload');
+				        }",
+				],
+		])->label($model->attributeLabels()['imageFiles']. \Yii::t('app', 'upload_picture_tips'));
+	?>
+    
+    <?php //echo $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']); ?>
+    
+    
 
 		</div>
 	

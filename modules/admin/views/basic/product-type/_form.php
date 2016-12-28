@@ -41,8 +41,18 @@ use yii\widgets\ActiveForm;
 
     <?php //echo $form->field($model, 'parent_id')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'parent_id')->dropDownList(\yii\helpers\ArrayHelper::map($pTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')])?>
-
+    <?php // echo $form->field($model, 'parent_id')->dropDownList(\yii\helpers\ArrayHelper::map($pTypeList, "id", "name"), ['prompt' => Yii::t('app', 'select_prompt')])?>
+	
+	<?=  $form->field($model, 'parent_id')->widget(\kartik\select2\Select2::className(),[
+			'data' => \yii\helpers\ArrayHelper::map($pTypeList, "id", "name"),
+			'options' => [
+					'prompt' => Yii::t('app', 'select_prompt'),
+			],
+			'pluginOptions' => [
+					'allowClear' => true
+			],
+		] ) ?>
+		
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'seq_id')->textInput() ?>

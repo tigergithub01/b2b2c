@@ -377,7 +377,10 @@ class VipCaseController extends BaseAuthController {
 						if (! ($vipCasePhoto->save ())) {
 							$model->addError ( 'imageFiles', \Yii::t('app', "upload_error"));
 							$transaction->rollBack ();
-							return $this->renderUpdate ();
+							return Json::encode ( [
+									'imageUrl' => '',
+									'error' => \Yii::t('app', "upload_error"),
+							] );
 						}
 						
 						// 上传图片返回值

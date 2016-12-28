@@ -102,8 +102,9 @@ use yii\helpers\Url;
 			</div>
 			
 			<div class="form-group">
-				<?php echo Html::button('我的订单列表',['id'=>'btn_so_sheet_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet-detail/index'])]);?>
+				<?php echo Html::button('我的订单列表',['id'=>'btn_so_sheet_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/index'])]);?>
 				<?php echo Html::button('订单详情',['id'=>'btn_so_sheet_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/view'])]);?>
+				<?php echo Html::button('我的订单列表-有明细',['id'=>'btn_so_sheet_list_with_detail','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet-detail/index'])]);?>
 			</div>
 			
 			<div class="form-group">

@@ -23,6 +23,9 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     		'yesNoList' => $yesNoList,
     		'pStatusList' => $pStatusList,
     		'auditStatusList' => $auditStatusList,
+    		'initialPreview' => $initialPreview,
+    		'initialPreviewConfig' => $initialPreviewConfig,
+    		'initialPreviewCover'  => $initialPreviewCover,
     ]) ?>
 
 </div>

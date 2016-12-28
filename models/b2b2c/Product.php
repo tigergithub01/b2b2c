@@ -87,6 +87,12 @@ class Product extends \app\models\b2b2c\BasicModel
 	
 	//场景
 	const SCENARIO_MERCHANT_REG = 'merchant_reg';//商户信息完善
+	
+	//案例封面
+	public $imageFile;
+	
+	//案例相册
+	public $imageFiles;
     
     /**
      * @inheritdoc
@@ -124,6 +130,8 @@ class Product extends \app\models\b2b2c\BasicModel
             [['product_group_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductGroup::className(), 'targetAttribute' => ['product_group_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['type_id' => 'id']],
         	[['market_price', 'sale_price', 'deposit_amount'], 'required','on' => [self::SCENARIO_MERCHANT_REG,]],
+        	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
+        	[['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 10],
         ];
     }
 
@@ -171,12 +179,14 @@ class Product extends \app\models\b2b2c\BasicModel
         	'brand.name' => Yii::t('app', '品牌'),
         	'type.name' => Yii::t('app', '产品分类'),
         	'vip.vip_id' => Yii::t('app', '关联商户编号'),
+        	'vip.vip_name' => Yii::t('app', '关联商户'),
         	'isOnSale.param_val' => Yii::t('app', '产品状态'),
         	'isHot.param_val' => Yii::t('app', '是否热销商品'),
         	'auditStatus.param_val' => Yii::t('app', '审核状态'),
         	'canReturnFlag.param_val' => Yii::t('app', '是否能退货'),
         	'isFreeShipping.param_val' => Yii::t('app', '是否免运费'),
-        		
+        	'imageFile' => Yii::t('app', '产品图片'),
+        	'imageFiles' => Yii::t('app', '产品相册'),
         ];
     }
 
