@@ -91,6 +91,69 @@ $(function() {
 				'get'
 			);
 	});
+	
+	
+	/*
+	 	产品分类列表
+		http://localhost:8089/vip/api/basic/product-type/index
+	*/
+	$("#btn_product_type_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	产品分类详情
+		http://localhost:8089/vip/api/basic/product-type/view?id=1
+	*/
+	$("#btn_product_type_view").click(function() {
+		test_api($(this).attr('url'),
+				{
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	产品列表
+		http://localhost:8089/vip/api/basic/product/index
+	*/
+	$("#btn_product_list").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'page':'1',//页码
+				'per-page' : '10', //每页行数
+				'sort' : 'name', //排序（降序为sort=-name)
+				},
+				'get'
+			);
+	});
+	
+	
+	/*
+	 	产品详情
+		http://localhost:8089/vip/api/basic/product/view?id=1
+	*/
+	$("#btn_product_view").click(function() {
+		test_api($(this).attr('url'),
+				{
+				},
+				'get'
+			);
+	});
+	
+	
+	
+	
+	
 
 	
 	//获取验证码
