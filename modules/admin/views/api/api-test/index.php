@@ -31,6 +31,17 @@ use yii\helpers\Url;
 			</div>
 			
 			<div class="form-group">
+				<?php echo Html::button('产品分类列表',['id'=>'btn_product_type_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/basic/product-type/index'])]);?>
+				<?php echo Html::button('产品分类详情',['id'=>'btn_product_type_view','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/basic/product-type/view', 'id'=>1])]);?>
+				
+				<?php echo Html::button('产品列表',['id'=>'btn_product_list','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/basic/product/index'])]);?>
+				<?php echo Html::button('产品详情',['id'=>'btn_product_view','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/basic/product/view', 'id'=>1])]);?>
+				
+			</div>
+			
+			
+			
+			<div class="form-group">
 				<?php echo Html::button('发送短信验证码',['id'=>'btn_get_sms_code','class' => 'btn btn-primary','url'=>Url::to(['/vip/member/system/sms/index'])]);?>
 				<?php echo Html::button('验证短信验证码',['id'=>'btn_verify_sms_code','class' => 'btn btn-primary','url'=>Url::to(['/vip/member/system/sms/verify-sms-code'])]);?>
 			</div>
