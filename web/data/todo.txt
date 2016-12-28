@@ -52,13 +52,27 @@ UPDATE user SET password=PASSWORD('b2b_tu_2016') WHERE user='b2b';
 FLUSH PRIVILEGES;
 
 1、设置列表页，自动更新，关于页面（显示公司信息与版本信息），后台服务, sqlite，数据获取json交互，异常补货，网络异常提示, 启动页，安装页，下拉刷新listview，详情页（滑动切换）, 首页轮询广告图，分享，支付，GridView功能导航，推送服务，测试。
-个人信息，登陆，注册，找回密码，修改密码，代码保护，二维码生成与扫码。
+个人信息，登陆，注册，找回密码，修改密码，代码保护，二维码生成与扫码, 整合cordova。
 
 vs download url:
 https://www.visualstudio.com/downloads/
 
 
-  
+ android {
+
+andorid 最新版本沒有HTTtpost問題。
+useLibrary 'org.apache.http.legacy'
+}
+
+android.support.test.runner.AndroidJUnitRunner
+
+20161221：
+这个产品和普通的b2b2c的项目有些差异，具体差异如下：
+1、缺少产品类别和产品信息的管理。
+2、缺少产品属性管理。
+3、缺少促销活动管理。
+4、缺少购物车。（机票类没有购物车，婚礼类没有购物车是正常业务）
+
 
 
 

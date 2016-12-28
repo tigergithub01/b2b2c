@@ -1023,6 +1023,26 @@ alter table t_sys_upload_file comment '系统上传文件';
 
 select * from t_sys_upload_file;
 
+drop table t_act_buy_discount;
+
+drop table t_act_buy_giving_detail;
+
+drop table t_act_exchange_product;
+
+drop table t_act_scope;
+
+drop table t_act_special_price;
+
+select * from t_product;
+
+select * from t_product_gallery;
+
+
+
+
+
+
+
 
 
 */
