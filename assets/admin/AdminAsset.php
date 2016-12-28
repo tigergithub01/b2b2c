@@ -13,7 +13,8 @@ class AdminAsset extends AssetBundle
 	public $baseUrl = '@web';
 	public $css = [
 			'css/admin/admin.css',
-			'js/plugin/fancyBox/source/jquery.fancybox.css?v=2.1.5'
+			'js/plugin/fancyBox/source/jquery.fancybox.css?v=2.1.5',
+			'css/admin/debug.css',
 	];
 	public $js = [
 		'js/plugin/fancyBox/source/jquery.fancybox.js?v=2.1.5',
