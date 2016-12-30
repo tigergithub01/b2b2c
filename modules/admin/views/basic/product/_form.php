@@ -149,7 +149,7 @@ use yii\widgets\ActiveForm;
 						'initialPreviewAsData'=>true,
 						'overwriteInitial'=>false,
 						'showCaption' => false,
-						'fileUrlName' => 'VipCase[imageUrls][]',
+						'fileUrlName' => 'Product[imgFiles][]',
 						'showRemove' => false,
 						'showBrowse'=> true,
 						'showUpload' => false,
