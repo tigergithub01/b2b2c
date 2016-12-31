@@ -859,6 +859,25 @@ $(function() {
 	
 	/*
 	 	订单支付成功逻辑
+		http://localhost:8089/vip/api/member/order/so-sheet/pay-req
+		
+		支付方式
+		1	微信支付
+		2	支付宝
+	*/
+	$("#btn_order_pay_req").click(function() {
+		test_api($(this).attr('url'),
+				{
+				'order_id':'1',//订单编号
+				'SoSheet[pay_amt]' : '100', //本次支付金额
+				'SoSheet[pay_type_id]' : '1', //支付方式（1:微信支付；2：支付宝支付）
+				},
+				'post'
+			);
+	});
+	
+	/*
+	 	订单支付成功逻辑
 		http://localhost:8089/vip/api/member/order/so-sheet/pay-callback
 		
 		支付方式
