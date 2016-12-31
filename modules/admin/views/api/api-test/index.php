@@ -145,6 +145,7 @@ use yii\helpers\Url;
 			<div class="form-group">
 				<?php echo Html::button('订单取消',['id'=>'btn_order_cancel','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/cancel'])]);?>
 				<?php echo Html::button('订单支付确认',['id'=>'btn_order_pay','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/pay'])]);?>
+				<?php echo Html::button('支付调用请求',['id'=>'btn_order_pay_req','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/pay-req'])]);?>
 				<?php echo Html::button('订单支付成功回调',['id'=>'btn_order_pay_callback','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/pay-callback'])]);?>
 				<?php echo Html::button('确认交易完成',['id'=>'btn_order_done','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/order/so-sheet/done'])]);?>
 				<?php echo Html::button('订单评价',['id'=>'btn_product_comment_create','class' => 'btn btn-primary','url'=>Url::to(['/vip/api/member/vip/product-comment/create'])]);?>

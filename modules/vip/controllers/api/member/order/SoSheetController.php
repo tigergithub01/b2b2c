@@ -32,6 +32,7 @@ use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
+use app\common\utils\UrlUtils;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -551,7 +552,7 @@ class SoSheetController extends BaseAuthApiController {
 		$model = new SoSheet ();
 		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
-		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
+// 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
 		
 		if (empty ( $order_id )) {
 			return CommonUtils::json_failed ( '订单编号不能为空!' );
@@ -585,6 +586,108 @@ class SoSheetController extends BaseAuthApiController {
 		] );
 	}
 	
+	
+	/**
+	 * 请求调用支付
+	 */
+	public function actionPayReq(){
+		$model = new SoSheet ();
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null; //订单编号
+// 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null; //支付方式
+// 		$pay_amt = isset ( $_REQUEST ['pay_amt'] ) ? $_REQUEST ['pay_amt'] : null;//本次支付金额
+
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
+		}
+		
+		// 判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+		
+		//加载post数据
+		$model->load ( Yii::$app->request->post () );
+		
+		
+		//支付方式判断
+		if (empty ( $model->pay_type_id )) {
+			return CommonUtils::json_failed ( '支付方式编号不能为空!' );
+		}
+			
+		$payType = PayType::findOne ( $model->pay_type_id );
+		if (empty ( $payType )) {
+			return CommonUtils::json_failed ( '支付方式不存在!' );
+		}
+		
+		//支付金额判断
+		if($model->pay_amt<=0){
+			return CommonUtils::json_failed ( '支付金额不合法!' );
+		}
+			
+		if ($model->order_amt < ($model->paid_amt + $model->pay_amt)) {
+			return CommonUtils::json_failed ( '支付金额不合法!' );
+		}
+		
+		
+		//①、获取用户openid
+		$tools = new \JsApiPay();
+// 		$openId = $tools->GetOpenid();
+		
+		//②、统一下单
+		$input = new \WxPayUnifiedOrder();
+		$input->SetBody($model->vip->vip_name);
+		$input->SetAttach($model->vip->vip_name);
+		$input->SetOut_trade_no(\WxPayConfig::MCHID.date("YmdHis"));
+		$input->SetTotal_fee($model->pay_amt * 100 ); //单位为分
+		$input->SetTime_start(date("YmdHis"));
+		$input->SetTime_expire(date("YmdHis", time() + 600));
+		$input->SetGoods_tag("test");
+		$input->SetNotify_url(UrlUtils::formatUrl("/vip/api/member/order/so-sheet/wx-pay-notify"));
+// 		$input->SetTrade_type("JSAPI");
+		$input->SetTrade_type("APP");
+// 		$input->SetOpenid($openId);
+		$order = \WxPayApi::unifiedOrder($input);
+		if($order['return_code']=='FAIL'){
+			return CommonUtils::json_failed("获取prepay_id失败：". $order['return_msg'],$order);
+		}
+		
+// 		echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
+// 		$this->printf_info($order);
+		//WxPayJsApiPay
+		$wxPayJsApiPay = new \WxPayJsApiPay();
+		$wxPayJsApiPay = $tools->GetJsApiParameters($order, true);
+		
+		
+		
+		//获取共享收货地址js函数参数
+		//$editAddress = $tools->GetEditAddressParameters();
+		$parameters = $wxPayJsApiPay->getValues();
+		$parameters['mch_id'] = $order['mch_id'];
+		$parameters['prepay_id'] = $order['prepay_id'];
+		
+		return CommonUtils::json_success($parameters);
+		
+	}
+	
+	
+	/**
+	 * 微信支付回调函数
+	 */
+	public function actionWxPayNotify(){
+		$notify = new \PayNotifyCallBack();
+		$notify->Handle(false); //TODO：如何将值返回到controller中
+		return CommonUtils::json_success(null);
+	}
+	
+	//打印输出数组信息
+	function printf_info($data)
+	{
+		foreach($data as $key=>$value){
+			echo "<font color='#00ff55;'>$key</font> : $value <br/>";
+		}
+	}
+	
 	/**
 	 * 订单支付成功逻辑
 	 *
@@ -594,7 +697,7 @@ class SoSheetController extends BaseAuthApiController {
 		$model = new SoSheet ();
 		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
 		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
-		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
+// 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
 		
 		if (empty ( $order_id )) {
 			return CommonUtils::json_failed ( '订单编号不能为空!' );

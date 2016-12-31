@@ -11,6 +11,7 @@ use app\models\b2b2c\Vip;
 use app\modules\vip\common\controllers\BaseApiController;
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\common\utils\UrlUtils;
 
 /**
  * ProductCommentController implements the CRUD actions for ProductComment model.
@@ -54,6 +55,19 @@ class ProductCommentController extends BaseApiController
 	        			},
 	        			'thumb_url' => function($value){
 	        				return (empty($value->vip)?'':$value->vip->thumb_url);
+	        			},
+	        			'cmt_rank_name'=> function($value){
+	        				return (empty($value->cmtRank)?'':$value->cmtRank->param_val);
+	        			},	
+	        			'productCommentPhotos'=> function($value){
+	        				if($value->productCommentPhotos){
+	        					foreach ($value->productCommentPhotos as $productCommentPhoto) {
+	        						$productCommentPhoto['img_url'] = UrlUtils::formatUrl($productCommentPhoto['img_url']);
+	        						$productCommentPhoto['thumb_url'] = UrlUtils::formatUrl($productCommentPhoto['thumb_url']);
+	        						$productCommentPhoto['img_original'] = UrlUtils::formatUrl($productCommentPhoto['img_original']);
+	        					}
+	        				}
+	        				return $value->productCommentPhotos;
 	        			},
         		])
         	]);

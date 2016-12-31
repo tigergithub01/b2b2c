@@ -88,6 +88,9 @@ class ProductController extends BaseAuthController
         $model->can_return_flag = SysParameter::yes;
         $model->is_free_shipping = SysParameter::no;
         
+        /* $s = base64_decode(str_replace('data:image/png;base64,', '', $_POST['uploadFile']));
+        file_put_contents('1.png', $s); */
+        
         if ($model->load(Yii::$app->request->post())/*  && $model->save() */) {
         	 
         	$model->imageFile = UploadedFile::getInstance($model, "imageFile");

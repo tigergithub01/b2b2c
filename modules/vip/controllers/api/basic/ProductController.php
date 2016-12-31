@@ -62,6 +62,11 @@ class ProductController extends BaseApiController
     	
     	//格式化输出
     	$productService = new ProductService();
+    	
+    	$productComments = $model->productComments;
+    	
+    	
+    	
     	return CommonUtils::json_success($productService->getProductModelArray($model));
     }
 

@@ -88,11 +88,14 @@ class Product extends \app\models\b2b2c\BasicModel
 	//场景
 	const SCENARIO_MERCHANT_REG = 'merchant_reg';//商户信息完善
 	
-	//案例封面
+	//产品封面
 	public $imageFile;
 	
-	//案例相册
+	//产品相册
 	public $imageFiles;
+	
+	//产品相册(base64)
+	public $imgFiles;
     
     /**
      * @inheritdoc
@@ -100,6 +103,14 @@ class Product extends \app\models\b2b2c\BasicModel
     public static function tableName()
     {
         return 't_product';
+    }
+    
+    
+    public function scenarios()
+    {
+    	$scenarios = parent::scenarios();
+    	$scenarios[self::SCENARIO_DEFAULT][]  = 'imgFiles';
+    	return $scenarios;
     }
 
     /**
@@ -132,6 +143,7 @@ class Product extends \app\models\b2b2c\BasicModel
         	[['market_price', 'sale_price', 'deposit_amount'], 'required','on' => [self::SCENARIO_MERCHANT_REG,]],
         	[['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 1],
         	[['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 10],
+        	[['imgFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg','maxSize'=>5*1024*1024, 'checkExtensionByMimeType' => false,'mimeTypes'=>'image/jpeg, image/png','maxFiles' => 10],
         ];
     }
 
