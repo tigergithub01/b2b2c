@@ -117,6 +117,12 @@ class VipCollectController extends BaseAuthApiController
         				//案例价格
         				return (empty($value->case)?'':$value->case->sale_price);
         			},
+        			'ref_vip_name' => function($value){
+        				return (empty($value->refVip)?'':$value->refVip->vip_name);
+        			},
+        			'ref_vip_thumb_url' => function($value){
+        				return (empty($value->refVip)?'':UrlUtils::formatUrl($value->refVip->thumb_url));
+        			},
         		])
         	]);
         
