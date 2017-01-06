@@ -121,11 +121,12 @@ class MerchantController extends BaseApiController
     	
     	//营业信息
     	$vipOrganization = $this->findVipOrganization($model->id);
-    	
-    	//格式化
-    	$vipOrganization->cover_img_url = UrlUtils::formatUrl($vipOrganization->cover_img_url);
-    	$vipOrganization->cover_thumb_url = UrlUtils::formatUrl($vipOrganization->cover_thumb_url);
-    	$vipOrganization->cover_img_original = UrlUtils::formatUrl($vipOrganization->cover_img_original);
+    	if($vipOrganization){
+    		//格式化
+    		$vipOrganization->cover_img_url = UrlUtils::formatUrl($vipOrganization->cover_img_url);
+    		$vipOrganization->cover_thumb_url = UrlUtils::formatUrl($vipOrganization->cover_thumb_url);
+    		$vipOrganization->cover_img_original = UrlUtils::formatUrl($vipOrganization->cover_img_original);
+    	}
     	
     	//身份信息
     	$vipExtend = $this->findVipExtend($model->id);

@@ -82,6 +82,18 @@ class MerchantController extends BaseAuthController
     	$vipExtend = $this->findVipExtend($model->id);
     	$product = $this->findProduct($model->id);
     	
+    	if($vipOrganization==null){
+    		$vipOrganization = new VipOrganization();
+    	}
+    	 
+    	if($vipExtend==null){
+    		$vipExtend = new VipExtend();
+    	}
+    	 
+    	if($product==null){
+    		$product = new Product();
+    	}
+    	
     	return $this->render('view', [
             'model' => $model,
     		'vipOrganization' => $vipOrganization,
