@@ -24,4 +24,9 @@ return [
 		
 	/*  universal sms code */
 		'universal_sms_code' => 'wl1234' ,
+	'wx_pay'=>[
+			'app_id'=>'wx20c0c879e9aa24b7',
+			'mch_id'=>'1431555002',
+			'app_key'=>'c80487fe8062b2b756a886b08bced7cd',
+	]	
 ];
