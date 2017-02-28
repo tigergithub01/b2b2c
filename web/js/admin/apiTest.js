@@ -215,7 +215,7 @@ $(function() {
 	$("#btn_vip_forgot_pwd").click(function() {
 		test_api($(this).attr('url'),
 			{
-			'Vip[vip_id]':'13724346621',//原始密码
+			'Vip[vip_id]':'13724346621',//注册的手机号码
 			'Vip[password]' : '111111', //新密码
 			'Vip[confirm_pwd]' : '111111', //确认新密码
 			'Vip[sms_code]' : 'wl1234', //手机验证码
