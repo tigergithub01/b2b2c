@@ -1,4 +1,4 @@
-CREATE USER 'b2b'@'%' IDENTIFIED BY 'b2b';
+﻿CREATE USER 'b2b'@'%' IDENTIFIED BY 'b2b';
 CREATE DATABASE `b2b2c` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT all ON b2b2c.* TO 'b2b'@'%';
 
@@ -504,9 +504,46 @@ http://www.cnblogs.com/wwolf/p/5619176.html
 
 1024*681
 
+1、设置列表页，自动更新，关于页面（显示公司信息与版本信息），后台服务, sqlite，
+数据获取json交互，异常补货，网络异常提示, 启动页，安装页，下拉刷新listview，详情页（滑动切换）, 
+首页轮询广告图，分享，支付，GridView功能导航，推送服务，测试。
+个人信息，登陆，注册，找回密码，修改密码，代码保护，二维码生成与扫码。
+同一个layout中listview与gridView自动切换。
+
+
+android项目：
+网络链接异常和服务器连接异常要区分开。
+
+公用的错误提示页面：
+http://blog.csdn.net/u013424496/article/details/51781330
+
+http://blog.csdn.net/wangyan0609/article/details/53186497
+
+ionic文档：
+http://ionicframework.com/docs/
+
+yii2 select2:
+http://demos.krajee.com/widget-details/select2#usage-ajax
+
+http://localhost:8089/admin/basic/product/index
+
+
+微信支付：
+应用包名：com.weddingRabbit.app
+应用签名：a41bd59ca2ca1f5c6eda067b55f02af6
+
+
+WxPay.Api.php:
+$inputObj->SetSpbill_create_ip($_SERVER['REMOTE_ADDR']);//终端ip	  
+		$inputObj->SetSpbill_create_ip("1.1.1.1");  	    
 
 
 
+微信支付cordova插件php端：
+https://github.com/xu-li/cordova-plugin-wechat-example/blob/master/server/payment_demo.php
+
+//微信支付流程：（居然还有一个验证签名，坑爹啊）
+https://segmentfault.com/a/1190000006886519
 
 
 
