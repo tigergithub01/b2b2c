@@ -33,6 +33,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use app\common\utils\UrlUtils;
+use app\common\utils\WxPayUtils;
 
 /**
  * SoSheetController implements the CRUD actions for SoSheet model.
@@ -590,7 +591,7 @@ class SoSheetController extends BaseAuthApiController {
 	/**
 	 * 请求调用支付
 	 */
-	public function actionPayReq(){
+	/* public function actionPayReq(){
 		$model = new SoSheet ();
 		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null; //订单编号
 // 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null; //支付方式
@@ -668,6 +669,77 @@ class SoSheetController extends BaseAuthApiController {
 		
 		return CommonUtils::json_success($parameters);
 		
+	} */
+	
+	
+	/**
+	 * 请求调用支付
+	 */
+	public function actionPayReq(){
+		$model = new SoSheet ();
+		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null; //订单编号
+		// 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null; //支付方式
+		// 		$pay_amt = isset ( $_REQUEST ['pay_amt'] ) ? $_REQUEST ['pay_amt'] : null;//本次支付金额
+	
+		if (empty ( $order_id )) {
+			return CommonUtils::json_failed ( '订单编号不能为空!' );
+		}
+	
+		// 判断订单是否存在
+		$model = $this->findModel ( $order_id );
+		if (empty ( $model )) {
+			return CommonUtils::json_failed ( '订单不存在!' );
+		}
+	
+		//加载post数据
+		$model->load ( Yii::$app->request->post () );
+	
+	
+		//支付方式判断
+		if (empty ( $model->pay_type_id )) {
+			return CommonUtils::json_failed ( '支付方式编号不能为空!' );
+		}
+			
+		$payType = PayType::findOne ( $model->pay_type_id );
+		if (empty ( $payType )) {
+			return CommonUtils::json_failed ( '支付方式不存在!' );
+		}
+	
+		//支付金额判断
+		if($model->pay_amt<=0){
+			return CommonUtils::json_failed ( '支付金额不合法!' );
+		}
+			
+		if ($model->order_amt < ($model->paid_amt + $model->pay_amt)) {
+			return CommonUtils::json_failed ( '支付金额不合法!' );
+		}
+	
+		
+		//微信支付
+		$app_id = Yii::$app->params['wx_pay']['app_id'];
+		$mch_id = Yii::$app->params['wx_pay']['mch_id'];
+		$app_key = Yii::$app->params['wx_pay']['app_key'];
+		$wxPayUtils = new WxPayUtils();
+		// get prepay id
+		$body = $model->vip->vip_name;
+		$total_fee = $model->pay_amt * 100;
+		$notify_url = UrlUtils::formatUrl("/vip/api/member/order/so-sheet/wx-pay-notify");
+		$prepay_id = $wxPayUtils->generatePrepayId($app_id, $mch_id, $app_key, $body, $total_fee, $notify_url);
+		
+		// re-sign it
+		$response = array(
+				'appid'     => $app_id,
+				'partnerid' => $mch_id,
+				'prepayid'  => $prepay_id,
+				'package'   => 'Sign=WXPay',
+				'noncestr'  => $wxPayUtils->generateNonce(),
+				'timestamp' => time(),
+		);
+		$response['sign'] = $wxPayUtils->calculateSign($response, $app_key);
+		
+		// send it to APP
+		return CommonUtils::json_success($response);
+	
 	}
 	
 	
@@ -761,11 +833,11 @@ class SoSheetController extends BaseAuthApiController {
 			} catch ( \Exception $e ) {
 				$transaction->rollBack ();
 				$model->addError ( 'code', $e->getMessage () );
-				return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+				return CommonUtils::jsonMsgObj_failed ( '订单支付失败！', $model );
 			}
 		}
 		
-		return CommonUtils::jsonMsgObj_failed ( '订单取消失败！', $model );
+		return CommonUtils::jsonMsgObj_failed ( '订单支付失败！', $model );
 	}
 	
 	/**

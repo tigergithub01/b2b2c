@@ -22,6 +22,9 @@ use app\models\b2b2c\common\Constant;
 class SmsController extends BaseController {
 	public $layout = "main-login";	
 	
+	//不启用csrf
+	public $enableCsrfValidation = false;
+	
 	/* public function behaviors() {
 		return array_merge ( [ 
 				'access' => [ 
