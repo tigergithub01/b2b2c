@@ -139,6 +139,8 @@ class WxPayUtils{
 		);
 		$response['sign'] = $this->calculateSign($response);
 		
+		\Yii::info(json_encode($response));	
+		
 		return $response;
 	}
 	
@@ -149,14 +151,17 @@ class WxPayUtils{
 	{
 		//获取微信post或来的xml数据
 		$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
-		\Yii::trace($xml);//打印日志信息
+		
 		if(!$xml){
 			return null;
 		}
 		//将XML转为array
 		//禁止引用外部xml实体
 		libxml_disable_entity_loader(true);
-		$values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true); //转换为数组
+		
+		$str =  json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA));
+		\Yii::info($str); //输出到日志
+		$values = json_decode($str, true); //转换为数组
 		return $values;
 	}
 	
