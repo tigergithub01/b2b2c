@@ -716,11 +716,6 @@ class SoSheetController extends BaseAuthApiController {
 	
 		
 		//微信支付
-		$app_id = Yii::$app->params['wx_pay']['app_id'];
-		$mch_id = Yii::$app->params['wx_pay']['mch_id'];
-		$app_key = Yii::$app->params['wx_pay']['app_key'];
-		
-		
 		$wxPayUtils = new WxPayUtils();
 		// get prepay id
 		$body = $model->vip->vip_name;

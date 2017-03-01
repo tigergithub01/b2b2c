@@ -28,6 +28,9 @@ class SoSheetPayNotifyController extends BaseApiController {
 		//根据订单编号查询
 		$values = $jsonObj->value;		
 		$out_trade_no = $values['out_trade_no']; //商户订单号
+		//订单号用'-'分隔，只需要截取前面的就可以了
+		$out_trade_no = explode('-',$out_trade_no)[0];
+		
 		$total_fee = ($values['total_fee'] / 100);  //支付总金额（换算成元）
 		$pay_type_id = 1; //支付方式->微信支付
 		
