@@ -22,11 +22,28 @@ class CommonUtils{
 		return Json::encode($jsonObj) ;
 	}
 	
+	public static function getModelFirstError($model){
+		if($model && $model->hasErrors()){
+			$firstErrors = $model->getFirstErrors();
+			$jsonObj->attributeErrors = $firstErrors;
+			foreach ($firstErrors as $key => $value) {
+				return $value;
+				break;
+			}
+		}else{
+			return '';
+		}
+	}
+	
 	public static function jsonObj_success($jsonObj){
 		$jsonObj->status = true;
 		if($jsonObj->message==null){
 			$jsonObj->message='操作成功!';
 		}
+		return Json::encode($jsonObj) ;
+	}
+	
+	public static function json_encode($jsonObj){
 		return Json::encode($jsonObj) ;
 	}
 	

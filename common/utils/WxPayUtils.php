@@ -3,7 +3,22 @@
 namespace app\common\utils;
 
 
+use app\models\b2b2c\common\JsonObj;
+
 class WxPayUtils{
+	
+	private $app_id;
+	private $mch_id;
+	private $app_key;
+	
+	/**
+	 * 初始化
+	 */
+	function __construct() {
+		$this->app_id = \Yii::$app->params['wx_pay']['app_id'];
+		$this->mch_id = \Yii::$app->params['wx_pay']['mch_id'];
+		$this->app_key = \Yii::$app->params['wx_pay']['app_key'];
+	}	
 	
 	/**
 	 * Generate a nonce string
@@ -20,7 +35,7 @@ class WxPayUtils{
 	 *
 	 * @link https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=4_3
 	 */
-	function calculateSign($arr, $key)
+	function calculateSign($arr)
 	{
 		ksort($arr);
 	
@@ -33,7 +48,7 @@ class WxPayUtils{
 	
 		$buff = trim($buff, "&");
 	
-		return strtoupper(md5($buff . "&key=" . $key));
+		return strtoupper(md5($buff . "&key=" . $this->app_key));
 	}
 	
 	/**
@@ -60,11 +75,11 @@ class WxPayUtils{
 	 *
 	 * @link https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_1
 	 */
-	function generatePrepayId($app_id, $mch_id, $app_key, $body, $total_fee, $notify_url)
+	function generatePrepayId($body, $total_fee, $notify_url)
 	{
 		$params = array(
-				'appid'            => $app_id,
-				'mch_id'           => $mch_id,
+				'appid'            => $this->app_id,
+				'mch_id'           => $this->mch_id,
 				'nonce_str'        => $this->generateNonce(),
 				'body'             => $body,
 				'out_trade_no'     => time(),
@@ -75,7 +90,7 @@ class WxPayUtils{
 		);
 	
 		// add sign
-		$params['sign'] = $this->calculateSign($params, $app_key);
+		$params['sign'] = $this->calculateSign($params);
 	
 		// create xml
 		$xml = $this->getXMLFromArray($params);
@@ -103,5 +118,76 @@ class WxPayUtils{
 		//var_dump($result);
 		return (string)$xml->prepay_id;
 	}
+	
+	/**
+	 
+	 * @param unknown $body
+	 * @param unknown $total_fee
+	 * @param unknown $notify_url
+	 */
+	public function sendPayReq($body, $total_fee, $notify_url){
+		$prepay_id = $this->generatePrepayId($body, $total_fee, $notify_url);
+		
+		// re-sign it
+		$response = array(
+				'appid'     => $this->app_id,
+				'partnerid' => $this->mch_id,
+				'prepayid'  => $prepay_id,
+				'package'   => 'Sign=WXPay',
+				'noncestr'  => $this->generateNonce(),
+				'timestamp' => time(),
+		);
+		$response['sign'] = $this->calculateSign($response);
+		
+		return $response;
+	}
+	
+	/**
+	 * 将xml转为array
+	 */
+	public function FromXml()
+	{
+		//获取微信post或来的xml数据
+		$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+		\Yii::trace($xml);//打印日志信息
+		if(!$xml){
+			return null;
+		}
+		//将XML转为array
+		//禁止引用外部xml实体
+		libxml_disable_entity_loader(true);
+		$values = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true); //转换为数组
+		return $values;
+	}
+	
+	/**
+	 * 微信回调处理
+	 * @return \app\models\b2b2c\common\JsonObj
+	 */
+	public function notify(){
+		$jsonObj = new JsonObj(false);
+		
+		//获取返回的数组
+		$values = $this->FromXml();
+		$jsonObj->value = $values;
+		
+		//获取返回结果
+		if($values['return_code'] != 'SUCCESS'){
+			$jsonObj->message = '支付出错!';
+			return $jsonObj;
+		}
+		
+		//验证签名		
+// 		$sign= $this->calculateSign($values);
+// 		if($values['sign'] != $sign){
+// 			$jsonObj->message = '签名验证错误!';
+// 			return $jsonObj;
+// 		}
+		
+		//支付回调成功
+		$jsonObj->status = true;
+		return $jsonObj;		
+	}
+	
 	
 }
