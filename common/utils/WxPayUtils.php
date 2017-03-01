@@ -75,14 +75,14 @@ class WxPayUtils{
 	 *
 	 * @link https://pay.weixin.qq.com/wiki/doc/api/app.php?chapter=9_1
 	 */
-	function generatePrepayId($body, $total_fee, $notify_url)
+	function generatePrepayId($order_code, $body, $total_fee, $notify_url)
 	{
 		$params = array(
 				'appid'            => $this->app_id,
 				'mch_id'           => $this->mch_id,
 				'nonce_str'        => $this->generateNonce(),
 				'body'             => $body,
-				'out_trade_no'     => time(),
+				'out_trade_no'     => $order_code .'-'. CommonUtils::random(5, 1),
 				'total_fee'        => $total_fee,
 				'spbill_create_ip' => '8.8.8.8',
 				'notify_url'       => $notify_url,
@@ -91,11 +91,12 @@ class WxPayUtils{
 	
 		// add sign
 		$params['sign'] = $this->calculateSign($params);
-	
+		
 		// create xml
 		$xml = $this->getXMLFromArray($params);
 	
-	
+		\Yii::info('-----generatePrepayId params-------- ');
+		\Yii::info($xml);
 	
 		// send request
 		$ch = curl_init();
@@ -125,8 +126,8 @@ class WxPayUtils{
 	 * @param unknown $total_fee
 	 * @param unknown $notify_url
 	 */
-	public function sendPayReq($body, $total_fee, $notify_url){
-		$prepay_id = $this->generatePrepayId($body, $total_fee, $notify_url);
+	public function sendPayReq($order_code, $body, $total_fee, $notify_url){
+		$prepay_id = $this->generatePrepayId($order_code, $body, $total_fee, $notify_url);
 		
 		// re-sign it
 		$response = array(
@@ -139,6 +140,7 @@ class WxPayUtils{
 		);
 		$response['sign'] = $this->calculateSign($response);
 		
+		\Yii::info('-----sendPayReq re-sign params-------- ');
 		\Yii::info(json_encode($response));	
 		
 		return $response;
@@ -160,6 +162,7 @@ class WxPayUtils{
 		libxml_disable_entity_loader(true);
 		
 		$str =  json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA));
+		\Yii::info('-----FromXml str-------- ');
 		\Yii::info($str); //输出到日志
 		$values = json_decode($str, true); //转换为数组
 		return $values;
