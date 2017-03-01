@@ -35,12 +35,13 @@ class SoSheetPayNotifyController extends BaseApiController {
 		$payRtn = $soSheetService->soSheetPay($total_fee, $pay_type_id,null, $out_trade_no);
 		if($payRtn->status){
 			//支付成功
+			\Yii::info("---actionWxNotify success---");
 			echo $wxPayUtils->getXMLFromArray($values); //输出信息，告诉支付信息已经修改成功，不需要再定期回掉
 			exit;
 		}else{
+			\Yii::info("---actionWxNotify failed---" . $payRtn->message);
 			return CommonUtils::json_encode($payRtn);
 			//支付失败
-			
 		}
 		
 		

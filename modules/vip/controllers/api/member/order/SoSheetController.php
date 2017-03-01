@@ -726,7 +726,7 @@ class SoSheetController extends BaseAuthApiController {
 		$body = $model->vip->vip_name;
 		$total_fee = $model->pay_amt * 100;
 		$notify_url = UrlUtils::formatUrl("/vip/api/member/order/so-sheet-pay-notify/wx-notify");
-		$response = $wxPayUtils->sendPayReq($body, $total_fee, $notify_url);
+		$response = $wxPayUtils->sendPayReq($model->code , $body, $total_fee, $notify_url);
 		
 		// send it to APP
 		return CommonUtils::json_success($response);
