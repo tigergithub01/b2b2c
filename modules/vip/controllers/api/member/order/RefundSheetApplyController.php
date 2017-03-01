@@ -115,7 +115,7 @@ class RefundSheetApplyController extends BaseAuthApiController {
 				}
 				
 				// 重新获取订单编号
-				$model->code = SheetType::getCode ( $model->sheet_type_id, true );
+// 				$model->code = SheetType::getCode ( $model->sheet_type_id, true );
 				
 				/* 保存失败处理 */
 				if (! ($model->save ())) {

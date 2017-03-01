@@ -11,6 +11,8 @@ use app\models\b2b2c\SoSheetDetail;
 use app\models\b2b2c\SoSheet;
 use app\models\b2b2c\common\JsonObj;
 use app\models\b2b2c\RefundSheetApply;
+use app\models\b2b2c\PayType;
+use app\models\b2b2c\SoSheetPayInfo;
 
 class SoSheetService {
 	
@@ -135,14 +137,16 @@ class SoSheetService {
 	 * @param unknown $vip_id
 	 * @return \app\models\b2b2c\common\JsonObj
 	 */
-	public function getSoSheetPayAuth($model, $vip_id){
+	public function getSoSheetPayAuth($model, $vip_id = null){
 		$jsonObj = new JsonObj();
 		$jsonObj->status = false;
 	
 		//只能操作自己的订单
-		if($model->vip_id != $vip_id){
-			$jsonObj->message = "非法操作，只能操作自己的订单!";
-			return $jsonObj;
+		if($vip_id){
+			if($model->vip_id != $vip_id){
+				$jsonObj->message = "非法操作，只能操作自己的订单!";
+				return $jsonObj;
+			}
 		}
 	
 		//“待付款，待接单，待服务,交易成功”状态下用户可以付款
@@ -322,5 +326,108 @@ class SoSheetService {
 						'value' => $balance_amt, 
 				],
 		];
+	}
+	
+	/**
+	 * 订单支付成功逻辑
+	 * TODO:需要考虑定金支付为微信，尾款支付为支付宝的情况
+	 * @param unknown $order_id
+	 * @param unknown $pay_amt
+	 * @param unknown $pay_type_id
+	 * @param unknown $order_code
+	 * @return \app\models\b2b2c\common\JsonObj
+	 */
+	public function soSheetPay($pay_amt, $pay_type_id, $order_id = null, $order_code = null) {
+		$jsonObj = new JsonObj(false);
+// 		$model = new SoSheet ();
+		// 		$vip_id = \Yii::$app->session->get ( VipConst::LOGIN_VIP_USER )->id;
+// 		$order_id = isset ( $_REQUEST ['order_id'] ) ? $_REQUEST ['order_id'] : null;
+		// 		$pay_type_code = isset ( $_REQUEST ['pay_type_code'] ) ? $_REQUEST ['pay_type_code'] : null;
+	
+		$model = null; //SoSheet，订单信息
+		if($order_code){
+			$model = SoSheet::find()->where(['code'=>$order_code])->one();
+		}else{
+			$model = $this->findModel ( $order_id );
+		}
+	
+		// 判断订单是否存在
+		if (empty ( $model )) {
+			$jsonObj->message = '订单不存在!' ;
+			return $jsonObj;
+		}
+		
+		//重新设置支付方式与支付金额
+		$model->pay_type_id = $pay_type_id;
+		$model->pay_amt = $pay_amt;
+		
+		//插入支付数据
+		$transaction = SoSheet::getDb ()->beginTransaction ();
+		try {
+
+			if (empty ( $model->pay_type_id )) {
+				$jsonObj->message = '支付方式编号不能为空!' ; 
+				return $jsonObj;
+			}
+			
+			$payType = PayType::findOne ( $model->pay_type_id );
+			if (empty ( $payType )) {
+				$jsonObj->message = '支付方式不存在!' ;
+				return $jsonObj;
+			}
+
+			$jsonObj = $this->getSoSheetPayAuth ( $model ); // 判断权限
+			if (! ($jsonObj->status)) {
+				$jsonObj->message = $jsonObj->message ;
+				return $jsonObj;
+			}
+
+			if ($model->order_amt < ($model->paid_amt + $model->pay_amt)) {
+				$jsonObj->message = '支付金额不合法!' ;
+				return $jsonObj;
+			}
+
+			$model->order_status = SoSheet::order_need_schedule; // 待接单
+			if ($model->order_amt > ($model->paid_amt + $model->pay_amt)) {
+				$model->pay_status = SoSheet::pay_part_pay; // 部分支付
+			} else {
+				$model->pay_status = SoSheet::pay_completed; // 支付完成
+			}
+			$model->pay_date = \app\common\utils\DateUtils::formatDatetime(); // 最后一次支付时间
+			$model->paid_amt = ($model->paid_amt + $model->pay_amt); // 更新已付款金额
+			if (! ($model->save ())) {
+				$transaction->rollBack ();
+				$jsonObj->status = false;
+				$jsonObj->message =  '订单状态修改失败！'+ CommonUtils::getModelFirstError($model);
+				return $jsonObj;
+			}
+			
+			// 插入支付记录
+			$soSheetPayInfo = new SoSheetPayInfo ();
+			$soSheetPayInfo->order_id = $model->id;
+			$soSheetPayInfo->pay_type_id = $model->pay_type_id;
+			$soSheetPayInfo->pay_amt = $model->pay_amt;
+			$soSheetPayInfo->pay_date = $model->pay_date;
+			if (! ($soSheetPayInfo->save ())) {
+				$transaction->rollBack ();
+				$jsonObj->message = '订单支付记录插入失败！' + CommonUtils::getModelFirstError($soSheetPayInfo);
+				return $jsonObj;
+			}
+			
+			$transaction->commit ();
+			
+			//支付成功
+			$jsonObj->status = true;
+			$jsonObj->message = '订单支付成功！';
+			return $jsonObj; 
+		} catch ( \Exception $e ) {
+			$transaction->rollBack ();
+			$model->addError ( 'code', $e->getMessage () );
+			$jsonObj->message = '订单支付失败！' + $e->getMessage ();
+			return $jsonObj;
+		}
+			
+		$jsonObj->message = '订单支付失败！' + CommonUtils::getModelFirstError($model);
+		return $jsonObj;
 	}
 }

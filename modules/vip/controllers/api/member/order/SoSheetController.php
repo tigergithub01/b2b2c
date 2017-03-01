@@ -719,23 +719,14 @@ class SoSheetController extends BaseAuthApiController {
 		$app_id = Yii::$app->params['wx_pay']['app_id'];
 		$mch_id = Yii::$app->params['wx_pay']['mch_id'];
 		$app_key = Yii::$app->params['wx_pay']['app_key'];
+		
+		
 		$wxPayUtils = new WxPayUtils();
 		// get prepay id
 		$body = $model->vip->vip_name;
 		$total_fee = $model->pay_amt * 100;
-		$notify_url = UrlUtils::formatUrl("/vip/api/member/order/so-sheet/wx-pay-notify");
-		$prepay_id = $wxPayUtils->generatePrepayId($app_id, $mch_id, $app_key, $body, $total_fee, $notify_url);
-		
-		// re-sign it
-		$response = array(
-				'appid'     => $app_id,
-				'partnerid' => $mch_id,
-				'prepayid'  => $prepay_id,
-				'package'   => 'Sign=WXPay',
-				'noncestr'  => $wxPayUtils->generateNonce(),
-				'timestamp' => time(),
-		);
-		$response['sign'] = $wxPayUtils->calculateSign($response, $app_key);
+		$notify_url = UrlUtils::formatUrl("/vip/api/member/order/so-sheet-pay-notify/wx-notify");
+		$response = $wxPayUtils->sendPayReq($body, $total_fee, $notify_url);
 		
 		// send it to APP
 		return CommonUtils::json_success($response);
