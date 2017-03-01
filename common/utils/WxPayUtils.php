@@ -178,11 +178,11 @@ class WxPayUtils{
 		}
 		
 		//验证签名		
-// 		$sign= $this->calculateSign($values);
-// 		if($values['sign'] != $sign){
-// 			$jsonObj->message = '签名验证错误!';
-// 			return $jsonObj;
-// 		}
+		$sign= $this->calculateSign($values);
+		if($values['sign'] != $sign){
+			$jsonObj->message = '签名验证错误!';
+			return $jsonObj;
+		}
 		
 		//支付回调成功
 		$jsonObj->status = true;
