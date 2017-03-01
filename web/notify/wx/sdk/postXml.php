@@ -8,7 +8,7 @@ $data="<xml><appid><![CDATA[wx2bfbd48633b358a1]]></appid>
 <mch_id><![CDATA[1266869501]]></mch_id>
 <nonce_str><![CDATA[e140dbab44e01e699491a59c9978b924]]></nonce_str>
 <openid><![CDATA[o_3BEw7bcm5lQ5g0ENFlAvvWntw4]]></openid>
-<out_trade_no><![CDATA[so20161027000098172]]></out_trade_no>
+<out_trade_no><![CDATA[so20161027000098172-12345]]></out_trade_no>
 <result_code><![CDATA[SUCCESS]]></result_code>
 <return_code><![CDATA[SUCCESS]]></return_code>
 <sign><![CDATA[AB7BEEA0C0EEAA45724978115CEE93FD]]></sign>
