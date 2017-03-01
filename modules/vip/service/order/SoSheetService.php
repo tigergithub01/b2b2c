@@ -250,11 +250,12 @@ class SoSheetService {
 			return $jsonObj;
 		}
 	
-		//“交易成功”状态下用户可以确认完成
+		//已经付款的订单才可以申请退款
 		if($model->paid_amt > 0 && (($model->order_status == SoSheet::order_need_schedule || $model->order_status == SoSheet::order_need_service || SoSheet::order_completed ))){
 			//已经付款，才可以申请付款
 		}else{
 			$jsonObj->message = "非法操作，已经付款的订单才可以申请退款!";
+			return $jsonObj;
 		}
 		
 		//已经申请退款的不可以多次申请
