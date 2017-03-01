@@ -2,26 +2,25 @@
 
 namespace app\modules\admin\controllers\basic;
 
-use Yii;
-use app\models\b2b2c\Activity;
-use app\models\b2b2c\search\ActivitySearch;
-use app\modules\admin\common\controllers\BaseAuthController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use app\common\utils\MsgUtils;
-use app\models\b2b2c\ActivityType;
-use app\models\b2b2c\SysUser;
-use app\models\b2b2c\SysParameterType;
-use app\models\b2b2c\Vip;
-use app\models\b2b2c\SysParameter;
-use yii\web\UploadedFile;
-use app\common\utils\image\ImageUtils;
-use app\models\b2b2c\SysConfig;
-use app\modules\admin\models\AdminConst;
-use app\models\b2b2c\common\Constant;
-use app\models\b2b2c\ActPackageProduct;
-use app\models\b2b2c\Product;
 use app\common\utils\DateUtils;
+use app\common\utils\image\ImageUtils;
+use app\common\utils\MsgUtils;
+use app\models\b2b2c\Activity;
+use app\models\b2b2c\ActivityType;
+use app\models\b2b2c\ActPackageProduct;
+use app\models\b2b2c\common\Constant;
+use app\models\b2b2c\Product;
+use app\models\b2b2c\search\ActivitySearch;
+use app\models\b2b2c\SysConfig;
+use app\models\b2b2c\SysParameter;
+use app\models\b2b2c\SysParameterType;
+use app\models\b2b2c\SysUser;
+use app\models\b2b2c\Vip;
+use app\modules\admin\common\controllers\BaseAuthController;
+use app\modules\admin\models\AdminConst;
+use Yii;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
