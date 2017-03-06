@@ -17,6 +17,7 @@ use app\models\b2b2c\SysConfig;
 use yii\web\UploadedFile;
 use app\models\b2b2c\SoSheet;
 use app\modules\vip\service\order\SoSheetService;
+use app\models\b2b2c\ProductCommentPhoto;
 
 /**
  * ProductCommentController implements the CRUD actions for ProductComment model.
