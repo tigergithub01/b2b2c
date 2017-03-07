@@ -137,6 +137,14 @@ class ProductCommentController extends BaseAuthApiController {
 					}
 				}
 				
+				//TODO:更新订单状态为已评价
+				$order->orderStatus=SoSheet::order_commented;
+				if(!($order->save())){
+					$model->addError ( 'content', '订单状态更新失败！' );
+					$transaction->rollBack ();
+					return $this->renderCreate ( $model );
+				}				
+				
 				$transaction->commit ();
 				return CommonUtils::json_success ( $model->id );
 			} catch ( \Exception $e ) {
