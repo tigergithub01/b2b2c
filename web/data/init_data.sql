@@ -34,6 +34,7 @@ insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5005
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5007,5,'已关闭','已经退款给用户，订单关闭',7);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5008,5,'交易成功','客户付尾款，并确认交易完成；如果已经付款完成，并且7个工作日内不确定服务完成，系统自动确认完成',8);
 insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5009,5,'待评价','客户确认交易完成后可评价',9);
+insert into t_sys_parameter(id,type_id,param_val,description,seq_id) values(5010,5,'已评价','客户评价后为已评价状态，默认情况下只能评论一次',10);
 
 
 insert into t_sys_parameter_type(id,name,description) values(6,'付款状态',null);

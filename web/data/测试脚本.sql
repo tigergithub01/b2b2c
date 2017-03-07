@@ -880,7 +880,6 @@ alter table t_so_sheet add confirm_date         datetime comment '确认日期�
 drop table t_sheet_log;
 
 
-
 create table t_sheet_log
 (
    id                   bigint(20) not null auto_increment comment '主键编号',
@@ -1038,7 +1037,7 @@ select * from t_product;
 select * from t_product_gallery;
 
 
-
+select * from t_so_sheet where code = 'so20161017001781';
 
 
 
